@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="LaboratoryApp.Views.UC.NavigationUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LaboratoryApp.Views.UC"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{DynamicResource MaterialDesignFont}"
+             mc:Ignorable="d">
+    <Grid Width="150">
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top">
+                <RadioButton Margin="4"
+                             Padding="0, 10"
+                             Content="Dashboard"
+                             IsChecked="True"
+                             Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
+                <RadioButton Margin="4"
+                             Padding="0, 10"
+                             Content="Periodic Table"
+                             IsChecked="False"
+                             Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
+                <RadioButton Margin="4"
+                             Padding="0, 10"
+                             Content="Compound"
+                             IsChecked="False"
+                             Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
+                <RadioButton Margin="4"
+                             Padding="0, 10"
+                             Content="Calculator"
+                             IsChecked="False"
+                             Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
+            </StackPanel>
+            
+        </DockPanel>
+    </Grid>
+</UserControl>

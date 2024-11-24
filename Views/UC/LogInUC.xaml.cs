@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp
+namespace LaboratoryApp.Views.UC
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LogInUC.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LogInUC : UserControl
     {
-        public MainWindow()
+        public LogInUC()
         {
             InitializeComponent();
         }
