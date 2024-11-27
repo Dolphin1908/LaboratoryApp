@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:main="clr-namespace:LaboratoryApp.ViewModels"
+                    xmlns:uc="clr-namespace:LaboratoryApp.ViewModels.UC"
+                    xmlns:ui="clr-namespace:LaboratoryApp.ViewModels.UI">
+    <main:MainWindowViewModel x:Key="MainVM"></main:MainWindowViewModel>
+    <ui:DashboardViewModel x:Key="DashboardVM"></ui:DashboardViewModel>
+    <uc:ControlBarViewModel x:Key="ControlBarVM"></uc:ControlBarViewModel>
+    <BooleanToVisibilityConverter  x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+</ResourceDictionary>

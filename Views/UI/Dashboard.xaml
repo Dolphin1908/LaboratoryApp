@@ -1,30 +1,48 @@
-﻿<Window x:Class="LaboratoryApp.Views.UI.Dashboard"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LaboratoryApp.Views.UI"
-        xmlns:uc="clr-namespace:LaboratoryApp.Views.UC"
-        
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal"
-        TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        Style="{StaticResource MaterialDesignWindow}"
-        ResizeMode="NoResize"
-        WindowStyle="None"
-        WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d"
-        Title="Dashboard" Height="450" Width="800">
+﻿<Page x:Class="LaboratoryApp.Views.UI.Dashboard"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:LaboratoryApp.Views.UI"
+      xmlns:uc="clr-namespace:LaboratoryApp.Views.UC"
+      xmlns:domain="clr-namespace:LaboratoryApp.Support.Domain"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal"
+      TextOptions.TextRenderingMode="Auto"
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      mc:Ignorable="d"
+      Title="Dashboard">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <uc:ControlBarUC Grid.Row="0"/>
+        <materialDesign:Card Width="200">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="140" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Height="140"
+                       Source="../../Resources/Element.jpg"
+                       Stretch="UniformToFill" />
+                <Button Grid.Row="0"
+                        Margin="0,0,16,-20"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        Command="{Binding MoreInfoCommand}"
+                        CommandParameter="">
+                    <materialDesign:PackIcon Kind="Search" />
+                </Button>
+                <StackPanel Grid.Row="1" Margin="8,24,8,0">
+                    <TextBlock FontWeight="Bold">Elements</TextBlock>
+                    <TextBlock VerticalAlignment="Center" 
+                               Text="In chemistry, an element is defined as a pure substance composed of atoms that all have the same number of protons in the atomic nucleus. In other words, all atoms of an element have the same atomic number."
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
     </Grid>
-</Window>
+</Page>

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LaboratoryApp"
         xmlns:uc="clr-namespace:LaboratoryApp.Views.UC"
+        xmlns:ui="clr-namespace:LaboratoryApp.Views.UI"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -35,7 +36,7 @@
                 <uc:NavigationUC Visibility="{Binding IsNavigationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </Grid>
             <Grid Grid.Column="1">
-                <uc:LogInUC/>
+                <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
             </Grid>
         </Grid>
     </Grid>

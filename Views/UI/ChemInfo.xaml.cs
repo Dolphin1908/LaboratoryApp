@@ -1,5 +1,4 @@
-﻿using LaboratoryApp.ViewModels.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,21 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using LaboratoryApp.Support;
 using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace LaboratoryApp.Views.UI
 {
     /// <summary>
-    /// Interaction logic for Dashboard.xaml
+    /// Interaction logic for ChemInfo.xaml
     /// </summary>
-    public partial class Dashboard : Page
+    public partial class ChemInfo : Page
     {
-        public Dashboard(NavigationService navigationService)
+        public ChemInfo()
         {
             InitializeComponent();
-            this.DataContext = new DashboardViewModel(new NavigateService(navigationService));
         }
     }
 }

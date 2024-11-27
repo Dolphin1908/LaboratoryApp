@@ -1,6 +1,5 @@
 ﻿using LaboratoryApp.Database;
 using LaboratoryApp.Models;
-using LaboratoryApp.ViewModels.UI;
 using LaboratoryApp.Views.UC;
 using System;
 using System.Collections.Generic;

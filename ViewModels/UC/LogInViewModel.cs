@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using LaboratoryApp.Database.Provider;
 
-namespace LaboratoryApp.ViewModels
+namespace LaboratoryApp.ViewModels.UC
 {
     class LogInViewModel : BaseViewModel
     {

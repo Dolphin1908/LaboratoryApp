@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using LaboratoryApp.Views.UI;
+
 namespace LaboratoryApp.Views
 {
     /// <summary>
@@ -19,6 +21,7 @@ namespace LaboratoryApp.Views
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new Dashboard(MainFrame.NavigationService));
         }
     }
 }

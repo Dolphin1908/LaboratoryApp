@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 using LaboratoryApp.Database.Provider;
 using LaboratoryApp.ViewModels.UC;
 
-namespace LaboratoryApp.ViewModels.UI
+namespace LaboratoryApp.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
