@@ -13,8 +13,20 @@
              TextOptions.TextRenderingMode="Auto"
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="{DynamicResource MaterialDesignFont}"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             mc:Ignorable="d"
+             MaxHeight="100" 
+             MaxWidth="100">
+    <Grid Background="{Binding color, Converter={StaticResource ColorToBrushConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- Atomic Number -->
+        <TextBlock Text="{Binding atomic_number}" FontSize="12" Margin="0, 8" Grid.Row="0" HorizontalAlignment="Center"/>
+        <!-- Symbol -->
+        <TextBlock Text="{Binding symbol}" FontSize="24" FontWeight="Bold" Margin="0, 8" Grid.Row="1" HorizontalAlignment="Center"/>
+        <!-- Atomic Mass -->
+        <TextBlock Text="{Binding atomic_mass}" FontSize="12" Margin="0, 8" Grid.Row="2" HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

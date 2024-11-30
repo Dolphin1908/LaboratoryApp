@@ -8,6 +8,8 @@ using System.Data.SQLite;
 using System.Windows;
 using System.Data;
 using System.Configuration;
+using System.Xml.Linq;
+using LaboratoryApp.Models;
 
 namespace LaboratoryApp.Database.Provider
 {
@@ -16,6 +18,8 @@ namespace LaboratoryApp.Database.Provider
         private readonly string _connectionString;
         private SQLiteConnection _connection;
         private static SQLiteDataProvider _instance;
+
+        // Singleton pattern
         public static SQLiteDataProvider Instance
         {
             get
@@ -30,6 +34,7 @@ namespace LaboratoryApp.Database.Provider
             }
         }
 
+        // Constructor
         public SQLiteDataProvider()
         {
             var dbPath = ConfigurationManager.AppSettings["SQLitePath"];
@@ -38,6 +43,7 @@ namespace LaboratoryApp.Database.Provider
             OpenConnection();
         }
 
+        // Open connection method
         private void OpenConnection()
         {
             if (_connection.State == ConnectionState.Closed)
@@ -46,6 +52,7 @@ namespace LaboratoryApp.Database.Provider
             }
         }
 
+        // Close connection method
         private void CloseConnection()
         {
             if (_connection.State == ConnectionState.Open)
@@ -54,6 +61,7 @@ namespace LaboratoryApp.Database.Provider
             }
         }
 
+        // ExecuteNonQuery method for INSERT, UPDATE, DELETE statement
         public int ExecuteNonQuery(string query, List<SQLiteParameter> parameters = null)
         {
             using (var command = new SQLiteCommand(query, _connection))
@@ -66,7 +74,8 @@ namespace LaboratoryApp.Database.Provider
             }
         }
 
-        public DataTable ExecuteQuery(string query, List<SQLiteParameter> parameters = null)
+        // ExecuteQuery method for SELECT statement with return type is DataTable
+        public List<T> ExecuteQuery<T>(string query, List<SQLiteParameter> parameters = null) where T : new()
         {
             using (var command = new SQLiteCommand(query, _connection))
             {
@@ -79,11 +88,31 @@ namespace LaboratoryApp.Database.Provider
                 {
                     var dataTable = new DataTable();
                     adapter.Fill(dataTable);
-                    return dataTable;
+
+                    var result = new List<T>();
+
+                    // Convert DataTable to List<T> (with T is a data type)
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        var item = new T();
+                        foreach (var prop in typeof(T).GetProperties())
+                        {
+                            if (dataTable.Columns.Contains(prop.Name) && row[prop.Name] != DBNull.Value)
+                            {
+                                var propType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                                var safeValue = (row[prop.Name] == null) ? null : Convert.ChangeType(row[prop.Name], propType);
+                                prop.SetValue(item, safeValue);
+                            }
+                        }
+                        result.Add(item);
+                    }
+
+                    return result;
                 }
             }
         }
 
+        // Dispose method
         public void Dispose()
         {
             CloseConnection();

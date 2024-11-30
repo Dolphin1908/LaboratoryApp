@@ -34,7 +34,7 @@
                         Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                         Command="{Binding MoreInfoCommand}"
                         CommandParameter="">
-                    <materialDesign:PackIcon Kind="Search" />
+                    <materialDesign:PackIcon Kind="InformationVariant" Height="20" Width="20"/>
                 </Button>
                 <StackPanel Grid.Row="1" Margin="8,24,8,0">
                     <TextBlock FontWeight="Bold">Elements</TextBlock>

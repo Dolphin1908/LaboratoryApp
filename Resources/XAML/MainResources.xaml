@@ -2,9 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:main="clr-namespace:LaboratoryApp.ViewModels"
                     xmlns:uc="clr-namespace:LaboratoryApp.ViewModels.UC"
-                    xmlns:ui="clr-namespace:LaboratoryApp.ViewModels.UI">
+                    xmlns:ui="clr-namespace:LaboratoryApp.ViewModels.UI"
+                    xmlns:cv="clr-namespace:LaboratoryApp.Support.Converters">
     <main:MainWindowViewModel x:Key="MainVM"></main:MainWindowViewModel>
     <ui:DashboardViewModel x:Key="DashboardVM"></ui:DashboardViewModel>
     <uc:ControlBarViewModel x:Key="ControlBarVM"></uc:ControlBarViewModel>
-    <BooleanToVisibilityConverter  x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+    <uc:ElementCellViewModel x:Key="ElementCellVM"></uc:ElementCellViewModel>
+    <cv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></cv:BooleanToVisibilityConverter>
+    <cv:ColorToBrushConverter x:Key="ColorToBrushConverter"></cv:ColorToBrushConverter>
 </ResourceDictionary>
