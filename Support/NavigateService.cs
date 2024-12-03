@@ -4,22 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace LaboratoryApp.Support
 {
     public class NavigateService : INavigationService
     {
-        private readonly NavigationService _navigationService;
+        private Frame _mainFrame;
 
-        public NavigateService(NavigationService navigationService)
+        public NavigateService(Frame mainFrame)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _mainFrame = mainFrame;
         }
 
         public void NavigateTo(string uri)
         {
-            _navigationService.Navigate(new Uri(uri, UriKind.RelativeOrAbsolute));
+            _mainFrame.Navigate(new Uri(uri, UriKind.RelativeOrAbsolute));
         }
     }
 }

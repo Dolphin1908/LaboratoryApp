@@ -14,12 +14,15 @@ namespace LaboratoryApp.Support.Converters
             {
                 try
                 {
+                    if (colorString == "FFFFFF" || colorString == "")
+                        colorString = "BDBDBD";
                     var color = (Color)ColorConverter.ConvertFromString("#" + colorString);
                     return new SolidColorBrush(color);
                 }
                 catch
                 {
-                    return Brushes.Transparent; // Default background
+                    var color = (Color)ColorConverter.ConvertFromString("#BDBDBD");
+                    return new SolidColorBrush(color); // Default background
                 }
             }
             return Brushes.Transparent;

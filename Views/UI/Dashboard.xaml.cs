@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using LaboratoryApp.Support;
-using System.Windows.Navigation;
 
 namespace LaboratoryApp.Views.UI
 {
@@ -22,10 +21,9 @@ namespace LaboratoryApp.Views.UI
     /// </summary>
     public partial class Dashboard : Page
     {
-        public Dashboard(NavigationService navigationService)
+        public Dashboard()
         {
             InitializeComponent();
-            this.DataContext = new DashboardViewModel(new NavigateService(navigationService));
         }
     }
 }

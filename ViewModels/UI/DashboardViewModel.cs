@@ -12,20 +12,12 @@ namespace LaboratoryApp.ViewModels.UI
     public class DashboardViewModel : BaseViewModel
     {
         #region commands
-        public ICommand MoreInfoCommand { get; set; }
         #endregion
 
-        private readonly INavigationService _navigationService;
 
-        public DashboardViewModel(INavigationService navigationService)
+        public DashboardViewModel()
         {
-            _navigationService = navigationService;
-            MoreInfoCommand = new RelayCommand<object>((p) => true, (p) => NavigateToChemInfo());
-        }
 
-        private void NavigateToChemInfo()
-        {
-            _navigationService.NavigateTo("../../Views/UI/ChemInfo.xaml");
         }
     }
 }

@@ -19,12 +19,14 @@
                 <RadioButton Margin="4"
                              Padding="0, 10"
                              Content="Dashboard"
-                             IsChecked="True"
+                             IsChecked="False"
+                             Command="{Binding NavigateToDashboardCommand}"
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
                 <RadioButton Margin="4"
                              Padding="0, 10"
                              Content="Periodic Table"
                              IsChecked="False"
+                             Command="{Binding NavigateToPeriodicTableCommand}"
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
                 <RadioButton Margin="4"
                              Padding="0, 10"

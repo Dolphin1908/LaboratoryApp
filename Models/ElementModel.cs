@@ -8,7 +8,7 @@ namespace LaboratoryApp.Models
 {
     public class ElementModel
     {
-        public int atomic_number { get; set; }
+        public string atomic_number { get; set; }
         public string symbol { get; set; }
         public string name { get; set; }
         public double atomic_mass { get; set; }
@@ -25,5 +25,7 @@ namespace LaboratoryApp.Models
         public double density { get; set; }
         public string category { get; set; }
         public string discovery_year { get; set; }
+        public int row { get; set; }
+        public int column { get; set; }
     }
 }

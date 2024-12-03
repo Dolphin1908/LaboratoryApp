@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LaboratoryApp.ViewModels.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,17 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using LaboratoryApp.Support;
-using LaboratoryApp.ViewModels.UC;
-
-namespace LaboratoryApp.Views.UC
+namespace LaboratoryApp.Views.UI
 {
     /// <summary>
-    /// Interaction logic for NavigationUC.xaml
+    /// Interaction logic for ChemInfo.xaml
     /// </summary>
-    public partial class NavigationUC : UserControl
+    public partial class PeriodicTable : Page
     {
-        public NavigationUC()
+        public PeriodicTable()
         {
             InitializeComponent();
         }

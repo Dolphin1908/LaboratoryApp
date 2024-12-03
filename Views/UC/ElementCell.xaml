@@ -14,19 +14,26 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="{DynamicResource MaterialDesignFont}"
              mc:Ignorable="d"
-             MaxHeight="100" 
-             MaxWidth="100">
-    <Grid Background="{Binding color, Converter={StaticResource ColorToBrushConverter}}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <!-- Atomic Number -->
-        <TextBlock Text="{Binding atomic_number}" FontSize="12" Margin="0, 8" Grid.Row="0" HorizontalAlignment="Center"/>
-        <!-- Symbol -->
-        <TextBlock Text="{Binding symbol}" FontSize="24" FontWeight="Bold" Margin="0, 8" Grid.Row="1" HorizontalAlignment="Center"/>
-        <!-- Atomic Mass -->
-        <TextBlock Text="{Binding atomic_mass}" FontSize="12" Margin="0, 8" Grid.Row="2" HorizontalAlignment="Center"/>
-    </Grid>
+             MinHeight="50"  MinWidth="50" 
+             MaxHeight="100" MaxWidth="100">
+    <Button BorderThickness="0" 
+            Background="{Binding Element.color, Converter={StaticResource ColorToBrushConverter}}" 
+            Height="Auto"
+            Margin="2,2"
+            Padding="0"
+            Command="{Binding ElementCellClickedCommand}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- Atomic Number -->
+            <TextBlock Text="{Binding Element.atomic_number}" FontSize="12" Margin="0, 8" Grid.Row="0" HorizontalAlignment="Center"/>
+            <!-- Symbol -->
+            <TextBlock Text="{Binding Element.symbol}" FontSize="18" FontWeight="Bold" Margin="0, 8" Grid.Row="1" HorizontalAlignment="Center"/>
+            <!-- Atomic Mass -->
+            <TextBlock Text="{Binding Element.atomic_mass, StringFormat={}{0:F0}}" FontSize="9" Margin="0, 8" Grid.Row="2" HorizontalAlignment="Center"/>
+        </Grid>
+    </Button>
 </UserControl>

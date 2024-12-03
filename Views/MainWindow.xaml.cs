@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using LaboratoryApp.Support;
+using LaboratoryApp.ViewModels;
 using LaboratoryApp.Views.UI;
 
 namespace LaboratoryApp.Views
@@ -21,7 +23,8 @@ namespace LaboratoryApp.Views
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new Dashboard(MainFrame.NavigationService));
+            var navigationService = new NavigateService(MainFrame);
+            DataContext = new MainWindowViewModel(navigationService);
         }
     }
 }

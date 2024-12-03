@@ -25,14 +25,21 @@ namespace LaboratoryApp.ViewModels.UC
 
         private MainWindowViewModel _mainWindowVM;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="mainWindowVM"></param>
         public ControlBarViewModel(MainWindowViewModel mainWindowVM)
         {
             _mainWindowVM = mainWindowVM;
 
+            // Handle the click event of the toggle button to show/hide the navigation bar
             ToggleClickCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 _mainWindowVM.IsNavigationVisible = !_mainWindowVM.IsNavigationVisible;
             });
+
+            // Handle the close window command
             CloseWindowCommand = new RelayCommand<UserControl>((p) => { return p == null ? false : true; }, (p) =>
             {
                 var w = Window.GetWindow(p);
@@ -41,6 +48,8 @@ namespace LaboratoryApp.ViewModels.UC
                     w.Close();
                 }
             });
+
+            // Handle the maximize window command
             MaximizeWindowCommand = new RelayCommand<UserControl>((p) => { return p == null ? false : true; }, (p) =>
             {
                 var w = Window.GetWindow(p);
@@ -52,6 +61,8 @@ namespace LaboratoryApp.ViewModels.UC
                         w.WindowState = WindowState.Normal;
                 }
             });
+
+            // Handle the minimize window command
             MinimizeWindowCommand = new RelayCommand<UserControl>((p) => { return p == null ? false : true; }, (p) =>
             {
                 var w = Window.GetWindow(p);
@@ -62,6 +73,8 @@ namespace LaboratoryApp.ViewModels.UC
                 }
             
             });
+
+            // Handle the mouse move window command
             MouseMoveWindowCommand = new RelayCommand<UserControl>((p) => { return p == null ? false : true; }, (p) =>
             {
                 var w = Window.GetWindow(p);

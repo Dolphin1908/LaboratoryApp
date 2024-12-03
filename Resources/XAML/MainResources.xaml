@@ -3,11 +3,25 @@
                     xmlns:main="clr-namespace:LaboratoryApp.ViewModels"
                     xmlns:uc="clr-namespace:LaboratoryApp.ViewModels.UC"
                     xmlns:ui="clr-namespace:LaboratoryApp.ViewModels.UI"
-                    xmlns:cv="clr-namespace:LaboratoryApp.Support.Converters">
+                    xmlns:sw="clr-namespace:LaboratoryApp.ViewModels.SubWin"
+                    xmlns:sp="clr-namespace:LaboratoryApp.Support"
+                    xmlns:cv="clr-namespace:LaboratoryApp.Support.Converters" >
+    <!-- MainWindow -->
     <main:MainWindowViewModel x:Key="MainVM"></main:MainWindowViewModel>
+    
+    <!-- UI -->
     <ui:DashboardViewModel x:Key="DashboardVM"></ui:DashboardViewModel>
+    <ui:PeriodicTableViewModel x:Key="PeriodicTableVM"></ui:PeriodicTableViewModel>
+    
+    <!-- UC -->
+    <uc:NavigationViewModel x:Key="NavigationVM"></uc:NavigationViewModel>
     <uc:ControlBarViewModel x:Key="ControlBarVM"></uc:ControlBarViewModel>
     <uc:ElementCellViewModel x:Key="ElementCellVM"></uc:ElementCellViewModel>
+    
+    <!-- SubWindow-->
+    <sw:ElementInfoViewModel x:Key="ElementInfoVM"></sw:ElementInfoViewModel>
+    
+    <!-- Converter -->
     <cv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></cv:BooleanToVisibilityConverter>
     <cv:ColorToBrushConverter x:Key="ColorToBrushConverter"></cv:ColorToBrushConverter>
 </ResourceDictionary>

@@ -18,9 +18,10 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        DataContext="{StaticResource MainVM}"
         mc:Ignorable="d"
-        Title="Laboratory" Height="450" Width="800">
+        Title="Laboratory"
+        MinHeight="1000"
+        MinWidth="1400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -33,7 +34,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <uc:NavigationUC Visibility="{Binding IsNavigationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <uc:NavigationUC DataContext="{Binding}" Visibility="{Binding IsNavigationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </Grid>
             <Grid Grid.Column="1">
                 <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>

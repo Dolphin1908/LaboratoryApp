@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.Views.UI
+namespace LaboratoryApp.Views.SubWin
 {
     /// <summary>
-    /// Interaction logic for ChemInfo.xaml
+    /// Interaction logic for ElementInfo.xaml
     /// </summary>
-    public partial class ChemInfo : Page
+    public partial class ElementInfo : Window
     {
-        public ChemInfo()
+        public ElementInfo()
         {
             InitializeComponent();
         }
