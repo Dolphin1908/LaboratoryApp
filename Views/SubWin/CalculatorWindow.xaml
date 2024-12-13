@@ -1,0 +1,73 @@
+﻿<Window x:Class="LaboratoryApp.Views.SubWin.CalculatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaboratoryApp.Views.SubWin" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="CalculatorWindow"
+        Width="320"
+        Height="420"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <materialDesign:ColorZone Mode="PrimaryLight"
+                                  Grid.Row="0"
+                                  Background="Transparent"
+                                  Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                              Height="20"
+                              VerticalAlignment="Center"
+                              Command=""/>
+                <TextBlock Margin="10,0,0,0"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="20"
+                           Text="Standard"/>
+            </StackPanel>
+        </materialDesign:ColorZone>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!--Formula Display-->
+                <RowDefinition Height="Auto"/> <!--Result Display-->
+                <RowDefinition Height="*"/> <!--Buttons Grid-->
+            </Grid.RowDefinitions>
+
+            <!--Formula Display-->
+            <TextBox x:Name="FormulaDisplay" 
+                     Grid.Row="0" 
+                     TextAlignment="Right" 
+                     FontSize="20" 
+                     IsReadOnly="True" 
+                     BorderThickness="0"
+                     Background="Transparent"/>
+
+            <!--Result Display-->
+            <TextBox x:Name="ResultDisplay" 
+                     Grid.Row="1" 
+                     Text="0" 
+                     TextAlignment="Right" 
+                     FontSize="50" 
+                     IsReadOnly="True" 
+                     BorderThickness="0"
+                     Background="Transparent"/>
+        </Grid>
+
+        
+    </Grid>
+</Window>

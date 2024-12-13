@@ -31,7 +31,7 @@ namespace LaboratoryApp.ViewModels
         public ICommand NavigateToDashboardCommand { get; set; }
         public ICommand NavigateToPeriodicTableCommand { get; set; }
         public ICommand NavigateToCompoundCommand { get; set; }
-        public ICommand NavigateToCalculatorCommand { get; set; }
+        public ICommand NavigateToToolkitCommand { get; set; }
         #endregion
 
         /// <summary>
@@ -65,10 +65,10 @@ namespace LaboratoryApp.ViewModels
                 _navigationService.NavigateTo("../Views/UI/Compound.xaml");
             });
 
-            // Navigate to the calculator page
-            NavigateToCalculatorCommand = new RelayCommand<object>((p) => true, (p) =>
+            // Navigate to the toolkits page
+            NavigateToToolkitCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo("../Views/UI/Calculator.xaml");
+                _navigationService.NavigateTo("../Views/UI/Toolkits.xaml");
             });
         }
     }

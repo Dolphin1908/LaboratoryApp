@@ -12,6 +12,7 @@
     <!-- UI -->
     <ui:DashboardViewModel x:Key="DashboardVM"></ui:DashboardViewModel>
     <ui:PeriodicTableViewModel x:Key="PeriodicTableVM"></ui:PeriodicTableViewModel>
+    <ui:ToolkitsViewModel x:Key="ToolkitsVM"></ui:ToolkitsViewModel>
     
     <!-- UC -->
     <uc:NavigationViewModel x:Key="NavigationVM"></uc:NavigationViewModel>

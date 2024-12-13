@@ -35,8 +35,9 @@
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
                 <RadioButton Margin="4"
                              Padding="0, 10"
-                             Content="Calculator"
+                             Content="Toolkits"
                              IsChecked="False"
+                             Command="{Binding NavigateToToolkitCommand}"
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
             </StackPanel>
             
