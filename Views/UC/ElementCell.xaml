@@ -21,7 +21,8 @@
             Height="Auto"
             Margin="2,2"
             Padding="0"
-            Command="{Binding ElementCellClickedCommand}">
+            Command="{Binding ElementCellClickedCommand}"
+            ToolTip="{Binding Element.name}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

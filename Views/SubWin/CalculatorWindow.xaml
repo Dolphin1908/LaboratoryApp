@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uc="clr-namespace:LaboratoryApp.Views.UC"
         xmlns:local="clr-namespace:LaboratoryApp.Views.SubWin" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -14,9 +15,11 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Title="CalculatorWindow"
-        Width="320"
-        Height="420"
-        ResizeMode="NoResize">
+        Height="510"
+        Width="350"
+        ResizeMode="NoResize"
+        Closing="Window_Closing"
+        DataContext="{StaticResource CalculatorVM}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -49,23 +52,31 @@
             </Grid.RowDefinitions>
 
             <!--Formula Display-->
-            <TextBox x:Name="FormulaDisplay" 
-                     Grid.Row="0" 
+            <TextBox Grid.Row="0" 
                      TextAlignment="Right" 
                      FontSize="20" 
-                     IsReadOnly="True" 
+                     Text="{Binding Formula}"
+                     IsReadOnly="True"
+                     Focusable="False"
                      BorderThickness="0"
                      Background="Transparent"/>
 
             <!--Result Display-->
             <TextBox x:Name="ResultDisplay" 
-                     Grid.Row="1" 
-                     Text="0" 
+                     Grid.Row="1"
                      TextAlignment="Right" 
                      FontSize="50" 
-                     IsReadOnly="True" 
+                     Text="{Binding Number}"
+                     IsReadOnly="True"
+                     Focusable="False"
                      BorderThickness="0"
                      Background="Transparent"/>
+            
+            <!--Buttons Grid-->
+            <uc:StandardButtons Grid.Row="2"
+                                Width="Auto"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
         </Grid>
 
         
