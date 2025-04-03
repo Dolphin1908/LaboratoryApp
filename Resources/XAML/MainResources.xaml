@@ -19,7 +19,7 @@
     <uc:ControlBarViewModel x:Key="ControlBarVM"></uc:ControlBarViewModel>
     <uc:ElementCellViewModel x:Key="ElementCellVM"></uc:ElementCellViewModel>
     
-    <!-- SubWindow-->
+    <!-- SubWindow -->
     <sw:ElementInfoViewModel x:Key="ElementInfoVM"></sw:ElementInfoViewModel>
     <sw:CalculatorViewModel x:Key="CalculatorVM"></sw:CalculatorViewModel>
     

@@ -73,7 +73,7 @@
                      Background="Transparent"/>
             
             <!--Buttons Grid-->
-            <uc:StandardButtons Grid.Row="2"
+            <uc:CalculateStandardButtons Grid.Row="2"
                                 Width="Auto"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"/>

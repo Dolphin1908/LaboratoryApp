@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LaboratoryApp.Views.UC.StandardButtons"
+﻿<UserControl x:Class="LaboratoryApp.Views.UC.CalculateStandardButtons"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -43,7 +43,8 @@
                     Content="CE"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"/>
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding ClearNumberCommand}"/>
             <Button Height="50"
                     Width="75"
                     Background="#F1F1F1"
@@ -52,14 +53,16 @@
                     Content="C"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"/>
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding ClearFormulaCommand}"/>
             <Button Height="50"
                     Width="75"
                     Background="#F1F1F1"
                     BorderThickness="0"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton">
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding BackspaceCommand}">
                 <materialDesign:PackIcon Kind="BackspaceOutline"/>
             </Button>
         </StackPanel>
@@ -295,7 +298,9 @@
                     FontWeight="Bold"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton">
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding AddNumberCommand}"
+                    CommandParameter=".">
             </Button>
             <Button Height="50"
                     Width="75"
@@ -303,7 +308,8 @@
                     BorderThickness="0"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton">
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding CalculateCommand}">
                 <materialDesign:PackIcon Kind="Equal"/>
             </Button>
         </StackPanel>

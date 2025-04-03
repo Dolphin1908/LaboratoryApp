@@ -18,9 +18,9 @@ namespace LaboratoryApp.Views.UC
     /// <summary>
     /// Interaction logic for StandardButtons.xaml
     /// </summary>
-    public partial class StandardButtons : UserControl
+    public partial class CalculateStandardButtons : UserControl
     {
-        public StandardButtons()
+        public CalculateStandardButtons()
         {
             InitializeComponent();
         }
