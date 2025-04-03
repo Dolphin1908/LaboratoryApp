@@ -105,30 +105,26 @@ namespace LaboratoryApp.ViewModels.SubWin
             {
                 if(!string.IsNullOrEmpty(Formula))
                 {
-                    Formula = Formula.Substring(0, Formula.Length - 2) + op + " ";
+                    Formula = $"{Formula.TrimEnd()[..^1]}{op} ";
                 }
                 _lastOperator = op;
                 return;
             }
 
-            if (!decimal.TryParse(Number, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal numberValue))
-            {
-                Number = "0";
-                numberValue = 0;
-            }
+            decimal numberValue = GetNumberValue(Number);
 
             // Nếu chưa có giá trị tính toán, chuyển number thành giá trị hiện tại
             if (_currentValue == null)
             {
                 _currentValue = numberValue;
-                Formula = Number + " " + op + " ";
+                Formula = $"{Number} {op} ";
             }
             else if (_lastOperator != null) 
             {
                 try
                 {
                     _currentValue = Evaluate(_currentValue.Value, numberValue, _lastOperator.Value);
-                    Formula = _currentValue.ToString() + " " + op + " ";
+                    Formula = $"{_currentValue.ToString()} {op} ";
                 }
                 catch (OverflowException ex)
                 {
@@ -206,20 +202,16 @@ namespace LaboratoryApp.ViewModels.SubWin
         {
             if(_lastOperator == null || _currentValue == null)
             {
-                Formula = Number + " = ";
+                Formula = $"{Number} = ";
                 return;
             }
 
-            if (!decimal.TryParse(Number, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal numberValue))
-            {
-                Number = "0";
-                numberValue = 0;
-            }
+            decimal numberValue = GetNumberValue(Number);
 
             try
             {
                 decimal result = Evaluate(_currentValue.Value, numberValue, _lastOperator.Value);
-                Formula += Number + " = ";
+                Formula += $"{Number} = ";
                 Number = result.ToString("G7");
             }
             catch (DivideByZeroException ex)
@@ -235,6 +227,17 @@ namespace LaboratoryApp.ViewModels.SubWin
             _currentValue = null;
             _lastOperator = null;
             _isOperatorAdded = false;
+        }
+
+        private decimal GetNumberValue(string numStr)
+        {
+            if (!decimal.TryParse(numStr, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal numberValue))
+            {
+                Number = "0";
+                numberValue = 0;
+            }
+
+            return numberValue;
         }
 
         /// <summary>
