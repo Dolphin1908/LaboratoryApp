@@ -11,14 +11,14 @@ using System.Windows.Input;
 
 using LaboratoryApp.Database.Provider;
 using LaboratoryApp.Models;
-using LaboratoryApp.ViewModels.SubWin;
+using LaboratoryApp.ViewModels.Chemistry.SubWin;
 using LaboratoryApp.ViewModels.UC;
 
-namespace LaboratoryApp.ViewModels.UI
+namespace LaboratoryApp.ViewModels.Chemistry.UI
 {
     public class PeriodicTableViewModel : BaseViewModel
     {
-        #region commands
+        #region Commands
 
         #endregion
 
@@ -39,6 +39,7 @@ namespace LaboratoryApp.ViewModels.UI
         /// <returns></returns>
         private ElementModel LoadPeriodBlock(ElementModel element)
         {
+            // Check if the element is a lanthanide or actinide
             if (element.atomic_number.IndexOf('-') == -1)
             {
                 string input = element.electron_configuration;
@@ -80,7 +81,7 @@ namespace LaboratoryApp.ViewModels.UI
                 }
 
                 // Expect elements with column
-                if ((atomicNumber >= 72 && atomicNumber <= 86) || (atomicNumber >= 104 && atomicNumber <= 118)) // Lanthanide and Actinide
+                if (atomicNumber >= 72 && atomicNumber <= 86 || atomicNumber >= 104 && atomicNumber <= 118) // Lanthanide and Actinide
                 {
                     element.column = column - 14;
                 }

@@ -11,11 +11,11 @@ using System.Windows.Input;
 using LaboratoryApp.Models;
 using LaboratoryApp.ViewModels.SubWin;
 
-namespace LaboratoryApp.ViewModels.UC
+namespace LaboratoryApp.ViewModels.Chemistry.UC
 {
     public class ElementCellViewModel : BaseViewModel
     {
-        #region commands
+        #region Commands
         #endregion
 
         /// <summary>

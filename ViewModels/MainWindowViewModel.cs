@@ -56,13 +56,13 @@ namespace LaboratoryApp.ViewModels
             // Navigate to the periodic table page
             NavigateToPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo("../Views/UI/PeriodicTable.xaml");
+                _navigationService.NavigateTo("../Views/Chemistry/UI/PeriodicTable.xaml");
             });
 
             // Navigate to the compound page
             NavigateToCompoundCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo("../Views/UI/Compound.xaml");
+                _navigationService.NavigateTo("../Views/Chemistry/UI/Compound.xaml");
             });
 
             // Navigate to the toolkits page

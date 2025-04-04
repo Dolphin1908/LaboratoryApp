@@ -1,6 +1,4 @@
-﻿using LaboratoryApp.Models;
-using LaboratoryApp.Views.SubWin;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +6,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace LaboratoryApp.ViewModels.SubWin
+using LaboratoryApp.Models;
+using LaboratoryApp.Views.SubWin;
+
+namespace LaboratoryApp.ViewModels.Chemistry.SubWin
 {
     public class ElementInfoViewModel : BaseViewModel
     {

@@ -6,24 +6,13 @@
                     xmlns:sw="clr-namespace:LaboratoryApp.ViewModels.SubWin"
                     xmlns:sp="clr-namespace:LaboratoryApp.Support"
                     xmlns:cv="clr-namespace:LaboratoryApp.Support.Converters" >
-    <!-- MainWindow -->
-    <main:MainWindowViewModel x:Key="MainVM"></main:MainWindowViewModel>
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Resources/XAML/CommonResources.xaml"/>
+        <ResourceDictionary Source="/Resources/XAML/MathResources.xaml"/>
+        <ResourceDictionary Source="/Resources/XAML/PhysicsResources.xaml"/>
+        <ResourceDictionary Source="/Resources/XAML/ChemistryResources.xaml"/>
+        <ResourceDictionary Source="/Resources/XAML/EnglishResources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     
-    <!-- UI -->
-    <ui:DashboardViewModel x:Key="DashboardVM"></ui:DashboardViewModel>
-    <ui:PeriodicTableViewModel x:Key="PeriodicTableVM"></ui:PeriodicTableViewModel>
-    <ui:ToolkitsViewModel x:Key="ToolkitsVM"></ui:ToolkitsViewModel>
-    
-    <!-- UC -->
-    <uc:NavigationViewModel x:Key="NavigationVM"></uc:NavigationViewModel>
-    <uc:ControlBarViewModel x:Key="ControlBarVM"></uc:ControlBarViewModel>
-    <uc:ElementCellViewModel x:Key="ElementCellVM"></uc:ElementCellViewModel>
-    
-    <!-- SubWindow -->
-    <sw:ElementInfoViewModel x:Key="ElementInfoVM"></sw:ElementInfoViewModel>
-    <sw:CalculatorViewModel x:Key="CalculatorVM"></sw:CalculatorViewModel>
-    
-    <!-- Converter -->
-    <cv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></cv:BooleanToVisibilityConverter>
-    <cv:ColorToBrushConverter x:Key="ColorToBrushConverter"></cv:ColorToBrushConverter>
 </ResourceDictionary>

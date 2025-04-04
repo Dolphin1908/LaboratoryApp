@@ -15,6 +15,11 @@ namespace LaboratoryApp.ViewModels.SubWin
         public ICommand AddNumberCommand { get; set; } // Add number
         public ICommand AddOperatorCommand { get; set; } // Add operator
         public ICommand CalculateCommand { get; set; } // Calculate
+        public ICommand SquareRootCommand { get; set; } // Square root
+        public ICommand SquareCommand { get; set; } // Square
+        public ICommand OneDivideXCommand { get; set; } // 1/x
+        public ICommand ChangeSignCommand { get; set; } // Change sign
+        public ICommand PercentCommand { get; set; } // Percent
         public ICommand BackspaceCommand { get; set; } // Backspace
         public ICommand ClearNumberCommand { get; set; } // Clear number
         public ICommand ClearFormulaCommand { get; set; } // Reset formula
@@ -67,6 +72,11 @@ namespace LaboratoryApp.ViewModels.SubWin
             ClearFormulaCommand = new RelayCommand<string>((p) => true, (p) => Reset());
             ClearNumberCommand = new RelayCommand<string>((p) => true, (p) => ClearNumber());
             CalculateCommand = new RelayCommand<string>((p) => true, (p) => Calculate());
+            SquareRootCommand = new RelayCommand<string>((p) => true, (p) => SquareRoot());
+            SquareCommand = new RelayCommand<string>((p) => true, (p) => Square());
+            OneDivideXCommand = new RelayCommand<string>((p) => true, (p) => OneDivideX());
+            ChangeSignCommand = new RelayCommand<string>((p) => true, (p) => ChangeSign());
+            PercentCommand = new RelayCommand<string>((p) => true, (p) => Percent());
         }
 
         /// <summary>
@@ -99,13 +109,19 @@ namespace LaboratoryApp.ViewModels.SubWin
         private void AddOperator(string opStr)
         {
             char op = opStr[0];
+            char displayOp = op switch
+            {
+                '*' => 'x',
+                '/' => '÷',
+                _ => op
+            };
 
             // Nếu nhập liên tiếp toán tử thì lấy cái cuối cùng
             if (_isOperatorAdded)
             {
                 if(!string.IsNullOrEmpty(Formula))
                 {
-                    Formula = $"{Formula.TrimEnd()[..^1]}{op} ";
+                    Formula = $"{Formula.TrimEnd()[..^1]}{displayOp} ";
                 }
                 _lastOperator = op;
                 return;
@@ -117,14 +133,14 @@ namespace LaboratoryApp.ViewModels.SubWin
             if (_currentValue == null)
             {
                 _currentValue = numberValue;
-                Formula = $"{Number} {op} ";
+                Formula = $"{Number} {displayOp} ";
             }
             else if (_lastOperator != null) 
             {
                 try
                 {
                     _currentValue = Evaluate(_currentValue.Value, numberValue, _lastOperator.Value);
-                    Formula = $"{_currentValue.ToString()} {op} ";
+                    Formula = $"{_currentValue.ToString()} {displayOp} ";
                 }
                 catch (OverflowException ex)
                 {
@@ -139,6 +155,107 @@ namespace LaboratoryApp.ViewModels.SubWin
             _isOperatorAdded = true; // Đánh dấu đã thêm toán tử
         }
 
+        private void SquareRoot()
+        {
+            // Tính toán phép tính có sẵn trước khi tính căn bậc 2
+            decimal left = _currentValue != null ? _currentValue.Value : 0m;
+            char op = _lastOperator != null ? _lastOperator.Value : ' ';
+            decimal numberValue = Evaluate(left, GetNumberValue(Number), op);
+
+            // Tính căn bậc 2
+            try
+            {
+                decimal result = (decimal)Math.Sqrt((double)numberValue);
+                Formula = $"√{numberValue} = ";
+                Number = result.ToString("G7");
+            }
+            catch (OverflowException ex)
+            {
+                Number = ex.Message;
+            }
+        }
+
+        private void Square()
+        {
+            // Tính toán phép tính có sẵn trước khi tính bình phương
+            decimal left = _currentValue != null ? _currentValue.Value : 0m;
+            char op = _lastOperator != null ? _lastOperator.Value : ' ';
+            decimal numberValue = Evaluate(left, GetNumberValue(Number), op);
+
+            // Tính bình phương
+            try
+            {
+                decimal result = (decimal)Math.Pow((double)numberValue, 2);
+                Formula = $"Sqr({numberValue}) = ";
+                Number = result.ToString("G7");
+            }
+            catch (OverflowException ex)
+            {
+                Number = ex.Message;
+            }
+        }
+
+        private void OneDivideX()
+        {
+            // Tính toán phép tính có sẵn trước khi tính 1/x
+            decimal left = _currentValue != null ? _currentValue.Value : 0m;
+            char op = _lastOperator != null ? _lastOperator.Value : ' ';
+            decimal numberValue = Evaluate(left, GetNumberValue(Number), op);
+
+            // Tính 1/x
+            try
+            {
+                decimal result = 1 / numberValue;
+                Formula = $"1/{numberValue} = ";
+                Number = result.ToString("G7");
+            }
+            catch (DivideByZeroException ex)
+            {
+                Number = ex.Message;
+            }
+        }
+
+        private void ChangeSign()
+        {
+            if (_isCalculated)
+            {
+                Formula = $"negate({Number})";
+            }
+
+            // Đổi dấu số
+            if (Number != "0")
+            {
+                if (Number.StartsWith("-"))
+                {
+                    Number = Number[1..];
+                }
+                else
+                {
+                    Number = "-" + Number;
+                }
+            }
+        }
+
+        private void Percent()
+        {
+            // Tính toán phép tính có sẵn trước khi tính phần trăm
+            decimal left = _currentValue != null ? _currentValue.Value : 0m;
+            char op = _lastOperator != null ? _lastOperator.Value : ' ';
+            decimal numberValue = Evaluate(left, GetNumberValue(Number), op);
+
+            // Tính phần trăm
+            try
+            {
+                decimal result = numberValue / 100;
+                Formula = $"{numberValue}% = ";
+                Number = result.ToString("G7");
+            }
+            catch (OverflowException ex)
+            {
+                Number = ex.Message;
+            }
+        }
+
         /// <summary>
         /// Thực hiện 1 phép toán
         /// </summary>
@@ -151,6 +268,7 @@ namespace LaboratoryApp.ViewModels.SubWin
         private decimal Evaluate(decimal left, decimal right, char op)
         {
             _isCalculated = true; // Đánh dấu đã tính toán
+
             try
             {
                 return op switch

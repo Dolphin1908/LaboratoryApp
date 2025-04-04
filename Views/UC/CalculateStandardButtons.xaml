@@ -34,7 +34,8 @@
                     Content="%"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"/>
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding PercentCommand}"/>
             <Button Height="50"
                     Width="75"
                     Background="#F1F1F1"
@@ -76,7 +77,8 @@
                     BorderThickness="0"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton">
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding OneDivideXCommand}">
                 <materialDesign:PackIcon Kind="FractionOneHalf"/>
             </Button>
             <Button Height="50"
@@ -86,8 +88,9 @@
                     Margin="6,0,3,0"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton">
-                <materialDesign:PackIcon Kind="Exponent"/>
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding SquareCommand}">
+                <Image Source="/Resources/Icons/squared.png" Width="12" Height="12"/>
             </Button>
             <Button Height="50"
                     Width="75"
@@ -96,8 +99,9 @@
                     Margin="3,0,6,0"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton">
-                <materialDesign:PackIcon Kind="SquareRoot"/>
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding SquareRootCommand}">
+                <materialDesign:PackIcon Kind="SquareRoot" Width="20" Height="20"/>
             </Button>
             <Button Height="50"
                     Width="75"
@@ -108,7 +112,7 @@
                     ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddOperatorCommand}"
                     CommandParameter="/">
-                <materialDesign:PackIcon Kind="SlashForward"/>
+                <Image Source="/Resources/Icons/divide.png" Width="20" Height="20"/>
             </Button>
         </StackPanel>
 
@@ -274,7 +278,8 @@
                     BorderThickness="0"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton">
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    Command="{Binding ChangeSignCommand}">
                 <materialDesign:PackIcon Kind="PlusMinusVariant"/>
             </Button>
             <Button Height="50"

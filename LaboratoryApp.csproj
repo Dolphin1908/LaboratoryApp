@@ -15,6 +15,8 @@
 
   <ItemGroup>
     <None Remove="Resources\Element.jpg" />
+    <None Remove="Resources\Icons\divide.png" />
+    <None Remove="Resources\Icons\squared.png" />
     <None Remove="Resources\Laboratory.ico" />
     <None Remove="Resources\Laboratory.png" />
   </ItemGroup>
@@ -37,6 +39,8 @@
 
   <ItemGroup>
     <Resource Include="Resources\Element.jpg" />
+    <Resource Include="Resources\Icons\divide.png" />
+    <Resource Include="Resources\Icons\squared.png" />
     <Resource Include="Resources\Laboratory.ico" />
     <Resource Include="Resources\Laboratory.png" />
   </ItemGroup>
@@ -45,6 +49,31 @@
     <None Update="Database\chem.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Physics\" />
+    <Folder Include="Models\English\" />
+    <Folder Include="Models\Math\" />
+    <Folder Include="Models\Chemistry\" />
+    <Folder Include="ViewModels\English\SubWin\" />
+    <Folder Include="ViewModels\English\UC\" />
+    <Folder Include="ViewModels\English\UI\" />
+    <Folder Include="ViewModels\Math\SubWin\" />
+    <Folder Include="ViewModels\Math\UC\" />
+    <Folder Include="ViewModels\Math\UI\" />
+    <Folder Include="ViewModels\Physics\SubWin\" />
+    <Folder Include="ViewModels\Physics\UC\" />
+    <Folder Include="ViewModels\Physics\UI\" />
+    <Folder Include="Views\English\SubWin\" />
+    <Folder Include="Views\English\UC\" />
+    <Folder Include="Views\English\UI\" />
+    <Folder Include="Views\Math\SubWin\" />
+    <Folder Include="Views\Math\UC\" />
+    <Folder Include="Views\Math\UI\" />
+    <Folder Include="Views\Physics\SubWin\" />
+    <Folder Include="Views\Physics\UC\" />
+    <Folder Include="Views\Physics\UI\" />
   </ItemGroup>
 
 </Project>
