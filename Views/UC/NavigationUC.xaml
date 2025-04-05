@@ -19,7 +19,7 @@
                 <RadioButton Margin="4"
                              Padding="0, 10"
                              Content="Dashboard"
-                             IsChecked="False"
+                             IsChecked="True"
                              Command="{Binding NavigateToDashboardCommand}"
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
                 <RadioButton Margin="4"
@@ -32,6 +32,7 @@
                              Padding="0, 10"
                              Content="Compound"
                              IsChecked="False"
+                             Command="{Binding NavigateToCompoundCommand}"
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
                 <RadioButton Margin="4"
                              Padding="0, 10"

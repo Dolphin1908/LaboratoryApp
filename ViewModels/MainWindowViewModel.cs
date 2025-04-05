@@ -9,12 +9,15 @@ using System.Windows.Input;
 
 using LaboratoryApp.Support.Interface;
 using LaboratoryApp.ViewModels.UC;
+using LaboratoryApp.ViewModels.UI;
+using LaboratoryApp.Views.UI;
 
 namespace LaboratoryApp.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
         private readonly INavigationService _navigationService;
+        private DashboardViewModel _dashboardVM;
         private bool _isNavigationVisible;
         public bool IsNavigationVisible
         {
@@ -44,31 +47,40 @@ namespace LaboratoryApp.ViewModels
 
             _navigationService = navigationService;
 
+            // Initialize the dashboard view model
+            _dashboardVM = new DashboardViewModel(_navigationService);
+
+            // Initialize the dashboard page with the dashboard view model
+            var dashboardPage = new Dashboard
+            {
+                DataContext = _dashboardVM
+            };
+
             // Navigate to the welcome page when the application starts
-            _navigationService.NavigateTo("../Views/UI/Welcome.xaml");
+            _navigationService.NavigateTo(dashboardPage);
 
             // Navigate to the dashboard page
             NavigateToDashboardCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo("../Views/UI/Dashboard.xaml");
+                _navigationService.NavigateTo(dashboardPage);
             });
 
             // Navigate to the periodic table page
             NavigateToPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo("../Views/Chemistry/UI/PeriodicTable.xaml");
+                _navigationService.NavigateTo(new PeriodicTable());
             });
 
             // Navigate to the compound page
             NavigateToCompoundCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo("../Views/Chemistry/UI/Compound.xaml");
+                _navigationService.NavigateTo(dashboardPage);
             });
 
             // Navigate to the toolkits page
             NavigateToToolkitCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo("../Views/UI/Toolkits.xaml");
+                _navigationService.NavigateTo(new Toolkits());
             });
         }
     }

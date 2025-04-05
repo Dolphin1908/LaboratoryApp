@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.Views.UI
+namespace LaboratoryApp.Views.Physics
 {
     /// <summary>
-    /// Interaction logic for Welcome.xaml
+    /// Interaction logic for PhysicsMainWindow.xaml
     /// </summary>
-    public partial class Dashboard : Page
+    public partial class PhysicsMainWindow : Page
     {
-        public Dashboard()
+        public PhysicsMainWindow()
         {
             InitializeComponent();
         }

@@ -18,9 +18,9 @@ namespace LaboratoryApp.Support
             _mainFrame = mainFrame;
         }
 
-        public void NavigateTo(string uri)
+        public void NavigateTo(Page page)
         {
-            _mainFrame.Navigate(new Uri(uri, UriKind.RelativeOrAbsolute));
+            _mainFrame.Navigate(page);
         }
     }
 }
