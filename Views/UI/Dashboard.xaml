@@ -93,7 +93,8 @@
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ff96c8"
-                            BorderBrush="#ff96c8">
+                            BorderBrush="#ff96c8"
+                            Command="{Binding NavigateToEnglishMainWindow}">
                         <TextBlock Text="English" />
                     </Button>
                 </Grid>

@@ -1,0 +1,63 @@
+﻿<Window x:Class="LaboratoryApp.Views.English.SubWin.DictionaryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaboratoryApp.Views.English.SubWin"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Height="600"
+        Width="400"
+        mc:Ignorable="d"
+        Title="Dictionary">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Margin="5">
+            <Border BorderThickness="1"
+                    BorderBrush="Black"
+                    CornerRadius="10"
+                    Margin="5, 10, 5, 5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:PackIcon Kind="Magnify" 
+                                             Grid.Column="0"
+                                             Height="20"
+                                             Width="20"
+                                             Margin="5,0"
+                                             VerticalAlignment="Center"/>
+
+                    <TextBox Grid.Column="1"
+                             VerticalAlignment="Center"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Foreground="Black"
+                             CaretBrush="Black"
+                             Style="{x:Null}"
+                             SelectionBrush="Transparent"
+                             BorderBrush="Transparent"
+                             Margin="0"/>
+                </Grid>
+            </Border>
+
+            <Separator Width="100"
+                       Height="1"
+                       Background="Gray"
+                       BorderBrush="Gray"/>
+        </StackPanel>
+    </Grid>
+</Window>

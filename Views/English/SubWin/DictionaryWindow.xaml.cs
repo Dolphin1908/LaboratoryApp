@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.Views.UC
+namespace LaboratoryApp.Views.English.SubWin
 {
     /// <summary>
-    /// Interaction logic for LogInUC.xaml
+    /// Interaction logic for Dictionary.xaml
     /// </summary>
-    public partial class LogInUC : UserControl
+    public partial class DictionaryWindow : Window
     {
-        public LogInUC()
+        public DictionaryWindow()
         {
             InitializeComponent();
         }

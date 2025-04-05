@@ -1,7 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:main="clr-namespace:LaboratoryApp.ViewModels.English">
+                    xmlns:main="clr-namespace:LaboratoryApp.ViewModels.English"
+                    xmlns:sw="clr-namespace:LaboratoryApp.ViewModels.English.SubWin">
     <!-- Main -->
     <main:EnglishMainWindowViewModel x:Key="EnglishMainVM"></main:EnglishMainWindowViewModel>
+    
+    <!-- SubWindow -->
+    <sw:DictionaryViewModel x:Key="DictionaryVM"></sw:DictionaryViewModel>
 
 </ResourceDictionary>

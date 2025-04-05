@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 
 using LaboratoryApp.Database.Provider;
-using LaboratoryApp.Models;
+using LaboratoryApp.Models.Chemistry;
 using LaboratoryApp.ViewModels.Chemistry.SubWin;
 using LaboratoryApp.ViewModels.UC;
 

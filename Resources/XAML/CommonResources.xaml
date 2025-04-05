@@ -15,7 +15,6 @@
     <ui:ToolkitsViewModel x:Key="ToolkitsVM"></ui:ToolkitsViewModel>
 
     <!-- UC -->
-    <uc:NavigationViewModel x:Key="NavigationVM"></uc:NavigationViewModel>
     <uc:ControlBarViewModel x:Key="ControlBarVM"></uc:ControlBarViewModel>
 
     <!-- SubWindow -->

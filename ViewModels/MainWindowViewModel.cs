@@ -33,7 +33,6 @@ namespace LaboratoryApp.ViewModels
         #region commands
         public ICommand NavigateToDashboardCommand { get; set; }
         public ICommand NavigateToPeriodicTableCommand { get; set; }
-        public ICommand NavigateToCompoundCommand { get; set; }
         public ICommand NavigateToToolkitCommand { get; set; }
         #endregion
 
@@ -69,12 +68,6 @@ namespace LaboratoryApp.ViewModels
             NavigateToPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 _navigationService.NavigateTo(new PeriodicTable());
-            });
-
-            // Navigate to the compound page
-            NavigateToCompoundCommand = new RelayCommand<object>((p) => true, (p) =>
-            {
-                _navigationService.NavigateTo(dashboardPage);
             });
 
             // Navigate to the toolkits page

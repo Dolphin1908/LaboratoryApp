@@ -47,7 +47,10 @@
 
   <ItemGroup>
     <None Update="Database\chem.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\dictionary.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
@@ -55,8 +58,7 @@
     <Folder Include="Models\Physics\" />
     <Folder Include="Models\English\" />
     <Folder Include="Models\Math\" />
-    <Folder Include="Models\Chemistry\" />
-    <Folder Include="ViewModels\English\SubWin\" />
+    <Folder Include="ViewModels\Chemistry\UC\" />
     <Folder Include="ViewModels\English\UC\" />
     <Folder Include="ViewModels\English\UI\" />
     <Folder Include="ViewModels\Maths\SubWin\" />
@@ -65,8 +67,6 @@
     <Folder Include="ViewModels\Physics\SubWin\" />
     <Folder Include="ViewModels\Physics\UC\" />
     <Folder Include="ViewModels\Physics\UI\" />
-    <Folder Include="Views\English\SubWin\" />
-    <Folder Include="Views\English\UC\" />
     <Folder Include="Views\English\UI\" />
     <Folder Include="Views\Maths\SubWin\" />
     <Folder Include="Views\Maths\UC\" />

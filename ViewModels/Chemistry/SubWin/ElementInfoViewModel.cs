@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-using LaboratoryApp.Models;
+using LaboratoryApp.Models.Chemistry;
 using LaboratoryApp.Views.SubWin;
 
 namespace LaboratoryApp.ViewModels.Chemistry.SubWin

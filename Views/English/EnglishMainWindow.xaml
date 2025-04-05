@@ -51,7 +51,7 @@
                             ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="SpringGreen"
                             BorderBrush="SpringGreen"
-                            Command="{Binding }">
+                            Command="{Binding OpenDictionaryCommand}">
                         <TextBlock Text="Dictionary" />
                     </Button>
                 </Grid>
@@ -65,8 +65,9 @@
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ffff72"
-                            BorderBrush="#ffff72">
-                        <TextBlock Text="Compound" />
+                            BorderBrush="#ffff72"
+                            Command="{Binding}">
+                        <TextBlock Text="None"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1"

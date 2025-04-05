@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LaboratoryApp.Database.Provider;
-
-namespace LaboratoryApp.ViewModels.UC
+namespace LaboratoryApp.ViewModels.English.SubWin
 {
-    class LogInViewModel : BaseViewModel
+    class DictionaryViewModel : BaseViewModel
     {
 
     }
