@@ -56,7 +56,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Physics\" />
-    <Folder Include="Models\English\" />
     <Folder Include="Models\Math\" />
     <Folder Include="ViewModels\Chemistry\UC\" />
     <Folder Include="ViewModels\English\UC\" />

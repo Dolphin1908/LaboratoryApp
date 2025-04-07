@@ -1,5 +1,4 @@
-﻿using LaboratoryApp.ViewModels.English.SubWin;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.Views.English.SubWin
+namespace LaboratoryApp.Views.English.UC
 {
     /// <summary>
-    /// Interaction logic for Dictionary.xaml
+    /// Interaction logic for SelectionResultUC.xaml
     /// </summary>
-    public partial class DictionaryWindow : Window
+    public partial class SelectionResultUC : UserControl
     {
-        public DictionaryWindow()
+        public SelectionResultUC()
         {
             InitializeComponent();
         }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LaboratoryApp.Support.Interface;
+using LaboratoryApp.ViewModels.English.SubWin;
 using LaboratoryApp.Views.English.SubWin;
 
 namespace LaboratoryApp.ViewModels.English
@@ -24,7 +25,10 @@ namespace LaboratoryApp.ViewModels.English
             OpenDictionaryCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Open Dictionary Window
-                DictionaryWindow dictionaryWindow = new DictionaryWindow();
+                var dictionaryWindow = new DictionaryWindow
+                {
+                    DataContext = new DictionaryViewModel()
+                };
                 dictionaryWindow.Show();
             });
         }

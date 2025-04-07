@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LaboratoryApp.Views.English.SubWin"
+        xmlns:uc="clr-namespace:LaboratoryApp.Views.English.UC"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -41,16 +42,54 @@
                                              Margin="5,0"
                                              VerticalAlignment="Center"/>
 
-                    <TextBox Grid.Column="1"
-                             VerticalAlignment="Center"
-                             BorderThickness="0"
-                             Background="Transparent"
-                             Foreground="Black"
-                             CaretBrush="Black"
-                             Style="{x:Null}"
-                             SelectionBrush="Transparent"
-                             BorderBrush="Transparent"
-                             Margin="0"/>
+                    <Grid Grid.Column="1">
+                        <TextBox Name="SearchBox"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalAlignment="Center"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 Foreground="Black"
+                                 CaretBrush="Black"
+                                 Style="{x:Null}"
+                                 SelectionBrush="Transparent"
+                                 BorderBrush="Transparent"
+                                 Margin="0"/>
+
+                        <Popup Name="SearchPopup"
+                               PlacementTarget="{Binding ElementName=SearchBox}"
+                               Placement="Bottom"
+                               StaysOpen="False"
+                               IsOpen="{Binding SearchResultDTOs.Count, Mode=OneWay}"
+                               Margin="0"
+                               VerticalOffset="5"
+                               AllowsTransparency="True"
+                               PopupAnimation="Fade"
+                               Width="{Binding ActualWidth, ElementName=SearchBox}">
+
+                            <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                                          Margin="0"
+                                          MaxHeight="400">
+                                <ItemsControl ItemsSource="{Binding SearchResultDTOs}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Background="LightGray"
+                                                    Cursor="Hand"
+                                                    BorderThickness="0"
+                                                    Padding="5,0"
+                                                    Margin="0"
+                                                    HorizontalAlignment="Stretch"
+                                                    HorizontalContentAlignment="Left"
+                                                    Height="60"
+                                                    Command="{Binding DataContext.SelectResultCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                                    CommandParameter="{Binding .}">
+                                                <uc:SearchResultUC HorizontalAlignment="Left"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Popup>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -59,5 +98,9 @@
                        Background="Gray"
                        BorderBrush="Gray"/>
         </StackPanel>
+
+        <uc:SelectionResultUC DataContext="{Binding SelectedWordResult}" 
+                              Grid.Row="1"
+                              Margin="10, 5, 10, 5"/>
     </Grid>
 </Window>

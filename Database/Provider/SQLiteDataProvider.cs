@@ -13,33 +13,20 @@ using System.Xml.Linq;
 
 namespace LaboratoryApp.Database.Provider
 {
-    public class SQLiteDataProvider
+    public class SQLiteDataProvider : IDisposable
     {
-        private readonly string _connectionString;
         private SQLiteConnection _connection;
-        private static SQLiteDataProvider _instance;
-
-        // Singleton pattern
-        public static SQLiteDataProvider Instance
-        {
-            get
-            {
-                if(_instance == null )
-                    _instance = new SQLiteDataProvider();
-                return _instance;
-            }
-            set
-            {
-                _instance = value;
-            }
-        }
 
         // Constructor
-        public SQLiteDataProvider()
+        public SQLiteDataProvider(string dbPath)
         {
-            var dbPath = ConfigurationManager.AppSettings["SQLitePath"];
-            _connectionString = $"Data Source={dbPath};Version=3;";
-            _connection = new SQLiteConnection(_connectionString);
+            if(!File.Exists(dbPath))
+            {
+                throw new FileNotFoundException("Database file not found.", dbPath);
+            }
+
+            var connectionString = $"Data Source={dbPath};Version=3;";
+            _connection = new SQLiteConnection(connectionString);
             OpenConnection();
         }
 
@@ -117,7 +104,6 @@ namespace LaboratoryApp.Database.Provider
         {
             CloseConnection();
             _connection.Dispose();
-            _instance = null;
         }
     }
 }

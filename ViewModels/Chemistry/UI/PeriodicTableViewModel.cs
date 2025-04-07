@@ -11,6 +11,7 @@ using System.Windows.Input;
 
 using LaboratoryApp.Database.Provider;
 using LaboratoryApp.Models.Chemistry;
+using LaboratoryApp.Services;
 using LaboratoryApp.ViewModels.Chemistry.SubWin;
 using LaboratoryApp.ViewModels.UC;
 
@@ -22,12 +23,14 @@ namespace LaboratoryApp.ViewModels.Chemistry.UI
 
         #endregion
 
+        private ChemistryService _chemistryService;
         private List<ElementModel> _elements;
         public ObservableCollection<ElementInfoViewModel> ElementCells { get; set; }
 
 
         public PeriodicTableViewModel()
         {
+            _chemistryService = new ChemistryService();
             _elements = LoadElement();
             ElementCells = new ObservableCollection<ElementInfoViewModel>(_elements.Select(e => new ElementInfoViewModel(e)));
         }
@@ -133,7 +136,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.UI
         /// <returns></returns>
         private List<ElementModel> LoadElement()
         {
-            var elements = SQLiteDataProvider.Instance.ExecuteQuery<ElementModel>("SELECT * FROM Elements");
+            var elements = _chemistryService.GetAllElements();
 
             // Add Lanthanide group and Actinide group
             elements.Add(new ElementModel
