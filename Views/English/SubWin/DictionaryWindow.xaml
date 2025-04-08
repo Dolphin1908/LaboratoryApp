@@ -15,8 +15,12 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Height="600"
         Width="400"
+        Loaded="Window_Loaded"
         mc:Ignorable="d"
         Title="Dictionary">
+
+    
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -51,9 +55,9 @@
                                  Foreground="Black"
                                  CaretBrush="Black"
                                  Style="{x:Null}"
-                                 SelectionBrush="Transparent"
                                  BorderBrush="Transparent"
-                                 Margin="0"/>
+                                 Margin="0">
+                        </TextBox>
 
                         <Popup Name="SearchPopup"
                                PlacementTarget="{Binding ElementName=SearchBox}"
@@ -101,6 +105,8 @@
 
         <uc:SelectionResultUC DataContext="{Binding SelectedWordResult}" 
                               Grid.Row="1"
-                              Margin="10, 5, 10, 5"/>
+                              Margin="10, 5, 10, 5"
+                              Visibility="{Binding DataContext.SelectedWordResult, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"/>
+
     </Grid>
 </Window>

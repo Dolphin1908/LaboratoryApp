@@ -34,5 +34,6 @@ namespace LaboratoryApp.Models.DTOs
         public long id { get; set; }
         public long def_id { get; set; }
         public string example { get; set; }
+        public string translation { get; set; }
     }
 }

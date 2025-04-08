@@ -15,44 +15,102 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel>
-            <!-- Headword and pronunciation -->
-            <TextBlock Text="{Binding word}" FontSize="20" FontWeight="Bold" />
-            <TextBlock Text="{Binding pronunciation}" FontStyle="Italic" Margin="0,0,0,10"/>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <!-- Headword and pronunciation -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <!-- POS list -->
-            <ItemsControl ItemsSource="{Binding pos}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="0,5,0,10">
-                            <TextBlock Text="{Binding pos}" FontWeight="Bold" Foreground="DarkSlateBlue" />
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding word}" 
+                               FontSize="20" 
+                               FontWeight="Bold"/>
 
-                            <!-- Definition list -->
-                            <ItemsControl ItemsSource="{Binding definitions}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="10,2,0,5">
-                                            <TextBlock Text="{Binding definition}" TextWrapping="Wrap" />
+                    <Button Grid.Column="1"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Width="20"
+                            Height="20"
+                            Padding="0"
+                            Margin="20,0,0,0"
+                            HorizontalAlignment="Left"
+                            Command="{Binding DataContext.SpeechTextCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding word}">
+                        <materialDesign:PackIcon Kind="VolumeHigh"
+                                                 Width="20"
+                                                 Height="20"/>
+                    </Button>
+                </Grid>
+                <TextBlock Text="{Binding pronunciation}" 
+                           FontStyle="Italic" 
+                           Margin="0,0,0,10"/>
 
-                                            <!-- Examples -->
-                                            <ItemsControl ItemsSource="{Binding examples}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="• " FontWeight="Bold" Foreground="Gray" />
-                                                            <TextBlock Text="{Binding example}" TextWrapping="Wrap" Margin="15,0,0,2"/>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+                <!-- POS list -->
+                <ItemsControl ItemsSource="{Binding pos}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,5,0,10">
+                                <TextBlock Text="{Binding pos}" 
+                                           FontWeight="Bold" 
+                                           Foreground="DarkSlateBlue" />
+
+                                <!-- Definition list -->
+                                <ItemsControl ItemsSource="{Binding definitions}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="10,2,0,5">
+                                                <TextBlock Text="{Binding definition}" 
+                                                           TextWrapping="Wrap" />
+
+                                                <!-- Examples -->
+                                                <ItemsControl ItemsSource="{Binding examples}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+                                                                <Grid Grid.Row="0" 
+                                                                      Margin="0,2,0,2">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="10"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Text="• " 
+                                                                               FontWeight="Bold" 
+                                                                               Foreground="Gray" 
+                                                                               Grid.Column="0" 
+                                                                               VerticalAlignment="Top"/>
+                                                                    <TextBlock Text="{Binding example}" 
+                                                                               TextWrapping="Wrap" 
+                                                                               Margin="5,0,0,0"
+                                                                               Grid.Column="1"/>
+                                                                </Grid>
+                                                                <TextBlock Grid.Row="1"
+                                                                           Text="{Binding translation}" 
+                                                                           TextWrapping="Wrap" 
+                                                                           Margin="15,2,0,0"
+                                                                           FontStyle="Italic" 
+                                                                           Foreground="DarkGray"/>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

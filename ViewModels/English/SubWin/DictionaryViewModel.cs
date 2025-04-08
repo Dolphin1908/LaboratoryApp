@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Speech.Synthesis;
 
 using LaboratoryApp.Models.English;
-using LaboratoryApp.Database.Provider;
 using LaboratoryApp.Services;
 using LaboratoryApp.Models.DTOs;
 using System.Windows.Input;
@@ -22,21 +22,21 @@ namespace LaboratoryApp.ViewModels.English.SubWin
 
         private ObservableCollection<SearchResultDTO> _searchResultDTOs;
 
-        private EnglishService _englishService;
         private List<WordModel> _allWords;
         private List<PosModel> _allPos;
         private List<ExampleModel> _allExamples;
         private List<DefinitionModel> _allDefinitions;
         private WordResultDTO _selectedWordResult;
-        
+
         #region Commands
         public ICommand SelectResultCommand { get; set; }
+        public ICommand SpeechTextCommand { get; set; }
         #endregion
 
         #region Properties
         public string SearchText
         {
-            get => _searchText; 
+            get => _searchText;
             set
             {
                 _searchText = value;
@@ -69,12 +69,24 @@ namespace LaboratoryApp.ViewModels.English.SubWin
         public DictionaryViewModel()
         {
             // Initialize commands and properties here if needed
-            _englishService = new EnglishService();
             _searchResultDTOs = new ObservableCollection<SearchResultDTO>();
+            SelectedWordResult = null;
             SelectResultCommand = new RelayCommand<SearchResultDTO>((p) => true, (p) => SelectResult(p));
+            SpeechTextCommand = new RelayCommand<string>((p) => true, (p) =>
+            {
+                if (p != null)
+                {
+                    var synthesizer = new SpeechSynthesizer();
+                    synthesizer.Speak(p);
+                }
+            });
             LoadData();
+            SetupSpeechSynthesizer();
         }
 
+        /// <summary>
+        /// Updates the suggestions based on the search text.
+        /// </summary>
         private void UpdateSuggestions()
         {
             if (string.IsNullOrWhiteSpace(SearchText))
@@ -86,7 +98,7 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             var matches = _allWords.Where(w => w.headword.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase)) // case insensitive
                                    .Take(10) // limit to 10 results
                                    .ToList();
-            
+
             SearchResultDTOs.Clear();
             foreach (var match in matches)
             {
@@ -116,6 +128,10 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             }
         }
 
+        /// <summary>
+        /// Handles the selection of a search result.
+        /// </summary>
+        /// <param name="selected"></param>
         private void SelectResult(SearchResultDTO selected)
         {
             if (selected == null)
@@ -138,11 +154,13 @@ namespace LaboratoryApp.ViewModels.English.SubWin
                     foreach (var ex in _allExamples.Where(e => e.def_id == def.Id))
                     {
                         // Create a new ExampleDTO object for each example
+                        var parts = ex.example.Split(new[] { '+' }, 2);
                         exampleList.Add(new ExampleDTO
                         {
                             id = ex.Id,
                             def_id = ex.def_id,
-                            example = ex.example
+                            example = parts[0].Trim(),
+                            translation = parts.Length > 1 ? parts[1].Trim() : "" // Handle the case where there is no translation
                         });
                     }
                     // Add the definition with its examples to the list
@@ -176,12 +194,24 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             SearchResultDTOs.Clear();
         }
 
+        /// <summary>
+        /// Loads all data from the database.
+        /// </summary>
         private void LoadData()
         {
-            _allWords = _englishService.GetAllWords();
-            _allPos = _englishService.GetAllPos();
-            _allExamples = _englishService.GetAllExamples();
-            _allDefinitions = _englishService.GetAllDefinitions();
+            _allWords = EnglishDataCache.AllWords;
+            _allPos = EnglishDataCache.AllPos;
+            _allExamples = EnglishDataCache.AllExamples;
+            _allDefinitions = EnglishDataCache.AllDefinitions;
+        }
+
+        private void SetupSpeechSynthesizer()
+        {
+            // Initialize the SpeechSynthesizer
+            SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+            synthesizer.SelectVoice("Microsoft Zira Desktop"); // Select a voice
+            synthesizer.Volume = 100; // Set volume (0-100)
+            synthesizer.Rate = 0; // Set rate (-10 to 10)
         }
     }
 }
