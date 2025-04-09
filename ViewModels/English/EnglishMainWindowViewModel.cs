@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using LaboratoryApp.Services;
 using LaboratoryApp.Support.Interface;
 using LaboratoryApp.ViewModels.English.SubWin;
+using LaboratoryApp.ViewModels.English.UI;
 using LaboratoryApp.Views.English.SubWin;
+using LaboratoryApp.Views.English.UI;
 
 namespace LaboratoryApp.ViewModels.English
 {
@@ -17,7 +20,7 @@ namespace LaboratoryApp.ViewModels.English
 
         #region Commands
         public ICommand OpenDictionaryCommand { get; set; } // Open Dictionary
-        public ICommand NavigateToFlashcardCommand { get; set; } // Navigate to Flashcard
+        public ICommand NavigateToFlashcardManagerCommand { get; set; } // Navigate to Flashcard
         #endregion
 
         public EnglishMainWindowViewModel(INavigationService navigationService)
@@ -36,6 +39,14 @@ namespace LaboratoryApp.ViewModels.English
                     DataContext = new DictionaryViewModel()
                 };
                 dictionaryWindow.Show();
+            });
+            NavigateToFlashcardManagerCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                var flashcardManagerPage = new FlashcardManager
+                {
+                    DataContext = new FlashcardManagerViewModel()
+                };
+                _navigationService.NavigateTo(flashcardManagerPage);
             });
         }
     }

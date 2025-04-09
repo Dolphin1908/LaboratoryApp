@@ -67,7 +67,7 @@
                             ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ffff72"
                             BorderBrush="#ffff72"
-                            Command="{Binding}">
+                            Command="{Binding NavigateToFlashcardManagerCommand}">
                         <TextBlock Text="Flashcard"/>
                     </Button>
                 </Grid>

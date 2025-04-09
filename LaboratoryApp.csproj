@@ -62,7 +62,6 @@
     <Folder Include="Support\Helpers\" />
     <Folder Include="ViewModels\Chemistry\UC\" />
     <Folder Include="ViewModels\English\UC\" />
-    <Folder Include="ViewModels\English\UI\" />
     <Folder Include="ViewModels\Maths\SubWin\" />
     <Folder Include="ViewModels\Maths\UC\" />
     <Folder Include="ViewModels\Maths\UI\" />

@@ -19,8 +19,6 @@
         mc:Ignorable="d"
         Title="Dictionary">
 
-    
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -97,7 +95,7 @@
                 </Grid>
             </Border>
 
-            <Separator Width="100"
+            <Separator Width="200"
                        Height="1"
                        Background="Gray"
                        BorderBrush="Gray"/>
