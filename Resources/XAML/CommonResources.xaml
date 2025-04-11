@@ -5,7 +5,8 @@
                     xmlns:ui="clr-namespace:LaboratoryApp.ViewModels.UI"
                     xmlns:sw="clr-namespace:LaboratoryApp.ViewModels.SubWin"
                     xmlns:sp="clr-namespace:LaboratoryApp.Support"
-                    xmlns:cv="clr-namespace:LaboratoryApp.Support.Converters">
+                    xmlns:cv="clr-namespace:LaboratoryApp.Support.Converters"
+                    xmlns:domain="clr-namespace:LaboratoryApp.Support.Domain">
 
     <!-- MainWindow -->
     <main:MainWindowViewModel x:Key="MainVM"></main:MainWindowViewModel>
@@ -25,6 +26,7 @@
     <cv:ColorToBrushConverter x:Key="ColorToBrushConverter"></cv:ColorToBrushConverter>
     <cv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"></cv:NullToVisibilityConverter>
     
-    <!-- Helper -->
-    
+    <!-- Domain -->
+    <domain:NotEmptyValidationRule x:Key="NotEmptyValidationRule"></domain:NotEmptyValidationRule>
+
 </ResourceDictionary>

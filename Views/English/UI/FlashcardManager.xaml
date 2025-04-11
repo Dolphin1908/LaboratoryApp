@@ -63,7 +63,8 @@
                         Background="#76ff03"
                         Margin="0,5"
                         Height="32"
-                        materialDesign:ButtonAssist.CornerRadius="10">
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        Command="{Binding AddFlashcardSetCommand}">
                     <Grid VerticalAlignment="Center"
                           HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -88,8 +89,13 @@
                            BorderBrush="Gray"
                            Margin="0,5"/>
                 <!-- Flashcard List -->
-                <uc:FlashcardTagUC Margin="5"/>
-                <uc:FlashcardTagUC Margin="5"/>
+                <ItemsControl ItemsSource="{Binding FlashcardSets, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <uc:FlashcardSetTagUC Margin="5"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Grid>
         
@@ -106,80 +112,152 @@
                 </Grid.RowDefinitions>
 
                 <!-- Row 1 -->
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <Border BorderThickness="0,0,0,1"
+                        BorderBrush="Gray"
+                        Margin="5,0,5,0"
+                        Padding="0,0,0,5">
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0"
-                               Text="Card"
-                               FontSize="24"
-                               FontWeight="Bold"/>
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding SelectedFlashcardSet.name, UpdateSourceTrigger=PropertyChanged}"
+                                   FontSize="68"
+                                   FontWeight="Bold"/>
 
-                    <Button Grid.Column="1" 
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="Resource name: MaterialDesignRaisedButton"
-                            Background="Cyan"
-                            BorderThickness="0"
-                            Width="100"
-                            Height="32"
-                            Padding="0,0,5,0"
-                            Margin="5,0,0,0"
-                            materialDesign:ButtonAssist.CornerRadius="7">
-                        <Grid VerticalAlignment="Center"
-                              HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Grid.Column="0"
-                                                     Kind="Edit"
-                                                     Width="24"
-                                                     Height="24"/>
-                            <TextBlock Grid.Column="1"
-                                       Text="Edit set"
-                                       Margin="5,0,0,0"
-                                       VerticalAlignment="Center"/>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0" 
+                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        ToolTip="Resource name: MaterialDesignRaisedButton"
+                                        Background="Cyan"
+                                        BorderThickness="0"
+                                        Width="200"
+                                        Height="64"
+                                        Padding="0,0,5,0"
+                                        Margin="5,0,0,0"
+                                        Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}"
+                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                        Command="{Binding OpenUpdateFlashcardSetWindowCommand}">
+                                    <Grid VerticalAlignment="Center"
+                                          HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0"
+                                                                 Kind="Edit"
+                                                                 Width="24"
+                                                                 Height="24"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Edit set"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Button>
+
+                                <Button Grid.Column="1"                                        
+                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        ToolTip="Resource name: MaterialDesignRaisedButton"
+                                        Background="Red"
+                                        BorderThickness="0"
+                                        Width="200"
+                                        Height="64"
+                                        Padding="0,0,5,0"
+                                        Margin="10,0,0,0"
+                                        Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}"
+                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                        Command="{Binding DeleteFlashcardSetCommand}"
+                                        CommandParameter="{Binding SelectedFlashcardSet}">
+                                    <Grid VerticalAlignment="Center"
+                                          HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Grid.Column="0"
+                                                                 Kind="Delete"
+                                                                 Width="24"
+                                                                 Height="24"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="Delete set"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+
+                            <StackPanel Grid.Row="1"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,5,0,0">
+                                <TextBlock Text="Last updated: "
+                                           FontStyle="Italic"
+                                           Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding SelectedFlashcardSet.lastUpdatedDate, UpdateSourceTrigger=PropertyChanged}"
+                                           FontStyle="Italic"/>
+                            </StackPanel>
                         </Grid>
-                    </Button>
-
-                    <Button Grid.Column="2"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                            Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="Resource name: MaterialDesignRaisedButton"
-                            Background="Red"
-                            BorderThickness="0"
-                            Width="100"
-                            Height="32"
-                            Padding="0,0,5,0"
-                            Margin="10,0,0,0"
-                            materialDesign:ButtonAssist.CornerRadius="7">
-                        <Grid VerticalAlignment="Center"
-                              HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Grid.Column="0"
-                                                     Kind="Delete"
-                                                     Width="24"
-                                                     Height="24"/>
-                            <TextBlock Grid.Column="1"
-                                       Text="Delete set"
-                                       Margin="5,0,0,0"
-                                       VerticalAlignment="Center"/>
-                        </Grid>
-                    </Button>
-                </Grid>
+                    </Grid>
+                </Border>
 
                 <!-- Row 2 -->
+                <StackPanel Grid.Row="1"
+                            Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}">
+                    <Border Padding="0,10"
+                            Margin="5,0"
+                            BorderThickness="0,0,0,1"
+                            BorderBrush="Gray">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
+                            <TextBlock Text="Word"
+                                       Grid.Column="0"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Margin="5,0"/>
+                            <TextBlock Text="Meaning"
+                                       Grid.Column="1"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Margin="5,0"/>
+                        </Grid>
+                    </Border>
+
+                    <ScrollViewer Margin="5,0,0,0"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl ItemsSource="{Binding SelectedFlashcardSet.flashcards, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <uc:FlashcardTagUC Margin="0,0,0,5"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+                
+                
                 <!-- Row 3 -->
                 <DockPanel Grid.Row="2"
-                           Margin="10,10,10,0">
+                           Margin="5,10,5,0">
                     <Border BorderThickness="0,1,0,0"
                             BorderBrush="Gray"
                             Padding="0,10,0,0">
@@ -189,16 +267,18 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0"
+                            <Button Grid.Column="0"                      
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedButton"
                                     Background="#76ff03"
                                     BorderThickness="0"
-                                    Width="150"
-                                    Height="32"
+                                    Width="250"
+                                    Height="64"
                                     Padding="0,0,5,0"
-                                    materialDesign:ButtonAssist.CornerRadius="7">
+                                    Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}"
+                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                    Command="{Binding OpenAddFlashcardWindowCommand}">
                                 <Grid VerticalAlignment="Center"
                                       HorizontalAlignment="Center">
                                     <Grid.ColumnDefinitions>
@@ -216,16 +296,17 @@
                                 </Grid>
                             </Button>
 
-                            <Button Grid.Column="1"
+                            <Button Grid.Column="1"  
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedButton"
                                     Background="Cyan"
                                     BorderThickness="0"
-                                    Width="150"
-                                    Height="32"
+                                    Width="250"
+                                    Height="64"
                                     Padding="0,0,5,0"
-                                    materialDesign:ButtonAssist.CornerRadius="7">
+                                    Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}"
+                                    materialDesign:ButtonAssist.CornerRadius="10">
                                 <Grid VerticalAlignment="Center"
                                       HorizontalAlignment="Center">
                                     <Grid.ColumnDefinitions>

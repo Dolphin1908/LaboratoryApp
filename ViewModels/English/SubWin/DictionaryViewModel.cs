@@ -20,13 +20,13 @@ namespace LaboratoryApp.ViewModels.English.SubWin
     {
         private string _searchText;
 
+        private WordResultDTO _selectedWordResult;
         private ObservableCollection<SearchResultDTO> _searchResultDTOs;
 
         private List<WordModel> _allWords;
         private List<PosModel> _allPos;
         private List<ExampleModel> _allExamples;
         private List<DefinitionModel> _allDefinitions;
-        private WordResultDTO _selectedWordResult;
 
         #region Commands
         public ICommand SelectResultCommand { get; set; }

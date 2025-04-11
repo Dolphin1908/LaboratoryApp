@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LaboratoryApp.Views.English.UC"
+             xmlns:ui="clr-namespace:LaboratoryApp.Views.English.UI"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
@@ -15,52 +16,54 @@
              mc:Ignorable="d" 
              Height="Auto" 
              Width="Auto">
-    
-    <Button Height="Auto"
-            BorderThickness="0"
-            Background="Transparent"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"
-            Padding="0">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Border Margin="0,0,5,0"
+            BorderThickness="0,0,0,1"
+            BorderBrush="Gray">
+        <Grid Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="0"
-                  Margin="0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       FontWeight="Bold"
+                       Text="{Binding Word, UpdateSourceTrigger=PropertyChanged}"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       Margin="5,0"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Meaning, UpdateSourceTrigger=PropertyChanged}"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       Margin="5,0"/>
 
-                <materialDesign:PackIcon Kind="Book"
-                                         Width="40"
-                                         Height="40"
-                                         Margin="0,0,5,0"/>
-                <Grid Grid.Column="1"
-                      Margin="5,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                               FontWeight="Bold"
-                               Text="Card"
-                               FontSize="20"/>
-                    <TextBlock Grid.Row="1"
-                               FontStyle="Italic"
-                               Text="100"/>
-                </Grid>
-            </Grid>
-            <Separator Grid.Row="1"
-                       Width="200"
-                       Height="1"
-                       Background="Gray"
-                       BorderBrush="Gray"
-                       HorizontalAlignment="Center"/>
+            <Button Grid.Column="2"
+                    Command="{Binding DataContext.UpdateFlashcardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                    CommandParameter="{Binding id}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"                
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Stretch">
+                <materialDesign:PackIcon Kind="Edit" 
+                                         Width="Auto" 
+                                         Height="Auto"/>
+            </Button>
+            
+            <Button Grid.Column="3"
+                    Command="{Binding DataContext.DeleteFlashcardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                    CommandParameter="{Binding id}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"                                  
+                    VerticalAlignment="Stretch">
+                <materialDesign:PackIcon Kind="Delete" 
+                                         Width="Auto" 
+                                         Height="Auto"          
+                                         Foreground="Red"/>
+            </Button>
         </Grid>
-    </Button>
+    </Border>
 </UserControl>
