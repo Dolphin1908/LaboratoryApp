@@ -40,7 +40,7 @@
                        Margin="5,0"/>
 
             <Button Grid.Column="2"
-                    Command="{Binding DataContext.UpdateFlashcardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                    Command="{Binding DataContext.OpenUpdateFlashcardWindowCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                     CommandParameter="{Binding id}"
                     Background="Transparent"
                     BorderThickness="0"

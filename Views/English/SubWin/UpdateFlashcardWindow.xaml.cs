@@ -17,9 +17,9 @@ namespace LaboratoryApp.Views.English.SubWin
     /// <summary>
     /// Interaction logic for EditFlashcardWindow.xaml
     /// </summary>
-    public partial class EditFlashcardWindow : Window
+    public partial class UpdateFlashcardWindow : Window
     {
-        public EditFlashcardWindow()
+        public UpdateFlashcardWindow()
         {
             InitializeComponent();
         }

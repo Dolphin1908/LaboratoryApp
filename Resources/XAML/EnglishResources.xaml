@@ -12,7 +12,6 @@
     <!-- SubWindow -->
     <sw:DictionaryViewModel x:Key="DictionaryVM"></sw:DictionaryViewModel>
     <sw:UpdateFlashcardSetViewModel x:Key="UpdateFlashcardSetVM"></sw:UpdateFlashcardSetViewModel>
-    <sw:AddFlashcardViewModel x:Key="AddFlashcardVM"></sw:AddFlashcardViewModel>
-    <sw:EditFlashcardViewModel x:Key="EditFlashcardVM"></sw:EditFlashcardViewModel>
+    <sw:FlashcardViewModel x:Key="FlashcardVM"></sw:FlashcardViewModel>
 
 </ResourceDictionary>

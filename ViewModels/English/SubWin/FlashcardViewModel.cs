@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LaboratoryApp.Models.English;
+using LaboratoryApp.Views.English.SubWin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,24 +8,20 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 
-using LaboratoryApp.Models.English;
-using LaboratoryApp.Services;
-using LaboratoryApp.Views.English.SubWin;
-
 namespace LaboratoryApp.ViewModels.English.SubWin
 {
-    public class EditFlashcardViewModel : BaseViewModel
+    public class FlashcardViewModel : BaseViewModel
     {
         private string _word;
         private string _pos;
         private string _meaning;
         private string _example;
         private string _note;
-        private FlashcardModel _editedFlashcard;
-        private Action<FlashcardModel> _editFlashcardCallback;
+        private FlashcardModel _flashcard;
+        private Action<FlashcardModel> _flashcardCommandCallback;
 
         #region Commands
-        public ICommand EditFlashcardCommand { get; set; } // Command to add a flashcard
+        public ICommand UpdateFlashcardCommand { get; set; } // Command to edit a flashcard
         public ICommand OpenDictionaryWindowCommand { get; set; } // Command to open the dictionary window
         #endregion
 
@@ -75,14 +73,17 @@ namespace LaboratoryApp.ViewModels.English.SubWin
         }
         #endregion
 
-        public EditFlashcardViewModel(FlashcardModel flashcard, Action<FlashcardModel> editFlashcard)
+        public FlashcardViewModel(FlashcardModel flashcard, Action<FlashcardModel> flashcardCommand)
         {
-            _editedFlashcard = flashcard;
-            _editFlashcardCallback = editFlashcard;
+            _flashcard = flashcard;
+            _flashcardCommandCallback = flashcardCommand;
 
-            LoadUI();
+            if (_flashcard != null)
+            {
+                LoadUI();
+            }
 
-            EditFlashcardCommand = new RelayCommand<object>((p) => true, (p) => EditFlashcard(p));
+            UpdateFlashcardCommand = new RelayCommand<object>((p) => true, (p) => UpdateFlashcard(p));
             OpenDictionaryWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var window = new DictionaryWindow
@@ -93,15 +94,15 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             });
         }
 
-        private void EditFlashcard(object window)
+        private void UpdateFlashcard(object window)
         {
-            _editedFlashcard.Word = Word;
-            _editedFlashcard.Pos = Pos;
-            _editedFlashcard.Meaning = Meaning;
-            _editedFlashcard.Example = Example;
-            _editedFlashcard.Note = Note;
+            _flashcard.Word = Word;
+            _flashcard.Pos = Pos;
+            _flashcard.Meaning = Meaning;
+            _flashcard.Example = Example;
+            _flashcard.Note = Note;
 
-            _editFlashcardCallback?.Invoke(_editedFlashcard);
+            _flashcardCommandCallback?.Invoke(_flashcard);
 
             if (window is Window win)
             {
@@ -111,11 +112,11 @@ namespace LaboratoryApp.ViewModels.English.SubWin
 
         private void LoadUI()
         {
-            Word = _editedFlashcard.Word;
-            Pos = _editedFlashcard.Pos;
-            Meaning = _editedFlashcard.Meaning;
-            Example = _editedFlashcard.Example;
-            Note = _editedFlashcard.Note;
+            Word = _flashcard.Word;
+            Pos = _flashcard.Pos;
+            Meaning = _flashcard.Meaning;
+            Example = _flashcard.Example;
+            Note = _flashcard.Note;
         }
     }
 }
