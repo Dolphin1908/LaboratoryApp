@@ -18,6 +18,7 @@
         ResizeMode="CanResize"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
+        Icon="/Resources/Laboratory.ico"
         mc:Ignorable="d"
         Title="Laboratory"
         MinHeight="1000"
