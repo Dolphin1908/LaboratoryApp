@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -17,9 +18,9 @@ namespace LaboratoryApp.Views.English.SubWin
     /// <summary>
     /// Interaction logic for FlashcardWindow.xaml
     /// </summary>
-    public partial class FlashcardWindow : Window
+    public partial class FlashcardStudyWindow : Window
     {
-        public FlashcardWindow()
+        public FlashcardStudyWindow()
         {
             InitializeComponent();
         }

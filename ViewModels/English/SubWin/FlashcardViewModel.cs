@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
+using LaboratoryApp.Services;
+using System.Xml.Linq;
 
 namespace LaboratoryApp.ViewModels.English.SubWin
 {
@@ -20,8 +22,15 @@ namespace LaboratoryApp.ViewModels.English.SubWin
         private FlashcardModel _flashcard;
         private Action<FlashcardModel> _flashcardCommandCallback;
 
+        private string _name;
+        private string _description;
+        private FlashcardSet _originalSet;
+        private Action<FlashcardSet> _updateCallback;
+        private FlashcardService _flashcardService;
+
         #region Commands
         public ICommand UpdateFlashcardCommand { get; set; } // Command to edit a flashcard
+        public ICommand UpdateFlashcardSetCommand { get; set; } // Command to edit a flashcard set
         public ICommand OpenDictionaryWindowCommand { get; set; } // Command to open the dictionary window
         #endregion
 
@@ -71,7 +80,37 @@ namespace LaboratoryApp.ViewModels.English.SubWin
                 OnPropertyChanged(nameof(Note));
             }
         }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                _description = value;
+                OnPropertyChanged(nameof(Description));
+            }
+        }
         #endregion
+
+        public FlashcardViewModel(FlashcardSet flashcardSet, Action<FlashcardSet> updateSet)
+        {
+            _originalSet = flashcardSet;
+            _updateCallback = updateSet;
+
+            Name = flashcardSet.Name;
+            Description = flashcardSet.Description;
+
+            UpdateFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) => UpdateSet(p));
+        }
 
         public FlashcardViewModel(FlashcardModel flashcard, Action<FlashcardModel> flashcardCommand)
         {
@@ -101,6 +140,11 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             _flashcard.Meaning = Meaning;
             _flashcard.Example = Example;
             _flashcard.Note = Note;
+            _flashcard.LastReviewed = DateTime.Now;
+            _flashcard.NextReview = DateTime.Now;
+            _flashcard.ReviewCount = 0;
+            _flashcard.CorrectStreak = 0;
+            _flashcard.IsLearned = false;
 
             _flashcardCommandCallback?.Invoke(_flashcard);
 
@@ -109,7 +153,16 @@ namespace LaboratoryApp.ViewModels.English.SubWin
                 win.Close();
             }
         }
+        private void UpdateSet(object window)
+        {
+            _originalSet.Name = Name;
+            _originalSet.Description = Description;
 
+            _updateCallback?.Invoke(_originalSet);
+
+            if (window is Window win)
+                win.Close();
+        }
         private void LoadUI()
         {
             Word = _flashcard.Word;

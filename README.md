@@ -2,7 +2,8 @@
 _This application focus on some courses such as: Math, Physics, Chemistry, English,... In the future, it will have so much courses with a lot of features to support all learner or students._
 
 ## Features
-- **Math**:	- Lectures & Theory: Summary of formulas, theorems, lectures by topic.
+- **Math**:
+	- Lectures & Theory: Summary of formulas, theorems, lectures by topic.
 	- CAS calculator: Support for calculating equations, derivatives, integrals, matrices, etc.
 	- Exercises & Exercise solutions: Self-practice exercises, multiple choice tests, detailed answer explanations.
 	- Math graphs: Tools for drawing function graphs, spatial geometry.
@@ -27,7 +28,7 @@ _This application focus on some courses such as: Math, Physics, Chemistry, Engli
 
 - **English**:
 	- English-Vietnamese dictionary: Look up meanings, transcriptions, usage examples. ✅
-	- Learn vocabulary: Flashcards, word matching exercises, review vocabulary by topic.
+	- Learn vocabulary: Flashcards, word matching exercises, review vocabulary by topic. ✅
 	- English grammar: Detailed grammar explanations, practice exercises.
 	- Listening practice: Listening by level, keyword recognition.
 	- Pronunciation Practice: Voice Recognition, Pronunciation Score.

@@ -9,11 +9,11 @@ namespace LaboratoryApp.Models.English
 {
     public class WordModel
     {
-        [Column("id")]
+        [Column("Id")]
         public long Id { get; set; }
-        [Column("headword")]
-        public string headword { get; set; }
-        [Column("phonetic")]
-        public string phonetic { get; set; }
+        [Column("Word")]
+        public string Word { get; set; }
+        [Column("Prononciation")]
+        public string Prononciation { get; set; }
     }
 }

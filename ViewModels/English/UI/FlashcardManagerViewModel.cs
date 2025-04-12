@@ -79,7 +79,7 @@ namespace LaboratoryApp.ViewModels.English.UI
             {
                 var window = new UpdateFlashcardSetWindow
                 {
-                    DataContext = new UpdateFlashcardSetViewModel(SelectedFlashcardSet, UpdateSet)
+                    DataContext = new FlashcardViewModel(SelectedFlashcardSet, UpdateSet)
                 };
                 window.ShowDialog();
             });
@@ -96,7 +96,7 @@ namespace LaboratoryApp.ViewModels.English.UI
             });
             OpenUpdateFlashcardWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var flashcard = _selectedFlashcardSet.flashcards.FirstOrDefault(f => f.id == (long)p);
+                var flashcard = _selectedFlashcardSet.Flashcards.FirstOrDefault(f => f.Id == (long)p);
 
                 var window = new UpdateFlashcardWindow
                 {
@@ -105,7 +105,14 @@ namespace LaboratoryApp.ViewModels.English.UI
                 window.ShowDialog();
             });
             DeleteFlashcardCommand = new RelayCommand<object>((p) => true, (p) => DeleteFlashcard((long)p));
-            StartFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) => { });
+            StartFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                var window = new FlashcardStudyWindow
+                {
+                    DataContext = new FlashcardStudyViewModel(SelectedFlashcardSet, _flashcardService)
+                };
+                window.ShowDialog();
+            });
         }
 
         /// <summary>
@@ -114,7 +121,7 @@ namespace LaboratoryApp.ViewModels.English.UI
         /// <param name="id"></param>
         private void OpenFlashcardSet(long id)
         {
-            SelectedFlashcardSet = FlashcardSets.FirstOrDefault(set => set.id == id);
+            SelectedFlashcardSet = FlashcardSets.FirstOrDefault(set => set.Id == id);
         }
 
         /// <summary>
@@ -125,11 +132,10 @@ namespace LaboratoryApp.ViewModels.English.UI
             // Add new set
             FlashcardSet flashcardSet = new FlashcardSet
             {
-                name = "New Set",
-                count = 0,
-                createdDate = DateTime.Now,
-                lastUpdatedDate = DateTime.Now,
-                flashcards = new ObservableCollection<FlashcardModel>()
+                Name = "New Set",
+                CreatedDate = DateTime.Now,
+                LastUpdatedDate = DateTime.Now,
+                Flashcards = new ObservableCollection<FlashcardModel>()
             };
             _flashcardService.AddFlashcardSet(flashcardSet); // Add the new set to the service
             FlashcardSets.Add(flashcardSet); // Add the new set to the list
@@ -141,12 +147,13 @@ namespace LaboratoryApp.ViewModels.English.UI
         /// <param name="updatedSet"></param>
         private void UpdateSet(FlashcardSet updatedSet)
         {
-            updatedSet.lastUpdatedDate = DateTime.Now; // Update the last updated date
+            updatedSet.LastUpdatedDate = DateTime.Now; // Update the last updated date
             _flashcardService.UpdateFlashcardSet(updatedSet); // Update the set in the service
             var index = FlashcardSets.IndexOf(updatedSet);
             if (index != -1)
             {
                 FlashcardSets[index] = updatedSet;
+                OnPropertyChanged(nameof(FlashcardSets));
             }
         }
 
@@ -171,7 +178,7 @@ namespace LaboratoryApp.ViewModels.English.UI
         /// <param name="flashcard"></param>
         private void AddNewFlashcard(FlashcardModel flashcard)
         {
-            _flashcardService.AddFlashcardToSet(_selectedFlashcardSet.id, flashcard); // Add the new flashcard to the selected set
+            _flashcardService.AddFlashcardToSet(_selectedFlashcardSet.Id, flashcard); // Add the new flashcard to the selected set
         }
 
         /// <summary>
@@ -180,7 +187,7 @@ namespace LaboratoryApp.ViewModels.English.UI
         /// <param name="flashcard"></param>
         private void UpdateFlashcard(FlashcardModel flashcard)
         {
-            _flashcardService.UpdateFlashcard(_selectedFlashcardSet.id, flashcard); // Update the flashcard in the selected set
+            _flashcardService.UpdateFlashcard(_selectedFlashcardSet.Id, flashcard); // Update the flashcard in the selected set
         }
 
         /// <summary>
@@ -189,8 +196,8 @@ namespace LaboratoryApp.ViewModels.English.UI
         /// <param name="flashcardId"></param>
         private void DeleteFlashcard(long flashcardId)
         {
-            var flashcard = _selectedFlashcardSet.flashcards.FirstOrDefault(f => f.id == flashcardId);
-            _flashcardService.DeleteFlashcardFromSet(_selectedFlashcardSet.id, flashcard); // Delete the flashcard from the selected set
+            var flashcard = _selectedFlashcardSet.Flashcards.FirstOrDefault(f => f.Id == flashcardId);
+            _flashcardService.DeleteFlashcardFromSet(_selectedFlashcardSet.Id, flashcard); // Delete the flashcard from the selected set
         }
 
         /// <summary>

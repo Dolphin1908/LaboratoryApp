@@ -8,32 +8,32 @@ namespace LaboratoryApp.Models.DTOs
 {
     class WordResultDTO
     {
-        public long id { get; set; }
-        public string word { get; set; }
-        public string pronunciation { get; set; }
-        public List<PosDTO> pos { get; set; }
+        public long Id { get; set; }
+        public string Word { get; set; }
+        public string Pronunciation { get; set; }
+        public List<PosDTO> Pos { get; set; }
     }
     public class PosDTO
     {
-        public long id { get; set; }
-        public long word_id { get; set; }
-        public string pos { get; set; }
-        public List<DefinitionDTO> definitions { get; set; }
+        public long Id { get; set; }
+        public long WordId { get; set; }
+        public string Pos { get; set; }
+        public List<DefinitionDTO> Definitions { get; set; }
     }
 
     public class DefinitionDTO
     {
-        public long id { get; set; }
-        public long pos_id { get; set; }
-        public string definition { get; set; }
-        public List<ExampleDTO> examples { get; set; }
+        public long Id { get; set; }
+        public long PosId { get; set; }
+        public string Definition { get; set; }
+        public List<ExampleDTO> Examples { get; set; }
     }
 
     public class ExampleDTO
     {
-        public long id { get; set; }
-        public long def_id { get; set; }
-        public string example { get; set; }
-        public string translation { get; set; }
+        public long Id { get; set; }
+        public long DefId { get; set; }
+        public string Example { get; set; }
+        public string Translation { get; set; }
     }
 }

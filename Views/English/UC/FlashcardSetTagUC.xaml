@@ -24,7 +24,7 @@
             HorizontalContentAlignment="Stretch"
             Padding="0"
             Command="{Binding DataContext.OpenFlashcardSetCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-            CommandParameter="{Binding id}">
+            CommandParameter="{Binding Id}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -51,11 +51,12 @@
 
                     <TextBlock Grid.Row="0"
                                FontWeight="Bold"
-                               Text="{Binding name, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                FontSize="20"/>
                     <TextBlock Grid.Row="1"
+                               FontWeight="Light"
                                FontStyle="Italic"
-                               Text="{Binding count, UpdateSourceTrigger=PropertyChanged}"/>
+                               Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Grid>
             <Separator Grid.Row="1"

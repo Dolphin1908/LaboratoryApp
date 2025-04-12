@@ -25,7 +25,9 @@
     <cv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></cv:BooleanToVisibilityConverter>
     <cv:ColorToBrushConverter x:Key="ColorToBrushConverter"></cv:ColorToBrushConverter>
     <cv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"></cv:NullToVisibilityConverter>
-    
+    <cv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"></cv:InverseBooleanToVisibilityConverter>
+    <cv:FlipConverter x:Key="FlipConverter"></cv:FlipConverter>
+
     <!-- Domain -->
     <domain:NotEmptyValidationRule x:Key="NotEmptyValidationRule"></domain:NotEmptyValidationRule>
 

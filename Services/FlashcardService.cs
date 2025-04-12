@@ -57,7 +57,7 @@ namespace LaboratoryApp.Services
         /// <param name="flashcardSet">Information of new set</param>
         public void AddFlashcardSet(FlashcardSet flashcardSet)
         {
-            flashcardSet.id = GenerateNewSetId();
+            flashcardSet.Id = GenerateNewSetId();
             _flashcardSets.Add(flashcardSet);
             SaveData();
         }
@@ -68,7 +68,7 @@ namespace LaboratoryApp.Services
         /// <param name="updatedSet">New information of set</param>
         public void UpdateFlashcardSet(FlashcardSet updatedSet)
         {
-            var index = _flashcardSets.FindIndex(s => s.id == updatedSet.id);
+            var index = _flashcardSets.FindIndex(s => s.Id == updatedSet.Id);
             if (index != -1)
             {
                 _flashcardSets[index] = updatedSet;
@@ -82,7 +82,7 @@ namespace LaboratoryApp.Services
         /// <param name="setId">ID of flashcard set</param>
         public void DeleteFlashcardSet(FlashcardSet deletedSet)
         {
-            var index = _flashcardSets.FindIndex(s => s.id == deletedSet.id);
+            var index = _flashcardSets.FindIndex(s => s.Id == deletedSet.Id);
             if (index != null)
             {
                 _flashcardSets.RemoveAt(index);
@@ -97,27 +97,26 @@ namespace LaboratoryApp.Services
         /// <param name="flashcard">Data of new flashcard</param>
         public void AddFlashcardToSet(long setId, FlashcardModel flashcard)
         {
-            var set = _flashcardSets.FirstOrDefault(s => s.id == setId);
+            var set = _flashcardSets.FirstOrDefault(s => s.Id == setId);
             if (set != null)
             {
-                set.count += 1; // Increase the count of flashcards in the set
-                flashcard.id = set.flashcards.Count == 0 ? 1 : set.flashcards.Max(f => f.id) + 1; // Generate new ID for the flashcard
-                set.lastUpdatedDate = DateTime.Now;
-                set.flashcards.Add(flashcard);
+                flashcard.Id = set.Flashcards.Count == 0 ? 1 : set.Flashcards.Max(f => f.Id) + 1; // Generate new ID for the flashcard
+                set.LastUpdatedDate = DateTime.Now;
+                set.Flashcards.Add(flashcard);
                 SaveData();
             }
         }
 
         public void UpdateFlashcard(long setId, FlashcardModel flashcard)
         {
-            var set = _flashcardSets.FirstOrDefault(s => s.id == setId);
+            var set = _flashcardSets.FirstOrDefault(s => s.Id == setId);
             if (set != null)
             {
-                var index = set.flashcards.IndexOf(flashcard);
+                var index = set.Flashcards.IndexOf(flashcard);
                 if (index != -1)
                 {
-                    set.flashcards[index] = flashcard;
-                    set.lastUpdatedDate = DateTime.Now;
+                    set.Flashcards[index] = flashcard;
+                    set.LastUpdatedDate = DateTime.Now;
                     SaveData();
                 }
             }
@@ -125,12 +124,11 @@ namespace LaboratoryApp.Services
 
         public void DeleteFlashcardFromSet(long setId, FlashcardModel flashcard)
         {
-            var set = _flashcardSets.FirstOrDefault(s => s.id == setId);
+            var set = _flashcardSets.FirstOrDefault(s => s.Id == setId);
             if (set != null)
             {
-                set.count -= 1; // Decrease the count of flashcards in the set
-                set.lastUpdatedDate = DateTime.Now;
-                set.flashcards.Remove(flashcard);
+                set.LastUpdatedDate = DateTime.Now;
+                set.Flashcards.Remove(flashcard);
                 SaveData();
             }
         }
@@ -141,7 +139,7 @@ namespace LaboratoryApp.Services
         /// <returns></returns>
         private long GenerateNewSetId()
         {
-            return _flashcardSets.Count == 0 ? 1 : _flashcardSets.Max(s => s.id) + 1;
+            return _flashcardSets.Count == 0 ? 1 : _flashcardSets.Max(s => s.Id) + 1;
         }
     }
 }

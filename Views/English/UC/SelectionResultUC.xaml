@@ -26,7 +26,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0"
-                               Text="{Binding word}" 
+                               Text="{Binding Word}" 
                                FontSize="20" 
                                FontWeight="Bold"/>
 
@@ -39,35 +39,35 @@
                             Margin="20,0,0,0"
                             HorizontalAlignment="Left"
                             Command="{Binding DataContext.SpeechTextCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                            CommandParameter="{Binding word}">
+                            CommandParameter="{Binding Word}">
                         <materialDesign:PackIcon Kind="VolumeHigh"
                                                  Width="20"
                                                  Height="20"/>
                     </Button>
                 </Grid>
-                <TextBlock Text="{Binding pronunciation}" 
+                <TextBlock Text="{Binding Pronunciation}" 
                            FontStyle="Italic" 
                            Margin="0,0,0,10"/>
 
                 <!-- POS list -->
-                <ItemsControl ItemsSource="{Binding pos}">
+                <ItemsControl ItemsSource="{Binding Pos}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,5,0,10">
-                                <TextBlock Text="{Binding pos}" 
+                                <TextBlock Text="{Binding Pos}" 
                                            FontWeight="Bold" 
                                            Foreground="DarkSlateBlue" />
 
                                 <!-- Definition list -->
-                                <ItemsControl ItemsSource="{Binding definitions}">
+                                <ItemsControl ItemsSource="{Binding Definitions}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Margin="10,2,0,5">
-                                                <TextBlock Text="{Binding definition}" 
+                                                <TextBlock Text="{Binding Definition}" 
                                                            TextWrapping="Wrap" />
 
                                                 <!-- Examples -->
-                                                <ItemsControl ItemsSource="{Binding examples}">
+                                                <ItemsControl ItemsSource="{Binding Examples}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <Grid>
@@ -87,13 +87,13 @@
                                                                                Foreground="Gray" 
                                                                                Grid.Column="0" 
                                                                                VerticalAlignment="Top"/>
-                                                                    <TextBlock Text="{Binding example}" 
+                                                                    <TextBlock Text="{Binding Example}" 
                                                                                TextWrapping="Wrap" 
                                                                                Margin="5,0,0,0"
                                                                                Grid.Column="1"/>
                                                                 </Grid>
                                                                 <TextBlock Grid.Row="1"
-                                                                           Text="{Binding translation}" 
+                                                                           Text="{Binding Translation}" 
                                                                            TextWrapping="Wrap" 
                                                                            Margin="15,2,0,0"
                                                                            FontStyle="Italic" 

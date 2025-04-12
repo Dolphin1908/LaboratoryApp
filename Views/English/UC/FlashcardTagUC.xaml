@@ -41,7 +41,7 @@
 
             <Button Grid.Column="2"
                     Command="{Binding DataContext.OpenUpdateFlashcardWindowCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                    CommandParameter="{Binding id}"
+                    CommandParameter="{Binding Id}"
                     Background="Transparent"
                     BorderThickness="0"
                     Padding="0"                
@@ -54,7 +54,7 @@
             
             <Button Grid.Column="3"
                     Command="{Binding DataContext.DeleteFlashcardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                    CommandParameter="{Binding id}"
+                    CommandParameter="{Binding Id}"
                     Background="Transparent"
                     BorderThickness="0"
                     Padding="0"                                  

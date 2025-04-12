@@ -9,11 +9,11 @@ namespace LaboratoryApp.Models.English
 {
     public class PosModel
     {
-        [Column("id")]
+        [Column("Id")]
         public long Id { get; set; }
-        [Column("word_id")]
-        public long word_id { get; set; }
-        [Column("pos")]
-        public string pos { get; set; }
+        [Column("WordId")]
+        public long WordId { get; set; }
+        [Column("Pos")]
+        public string Pos { get; set; }
     }
 }

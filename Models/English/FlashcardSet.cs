@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,69 +12,90 @@ namespace LaboratoryApp.Models.English
 {
     public class FlashcardSet : INotifyPropertyChanged
     {
-        public long id { get; set; }
-
+        public long Id { get; set; }
         private string _name;
-        public string name
+        private string _description;
+        private DateTime _createdDate;
+        private DateTime _lastUpdatedDate;
+
+        private ObservableCollection<FlashcardModel> _flashcards;
+
+        [JsonIgnore]
+        public int Total => Flashcards?.Count ?? 0;
+
+        [JsonIgnore]
+        public int DueCount => Flashcards.Count(f => f.NextReview <= DateTime.Today && !f.IsLearned);
+
+
+        private void Flashcards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(Total));
+            OnPropertyChanged(nameof(DueCount));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+
+
+        public string Name
         {
             get => _name;
             set
             {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged(nameof(name));
-                }
+                _name = value;
+                OnPropertyChanged();
             }
         }
-
-        private string _description;
-        public string description
+        public string Description
         {
             get => _description;
             set
             {
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged(nameof(description));
-                }
+                _description = value;
+                OnPropertyChanged();
             }
         }
-
-        private long _count;
-        // Số lượng flashcard trong bộ thẻ
-        public long count
+        public DateTime CreatedDate
         {
-            get => _count;
+            get => _createdDate;
             set
             {
-                if (_count != value)
-                {
-                    _count = value;
-                    OnPropertyChanged(nameof(count));
-                }
+                _createdDate = value;
+                OnPropertyChanged();
             }
-        } 
-        public DateTime createdDate { get; set; }
-        private DateTime _lastUpdatedDate;
-        public DateTime lastUpdatedDate
+        }
+        public DateTime LastUpdatedDate
         {
             get => _lastUpdatedDate;
             set
             {
-                if (_lastUpdatedDate != null)
+                _lastUpdatedDate = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<FlashcardModel> Flashcards
+        {
+            get => _flashcards;
+            set
+            {
+                if (_flashcards != null)
                 {
-                    _lastUpdatedDate = value;
-                    OnPropertyChanged(nameof(lastUpdatedDate));
-                }    
+                    _flashcards.CollectionChanged -= Flashcards_CollectionChanged;
+                }
+
+                _flashcards = value;
+
+                if (_flashcards != null)
+                {
+                    _flashcards.CollectionChanged += Flashcards_CollectionChanged;
+                }
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Total));
+                OnPropertyChanged(nameof(DueCount));
             }
         }
 
-        public ObservableCollection<FlashcardModel> flashcards { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
     }
 }

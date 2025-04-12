@@ -95,23 +95,23 @@ namespace LaboratoryApp.ViewModels.English.SubWin
                 return;
             }
 
-            var matches = _allWords.Where(w => w.headword.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase)) // case insensitive
+            var matches = _allWords.Where(w => w.Word.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase)) // case insensitive
                                    .Take(10) // limit to 10 results
                                    .ToList();
 
             SearchResultDTOs.Clear();
             foreach (var match in matches)
             {
-                var pos = _allPos.FirstOrDefault(p => p.word_id == match.Id);
+                var pos = _allPos.FirstOrDefault(p => p.WordId == match.Id);
                 if (pos != null)
                 {
-                    var def = _allDefinitions.FirstOrDefault(d => d.pos_id == pos.Id);
+                    var def = _allDefinitions.FirstOrDefault(d => d.PosId == pos.Id);
                     SearchResultDTOs.Add(new SearchResultDTO
                     {
                         WordId = match.Id,
-                        Word = match.headword,
-                        Pos = pos.pos, // Use pos only if it's not null
-                        Meaning = def?.definition ?? "" // If def is null, use empty string
+                        Word = match.Word,
+                        Pos = pos.Pos, // Use pos only if it's not null
+                        Meaning = def?.Definition ?? "" // If def is null, use empty string
                     });
                 }
                 else
@@ -120,7 +120,7 @@ namespace LaboratoryApp.ViewModels.English.SubWin
                     SearchResultDTOs.Add(new SearchResultDTO
                     {
                         WordId = match.Id,
-                        Word = match.headword,
+                        Word = match.Word,
                         Pos = "", // Default value when pos is null
                         Meaning = "" // Default value when definition is null
                     });
@@ -145,49 +145,49 @@ namespace LaboratoryApp.ViewModels.English.SubWin
 
             // Get all pos for the selected word
             List<PosDTO> posList = new List<PosDTO>();
-            foreach (var pos in _allPos.Where(p => p.word_id == selectedWord.Id))
+            foreach (var pos in _allPos.Where(p => p.WordId == selectedWord.Id))
             {
                 List<DefinitionDTO> defList = new List<DefinitionDTO>();
-                foreach (var def in _allDefinitions.Where(d => d.pos_id == pos.Id))
+                foreach (var def in _allDefinitions.Where(d => d.PosId == pos.Id))
                 {
                     List<ExampleDTO> exampleList = new List<ExampleDTO>();
-                    foreach (var ex in _allExamples.Where(e => e.def_id == def.Id))
+                    foreach (var ex in _allExamples.Where(e => e.DefId == def.Id))
                     {
                         // Create a new ExampleDTO object for each example
-                        var parts = ex.example.Split(new[] { '+' }, 2);
+                        var parts = ex.Example.Split(new[] { '+' }, 2);
                         exampleList.Add(new ExampleDTO
                         {
-                            id = ex.Id,
-                            def_id = ex.def_id,
-                            example = parts[0].Trim(),
-                            translation = parts.Length > 1 ? parts[1].Trim() : "" // Handle the case where there is no translation
+                            Id = ex.Id,
+                            DefId = ex.DefId,
+                            Example = parts[0].Trim(),
+                            Translation = parts.Length > 1 ? parts[1].Trim() : "" // Handle the case where there is no translation
                         });
                     }
                     // Add the definition with its examples to the list
                     defList.Add(new DefinitionDTO
                     {
-                        id = def.Id,
-                        pos_id = def.pos_id,
-                        definition = def.definition,
-                        examples = exampleList
+                        Id = def.Id,
+                        PosId = def.PosId,
+                        Definition = def.Definition,
+                        Examples = exampleList
                     });
                 }
                 // Add the pos with its definitions to the list
                 posList.Add(new PosDTO
                 {
-                    id = pos.Id,
-                    word_id = pos.word_id,
-                    pos = pos.pos,
-                    definitions = defList
+                    Id = pos.Id,
+                    WordId = pos.WordId,
+                    Pos = pos.Pos,
+                    Definitions = defList
                 });
             }
             // Create the WordResultDTO object with the selected word and its pos
             SelectedWordResult = new WordResultDTO
             {
-                id = selectedWord.Id,
-                word = selectedWord.headword,
-                pronunciation = selectedWord.phonetic,
-                pos = posList
+                Id = selectedWord.Id,
+                Word = selectedWord.Word,
+                Pronunciation = selectedWord.Prononciation,
+                Pos = posList
             };
 
             SearchText = "";
