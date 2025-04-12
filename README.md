@@ -30,7 +30,7 @@ _This application focus on some courses such as: Math, Physics, Chemistry, Engli
 	- [x] English-Vietnamese dictionary: Look up meanings, transcriptions, usage examples.
 	- [x] Learn vocabulary: Flashcards, word matching exercises, review vocabulary by topic.
 	- [ ] English grammar: Detailed grammar explanations, practice exercises.
-	- [x] Listening practice: Listening by level, keyword recognition.
+	- [ ] Listening practice: Listening by level, keyword recognition.
 	- [ ] Pronunciation Practice: Voice Recognition, Pronunciation Score.
 	- [ ] Exercises & Quizzes: Test reading comprehension, writing, and fill-in-the-blank skills.
 	- [ ] English Communication: Learn common communication sentences, practice conversations.
