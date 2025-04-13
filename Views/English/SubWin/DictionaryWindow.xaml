@@ -153,16 +153,13 @@
                           Background="WhiteSmoke"
                           Foreground="DarkSlateGray"
                           IsExpanded="True">
-                    <ScrollViewer Height="300"
-                                  VerticalScrollBarVisibility="Hidden"
-                                  HorizontalScrollBarVisibility="Disabled">
-                        <Grid>
-                            <uc:SelectionResultUC DataContext="{Binding DataContext.AIResult, RelativeSource={RelativeSource AncestorType=Window}, UpdateSourceTrigger=PropertyChanged}"
-                                                  Visibility="{Binding DataContext.AIResult, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"/>
-                            <TextBlock Text="{Binding AIResultMessage, UpdateSourceTrigger=PropertyChanged}"
+                    <Grid>
+                        <uc:SelectionResultUC MaxHeight="400" 
+                                              DataContext="{Binding DataContext.AIResult, RelativeSource={RelativeSource AncestorType=Window}, UpdateSourceTrigger=PropertyChanged}"
+                                              Visibility="{Binding DataContext.AIResult, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        <TextBlock Text="{Binding AIResultMessage, UpdateSourceTrigger=PropertyChanged}"
                                    Visibility="{Binding AIResultMessage, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
-                    </ScrollViewer>
+                    </Grid>
                 </Expander>
             </StackPanel>
         </DockPanel>

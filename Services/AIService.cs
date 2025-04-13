@@ -46,22 +46,72 @@ Please return ONLY a single JSON object (no explanation, no code block, no extra
 ""pronunciation"": "" / IPA / "",
 ""pos"": [
 {{
-""pos"": ""Part of speech of the word in Vietnamese"",
+""pos"": ""Part of speech in Vietnamese"",
 ""definitions"": [
 {{
-""definition"": ""Definition of the pos of the word in Vietnamese."",
+""definition"": ""Vietnamese definition of the word in this part of speech."",
 ""examples"": [
 {{
-""example"": ""Example sentence using the word."",
-""translation"": ""Translation of the sentence in Vietnamese.""
-}}
+""example"": ""English example sentence."",
+""translation"": ""Vietnamese translation of the sentence.""
+}},
+...
+]
+}},
+...
+]
+}},
+...
 ]
 }}
-]
+
+Requirements:
+- Include **all parts of speech** if the word has multiple.
+- For **each part of speech**, list **all meanings** (definitions).
+- For **each meaning**, list **multiple example sentences** (if available).
+- Output must be **raw JSON only**. No code block, no markdown, no explanation.
+- Replace all placeholder text with real data.
+
+Example output (for reference only, do not include in actual response):
+{{
+  ""word"": ""run"",
+  ""pronunciation"": ""/rʌn/"",
+  ""pos"": [
+    {{
+      ""pos"": ""động từ"",
+      ""definitions"": [
+        {{
+          ""definition"": ""chạy"",
+          ""examples"": [
+            {{
+              ""example"": ""I run every morning."",
+              ""translation"": ""Tôi chạy mỗi sáng.""
+            }},
+            {{
+              ""example"": ""She runs faster than me."",
+              ""translation"": ""Cô ấy chạy nhanh hơn tôi.""
+            }}
+          ]
+        }}
+      ]
+    }},
+    {{
+      ""pos"": ""danh từ"",
+      ""definitions"": [
+        {{
+          ""definition"": ""sự chạy"",
+          ""examples"": [
+            {{
+              ""example"": ""He went for a run in the park."",
+              ""translation"": ""Anh ấy đi chạy bộ trong công viên.""
+            }}
+          ]
+        }}
+      ]
+    }}
+  ]
 }}
-// allow multiple POS if the word has many
-]
-}}
+
 Please replace the values accordingly and do not include any explanation or code block formatting (like ```json). Output must be raw JSON only.
 ";
 
@@ -92,6 +142,14 @@ Please replace the values accordingly and do not include any explanation or code
             var jsonString = jsonObject["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString();
 
             if (string.IsNullOrEmpty(jsonString)) return null;
+
+            // Xử lý nếu bị bọc trong ```json hoặc ```
+            if (jsonString.Trim().StartsWith("```"))
+            {
+                jsonString = jsonString.Replace("```json", "")
+                                       .Replace("```", "")
+                                       .Trim();
+            }
 
             try
             {
