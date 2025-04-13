@@ -38,7 +38,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _word = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Word));
             }
         }
         public string Pos
@@ -47,7 +47,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _pos = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Pos));
             }
         }
         public string Meaning
@@ -56,7 +56,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _meaning = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Meaning));
             }
         }
         public string Example
@@ -65,7 +65,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _example = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Example));
             }
         }
         public string Note
@@ -74,7 +74,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _note = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Note));
             }
         }
         public int ReviewCount
@@ -83,7 +83,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _reviewCount = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(ReviewCount));
             }
         }
         public int CorrectStreak
@@ -92,7 +92,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _correctStreak = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(CorrectStreak));
             }
         }
         public DateTime LastReviewed
@@ -101,7 +101,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _lastReviewed = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(LastReviewed));
             }
         }
         public DateTime NextReview
@@ -110,7 +110,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _nextReview = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(NextReview));
             }
         }
         public bool IsLearned
@@ -119,7 +119,7 @@ namespace LaboratoryApp.Models.English
             set
             {
                 _isLearned = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsLearned));
             }
         }
     }

@@ -24,6 +24,9 @@
 
         <Grid Grid.Row="0"
               Margin="20,0,20,10">
+            <ProgressBar Minimum="0"
+                         Maximum="{Binding Flashcards.Count}"
+                         Value="{Binding CurrentCardIndex, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
         <Grid Grid.Row="1"
@@ -48,6 +51,7 @@
                                VerticalAlignment="Center" 
                                FontSize="24"/>
                     <TextBlock Text="{Binding CurrentFlashcard.Pos, UpdateSourceTrigger=PropertyChanged}"
+                               Visibility="{Binding CurrentFlashcard.Pos, Converter={StaticResource NullToVisibilityConverter}}"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="18"
@@ -69,6 +73,7 @@
                                VerticalAlignment="Center" 
                                FontSize="24"/>
                     <TextBlock Text="{Binding CurrentFlashcard.Example, UpdateSourceTrigger=PropertyChanged}" 
+                               Visibility="{Binding CurrentFlashcard.Example, Converter={StaticResource NullToVisibilityConverter}}"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="18"

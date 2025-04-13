@@ -13,10 +13,36 @@ namespace LaboratoryApp.Services
     public class FlashcardService
     {
         private List<FlashcardSet> _flashcardSets; // List of flashcard sets
-        private readonly string _jsonPath = ConfigurationManager.AppSettings["FlashcardJsonPath"]; // Path to the JSON file
+        private readonly string _jsonPath;
 
         public FlashcardService()
         {
+            string appDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LaboratoryApp");
+
+            if (!Directory.Exists(appDataFolder))
+            {
+                Directory.CreateDirectory(appDataFolder);
+            }
+
+            _jsonPath = Path.Combine(appDataFolder, "flashcards.json");
+
+            // Nếu chưa tồn tại, copy từ file gốc trong thư mục cài đặt
+            if (!File.Exists(_jsonPath))
+            {
+                string installPath = AppDomain.CurrentDomain.BaseDirectory;
+                string sourcePath = Path.Combine(installPath, "Database", "flashcards.json");
+
+                if (File.Exists(sourcePath))
+                {
+                    File.Copy(sourcePath, _jsonPath);
+                }
+                else
+                {
+                    // Nếu file gốc cũng không tồn tại, tạo file rỗng
+                    File.WriteAllText(_jsonPath, "[]");
+                }
+            }
+
             LoadData();
         }
 

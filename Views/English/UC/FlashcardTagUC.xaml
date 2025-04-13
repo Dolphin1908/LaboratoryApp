@@ -21,8 +21,10 @@
             BorderBrush="Gray">
         <Grid Margin="0,5">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -34,12 +36,23 @@
                        VerticalAlignment="Center"
                        Margin="5,0"/>
             <TextBlock Grid.Column="1"
-                       Text="{Binding Meaning, UpdateSourceTrigger=PropertyChanged}"
+                       Text="{Binding Pos, UpdateSourceTrigger=PropertyChanged}"
+                       TextWrapping="Wrap"
                        FontSize="20"
                        VerticalAlignment="Center"
                        Margin="5,0"/>
-
-            <Button Grid.Column="2"
+            <TextBlock Grid.Column="2"
+                       Text="{Binding Meaning, UpdateSourceTrigger=PropertyChanged}"
+                       TextWrapping="Wrap"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       Margin="5,0"/>
+            <TextBlock Grid.Column="3"
+                       Text="{Binding NextReview, StringFormat=HH:mm dd-MM-yyyy, UpdateSourceTrigger=PropertyChanged}"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       Margin="5,0"/>
+            <Button Grid.Column="4"
                     Command="{Binding DataContext.OpenUpdateFlashcardWindowCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                     CommandParameter="{Binding Id}"
                     Background="Transparent"
@@ -52,7 +65,7 @@
                                          Height="Auto"/>
             </Button>
             
-            <Button Grid.Column="3"
+            <Button Grid.Column="5"
                     Command="{Binding DataContext.DeleteFlashcardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                     CommandParameter="{Binding Id}"
                     Background="Transparent"

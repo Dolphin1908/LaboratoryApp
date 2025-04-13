@@ -20,7 +20,7 @@ namespace LaboratoryApp.ViewModels.English.SubWin
         private bool _isFrontVisible = true;
         private ScaleTransform _flipTransform;
         private FlashcardSet _flashcardSet;
-        private int _currentCardIndex = 0;
+        private int _currentCardIndex = 1;
         private List<FlashcardModel> _flashcards;
         private FlashcardModel _currentFlashcard;
         private FlashcardService _flashcardService;
@@ -65,6 +65,16 @@ namespace LaboratoryApp.ViewModels.English.SubWin
                 OnPropertyChanged(nameof(CurrentFlashcard));
             }
         }
+
+        public int CurrentCardIndex
+        {
+            get => _currentCardIndex;
+            set
+            {
+                _currentCardIndex = value;
+                OnPropertyChanged(nameof(CurrentCardIndex));
+            }
+        }
         #endregion
 
         public FlashcardStudyViewModel(FlashcardSet flashcardSet, FlashcardService flashcardService)
@@ -73,7 +83,13 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             _flashcardSet = flashcardSet;
             Flashcards = _flashcardSet.Flashcards.Where(f => f.NextReview < DateTime.Now).OrderBy(i => Guid.NewGuid()).ToList();
 
-            CurrentFlashcard = Flashcards[_currentCardIndex];
+            if(Flashcards.Count == 0)
+            {
+                MessageBox.Show("Hiện tại không có thẻ nào cần học lại.");
+                return;
+            }
+
+            CurrentFlashcard = Flashcards[CurrentCardIndex - 1];
 
             // Khởi tạo command
             MarkAsLearnedCommand = new RelayCommand<object>((p) => true, (p) => MarkAsLearned(p));
@@ -93,7 +109,7 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             CurrentFlashcard.IsLearned = true;
             CurrentFlashcard.CorrectStreak++;
             // Lưu lại thông tin
-            _flashcardSet.Flashcards[_currentCardIndex] = CurrentFlashcard;
+            Flashcards[CurrentCardIndex - 1] = CurrentFlashcard;
 
             MoveToNextCard(window);
         }
@@ -108,35 +124,46 @@ namespace LaboratoryApp.ViewModels.English.SubWin
             CurrentFlashcard.CorrectStreak = 0;
 
             // Lưu lại thông tin
-            _flashcardSet.Flashcards[_currentCardIndex] = CurrentFlashcard;
+            Flashcards[CurrentCardIndex - 1] = CurrentFlashcard;
 
             MoveToNextCard(window);
         }
 
         private void MoveToNextCard(object window)
         {
-            if (_currentCardIndex < Flashcards.Count - 1)
+            if (CurrentCardIndex < Flashcards.Count)
             {
-                _currentCardIndex++;
+                CurrentCardIndex++;
             }
             else
             {
-                _flashcardSet.Flashcards = new ObservableCollection<FlashcardModel>
-                (
-                    _flashcardSet.Flashcards.OrderBy(f => f.Id)
-                );
+                foreach (var flashcard in Flashcards)
+                {
+                    var temp = _flashcardSet.Flashcards.FirstOrDefault(f => f.Id == flashcard.Id);
+                    var index = _flashcardSet.Flashcards.IndexOf(temp);
+                    if (index != -1)
+                    {
+                        _flashcardSet.Flashcards[index] = flashcard;
+                    }
+                }
 
                 _flashcardService.UpdateFlashcardSet(_flashcardSet);
                 
                 if(window is Window win)
                 {
                     win.Close();
-                }    
+                }
+                return;
             }    
 
-            CurrentFlashcard = Flashcards[_currentCardIndex];
+            CurrentFlashcard = Flashcards[CurrentCardIndex - 1];
 
             ResetCardState();
+        }
+
+        private void SaveFlashcardSet()
+        {
+            _flashcardService.UpdateFlashcardSet(_flashcardSet);
         }
 
         private void ResetCardState()

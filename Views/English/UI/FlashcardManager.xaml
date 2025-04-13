@@ -26,25 +26,32 @@
         <!-- Flashcard Manager -->
         <Grid Grid.Column="0"
               Margin="10">
-            <StackPanel>
-                <Border BorderThickness="1"
-                        BorderBrush="Black"
-                        CornerRadius="10"
-                        Height="24">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" 
+                    BorderThickness="1"
+                    BorderBrush="Black"
+                    CornerRadius="10"
+                    Height="24">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <materialDesign:PackIcon Kind="Magnify" 
+                    <materialDesign:PackIcon Kind="Magnify" 
                                                  Grid.Column="0"
                                                  Height="20"
                                                  Width="20"
                                                  Margin="5,0"
                                                  VerticalAlignment="Center"
                                                  HorizontalAlignment="Center"/>
-                        <TextBox Grid.Column="1"
+                    <TextBox Grid.Column="1"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center"
                                  BorderThickness="0"
                                  Background="Transparent"
@@ -53,42 +60,47 @@
                                  Style="{x:Null}"
                                  BorderBrush="Transparent"
                                  Margin="0"/>
-                    </Grid>
-                </Border>
+                </Grid>
+            </Border>
 
-                <Button IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedButton"
-                        BorderThickness="0"
-                        Background="#76ff03"
-                        Margin="0,5"
-                        Height="32"
-                        materialDesign:ButtonAssist.CornerRadius="10"
-                        Command="{Binding AddFlashcardSetCommand}">
-                    <Grid VerticalAlignment="Center"
+            <Button Grid.Row="1"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Resource name: MaterialDesignRaisedButton"
+                    BorderThickness="0"
+                    Background="#76ff03"
+                    Margin="0,5"
+                    Height="32"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    Command="{Binding AddFlashcardSetCommand}">
+                <Grid VerticalAlignment="Center"
                           HorizontalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon Kind="Add"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Kind="Add"
                                                  Grid.Column="0"
                                                  Width="20"
                                                  Height="20"
                                                  VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1"
+                    <TextBlock Grid.Column="1"
                                    Text="Add Set"
                                    Margin="5,0,0,0"
                                    VerticalAlignment="Center"/>
-                    </Grid>
-                </Button>
-                
-                <Separator Width="200"
-                           Height="1"
-                           Background="Gray"
-                           BorderBrush="Gray"
-                           Margin="0,5"/>
-                <!-- Flashcard List -->
+                </Grid>
+            </Button>
+
+            <Separator Grid.Row="2"
+                       Width="200"
+                       Height="1"
+                       Background="Gray"
+                       BorderBrush="Gray"
+                       Margin="0,5"/>
+            <!-- Flashcard List -->
+            <ScrollViewer Grid.Row="3"
+                          VerticalScrollBarVisibility="Hidden"
+                          VerticalAlignment="Stretch">
                 <ItemsControl ItemsSource="{Binding FlashcardSets, UpdateSourceTrigger=PropertyChanged}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -96,9 +108,9 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </StackPanel>
+            </ScrollViewer>
         </Grid>
-        
+
         <!-- Flashcard Details -->
         <Border Grid.Column="1"
                 Padding="10"
@@ -205,7 +217,8 @@
                             <StackPanel Grid.Row="1"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Right"
-                                        Margin="0,5,0,0">
+                                        Margin="0,5,0,0"
+                                        Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}">
                                 <TextBlock Text="Last updated: "
                                            FontStyle="Italic"
                                            Margin="0,0,5,0"/>
@@ -225,8 +238,10 @@
                             BorderBrush="Gray">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="150"/>
                                 <ColumnDefinition Width="300"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Text="Word"
@@ -234,8 +249,18 @@
                                        FontSize="20"
                                        FontWeight="Bold"
                                        Margin="5,0"/>
-                            <TextBlock Text="Meaning"
+                            <TextBlock Text="Type"
                                        Grid.Column="1"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Margin="5,0"/>
+                            <TextBlock Text="Meaning"
+                                       Grid.Column="2"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Margin="5,0"/>
+                            <TextBlock Text="Available"
+                                       Grid.Column="3"
                                        FontSize="20"
                                        FontWeight="Bold"
                                        Margin="5,0"/>
@@ -297,7 +322,7 @@
                             </Button>
 
                             <Button Grid.Column="1"  
-                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    IsEnabled="{Binding CanStartSet, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedButton"
                                     Background="Cyan"
@@ -320,7 +345,7 @@
                                                              Width="24"
                                                              Height="24"/>
                                     <TextBlock Grid.Column="1"
-                                               Text="Start set"
+                                               Text="{Binding StartSetButtonText, UpdateSourceTrigger=PropertyChanged}"
                                                Margin="5,0,0,0"
                                                VerticalAlignment="Center"/>
                                 </Grid>

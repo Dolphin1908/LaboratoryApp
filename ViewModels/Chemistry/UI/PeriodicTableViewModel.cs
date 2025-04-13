@@ -53,11 +53,11 @@ namespace LaboratoryApp.ViewModels.Chemistry.UI
                 int row = 0;
                 foreach (Match match in matches)
                 {
-                    string principalQuantumNumber = match.Groups[1].Value;
-                    string sublevel = match.Groups[2].Value;
-                    string electrons = match.Groups[3].Value;
-                    row = Math.Max(int.Parse(principalQuantumNumber), row);
-                    column += int.Parse(electrons);
+                    string principalQuantumNumber = match.Groups[1].Value; // Principal quantum number
+                    string sublevel = match.Groups[2].Value; // Sublevel (s, p, d, f)
+                    string electrons = match.Groups[3].Value; // Number of electrons in the sublevel
+                    row = Math.Max(int.Parse(principalQuantumNumber), row); // Get the maximum principal quantum number
+                    column += int.Parse(electrons); // Add the number of electrons in the sublevel
                 }
 
                 if (row == 1 && column != 1) column += 16;

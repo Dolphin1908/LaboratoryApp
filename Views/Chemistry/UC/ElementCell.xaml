@@ -14,8 +14,8 @@
              Background="{DynamicResource MaterialDesignPaper}"
              FontFamily="{DynamicResource MaterialDesignFont}"
              mc:Ignorable="d"
-             MinHeight="50"  MinWidth="50" 
-             MaxHeight="100" MaxWidth="100">
+             MinHeight="40"  MinWidth="40" 
+             MaxHeight="90" MaxWidth="75">
     <Button BorderThickness="0" 
             Background="{Binding Element.color, Converter={StaticResource ColorToBrushConverter}}" 
             Height="Auto"
@@ -30,11 +30,11 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <!-- Atomic Number -->
-            <TextBlock Text="{Binding Element.atomic_number}" FontSize="12" Margin="0, 8" Grid.Row="0" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Element.atomic_number}" FontSize="12" Margin="0, 4" Grid.Row="0" HorizontalAlignment="Center"/>
             <!-- Symbol -->
             <TextBlock Text="{Binding Element.symbol}" FontSize="18" FontWeight="Bold" Margin="0, 8" Grid.Row="1" HorizontalAlignment="Center"/>
             <!-- Atomic Mass -->
-            <TextBlock Text="{Binding Element.atomic_mass, StringFormat={}{0:F0}}" FontSize="9" Margin="0, 8" Grid.Row="2" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Element.atomic_mass, StringFormat={}{0:F0}}" FontSize="9" Margin="0, 4" Grid.Row="2" HorizontalAlignment="Center"/>
         </Grid>
     </Button>
 </UserControl>

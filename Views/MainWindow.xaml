@@ -18,11 +18,12 @@
         ResizeMode="CanResize"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        Icon="/Resources/Laboratory.ico"
         mc:Ignorable="d"
         Title="Laboratory"
-        MinHeight="1000"
-        MinWidth="1400">
+        MinHeight="855"
+        MinWidth="1250"
+        Height="Auto"
+        Width="Auto">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

@@ -12,6 +12,9 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using LaboratoryApp.Views.English.SubWin;
 using LaboratoryApp.ViewModels.English.SubWin;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using LaboratoryApp.Models.DTOs;
 
 namespace LaboratoryApp.ViewModels.English.UI
 {
@@ -20,6 +23,10 @@ namespace LaboratoryApp.ViewModels.English.UI
         // Fields
         private FlashcardSet _selectedFlashcardSet; // Currently selected flashcard set
         private ObservableCollection<FlashcardSet> _flashcardSets; // List of flashcard sets
+        private DateTime _nearlyNextReview; // Date for the next review
+        private bool _canStartSet; // Flag to check if the set can be started
+        private string _startSetButtonText; // Text for the start set button
+        private string _searchText; // Text for searching flashcards
 
         // Data
         private List<WordModel> _allWords; // List of all words
@@ -47,8 +54,20 @@ namespace LaboratoryApp.ViewModels.English.UI
             get => _selectedFlashcardSet;
             set
             {
+                if (_selectedFlashcardSet == value) return;
+
+                // Hủy đăng ký sự kiện từ set cũ
+                UnsubscribeFromFlashcardEvents(_selectedFlashcardSet);
+
                 _selectedFlashcardSet = value;
                 OnPropertyChanged(nameof(SelectedFlashcardSet));
+
+                // Đăng ký sự kiện cho set mới
+                SubscribeToFlashcardEvents(_selectedFlashcardSet);
+
+                UpdateNearlyNextReview();
+                OnPropertyChanged(nameof(CanStartSet));
+                OnPropertyChanged(nameof(StartSetButtonText));
             }
         }
 
@@ -60,6 +79,128 @@ namespace LaboratoryApp.ViewModels.English.UI
                 _flashcardSets = value;
                 OnPropertyChanged(nameof(FlashcardSets));
             }
+        }
+
+        public DateTime NearlyNextReview
+        {
+            get => _nearlyNextReview;
+            set
+            {
+                _nearlyNextReview = value;
+                OnPropertyChanged(nameof(NearlyNextReview));
+                OnPropertyChanged(nameof(CanStartSet));
+                OnPropertyChanged(nameof(StartSetButtonText));
+            }
+        }
+
+        public bool CanStartSet
+        {
+            get
+            {
+                if (SelectedFlashcardSet != null && SelectedFlashcardSet.Flashcards.Count == 0) 
+                    return false;
+                if (SelectedFlashcardSet != null && SelectedFlashcardSet.Flashcards.All(f => f.IsLearned)) 
+                    return false;
+                return NearlyNextReview < DateTime.Now;
+            }
+        }
+
+        public string StartSetButtonText
+        {
+            get
+            {
+                if (CanStartSet) 
+                    return "Start set";
+                if (SelectedFlashcardSet != null && SelectedFlashcardSet.Flashcards.Count == 0)
+                    return "No flashcards";
+                return $"Next: {NearlyNextReview:HH:mm dd/MM/yyyy}";
+            }
+        }
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+                UpdateSuggestions();
+            }
+        }
+        #endregion
+
+        #region OnPropertyChanged
+        private void SubscribeToFlashcardEvents(FlashcardSet set)
+        {
+            if (set == null) return;
+
+            set.Flashcards.CollectionChanged += Flashcards_CollectionChanged;
+            foreach (var flashcard in set.Flashcards)
+            {
+                flashcard.PropertyChanged += Flashcard_PropertyChanged;
+            }
+        }
+
+        private void UnsubscribeFromFlashcardEvents(FlashcardSet set)
+        {
+            if (set == null) return;
+
+            set.Flashcards.CollectionChanged -= Flashcards_CollectionChanged;
+            foreach (var flashcard in set.Flashcards)
+            {
+                flashcard.PropertyChanged -= Flashcard_PropertyChanged;
+            }
+        }
+
+        private void Flashcards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            // Xử lý khi thêm/xóa flashcard
+            if (e.NewItems != null)
+            {
+                foreach (FlashcardModel item in e.NewItems)
+                {
+                    item.PropertyChanged += Flashcard_PropertyChanged;
+                }
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (FlashcardModel item in e.OldItems)
+                {
+                    item.PropertyChanged -= Flashcard_PropertyChanged;
+                }
+            }
+
+            UpdateNearlyNextReview();
+            OnPropertyChanged(nameof(CanStartSet));
+            OnPropertyChanged(nameof(StartSetButtonText));
+        }
+
+        private void Flashcard_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Khi NextReview hoặc IsLearned thay đổi
+            if (e.PropertyName == nameof(FlashcardModel.NextReview) ||
+                e.PropertyName == nameof(FlashcardModel.IsLearned))
+            {
+                UpdateNearlyNextReview();
+                OnPropertyChanged(nameof(CanStartSet));
+                OnPropertyChanged(nameof(StartSetButtonText));
+            }
+        }
+
+        private void UpdateNearlyNextReview()
+        {
+            if (SelectedFlashcardSet == null || !SelectedFlashcardSet.Flashcards.Any())
+            {
+                NearlyNextReview = DateTime.MaxValue;
+                return;
+            }
+
+            NearlyNextReview = SelectedFlashcardSet.Flashcards.Any()
+                ? SelectedFlashcardSet.Flashcards.Min(f => f.NextReview)
+                : DateTime.Now;
+
+            OnPropertyChanged(nameof(CanStartSet));
         }
         #endregion
 
@@ -179,6 +320,7 @@ namespace LaboratoryApp.ViewModels.English.UI
         private void AddNewFlashcard(FlashcardModel flashcard)
         {
             _flashcardService.AddFlashcardToSet(_selectedFlashcardSet.Id, flashcard); // Add the new flashcard to the selected set
+            OnPropertyChanged(nameof(SelectedFlashcardSet));
         }
 
         /// <summary>
@@ -188,6 +330,7 @@ namespace LaboratoryApp.ViewModels.English.UI
         private void UpdateFlashcard(FlashcardModel flashcard)
         {
             _flashcardService.UpdateFlashcard(_selectedFlashcardSet.Id, flashcard); // Update the flashcard in the selected set
+            OnPropertyChanged(nameof(SelectedFlashcardSet));
         }
 
         /// <summary>
@@ -198,6 +341,24 @@ namespace LaboratoryApp.ViewModels.English.UI
         {
             var flashcard = _selectedFlashcardSet.Flashcards.FirstOrDefault(f => f.Id == flashcardId);
             _flashcardService.DeleteFlashcardFromSet(_selectedFlashcardSet.Id, flashcard); // Delete the flashcard from the selected set
+            OnPropertyChanged(nameof(SelectedFlashcardSet));
+        }
+
+        private void UpdateSuggestions()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                LoadFlashcardSets(); // Load all flashcard sets if search text is empty
+                return;
+            }
+
+            var matches = _flashcardSets.Where(set => set.Name.Contains(SearchText,StringComparison.OrdinalIgnoreCase)).ToList();
+
+            FlashcardSets.Clear();
+            foreach (var match in matches)
+            {
+                FlashcardSets.Add(match);
+            }
         }
 
         /// <summary>

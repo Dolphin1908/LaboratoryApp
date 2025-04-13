@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Laboratory.ico</ApplicationIcon>
+    <PackageIcon>Laboratory.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +19,6 @@
     <None Remove="Resources\Icons\divide.png" />
     <None Remove="Resources\Icons\squared.png" />
     <None Remove="Resources\Laboratory.ico" />
-    <None Remove="Resources\Laboratory.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +53,13 @@
     </None>
     <None Update="Database\dictionary.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\flashcards.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Laboratory.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
