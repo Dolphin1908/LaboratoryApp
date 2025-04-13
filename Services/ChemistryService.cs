@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 using LaboratoryApp.Database.Provider;
 using LaboratoryApp.Models.Chemistry;
+using LaboratoryApp.Support.Helpers;
 
 namespace LaboratoryApp.Services
 {
     public class ChemistryService
     {
-        private readonly string _chemDbPath = ConfigurationManager.AppSettings["ChemistryDbPath"];
+        private readonly string _chemDbPath = AppConfigHelper.GetKey("ChemistryDbPath");
 
         public List<ElementModel> GetAllElements()
         {

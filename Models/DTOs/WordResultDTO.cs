@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LaboratoryApp.Models.DTOs
 {
-    class WordResultDTO
+    public class WordResultDTO
     {
         public long Id { get; set; }
         public string Word { get; set; }

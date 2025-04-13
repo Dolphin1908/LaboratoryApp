@@ -1,17 +1,19 @@
-﻿using LaboratoryApp.Database.Provider;
-using LaboratoryApp.Models.English;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LaboratoryApp.Models.English;
+using LaboratoryApp.Database.Provider;
+using LaboratoryApp.Support.Helpers;
+
 namespace LaboratoryApp.Services
 {
     public class EnglishService
     {
-        private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
+        private readonly string _englishDbPath = AppConfigHelper.GetKey("EnglishDbPath");
 
         public List<WordModel> GetAllWords()
         {

@@ -48,6 +48,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="App.secret.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Database\chem.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -66,7 +69,6 @@
   <ItemGroup>
     <Folder Include="Models\Physics\" />
     <Folder Include="Models\Math\" />
-    <Folder Include="Support\Helpers\" />
     <Folder Include="ViewModels\Chemistry\UC\" />
     <Folder Include="ViewModels\English\UC\" />
     <Folder Include="ViewModels\Maths\SubWin\" />
