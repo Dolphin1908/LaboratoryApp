@@ -362,6 +362,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/App.secret.config
-/Support/Encryption/AESEncryption.cs
 /Support/Helpers/SecureConfigHelper.cs
