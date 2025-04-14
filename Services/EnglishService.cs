@@ -13,7 +13,7 @@ namespace LaboratoryApp.Services
 {
     public class EnglishService
     {
-        private readonly string _englishDbPath = AppConfigHelper.GetKey("EnglishDbPath");
+        private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
 
         public List<WordModel> GetAllWords()
         {

@@ -13,7 +13,7 @@ namespace LaboratoryApp.Services
 {
     public class ChemistryService
     {
-        private readonly string _chemDbPath = AppConfigHelper.GetKey("ChemistryDbPath");
+        private readonly string _chemDbPath = ConfigurationManager.AppSettings["ChemistryDbPath"];
 
         public List<ElementModel> GetAllElements()
         {

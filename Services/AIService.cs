@@ -19,13 +19,17 @@ using System.Windows.Shapes;
 using System.Speech.Recognition;
 using System.Xml;
 
+using LaboratoryApp.Support.Helpers;
+using System.Windows;
+using System.Configuration;
+
 namespace LaboratoryApp.Services
 {
     public class AIService
     {
         private readonly HttpClient _httpClient;
 
-        private readonly string _apiKey = AppConfigHelper.GetKey("GeminiApiKey");
+        private readonly string _apiKey = ConfigurationManager.AppSettings["GeminiApiKey"];
 
         public AIService()
         {
@@ -34,7 +38,9 @@ namespace LaboratoryApp.Services
 
         public async Task<WordResultDTO> SearchWordWithAIAsync(string word)
         {
-            var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={_apiKey}";
+            var decrypted = SecureConfigHelper.Decrypt(_apiKey);
+
+            var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={decrypted}";
 
             var prompt = @$"
 Given the English word: \""{word}\"".
@@ -114,7 +120,6 @@ Example output (for reference only, do not include in actual response):
 
 Please replace the values accordingly and do not include any explanation or code block formatting (like ```json). Output must be raw JSON only.
 ";
-
 
             var requestBody = new
             {
