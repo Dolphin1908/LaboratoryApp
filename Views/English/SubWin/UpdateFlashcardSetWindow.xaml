@@ -15,11 +15,11 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Style="{StaticResource MaterialDesignWindow}"
         mc:Ignorable="d"
-        Title="Update Flashcard Set" Height="235" Width="400">
+        Title="Cập nhật thông tin bộ" Height="235" Width="400">
 
     <StackPanel Margin="10">
         <TextBox materialDesign:HintAssist.HelperText="Helper text longer than error"
-                 materialDesign:HintAssist.Hint="Name"
+                 materialDesign:HintAssist.Hint="Tên bộ"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
                  Margin="0,0,0,20">
@@ -33,7 +33,7 @@
             </TextBox.Text>
         </TextBox>
 
-        <TextBox materialDesign:HintAssist.Hint="Description"
+        <TextBox materialDesign:HintAssist.Hint="Mô tả"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
                  Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"

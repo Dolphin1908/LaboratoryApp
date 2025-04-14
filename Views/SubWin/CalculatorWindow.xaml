@@ -14,7 +14,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="CalculatorWindow"
+        Title="Máy tính cơ bản"
         Height="510"
         Width="350"
         ResizeMode="NoResize"

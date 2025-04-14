@@ -40,7 +40,7 @@
                 Command="{Binding OpenCalculatorCommand}">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon Kind="Calculator" Margin="0,0,10,0"/>
-                <TextBlock Text="Calculator" />
+                <TextBlock Text="Máy tính cơ bản" />
             </StackPanel>
         </Button>
     </Grid>

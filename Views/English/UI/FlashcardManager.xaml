@@ -85,7 +85,7 @@
                                                  Height="20"
                                                  VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1"
-                                   Text="Add Set"
+                                   Text="Thêm bộ mới"
                                    Margin="5,0,0,0"
                                    VerticalAlignment="Center"/>
                 </Grid>
@@ -176,7 +176,7 @@
                                                                  Width="24"
                                                                  Height="24"/>
                                         <TextBlock Grid.Column="1"
-                                                   Text="Edit set"
+                                                   Text="Sửa bộ"
                                                    Margin="5,0,0,0"
                                                    VerticalAlignment="Center"/>
                                     </Grid>
@@ -207,7 +207,7 @@
                                                                  Width="24"
                                                                  Height="24"/>
                                         <TextBlock Grid.Column="1"
-                                                   Text="Delete set"
+                                                   Text="Xóa bộ"
                                                    Margin="5,0,0,0"
                                                    VerticalAlignment="Center"/>
                                     </Grid>
@@ -244,22 +244,22 @@
                                 <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Word"
+                            <TextBlock Text="Từ"
                                        Grid.Column="0"
                                        FontSize="20"
                                        FontWeight="Bold"
                                        Margin="5,0"/>
-                            <TextBlock Text="Type"
+                            <TextBlock Text="Từ loại"
                                        Grid.Column="1"
                                        FontSize="20"
                                        FontWeight="Bold"
                                        Margin="5,0"/>
-                            <TextBlock Text="Meaning"
+                            <TextBlock Text="Nghĩa"
                                        Grid.Column="2"
                                        FontSize="20"
                                        FontWeight="Bold"
                                        Margin="5,0"/>
-                            <TextBlock Text="Available"
+                            <TextBlock Text="Thời gian chờ"
                                        Grid.Column="3"
                                        FontSize="20"
                                        FontWeight="Bold"
@@ -315,7 +315,7 @@
                                                              Width="24"
                                                              Height="24"/>
                                     <TextBlock Grid.Column="1"
-                                               Text="Add card"
+                                               Text="Thêm thẻ mới"
                                                Margin="5,0,0,0"
                                                VerticalAlignment="Center"/>
                                 </Grid>

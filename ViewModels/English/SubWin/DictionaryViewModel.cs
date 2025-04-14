@@ -120,7 +120,7 @@ namespace LaboratoryApp.ViewModels.English.SubWin
                 string searchText = p;
 
                 if (string.IsNullOrWhiteSpace(p))
-                    searchText = SearchText;
+                    searchText = SelectedWordResult.Word;
 
                 IsLoadingAI = true;
                 AIResultMessage = "Loading...";

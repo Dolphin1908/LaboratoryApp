@@ -24,13 +24,13 @@
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
                 <RadioButton Margin="4"
                              Padding="0, 10"
-                             Content="Periodic Table"
+                             Content="Bảng tuần hoàn"
                              IsChecked="False"
                              Command="{Binding NavigateToPeriodicTableCommand}"
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />
                 <RadioButton Margin="4"
                              Padding="0, 10"
-                             Content="Toolkits"
+                             Content="Bộ công cụ"
                              IsChecked="False"
                              Command="{Binding NavigateToToolkitCommand}"
                              Style="{StaticResource MaterialDesignTabRadioButtonRight}" />

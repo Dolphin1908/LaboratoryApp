@@ -17,11 +17,11 @@
         ResizeMode="NoResize"
         Height="445" 
         Width="400"
-        Title="Update Flashcard">
+        Title="Cập nhật thông tin thẻ">
 
     <StackPanel Margin="10">
         <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Word"
+                 materialDesign:HintAssist.Hint="Từ vựng"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  Margin="0,0,0,20">
             <TextBox.Text>
@@ -35,13 +35,13 @@
         </TextBox>
 
         <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Type of word"
+                 materialDesign:HintAssist.Hint="Từ loại"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  Margin="0,0,0,20"
                  Text="{Binding Pos, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Meaning"
+                 materialDesign:HintAssist.Hint="Nghĩa"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  Margin="0,0,0,20">
             <TextBox.Text>
@@ -55,13 +55,13 @@
         </TextBox>
 
         <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Example"
+                 materialDesign:HintAssist.Hint="Ví dụ"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  Margin="0,0,0,20"
                  Text="{Binding Example, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Note"
+                 materialDesign:HintAssist.Hint="Ghi chú"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  Margin="0,0,0,20"
                  Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"/>
@@ -109,7 +109,7 @@
                     <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
                                Margin="5,0"
-                               Text="Dictionary"/>
+                               Text="Từ điển"/>
                 </Grid>
             </Button>
         </Grid>

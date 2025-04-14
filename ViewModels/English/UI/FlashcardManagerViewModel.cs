@@ -110,10 +110,10 @@ namespace LaboratoryApp.ViewModels.English.UI
             get
             {
                 if (CanStartSet) 
-                    return "Start set";
+                    return "Bắt đầu";
                 if (SelectedFlashcardSet != null && SelectedFlashcardSet.Flashcards.Count == 0)
-                    return "No flashcards";
-                return $"Next: {NearlyNextReview:HH:mm dd/MM/yyyy}";
+                    return "Không có thẻ nào";
+                return $"Đợi tới: {NearlyNextReview:HH:mm dd/MM/yyyy}";
             }
         }
 

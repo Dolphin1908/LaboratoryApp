@@ -14,7 +14,7 @@ namespace LaboratoryApp.Support.Domain
         {
             if (string.IsNullOrWhiteSpace(value as string))
             {
-                return new ValidationResult(false, "This field cannot be empty.");
+                return new ValidationResult(false, "Vui lòng điền vào trường này");
             }
             return ValidationResult.ValidResult;
         }
