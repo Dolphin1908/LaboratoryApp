@@ -1,17 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:main="clr-namespace:LaboratoryApp.ViewModels.Chemistry"
-                    xmlns:ui="clr-namespace:LaboratoryApp.ViewModels.Chemistry.UI"
-                    xmlns:sw="clr-namespace:LaboratoryApp.ViewModels.Chemistry.SubWin">
+                    xmlns:sw_pd="clr-namespace:LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin">
     <!-- Main -->
     <main:ChemistryMainWindowViewModel x:Key="ChemistryMainVM"></main:ChemistryMainWindowViewModel>
 
     <!-- UI -->
-    <ui:PeriodicTableViewModel x:Key="PeriodicTableVM"></ui:PeriodicTableViewModel>
 
     <!-- UC -->
 
     <!-- SubWindow -->
-    <sw:ElementInfoViewModel x:Key="ElementInfoVM"></sw:ElementInfoViewModel>
+    <sw_pd:ElementInfoViewModel x:Key="ElementInfoVM"></sw_pd:ElementInfoViewModel>
+    <sw_pd:PeriodicTableViewModel x:Key="PeriodicTableVM"></sw_pd:PeriodicTableViewModel>
 
 </ResourceDictionary>

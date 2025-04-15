@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using LaboratoryApp.Support.Interface;
-using LaboratoryApp.Views.UI;
+using LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin;
+using LaboratoryApp.Views.Chemistry.PeriodicTable.SubWin;
 
 namespace LaboratoryApp.ViewModels.Chemistry
 {
@@ -24,7 +25,11 @@ namespace LaboratoryApp.ViewModels.Chemistry
             // Initialize commands
             NavigateToPeriodicTableCommand = new RelayCommand<object>((p)=>true, (p) =>
             {
-                _navigationService.NavigateTo(new PeriodicTable());
+                var periodicWindow = new PeriodicTableWindow
+                {
+                    DataContext = new PeriodicTableViewModel()
+                };
+                periodicWindow.Show();
             });
         }
     }

@@ -20,10 +20,11 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="Laboratory"
-        MinHeight="855"
-        MinWidth="1250"
-        Height="Auto"
-        Width="Auto">
+        MinHeight="600"
+        MinWidth="1225"
+        MaxWidth="1375"
+        Height="600"
+        Width="1225">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

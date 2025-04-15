@@ -8,8 +8,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using LaboratoryApp.Support.Interface;
+using LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin;
 using LaboratoryApp.ViewModels.UC;
 using LaboratoryApp.ViewModels.UI;
+using LaboratoryApp.Views.Chemistry.PeriodicTable.SubWin;
 using LaboratoryApp.Views.UI;
 
 namespace LaboratoryApp.ViewModels
@@ -67,7 +69,11 @@ namespace LaboratoryApp.ViewModels
             // Navigate to the periodic table page
             NavigateToPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo(new PeriodicTable());
+                var periodicWindow = new PeriodicTableWindow
+                {
+                    DataContext = new PeriodicTableViewModel()
+                };
+                periodicWindow.Show();
             });
 
             // Navigate to the toolkits page

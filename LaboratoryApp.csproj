@@ -66,14 +66,19 @@
   <ItemGroup>
     <Folder Include="Models\Physics\" />
     <Folder Include="Models\Math\" />
-    <Folder Include="ViewModels\Chemistry\UC\" />
-    <Folder Include="ViewModels\English\UC\" />
+    <Folder Include="ViewModels\Chemistry\PeriodicTable\UC\" />
+    <Folder Include="ViewModels\Chemistry\PeriodicTable\UI\" />
+    <Folder Include="ViewModels\English\Flashcard\UC\" />
+    <Folder Include="ViewModels\English\Dictionary\UC\" />
+    <Folder Include="ViewModels\English\Dictionary\UI\" />
     <Folder Include="ViewModels\Maths\SubWin\" />
     <Folder Include="ViewModels\Maths\UC\" />
     <Folder Include="ViewModels\Maths\UI\" />
     <Folder Include="ViewModels\Physics\SubWin\" />
     <Folder Include="ViewModels\Physics\UC\" />
     <Folder Include="ViewModels\Physics\UI\" />
+    <Folder Include="Views\Chemistry\PeriodicTable\UI\" />
+    <Folder Include="Views\English\Dictionary\UI\" />
     <Folder Include="Views\Maths\SubWin\" />
     <Folder Include="Views\Maths\UC\" />
     <Folder Include="Views\Maths\UI\" />

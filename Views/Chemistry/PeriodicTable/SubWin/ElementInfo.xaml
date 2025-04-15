@@ -1,0 +1,111 @@
+﻿<Window x:Class="LaboratoryApp.Views.Chemistry.PeriodicTable.SubWin.ElementInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaboratoryApp.Views.Chemistry.PeriodicTable.SubWin"
+        mc:Ignorable="d"
+        MinHeight="450" MaxHeight="450"
+        MinWidth="400" MaxWidth="400"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="{Binding Element.color, Converter={StaticResource ColorToBrushConverter}}"
+        Name="ElementInfoWindow"
+        Title="Chi tiết nguyên tố">
+    <Grid VerticalAlignment="Center" 
+          HorizontalAlignment="Center"
+          Margin="0,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="{Binding Element.symbol}" 
+                       FontSize="80" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,5"/>
+            <TextBlock Text="{Binding Element.name}" 
+                       FontSize="20" 
+                       FontStyle="Italic" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,10"/>
+        </StackPanel>
+        <Grid Grid.Row="1" 
+              Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Khối lượng nguyên tử: " 
+                           FontSize="12"/>
+                <TextBlock Text="Cấu hình electron: " 
+                           FontSize="12"/>
+                <TextBlock Text="Điện tích hóa trị: " 
+                           FontSize="12"/>
+                <TextBlock Text="Bán kính nguyên tử: " 
+                           FontSize="12"/>
+                <TextBlock Text="Năng lượng ion hóa: " 
+                           FontSize="12"/>
+                <TextBlock Text="Năng lượng electron hóa: "
+                           FontSize="12"/>
+                <TextBlock Text="Trạng thái ôxi hóa: "
+                           FontSize="12"/>
+                <TextBlock Text="Trạng thái: " 
+                           FontSize="12"/>
+                <TextBlock Text="Nhiệt độ nóng chảy: "
+                           FontSize="12"/>
+                <TextBlock Text="Nhiệt độ sôi: " 
+                           FontSize="12"/>
+                <TextBlock Text="Tỉ trọng: " 
+                           FontSize="12"/>
+                <TextBlock Text="Phân loại: " 
+                           FontSize="12"/>
+                <TextBlock Text="Năm phát hiện: " 
+                           FontSize="12"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="{Binding Element.atomic_mass}"
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.electron_configuration}"
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.electronegativity}"
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.atomic_radius}" 
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.ionization_energy}"
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.electron_affinity}"
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.oxidation_states}"
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.phase}"
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.melting_point}" 
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.boiling_point}" 
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.density}" 
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.category}" 
+                           FontSize="12"/>
+                <TextBlock Text="{Binding Element.discovery_year}" 
+                           FontSize="12"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Button Width="100"
+                    Content="Done"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}"
+                    BorderThickness="0"
+                    Background="WhiteSmoke"
+                    ToolTip="Resource name: MaterialDesignRaisedLightButton"
+                    Command="{Binding CloseElementInfoCommand}"
+                    CommandParameter="{Binding ElementName=ElementInfoWindow}"/>
+        </Grid>
+    </Grid>
+</Window>

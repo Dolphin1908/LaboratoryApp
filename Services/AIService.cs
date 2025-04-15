@@ -1,27 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 
 using Newtonsoft.Json;
 
-using LaboratoryApp.Models.DTOs;
 using LaboratoryApp.Support.Helpers;
 using Newtonsoft.Json.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.Numerics;
-using System.Transactions;
-using System.Windows.Shapes;
-using System.Speech.Recognition;
-using System.Xml;
-
-using LaboratoryApp.Support.Helpers;
-using System.Windows;
-using System.Configuration;
+using LaboratoryApp.Models.English.DTOs;
 
 namespace LaboratoryApp.Services
 {

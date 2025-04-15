@@ -1,16 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:main="clr-namespace:LaboratoryApp.ViewModels.English"
-                    xmlns:ui="clr-namespace:LaboratoryApp.ViewModels.English.UI"
-                    xmlns:sw="clr-namespace:LaboratoryApp.ViewModels.English.SubWin">
+                    xmlns:ui_fc="clr-namespace:LaboratoryApp.ViewModels.English.Flashcard.UI"
+                    xmlns:sw_fc="clr-namespace:LaboratoryApp.ViewModels.English.Flashcard.SubWin"
+                    xmlns:sw_dic="clr-namespace:LaboratoryApp.ViewModels.English.Dictionary.SubWin">
     <!-- Main -->
     <main:EnglishMainWindowViewModel x:Key="EnglishMainVM"></main:EnglishMainWindowViewModel>
     
     <!-- UI -->
-    <ui:FlashcardManagerViewModel x:Key="FlashcardManagerVM"></ui:FlashcardManagerViewModel>
+    <ui_fc:FlashcardManagerViewModel x:Key="FlashcardManagerVM"></ui_fc:FlashcardManagerViewModel>
 
     <!-- SubWindow -->
-    <sw:DictionaryViewModel x:Key="DictionaryVM"></sw:DictionaryViewModel>
-    <sw:FlashcardViewModel x:Key="FlashcardVM"></sw:FlashcardViewModel>
+    <sw_dic:DictionaryViewModel x:Key="DictionaryVM"></sw_dic:DictionaryViewModel>
+    <sw_fc:FlashcardViewModel x:Key="FlashcardVM"></sw_fc:FlashcardViewModel>
 
 </ResourceDictionary>

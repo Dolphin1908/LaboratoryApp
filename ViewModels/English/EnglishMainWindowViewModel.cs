@@ -7,10 +7,10 @@ using System.Windows.Input;
 
 using LaboratoryApp.Services;
 using LaboratoryApp.Support.Interface;
-using LaboratoryApp.ViewModels.English.SubWin;
-using LaboratoryApp.ViewModels.English.UI;
-using LaboratoryApp.Views.English.SubWin;
-using LaboratoryApp.Views.English.UI;
+using LaboratoryApp.ViewModels.English.Dictionary.SubWin;
+using LaboratoryApp.ViewModels.English.Flashcard.UI;
+using LaboratoryApp.Views.English.Dictionary.SubWin;
+using LaboratoryApp.Views.English.Flashcard.UI;
 
 namespace LaboratoryApp.ViewModels.English
 {
