@@ -8,14 +8,14 @@ using LaboratoryApp.Support.Interface;
 
 namespace LaboratoryApp.ViewModels.Physics
 {
-    class PhysicsMainWindowViewModel : BaseViewModel
+    class PhysicsMainPageViewModel : BaseViewModel
     {
         private readonly INavigationService _navigationService;
 
         #region Commands
         #endregion
 
-        public PhysicsMainWindowViewModel(INavigationService navigationService)
+        public PhysicsMainPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }

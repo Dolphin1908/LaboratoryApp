@@ -1,0 +1,630 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/style.css" />
+</head>
+
+<body>
+    <div id="webcrumbs">
+        <div class="relative bg-gray-50 font-sans rounded-xl overflow-hidden shadow-lg">
+            <div class="flex h-[calc(100vh-48px)] overflow-hidden">
+                <div class="w-64 bg-white border-r p-6 overflow-y-auto h-full">
+                    <h2 class="text-primary-600 text-center font-semibold mb-4 text-lg">Mục lục</h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <ul class="mt-1 space-y-1">
+                                <li>
+                                    <a href="#header"
+                                       class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                       Từ loại
+                                    </a>
+                                </li>
+
+                                <ul class="pl-7 mt-1 space-y-2">
+                                    <li>
+                                        <a href="#section-1"
+                                           class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                            Danh sách các từ loại
+                                        </a>
+                                    </li>
+                                    <ol class="text-xs text-gray-700 pl-7 mt-1 space-y-1" style="list-style-type: decimal">
+                                        <li>
+                                            <a href="#nouns"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Danh từ
+                                                (Nouns)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#pronouns"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Đại từ
+                                                (Pronouns)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#verbs"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Động từ
+                                                (Verbs)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#adjectives"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Tính từ
+                                                (Adjectives)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#adverbs"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Trạng từ
+                                                (Adverbs)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#prepositions"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Giới từ
+                                                (Prepositions)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#determiners"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Từ hạn định
+                                                (Determiners)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#conjunctions"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Liên từ
+                                                (Conjunctions)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#interjections"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Thán từ
+                                                (Interjections)
+                                            </a>
+                                        </li>
+                                    </ol>
+
+                                    <li>
+                                        <a href="#section-2"
+                                           class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                            Cách chuyển đổi từ loại
+                                        </a>
+                                    </li>
+                                    <ol class="text-xs text-gray-700 pl-7 mt-1 space-y-1" style="list-style-type: decimal">
+                                        <li>
+                                            <a href="#convert-nouns"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Cách chuyển đổi thành danh từ
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#convert-adjectives"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Cách chuyển đổi thành tính từ
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#convert-adverbs"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Cách chuyển đổi thành trạng từ
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#convert-exceptions"
+                                               class="text-xs text-gray-700 hover:text-primary-600 hover:underline transition-colors flex items-center py-1">
+                                                Một số ngoại lệ
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </ul>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="flex-1 overflow-y-auto bg-white h-full">
+                    <div id="header" class="max-w-3xl mx-auto bg-white p-6">
+                        <h1 class="text-xl text-center font-bold mb-4">Từ loại (Parts of Speech)</h1>
+                        <p class="text-sm text-gray-600 mb-6">
+                            Từ loại trong tiếng Anh là một nhóm các từ vựng có các đặc điểm giống nhau và được phân biệt
+                            dựa trên cấu trúc từ vựng. Có 9 từ loại chính.
+                        </p>
+                        <div id="section-1" class="space-y-6 mb-6">
+                            <h2 class="text-xl text-indigo-600 font-bold flex items-center gap-1">
+                                <span class="text-indigo-700">I.</span> Danh sách các từ loại
+                            </h2>
+                            <div id="nouns" class="space-y-2 ml-4">
+                                <h3 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">1.</span> Danh từ (Nouns)
+                                </h3>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Trong tiếng Anh, danh từ (Noun) được viết tắt là
+                                    (N). Đây là loại từ chỉ tên người, vật, sự việc hoặc địa điểm cụ thể.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_2.html">Tổng hợp về danh từ</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">cat, teacher, Hano, love,...</span></li>
+                                    <li>
+                                        Câu mẫu: <span class="italic">
+                                            The <strong>teacher</strong> is reading a
+                                            book.
+                                        </span>
+                                    </li>
+                                    <li>
+                                        Đặc điểm: Dùng sau mạo từ (<code>a, an, the</code>), tính từ, hoặc sở hữu cách
+                                        (<code>my, John's</code>)
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="pronouns" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">2.</span> Đại từ (Pronouns)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Trong tiếng Anh, các đại từ (Pronouns) là các từ
+                                    được sử dụng để thay thế cho danh từ, động từ và tính từ trong câu, chỉ đến sự vật
+                                    hoặc sự việc.
+                                </p>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Các đại từ giúp tránh sự lặp lại của các từ đã
+                                    được đề cập trước đó, từ đó giúp câu trở nên thông suốt hơn và tránh lỗi lặp từ.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_3.html">Tổng hợp về đại từ</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">I, he, she, it, they, this, who,...</span></li>
+                                    <li>
+                                        Câu mẫu: <span class="italic"><strong>She</strong> is my best friend.</span>
+                                    </li>
+                                    <li>
+                                        Đặc điểm: Thường đứng đầu câu hoặc làm chủ từ mới, thay thế cho danh từ chính.
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="verbs" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">3.</span> Động từ (Verbs)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Động từ (Verb), có thể viết tắt là (V) - từ loại
+                                    thể hiện hành động, trạng thái, hoặc cảm xúc của chủ ngữ trong câu.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_4.html">Tổng hợp về động từ</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">run, eat, is, have, can,...</span></li>
+                                    <li>
+                                        Câu mẫu: <span class="italic">He <strong>runs</strong> every morning.</span>
+                                    </li>
+                                    <li>Đặc điểm: Dùng sau chủ ngữ, có thể chia theo thì.</li>
+                                </ul>
+                            </div>
+                            <div id="adjectives" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">4.</span> Tính từ (Adjectives)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Tính từ (Adjective), viết tắt là (Adj) - từ loại
+                                    nhằm chỉ tính chất, đặc điểm của sự vật, sự việc hoặc hiện tượng nào đó.
+                                </p>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Tính từ có vai trò bổ trợ cho đại từ hoặc danh từ
+                                    trong câu.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_5.html">Tổng hợp về tính từ</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>
+                                        Ví dụ: <span class="italic">
+                                            interesting, handsome, gorgeous,
+                                            wonderful,...
+                                        </span>
+                                    </li>
+                                    <li>
+                                        Câu mẫu: <span class="italic">The book is <strong>interesting</strong></span>
+                                    </li>
+                                    <li>Đặc điểm: Đứng trước danh từ hoặc sau động từ nối (be, seem, look...)</li>
+                                </ul>
+                            </div>
+                            <div id="adverbs" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">5.</span> Trạng từ (Adverbs)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Trạng từ (Adverb), viết tắt là (Adv), là loại từ
+                                    biểu thị trạng thái hoặc tình trạng của người, vật, hoặc hiện tượng.
+                                </p>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Trạng từ được sử dụng để bổ sung ý nghĩa cho các
+                                    trạng từ khác, động từ, tính từ hoặc cả câu.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_6.html">Tổng hợp về trạng từ</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">beautifully, hardly, lately,...</span></li>
+                                    <li>Câu mẫu: <span class="italic">He drives <strong>carefully</strong>.</span></li>
+                                    <li>
+                                        Đặc điểm: Thường kết thúc bằng <code>-ly</code>, có thể đứng đầu, giữa hoặc cuối
+                                        câu.
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="prepositions" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">6.</span> Giới từ (Prepositions)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Giới từ (Prepositions) viết tắt là (Pre) được sử
+                                    dụng để mô tả mối quan hệ về hoàn cảnh, vị trí hoặc thời gian của các sự kiện, sự
+                                    vật hoặc hiện tượng được đề cập trong câu.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_7.html">Tổng hợp về giới từ</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">at, on, in, for,...</span></li>
+                                    <li>
+                                        Câu mẫu: <span class="italic">The book is <strong>on</strong> the table.</span>
+                                    </li>
+                                    <li>Đặc điểm: Thường đứng trước danh từ hoặc đại từ để tạo cụm giới từ.</li>
+                                </ul>
+                            </div>
+                            <div id="determiners" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">7.</span> Từ hạn định (Determiners)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Từ hạn định (Determiner) là từ hoặc cụm từ đứng
+                                    trước danh từ nhằm giới hạn và xác định danh từ hoặc cụm danh từ đó. Chúng giúp làm
+                                    rõ ý nghĩa của các sự vật, sự việc hoặc con người được đề cập trong câu.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_8.html">Tổng hợp về từ hạn định</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">the, this, my,...</span></li>
+                                    <li>
+                                        Câu mẫu: <span class="italic">
+                                            I can't believe you bought <strong>those</strong>
+                                            shoes.
+                                        </span>
+                                    </li>
+                                    <li>Đặc điểm: Đứng trước danh từ để xác định rõ ràng danh từ đó.</li>
+                                </ul>
+                            </div>
+                            <div id="conjunctions" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">8.</span> Liên từ (Conjunctions)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Liên từ trong tiếng Anh (Conjunction) là từ vựng
+                                    có tác dụng liên kết. Liên từ được sử dụng để nối 2 từ, cụm từ hoặc mệnh đề lại với
+                                    nhau.
+                                </p>
+                                <p class="text-sm pl-5">
+                                    <strong>Xem thêm:</strong>
+                                    <a class="italic text-primary-600 underline" href="./topic_9.html">Tổng hợp về liên từ</a>
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">and, but, because,...</span></li>
+                                    <li>
+                                        Câu mẫu: <span class="italic">
+                                            I wanted to go out, <strong>but</strong> it was
+                                            raining.
+                                        </span>
+                                    </li>
+                                    <li>Đặc điểm: Thường đứng giữa hai mệnh đề hoặc từ/cụm từ giống nhau.</li>
+                                </ul>
+                            </div>
+                            <div id="interjections" class="space-y-2 ml-4">
+                                <h2 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">9.</span> Thán từ (Interjections)
+                                </h2>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Thán từ trong tiếng Anh, hay còn được gọi là
+                                    interjection, là nhóm từ được dùng để thể hiện cảm xúc của người nói.
+                                </p>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Mặc dù thán từ không có ý nghĩa trong ngữ pháp,
+                                    nhưng chúng được sử dụng rất nhiều trong văn nói. Thán từ thường đứng một mình và
+                                    được kết thúc bằng dấu chấm than khi viết câu.
+                                </p>
+                                <p class="text-sm text-gray-600 pl-5">
+                                    Có một số từ thán phổ biến thường được sử dụng như
+                                    Wow!, Oh!, Bravo!, Ouch!, Oops!,...
+                                </p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li>Ví dụ: <span class="italic">Wow!, Oh!, Oops!,…</span></li>
+                                    <li>Câu mẫu: <span class="italic"><strong>Wow!</strong> That’s amazing!</span></li>
+                                    <li>Đặc điểm: Thường đứng đầu câu, sau là dấu chấm than hoặc dấu phẩy.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div id="section-2" class="space-y-6 mb-6">
+                            <h2 class="text-xl text-indigo-600 font-bold flex items-center gap-1">
+                                <span class="text-indigo-700">II.</span> Cách chuyển đổi từ loại
+                            </h2>
+                            <div id="convert-nouns" class="space-y-2 ml-4">
+                                <h3 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">1.</span> Cách thành lập danh từ
+                                </h3>
+                                <p class="text-sm text-gray-600 pl-5">Có 2 cách chính.</p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li class="font-semibold">Thêm hậu tố vào động từ</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li>Verb + <code>-tion/-ation</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>celebrate &rarr; celebration</li>
+                                            <li>motivate &rarr; motivatation</li>
+                                            <li>evaluate &rarr; evaluatation</li>
+                                            <li>inform &rarr; information</li>
+                                            <li>intervene &rarr; intervention</li>
+                                        </ul>
+                                        <li>Verb + <code>-ment</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>govern &rarr; government</li>
+                                            <li>enforce &rarr; enforcement</li>
+                                            <li>enrich &rarr; enrichment</li>
+                                            <li>adjust &rarr; adjustment</li>
+                                            <li>develop &rarr; development</li>
+                                        </ul>
+                                        <li>Verb + <code>-er/-or</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>teach &rarr; teacher</li>
+                                            <li>direct &rarr; director</li>
+                                            <li>dance &rarr; dancer</li>
+                                            <li>create &rarr; creator</li>
+                                            <li>perform &rarr; performer</li>
+                                        </ul>
+                                        <li>Verb + <code>-ar/-ant/-ee</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>celebrate &rarr; celebrant</li>
+                                            <li>attend &rarr; attendee</li>
+                                            <li>guarantee &rarr; guarantor</li>
+                                            <li>train &rarr; trainee</li>
+                                            <li>perform &rarr; performer</li>
+                                        </ul>
+                                        <li>Verb + <code>-ance/-ence</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>advance &rarr; advance</li>
+                                            <li>accept &rarr; acceptance</li>
+                                            <li>refer &rarr; reference</li>
+                                            <li>maintain &rarr; maintenance</li>
+                                            <li>attend &rarr; attendance</li>
+                                        </ul>
+                                        <li>Verb + <code>-ing</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>explore &rarr; exploring </li>
+                                            <li>run &rarr; running</li>
+                                            <li>sing &rarr; singing</li>
+                                            <li>travel &rarr; traveling</li>
+                                            <li>cook &rarr; cooking</li>
+                                        </ul>
+                                        <li>Verb + <code>-age</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>pack &rarr; package</li>
+                                            <li>use &rarr; usage</li>
+                                        </ul>
+                                    </ul>
+                                    <li class="font-semibold">Thêm hậu tố vào tính từ.</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li>Adjective + <code>-ity</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>flexible &rarr; flexibility</li>
+                                            <li>responsible &rarr; responsibility</li>
+                                            <li>diverse &rarr; diversity</li>
+                                            <li>intense &rarr; intensity</li>
+                                            <li>creative &rarr; creativity</li>
+                                        </ul>
+                                        <li>Adjective + <code>-ism</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>optimistic &rarr; optimism</li>
+                                            <li>realistic &rarr; realism</li>
+                                            <li>altruistic &rarr; altruism</li>
+                                            <li>pessimistic &rarr; pessimism</li>
+                                            <li>fundamental &rarr; fundamentalism</li>
+                                        </ul>
+                                        <li>Adjective + <code>-ness</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>kind &rarr; kindness</li>
+                                            <li>gentle &rarr; gentleness</li>
+                                            <li>dark &rarr; darkness</li>
+                                            <li>happy &rarr; happiness</li>
+                                            <li>willing &rarr; willingness</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </div>
+                            <div id="convert-adjectives" class="space-y-2 ml-4">
+                                <h3 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">2.</span> Cách thành lập tính từ
+                                </h3>
+                                <p class="text-sm text-gray-600 pl-5">Có 2 cách chính.</p>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li class="font-semibold">Lập tính từ đơn từ danh từ</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li>Noun + <code>-y</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>beach &rarr; beachy</li>
+                                            <li>noise &rarr; noisy</li>
+                                            <li>sun &rarr; sunny</li>
+                                        </ul>
+                                        <li>Noun + <code>-ly</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>ghost &rarr; ghostly</li>
+                                            <li>master &rarr; masterly</li>
+                                            <li>friend &rarr; friendly</li>
+                                        </ul>
+                                        <li>Noun + <code>-ful</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>joy &rarr; joyful</li>
+                                            <li>care &rarr; careful</li>
+                                            <li>color &rarr; colorful</li>
+                                        </ul>
+                                        <li>Noun + <code>-less</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>fear &rarr; fearless</li>
+                                            <li>power &rarr; powerless</li>
+                                            <li>hope &rarr; hopeless</li>
+                                        </ul>
+                                        <li>Noun + <code>-en</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>fool &rarr; foolish</li>
+                                            <li>clown &rarr; clownish</li>
+                                            <li>child &rarr; childish</li>
+                                        </ul>
+                                        <li>Noun + <code>-lish</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>ambition &rarr; ambitious </li>
+                                            <li>courage &rarr; courageous </li>
+                                            <li>poison &rarr; poisonous</li>
+                                        </ul>
+                                        <li>Noun + <code>-ous</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>pack &rarr; package</li>
+                                            <li>use &rarr; usage</li>
+                                            <li>use &rarr; usage</li>
+                                        </ul>
+                                    </ul>
+                                    <li class="font-semibold">Lập tính từ ghép từ danh từ</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li>Noun + <code>adjective</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>shoe-laces</li>
+                                        </ul>
+                                        <li>Noun + <code>participle</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>snow-covered</li>
+                                        </ul>
+                                        <li>Noun + <code>noun-ed</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>three-day trip</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </div>
+                            <div id="convert-adverbs" class="space-y-2 ml-4">
+                                <h3 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">3.</span> Cách thành lập trạng từ
+                                </h3>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li class="font-semibold">Thêm hậu tố vào tính từ</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li>Adjective + <code>-ly</code></li>
+                                        <ul class="list-disc pl-10 text-sm space-y-1.5"
+                                            style="list-style-type: square;">
+                                            <li>slow &rarr; slowly</li>
+                                            <li>gentle &rarr; gently</li>
+                                            <li>quiet &rarr; quietly</li>
+                                            <li>smooth &rarr; smoothly</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </div>
+                            <div id="convert-exceptions" class="space-y-2 ml-4">
+                                <h3 class="text-primary-600 font-semibold flex items-center gap-1">
+                                    <span class="text-primary-700">4.</span> Một số ngoại lệ
+                                </h3>
+                                <ul class="list-disc pl-10 text-sm space-y-1.5">
+                                    <li class="font-semibold">Friendly</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li class="text-gray-600">Là tính từ chứ không phải trạng từ.</li>
+                                        <li>
+                                            The new neighbors are very <strong>friendly</strong>; they welcomed us with
+                                            a homemade pie.
+                                        </li>
+                                    </ul>
+                                    <li class="font-semibold">Late</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li class="text-gray-600">Vừa là tính từ vừa là trạng từ.</li>
+                                        <li>
+                                            I apologize for being <strong>late</strong> to the meeting; there was
+                                            unexpected traffic.
+                                            (adj)
+                                        </li>
+                                        <li>I came <strong>late</strong>. (adv)</li>
+                                    </ul>
+                                    <li class="font-semibold">Hard</li>
+                                    <ul class="list-disc pl-10 text-sm space-y-1.5" style="list-style-type: circle;">
+                                        <li class="text-gray-600">Vừa là tính từ vừa là trạng từ.</li>
+                                        <li class="text-gray-600">Hard khi là tính từ có nghĩa là khó.</li>
+                                        <li class="text-gray-600">
+                                            Hard khi là trạng từ có nghĩa là một cách chăm chỉ.
+                                        </li>
+                                        <li class="text-gray-600">
+                                            Còn <strong>hardly</strong> là một phó từ, có nghĩa là
+                                            khó mà/vừa mới/hầu như không
+                                        </li>
+                                        <li>The exercise is <strong>hard</strong>. (hard = difficult)</li>
+                                        <li>
+                                            She worked <strong>hard</strong> to earn her degree and was proud of her
+                                            academic achievements. (adv)
+                                        </li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer class="max-w-3xl mx-auto">
+                        <h2 class="font-semibold mb-2 text-center">Nguồn</h2>
+                        <p class="text-center">
+                            <a href="https://study4.com/posts/859/cac-tu-loai-parts-of-speech-trong-tieng-anh-cach-dung-9-loai-tu-loai-trong-tieng-anh/"
+                               class="text-primary-600 hover:underline" target="_blank">Study4 - Part of Speech</a>
+                        </p>
+                    </footer>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

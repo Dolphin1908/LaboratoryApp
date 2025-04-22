@@ -6,7 +6,8 @@
                     xmlns:sw="clr-namespace:LaboratoryApp.ViewModels.SubWin"
                     xmlns:sp="clr-namespace:LaboratoryApp.Support"
                     xmlns:cv="clr-namespace:LaboratoryApp.Support.Converters"
-                    xmlns:domain="clr-namespace:LaboratoryApp.Support.Domain">
+                    xmlns:domain="clr-namespace:LaboratoryApp.Support.Domains"
+                    xmlns:ctrl="clr-namespace:LaboratoryApp.Support.Controls">
 
     <!-- MainWindow -->
     <main:MainWindowViewModel x:Key="MainVM"></main:MainWindowViewModel>
@@ -27,8 +28,12 @@
     <cv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"></cv:NullToVisibilityConverter>
     <cv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"></cv:InverseBooleanToVisibilityConverter>
     <cv:FlipConverter x:Key="FlipConverter"></cv:FlipConverter>
+    <cv:HtmlToDataUriConverter x:Key="HtmlToDataUriConverter"></cv:HtmlToDataUriConverter>
 
     <!-- Domain -->
     <domain:NotEmptyValidationRule x:Key="NotEmptyValidationRule"></domain:NotEmptyValidationRule>
+    
+    <!-- Control -->
+    <ctrl:BindableWebView2 x:Key="BindableWebView2"></ctrl:BindableWebView2>
 
 </ResourceDictionary>

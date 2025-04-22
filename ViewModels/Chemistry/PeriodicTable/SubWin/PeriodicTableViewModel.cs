@@ -42,9 +42,9 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
         private ElementModel LoadPeriodBlock(ElementModel element)
         {
             // Check if the element is a lanthanide or actinide
-            if (element.atomic_number.IndexOf('-') == -1)
+            if (element.AtomicNumber.IndexOf('-') == -1)
             {
-                string input = element.electron_configuration;
+                string input = element.ElectronConfiguration;
                 string pattern = @"(\d+)([sfdp])(\d+)";
 
                 MatchCollection matches = Regex.Matches(input, pattern);
@@ -62,7 +62,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
                 if (row == 1 && column != 1) column += 16;
                 else if (row <= 3 && column >= 3) column += 10;
 
-                var atomicNumber = int.Parse(element.atomic_number);
+                var atomicNumber = int.Parse(element.AtomicNumber);
 
                 // Expect elements with row
                 if (atomicNumber == 46)
@@ -103,28 +103,28 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
         /// <returns></returns>
         private ElementModel LoadColorCategory(ElementModel element)
         {
-            if (element.category == "Nonmetal")
-                element.color = "ab91ff";
-            else if (element.category == "Noble gas")
-                element.color = "91dfff";
-            else if (element.category == "Alkali metal")
-                element.color = "ffc591";
-            else if (element.category == "Alkaline earth metal")
-                element.color = "ffdf91";
-            else if (element.category == "Metalloid")
-                element.color = "92ff9f";
-            else if (element.category == "Halogen")
-                element.color = "f991ff";
-            else if (element.category == "Post-transition metal")
-                element.color = "fff991";
-            else if (element.category == "Transition metal")
-                element.color = "ecff91";
-            else if (element.category == "Lanthanide")
-                element.color = "d2ff91";
-            else if (element.category == "Actinide")
-                element.color = "b8ff91";
-            else if (element.category == "Unknown")
-                element.color = "c8c8c8";
+            if (element.Category == "Nonmetal")
+                element.Color = "ab91ff";
+            else if (element.Category == "Noble gas")
+                element.Color = "91dfff";
+            else if (element.Category == "Alkali metal")
+                element.Color = "ffc591";
+            else if (element.Category == "Alkaline earth metal")
+                element.Color = "ffdf91";
+            else if (element.Category == "Metalloid")
+                element.Color = "92ff9f";
+            else if (element.Category == "Halogen")
+                element.Color = "f991ff";
+            else if (element.Category == "Post-transition metal")
+                element.Color = "fff991";
+            else if (element.Category == "Transition metal")
+                element.Color = "ecff91";
+            else if (element.Category == "Lanthanide")
+                element.Color = "d2ff91";
+            else if (element.Category == "Actinide")
+                element.Color = "b8ff91";
+            else if (element.Category == "Unknown")
+                element.Color = "c8c8c8";
 
             return element;
         }
@@ -140,25 +140,25 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
             // Add Lanthanide group and Actinide group
             elements.Add(new ElementModel
             {
-                atomic_number = "57 - 71",
-                name = "Lanthanides",
-                symbol = "La - Lu",
-                phase = "Solid",
-                color = "",
-                category = "Lanthanide",
-                discovery_year = "1838",
+                AtomicNumber = "57 - 71",
+                Name = "Lanthanides",
+                Symbol = "La - Lu",
+                Phase = "Solid",
+                Color = "",
+                Category = "Lanthanide",
+                DiscoveryYear = "1838",
                 row = 6,
                 column = 3,
             });
             elements.Add(new ElementModel
             {
-                atomic_number = "89 - 103",
-                name = "Actinides",
-                symbol = "Ac - Lr",
-                phase = "Solid",
-                color = "",
-                category = "Actinide",
-                discovery_year = "1940",
+                AtomicNumber = "89 - 103",
+                Name = "Actinides",
+                Symbol = "Ac - Lr",
+                Phase = "Solid",
+                Color = "",
+                Category = "Actinide",
+                DiscoveryYear = "1940",
                 row = 7,
                 column = 3,
             });

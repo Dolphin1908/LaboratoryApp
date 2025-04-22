@@ -1,12 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:main="clr-namespace:LaboratoryApp.ViewModels.English"
+                    xmlns:main_lecture="clr-namespace:LaboratoryApp.ViewModels.English.Lecture"
                     xmlns:ui_fc="clr-namespace:LaboratoryApp.ViewModels.English.Flashcard.UI"
                     xmlns:sw_fc="clr-namespace:LaboratoryApp.ViewModels.English.Flashcard.SubWin"
                     xmlns:sw_dic="clr-namespace:LaboratoryApp.ViewModels.English.Dictionary.SubWin">
     <!-- Main -->
-    <main:EnglishMainWindowViewModel x:Key="EnglishMainVM"></main:EnglishMainWindowViewModel>
-    
+    <main:EnglishMainPageViewModel x:Key="EnglishMainVM"></main:EnglishMainPageViewModel>
+    <main_lecture:LectureMainPageViewModel x:Key="LectureMainVM"></main_lecture:LectureMainPageViewModel>
+
     <!-- UI -->
     <ui_fc:FlashcardManagerViewModel x:Key="FlashcardManagerVM"></ui_fc:FlashcardManagerViewModel>
 

@@ -8,14 +8,14 @@ using LaboratoryApp.Support.Interface;
 
 namespace LaboratoryApp.ViewModels.Maths
 {
-    class MathsMainWindowViewModel : BaseViewModel
+    class MathsMainPageViewModel : BaseViewModel
     {
         private readonly INavigationService _navigationService;
 
         #region Commands
         #endregion
 
-        public MathsMainWindowViewModel(INavigationService navigationService)
+        public MathsMainPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }

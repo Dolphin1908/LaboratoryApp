@@ -17,13 +17,13 @@
              MinHeight="40"  MinWidth="40" 
              MaxHeight="90" MaxWidth="75">
     <Button BorderThickness="0" 
-            Background="{Binding Element.color, Converter={StaticResource ColorToBrushConverter}}" 
+            Background="{Binding Element.Color, Converter={StaticResource ColorToBrushConverter}}" 
             Height="Auto"
             Margin="3"
             Padding="0"
             materialDesign:ButtonAssist.CornerRadius="5"
             Command="{Binding ElementCellClickedCommand}"
-            ToolTip="{Binding Element.name}">
+            ToolTip="{Binding Element.Name}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -31,20 +31,20 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <!-- Atomic Number -->
-            <TextBlock Text="{Binding Element.atomic_number}" 
+            <TextBlock Text="{Binding Element.AtomicNumber}" 
                        FontSize="12"
                        Margin="0,4"
                        Grid.Row="0"
                        HorizontalAlignment="Center"/>
             <!-- Symbol -->
-            <TextBlock Text="{Binding Element.symbol}" 
+            <TextBlock Text="{Binding Element.Symbol}" 
                        FontSize="18"
                        FontWeight="Bold" 
                        Margin="0,4"
                        Grid.Row="1" 
                        HorizontalAlignment="Center"/>
             <!-- Atomic Mass -->
-            <TextBlock Text="{Binding Element.atomic_mass, StringFormat={}{0:F0}}"
+            <TextBlock Text="{Binding Element.AtomicMass, StringFormat={}{0:F0}}"
                        FontSize="9"
                        Margin="0,4" 
                        Grid.Row="2" 

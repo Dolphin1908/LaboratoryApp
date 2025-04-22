@@ -10,7 +10,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Background="{Binding Element.color, Converter={StaticResource ColorToBrushConverter}}"
+        Background="{Binding Element.Color, Converter={StaticResource ColorToBrushConverter}}"
         Name="ElementInfoWindow"
         Title="Chi tiết nguyên tố">
     <Grid VerticalAlignment="Center" 
@@ -22,12 +22,12 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-            <TextBlock Text="{Binding Element.symbol}" 
+            <TextBlock Text="{Binding Element.Symbol}" 
                        FontSize="80" 
                        FontWeight="Bold" 
                        HorizontalAlignment="Center" 
                        Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding Element.name}" 
+            <TextBlock Text="{Binding Element.Name}" 
                        FontSize="20" 
                        FontStyle="Italic" 
                        HorizontalAlignment="Center" 
@@ -68,31 +68,31 @@
                            FontSize="12"/>
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <TextBlock Text="{Binding Element.atomic_mass}"
+                <TextBlock Text="{Binding Element.AtomicMass}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.electron_configuration}"
+                <TextBlock Text="{Binding Element.ElectronConfiguration}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.electronegativity}"
+                <TextBlock Text="{Binding Element.Electronegativity}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.atomic_radius}" 
+                <TextBlock Text="{Binding Element.AtomicRadius}" 
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.ionization_energy}"
+                <TextBlock Text="{Binding Element.IonizationEnergy}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.electron_affinity}"
+                <TextBlock Text="{Binding Element.ElectronAffinity}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.oxidation_states}"
+                <TextBlock Text="{Binding Element.OxidationStates}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.phase}"
+                <TextBlock Text="{Binding Element.Phase}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.melting_point}" 
+                <TextBlock Text="{Binding Element.MeltingPoint}" 
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.boiling_point}" 
+                <TextBlock Text="{Binding Element.BoilingPoint}" 
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.density}" 
+                <TextBlock Text="{Binding Element.Density}" 
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.category}" 
+                <TextBlock Text="{Binding Element.Category}" 
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.discovery_year}" 
+                <TextBlock Text="{Binding Element.DiscoveryYear}" 
                            FontSize="12"/>
             </StackPanel>
         </Grid>

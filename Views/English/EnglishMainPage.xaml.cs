@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.Views.Chemistry
+namespace LaboratoryApp.Views.English
 {
     /// <summary>
-    /// Interaction logic for ChemistryMainWindow.xaml
+    /// Interaction logic for EnglishMainWindow.xaml
     /// </summary>
-    public partial class ChemistryMainWindow : Page
+    public partial class EnglishMainPage : Page
     {
-        public ChemistryMainWindow()
+        public EnglishMainPage()
         {
             InitializeComponent();
         }

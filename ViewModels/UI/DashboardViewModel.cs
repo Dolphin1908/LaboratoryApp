@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
-using LaboratoryApp.Support.Interface;
-using LaboratoryApp.Support;
 using LaboratoryApp.Views.Maths;
 using LaboratoryApp.Views.Physics;
 using LaboratoryApp.Views.Chemistry;
@@ -25,10 +23,10 @@ namespace LaboratoryApp.ViewModels.UI
     {
         private readonly INavigationService _navigationService;
 
-        private readonly MathsMainWindowViewModel _mathMainWindowVM;
-        private readonly PhysicsMainWindowViewModel _physicsMainWindowVM;
-        private readonly ChemistryMainWindowViewModel _chemistryMainWindowVM;
-        private readonly EnglishMainWindowViewModel _englishMainWindowVM;
+        private readonly MathsMainPageViewModel _mathMainWindowVM;
+        private readonly PhysicsMainPageViewModel _physicsMainWindowVM;
+        private readonly ChemistryMainPageViewModel _chemistryMainWindowVM;
+        private readonly EnglishMainPageViewModel _englishMainWindowVM;
 
         #region commands
         public ICommand NavigateToMathMainWindow { get; set; } // Math
@@ -42,30 +40,30 @@ namespace LaboratoryApp.ViewModels.UI
             _navigationService = navigationService;
 
             // Initialize Sub ViewModels
-            _mathMainWindowVM = new MathsMainWindowViewModel(_navigationService);
-            _physicsMainWindowVM = new PhysicsMainWindowViewModel(_navigationService);
-            _chemistryMainWindowVM = new ChemistryMainWindowViewModel(_navigationService);
-            _englishMainWindowVM = new EnglishMainWindowViewModel(_navigationService);
+            _mathMainWindowVM = new MathsMainPageViewModel(_navigationService);
+            _physicsMainWindowVM = new PhysicsMainPageViewModel(_navigationService);
+            _chemistryMainWindowVM = new ChemistryMainPageViewModel(_navigationService);
+            _englishMainWindowVM = new EnglishMainPageViewModel(_navigationService);
 
             #region Initialize sub pages with their respective view models
-            var mathPage = new MathsMainWindow
+            var mathPage = new MathsMainPage
             {
-                DataContext = new MathsMainWindowViewModel(_navigationService)
+                DataContext = _mathMainWindowVM
             };
 
-            var physicsPage = new PhysicsMainWindow
+            var physicsPage = new PhysicsMainPage
             {
-                DataContext = new PhysicsMainWindowViewModel(_navigationService)
+                DataContext = _physicsMainWindowVM
             };
 
-            var chemistryPage = new ChemistryMainWindow
+            var chemistryPage = new ChemistryMainPage
             {
                 DataContext = _chemistryMainWindowVM
             };
 
-            var englishPage = new EnglishMainWindow
+            var englishPage = new EnglishMainPage
             {
-                DataContext = new EnglishMainWindowViewModel(_navigationService)
+                DataContext = _englishMainWindowVM
             };
             #endregion
 

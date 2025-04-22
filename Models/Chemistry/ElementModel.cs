@@ -8,23 +8,24 @@ namespace LaboratoryApp.Models.Chemistry
 {
     public class ElementModel
     {
-        public string atomic_number { get; set; }
-        public string symbol { get; set; }
-        public string name { get; set; }
-        public double atomic_mass { get; set; }
-        public string color { get; set; }
-        public string electron_configuration { get; set; }
-        public double? electronegativity { get; set; }
-        public int atomic_radius { get; set; }
-        public double ionization_energy { get; set; }
-        public double? electron_affinity { get; set; }
-        public string oxidation_states { get; set; }
-        public string phase { get; set; }
-        public double melting_point { get; set; }
-        public double boiling_point { get; set; }
-        public double density { get; set; }
-        public string category { get; set; }
-        public string discovery_year { get; set; }
+        public long Id { get; set; }
+        public string AtomicNumber { get; set; }
+        public string Symbol { get; set; }
+        public string Name { get; set; }
+        public double AtomicMass { get; set; }
+        public string Color { get; set; }
+        public string ElectronConfiguration { get; set; }
+        public double? Electronegativity { get; set; }
+        public int AtomicRadius { get; set; }
+        public double IonizationEnergy { get; set; }
+        public double? ElectronAffinity { get; set; }
+        public string OxidationStates { get; set; }
+        public string Phase { get; set; }
+        public double MeltingPoint { get; set; }
+        public double BoilingPoint { get; set; }
+        public double Density { get; set; }
+        public string Category { get; set; }
+        public string DiscoveryYear { get; set; }
         public int row { get; set; }
         public int column { get; set; }
     }

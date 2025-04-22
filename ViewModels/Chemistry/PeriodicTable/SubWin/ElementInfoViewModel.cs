@@ -44,7 +44,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
                 {
                     DataContext = this
                 };
-                window.Title = Element.name;
+                window.Title = Element.Name;
                 window.ShowDialog();
             });
 

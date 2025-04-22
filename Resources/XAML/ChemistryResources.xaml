@@ -3,7 +3,7 @@
                     xmlns:main="clr-namespace:LaboratoryApp.ViewModels.Chemistry"
                     xmlns:sw_pd="clr-namespace:LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin">
     <!-- Main -->
-    <main:ChemistryMainWindowViewModel x:Key="ChemistryMainVM"></main:ChemistryMainWindowViewModel>
+    <main:ChemistryMainPageViewModel x:Key="ChemistryMainVM"></main:ChemistryMainPageViewModel>
 
     <!-- UI -->
 

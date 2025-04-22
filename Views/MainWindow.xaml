@@ -22,7 +22,6 @@
         Title="Laboratory"
         MinHeight="600"
         MinWidth="1225"
-        MaxWidth="1375"
         Height="600"
         Width="1225">
     <Grid>
