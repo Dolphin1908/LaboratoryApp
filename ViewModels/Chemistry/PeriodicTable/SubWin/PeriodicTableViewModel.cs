@@ -67,29 +67,29 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
                 // Expect elements with row
                 if (atomicNumber == 46)
                 {
-                    element.row = 5;
+                    element.Row = 5;
                 }
                 else if (atomicNumber >= 57 && atomicNumber <= 71) // Lanthanide
                 {
-                    element.row = 9;
+                    element.Row = 9;
                 }
                 else if (atomicNumber >= 89 && atomicNumber <= 103) // Actinide
                 {
-                    element.row = 10;
+                    element.Row = 10;
                 }
                 else
                 {
-                    element.row = row;
+                    element.Row = row;
                 }
 
                 // Expect elements with column
                 if (atomicNumber >= 72 && atomicNumber <= 86 || atomicNumber >= 104 && atomicNumber <= 118) // Lanthanide and Actinide
                 {
-                    element.column = column - 14;
+                    element.Column = column - 14;
                 }
                 else
                 {
-                    element.column = column;
+                    element.Column = column;
                 }
             }
 
@@ -147,8 +147,8 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
                 Color = "",
                 Category = "Họ Lanthan",
                 DiscoveryYear = "1838",
-                row = 6,
-                column = 3,
+                Row = 6,
+                Column = 3,
             });
             elements.Add(new ElementModel
             {
@@ -159,8 +159,8 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
                 Color = "",
                 Category = "Họ Actini",
                 DiscoveryYear = "1940",
-                row = 7,
-                column = 3,
+                Row = 7,
+                Column = 3,
             });
 
             foreach (var element in elements)

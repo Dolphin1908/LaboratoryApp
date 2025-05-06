@@ -82,13 +82,7 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.SubWin
         {
             _flashcardService = flashcardService;
             _flashcardSet = flashcardSet;
-            Flashcards = _flashcardSet.Flashcards.Where(f => f.NextReview < DateTime.Now).OrderBy(i => Guid.NewGuid()).ToList();
-
-            if(Flashcards.Count == 0)
-            {
-                MessageBox.Show("Hiện tại không có thẻ nào cần học lại.");
-                return;
-            }
+            Flashcards = _flashcardSet.Flashcards.OrderBy(i => Guid.NewGuid()).ToList();
 
             CurrentFlashcard = Flashcards[CurrentCardIndex - 1];
 

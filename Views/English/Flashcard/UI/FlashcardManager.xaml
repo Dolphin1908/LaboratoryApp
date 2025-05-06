@@ -346,7 +346,7 @@
                                                              Width="24"
                                                              Height="24"/>
                                     <TextBlock Grid.Column="1"
-                                               Text="{Binding StartSetButtonText, UpdateSourceTrigger=PropertyChanged}"
+                                               Text="Bắt đầu"
                                                Margin="5,0,0,0"
                                                VerticalAlignment="Center"/>
                                 </Grid>

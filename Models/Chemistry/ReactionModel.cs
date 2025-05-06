@@ -22,4 +22,29 @@ namespace LaboratoryApp.Models.Chemistry
         public CompoundModel Compound { get; set; } // Hợp chất tham gia phản ứng
         public int StoichiometricCoefficient { get; set; } // Hệ số tỉ lệ của hợp chất trong phản ứng
     }
+
+    public class ReactionCondition
+    {
+        public long Id { get; set; }
+        public string Temperature { get; set; } // VD: "25°C", hoặc phạm vi: "50–70°C"
+        public string Pressure { get; set; }    // VD: "1 atm", "2 bar"
+        public string Catalyst { get; set; }    // VD: "Pt", "H2SO4"
+        public string Solvent { get; set; }     // VD: "H2O", "EtOH"
+        public string PH { get; set; }          // VD: "7", "2–4"
+        public string OtherConditions { get; set; } // Mô tả thêm (nếu cần)
+
+        // Nếu bạn muốn liên kết với phản ứng cụ thể:
+        public long ReactionId { get; set; }
+        public ReactionModel Reaction { get; set; }
+    }
+
+    public class ReactionNote
+    {
+        public long Id { get; set; }
+        public string Title { get; set; }       // VD: "Chú ý", "Mô tả thêm"
+        public string Content { get; set; }
+        public long ReactionId { get; set; }
+        public ReactionModel Reaction { get; set; }
+    }
+
 }

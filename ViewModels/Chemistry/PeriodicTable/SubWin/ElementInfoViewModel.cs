@@ -30,8 +30,8 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
         }
 
         // Get element row and column for periodic table
-        public int Row => Element.row - 1;
-        public int Column => Element.column - 1;
+        public int Row => Element.Row - 1;
+        public int Column => Element.Column - 1;
 
         public ElementInfoViewModel(ElementModel element)
         {

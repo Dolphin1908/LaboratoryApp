@@ -17,9 +17,6 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.UI
         // Fields
         private FlashcardSet _selectedFlashcardSet; // Currently selected flashcard set
         private ObservableCollection<FlashcardSet> _flashcardSets; // List of flashcard sets
-        private DateTime _nearlyNextReview; // Date for the next review
-        private bool _canStartSet; // Flag to check if the set can be started
-        private string _startSetButtonText; // Text for the start set button
         private string _searchText; // Text for searching flashcards
 
         // Services
@@ -42,20 +39,8 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.UI
             get => _selectedFlashcardSet;
             set
             {
-                if (_selectedFlashcardSet == value) return;
-
-                // Hủy đăng ký sự kiện từ set cũ
-                UnsubscribeFromFlashcardEvents(_selectedFlashcardSet);
-
                 _selectedFlashcardSet = value;
                 OnPropertyChanged(nameof(SelectedFlashcardSet));
-
-                // Đăng ký sự kiện cho set mới
-                SubscribeToFlashcardEvents(_selectedFlashcardSet);
-
-                UpdateNearlyNextReview();
-                OnPropertyChanged(nameof(CanStartSet));
-                OnPropertyChanged(nameof(StartSetButtonText));
             }
         }
 
@@ -69,42 +54,6 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.UI
             }
         }
 
-        public DateTime NearlyNextReview
-        {
-            get => _nearlyNextReview;
-            set
-            {
-                _nearlyNextReview = value;
-                OnPropertyChanged(nameof(NearlyNextReview));
-                OnPropertyChanged(nameof(CanStartSet));
-                OnPropertyChanged(nameof(StartSetButtonText));
-            }
-        }
-
-        public bool CanStartSet
-        {
-            get
-            {
-                if (SelectedFlashcardSet != null && SelectedFlashcardSet.Flashcards.Count == 0) 
-                    return false;
-                if (SelectedFlashcardSet != null && SelectedFlashcardSet.Flashcards.All(f => f.IsLearned)) 
-                    return false;
-                return NearlyNextReview < DateTime.Now;
-            }
-        }
-
-        public string StartSetButtonText
-        {
-            get
-            {
-                if (CanStartSet) 
-                    return "Bắt đầu";
-                if (SelectedFlashcardSet != null && SelectedFlashcardSet.Flashcards.Count == 0)
-                    return "Không có thẻ nào";
-                return $"Đợi tới: {NearlyNextReview:HH:mm dd/MM/yyyy}";
-            }
-        }
-
         public string SearchText
         {
             get => _searchText;
@@ -114,81 +63,6 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.UI
                 OnPropertyChanged(nameof(SearchText));
                 UpdateSuggestions();
             }
-        }
-        #endregion
-
-        #region OnPropertyChanged
-        private void SubscribeToFlashcardEvents(FlashcardSet set)
-        {
-            if (set == null) return;
-
-            set.Flashcards.CollectionChanged += Flashcards_CollectionChanged;
-            foreach (var flashcard in set.Flashcards)
-            {
-                flashcard.PropertyChanged += Flashcard_PropertyChanged;
-            }
-        }
-
-        private void UnsubscribeFromFlashcardEvents(FlashcardSet set)
-        {
-            if (set == null) return;
-
-            set.Flashcards.CollectionChanged -= Flashcards_CollectionChanged;
-            foreach (var flashcard in set.Flashcards)
-            {
-                flashcard.PropertyChanged -= Flashcard_PropertyChanged;
-            }
-        }
-
-        private void Flashcards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            // Xử lý khi thêm/xóa flashcard
-            if (e.NewItems != null)
-            {
-                foreach (FlashcardModel item in e.NewItems)
-                {
-                    item.PropertyChanged += Flashcard_PropertyChanged;
-                }
-            }
-
-            if (e.OldItems != null)
-            {
-                foreach (FlashcardModel item in e.OldItems)
-                {
-                    item.PropertyChanged -= Flashcard_PropertyChanged;
-                }
-            }
-
-            UpdateNearlyNextReview();
-            OnPropertyChanged(nameof(CanStartSet));
-            OnPropertyChanged(nameof(StartSetButtonText));
-        }
-
-        private void Flashcard_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // Khi NextReview hoặc IsLearned thay đổi
-            if (e.PropertyName == nameof(FlashcardModel.NextReview) ||
-                e.PropertyName == nameof(FlashcardModel.IsLearned))
-            {
-                UpdateNearlyNextReview();
-                OnPropertyChanged(nameof(CanStartSet));
-                OnPropertyChanged(nameof(StartSetButtonText));
-            }
-        }
-
-        private void UpdateNearlyNextReview()
-        {
-            if (SelectedFlashcardSet == null || !SelectedFlashcardSet.Flashcards.Any())
-            {
-                NearlyNextReview = DateTime.MaxValue;
-                return;
-            }
-
-            NearlyNextReview = SelectedFlashcardSet.Flashcards.Any()
-                ? SelectedFlashcardSet.Flashcards.Min(f => f.NextReview)
-                : DateTime.Now;
-
-            OnPropertyChanged(nameof(CanStartSet));
         }
         #endregion
 
@@ -235,6 +109,13 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.UI
             DeleteFlashcardCommand = new RelayCommand<object>((p) => true, (p) => DeleteFlashcard((long)p));
             StartFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) =>
             {
+                var tempFlashcards = SelectedFlashcardSet.Flashcards.Where(i => i.NextReview < DateTime.Now).ToList();
+                if(tempFlashcards.Count == 0)
+                {
+                    if(MessageBoxResult.No == MessageBox.Show($"Bộ thẻ '{SelectedFlashcardSet.Name}' không có thẻ nào cần ôn tập!", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                        return;
+                }
+
                 var window = new FlashcardStudyWindow
                 {
                     DataContext = new FlashcardStudyViewModel(SelectedFlashcardSet, _flashcardService)
