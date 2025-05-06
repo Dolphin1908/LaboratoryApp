@@ -12,6 +12,7 @@ using LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin;
 using LaboratoryApp.ViewModels.UC;
 using LaboratoryApp.ViewModels.UI;
 using LaboratoryApp.Views.Chemistry.PeriodicTable.SubWin;
+using LaboratoryApp.Views.SubWin;
 using LaboratoryApp.Views.UI;
 
 namespace LaboratoryApp.ViewModels
@@ -32,10 +33,11 @@ namespace LaboratoryApp.ViewModels
         }
         public ControlBarViewModel ControlBarVM { get; set; }
 
-        #region commands
+        #region Commands
         public ICommand NavigateToDashboardCommand { get; set; }
         public ICommand NavigateToPeriodicTableCommand { get; set; }
         public ICommand NavigateToToolkitCommand { get; set; }
+        public ICommand OpenAuthenticationCommand { get; set; }
         #endregion
 
         /// <summary>
@@ -80,6 +82,13 @@ namespace LaboratoryApp.ViewModels
             NavigateToToolkitCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 _navigationService.NavigateTo(new Toolkits());
+            });
+
+            // Open the authentication window
+            OpenAuthenticationCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                var authenticationWindow = new AuthenticationWindow();
+                authenticationWindow.Show();
             });
         }
     }

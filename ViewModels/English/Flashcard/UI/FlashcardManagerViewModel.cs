@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -290,6 +291,10 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.UI
         /// <param name="deletedSet"></param>
         private void DeleteSet(FlashcardSet deletedSet)
         {
+            // Confirm deletion
+            if (MessageBoxResult.No == MessageBox.Show($"Bạn có chắc chắn muốn xóa bộ thẻ '{deletedSet.Name}' không?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                return;
+
             _flashcardService.DeleteFlashcardSet(deletedSet); // Delete the set from the service
             SelectedFlashcardSet = null;
             var index = FlashcardSets.IndexOf(deletedSet);
@@ -325,7 +330,12 @@ namespace LaboratoryApp.ViewModels.English.Flashcard.UI
         /// <param name="flashcardId"></param>
         private void DeleteFlashcard(long flashcardId)
         {
-            var flashcard = _selectedFlashcardSet.Flashcards.FirstOrDefault(f => f.Id == flashcardId);
+            var flashcard = _selectedFlashcardSet.Flashcards.FirstOrDefault(f => f.Id == flashcardId); // Find the flashcard to delete
+
+            // Confirm deletion
+            if (MessageBoxResult.No == MessageBox.Show($"Bạn có chắc chắn muốn xóa thẻ '{_selectedFlashcardSet.Flashcards.FirstOrDefault(f => f.Id == flashcardId)?.Word}' không?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                return;
+
             _flashcardService.DeleteFlashcardFromSet(_selectedFlashcardSet.Id, flashcard); // Delete the flashcard from the selected set
             OnPropertyChanged(nameof(SelectedFlashcardSet));
         }

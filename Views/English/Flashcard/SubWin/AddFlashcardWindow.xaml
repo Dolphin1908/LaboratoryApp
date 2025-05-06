@@ -75,7 +75,7 @@
             <Button Grid.Column="0"
                     Width="150"
                     Content="Done"
-                    Background="#76ff03"
+                    Background="SpringGreen"
                     Foreground="Black"
                     BorderThickness="0"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"

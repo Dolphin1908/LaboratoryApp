@@ -122,7 +122,7 @@
                     Command="{Binding FlipCardCommand}"/>
             <Button Grid.Column="2" 
                     BorderThickness="0"
-                    Background="#76ff03"
+                    Background="SpringGreen"
                     Foreground="Black"
                     Content="Đã thuộc"
                     Width="150"

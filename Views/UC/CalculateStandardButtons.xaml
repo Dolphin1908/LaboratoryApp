@@ -305,8 +305,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
-                    CommandParameter=".">
-            </Button>
+                    CommandParameter="."/>
             <Button Height="50"
                     Width="75"
                     Background="#2AF7FF"

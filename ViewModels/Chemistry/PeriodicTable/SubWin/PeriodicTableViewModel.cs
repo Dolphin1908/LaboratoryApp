@@ -103,25 +103,25 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
         /// <returns></returns>
         private ElementModel LoadColorCategory(ElementModel element)
         {
-            if (element.Category == "Nonmetal")
+            if (element.Category == "Phi kim")
                 element.Color = "ab91ff";
-            else if (element.Category == "Noble gas")
+            else if (element.Category == "Khí hiếm")
                 element.Color = "91dfff";
-            else if (element.Category == "Alkali metal")
+            else if (element.Category == "Kim loại kiềm")
                 element.Color = "ffc591";
-            else if (element.Category == "Alkaline earth metal")
+            else if (element.Category == "Kim loại kiềm thổ")
                 element.Color = "ffdf91";
-            else if (element.Category == "Metalloid")
+            else if (element.Category == "Á kim")
                 element.Color = "92ff9f";
             else if (element.Category == "Halogen")
                 element.Color = "f991ff";
-            else if (element.Category == "Post-transition metal")
+            else if (element.Category == "Kim loại sau chuyển tiếp")
                 element.Color = "fff991";
-            else if (element.Category == "Transition metal")
+            else if (element.Category == "Kim loại chuyển tiếp")
                 element.Color = "ecff91";
-            else if (element.Category == "Lanthanide")
+            else if (element.Category == "Họ Lanthan")
                 element.Color = "d2ff91";
-            else if (element.Category == "Actinide")
+            else if (element.Category == "Họ Actini")
                 element.Color = "b8ff91";
             else if (element.Category == "Unknown")
                 element.Color = "c8c8c8";
@@ -143,9 +143,9 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
                 AtomicNumber = "57 - 71",
                 Name = "Lanthanides",
                 Symbol = "La - Lu",
-                Phase = "Solid",
+                Phase = "Chất rắn",
                 Color = "",
-                Category = "Lanthanide",
+                Category = "Họ Lanthan",
                 DiscoveryYear = "1838",
                 row = 6,
                 column = 3,
@@ -155,9 +155,9 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin
                 AtomicNumber = "89 - 103",
                 Name = "Actinides",
                 Symbol = "Ac - Lr",
-                Phase = "Solid",
+                Phase = "Chất rắn",
                 Color = "",
-                Category = "Actinide",
+                Category = "Họ Actini",
                 DiscoveryYear = "1940",
                 row = 7,
                 column = 3,
