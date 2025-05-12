@@ -7,12 +7,13 @@ using System.Windows.Input;
 
 using LaboratoryApp.Services;
 using LaboratoryApp.Support.Interface;
-using LaboratoryApp.ViewModels.English.Dictionary.SubWin;
-using LaboratoryApp.ViewModels.English.Flashcard.UI;
-using LaboratoryApp.ViewModels.English.Lecture;
-using LaboratoryApp.Views.English.Dictionary.SubWin;
-using LaboratoryApp.Views.English.Flashcard.UI;
-using LaboratoryApp.Views.English.Lecture;
+using LaboratoryApp.ViewModels.English.DictionaryFunction;
+using LaboratoryApp.ViewModels.English.DictionaryFunction.SubWin;
+using LaboratoryApp.ViewModels.English.FlashcardFunction.UI;
+using LaboratoryApp.ViewModels.English.LectureFunction;
+using LaboratoryApp.Views.English.DictionaryFunction.SubWin;
+using LaboratoryApp.Views.English.FlashcardFunction.UI;
+using LaboratoryApp.Views.English.LectureFunction;
 
 namespace LaboratoryApp.ViewModels.English
 {

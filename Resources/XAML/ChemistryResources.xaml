@@ -1,16 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:main="clr-namespace:LaboratoryApp.ViewModels.Chemistry"
-                    xmlns:sw_pd="clr-namespace:LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin">
+                    xmlns:ui_cp="clr-namespace:LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UI"
+                    xmlns:sw_pd="clr-namespace:LaboratoryApp.ViewModels.Chemistry.PeriodicTableFunction.SubWin"
+                    xmlns:sw_cp="clr-namespace:LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin">
     <!-- Main -->
     <main:ChemistryMainPageViewModel x:Key="ChemistryMainVM"></main:ChemistryMainPageViewModel>
 
     <!-- UI -->
+    <ui_cp:CompoundManagerViewModel x:Key="CompoundManagerVM"></ui_cp:CompoundManagerViewModel>
 
     <!-- UC -->
 
     <!-- SubWindow -->
     <sw_pd:ElementInfoViewModel x:Key="ElementInfoVM"></sw_pd:ElementInfoViewModel>
     <sw_pd:PeriodicTableViewModel x:Key="PeriodicTableVM"></sw_pd:PeriodicTableViewModel>
+
+    <sw_cp:CompoundViewModel x:Key="CompoundVM"></sw_cp:CompoundViewModel>
 
 </ResourceDictionary>

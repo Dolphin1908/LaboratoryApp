@@ -34,9 +34,7 @@
                 Width="Auto"
                 Height="Auto"
                 Margin="10"
-                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 Style="{StaticResource MaterialDesignRaisedLightButton}"
-                ToolTip="Resource name: MaterialDesignRaisedLightButton"
                 Command="{Binding OpenCalculatorCommand}">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon Kind="Calculator" Margin="0,0,10,0"/>

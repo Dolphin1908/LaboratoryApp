@@ -46,12 +46,10 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="SpringGreen"
                             BorderBrush="SpringGreen"
-                            Command="{Binding NavigateToPeriodicTableCommand}">
+                            Command="{Binding OpenPeriodicTableCommand}">
                         <TextBlock Text="Bảng tuần hoàn" />
                     </Button>
                 </Grid>
@@ -61,11 +59,10 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ffff72"
-                            BorderBrush="#ffff72">
+                            BorderBrush="#ffff72"
+                            Command="{Binding NavigateToCompoundCommand}">
                         <TextBlock Text="Hợp chất" />
                     </Button>
                 </Grid>
@@ -75,11 +72,10 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ff9e40"
-                            BorderBrush="#ff9e40">
+                            BorderBrush="#ff9e40"
+                            Command="{Binding NavigateToReactionCommand}">
                         <TextBlock Text="Phương trình phản ứng" />
                     </Button>
                 </Grid>
@@ -89,9 +85,8 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            IsEnabled="False"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ff96c8"
                             BorderBrush="#ff96c8">
                         <TextBlock Text="None" />

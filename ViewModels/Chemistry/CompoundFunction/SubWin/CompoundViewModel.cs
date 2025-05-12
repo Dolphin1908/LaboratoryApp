@@ -1,0 +1,305 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+
+using LaboratoryApp.Models.Chemistry;
+using LaboratoryApp.Views.Chemistry.CompoundFunction.SubWin;
+using LaboratoryApp.Support.Helpers;
+using LaboratoryApp.Models.Chemistry.Enums;
+using LaboratoryApp.Services;
+
+namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
+{
+    public class CompoundViewModel : BaseViewModel
+    {
+        private List<Element> _allElements;
+        private ObservableCollection<Compound> _allCompounds;
+        private List<string> _allUnits;
+
+        private Compound _compound;
+        private ObservableCollection<CompoundElement> _composition;
+        private ObservableCollection<PhysicalProperty> _physicalProperties;
+        private ObservableCollection<ChemicalProperty> _chemicalProperties;
+        private ObservableCollection<CompoundNote> _notes;
+
+        private ChemistryService _chemistryService;
+
+        #region Commands
+        public ICommand AddElementCommand { get; set; }
+        public ICommand RemoveElementCommand { get; set; }
+        public ICommand AddPhysicalPropertyCommand { get; set; }
+        public ICommand RemovePhysicalPropertyCommand { get; set; }
+        public ICommand AddChemicalPropertyCommand { get; set; }
+        public ICommand RemoveChemicalPropertyCommand { get; set; }
+        public ICommand AddNoteCommand { get; set; }
+        public ICommand RemoveNoteCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        #endregion
+
+        #region Properties
+        public List<Element> AllElements
+        {
+            get => _allElements;
+            set
+            {
+                _allElements = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<Compound> AllCompounds
+        {
+            get => _allCompounds;
+            set
+            {
+                _allCompounds = value;
+                OnPropertyChanged();
+            }
+        }
+        public List<string> AllUnits
+        {
+            get => _allUnits;
+            set
+            {
+                _allUnits = value;
+                OnPropertyChanged();
+            }
+        }
+        public string SelectedCompoundTypeNames
+        {
+            get
+            {
+                var names = CompoundTypeOptions
+                    .Where(x => x.IsSelected)
+                    .Select(x => x.DisplayName);
+                return names.Any() ? string.Join("\n", names) : String.Empty;
+            }
+        }
+        public string SelectedPhaseNames
+        {
+            get
+            {
+                var names = PhaseOptions
+                    .Where(x => x.IsSelected)
+                    .Select(x => x.DisplayName);
+                return names.Any() ? string.Join("\n", names) : String.Empty;
+            }
+        }
+        public ObservableCollection<EnumDisplay<CompoundNoteType>> NoteTypeOptions { get; }
+        public ObservableCollection<SelectableEnumDisplay<CompoundType>> CompoundTypeOptions { get; }
+        public ObservableCollection<SelectableEnumDisplay<ChemicalPhase>> PhaseOptions { get; }
+        public Compound Compound
+        {
+            get => _compound;
+            set
+            {
+                _compound = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<CompoundElement> Composition
+        {
+            get => _composition;
+            set
+            {
+                _composition = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<PhysicalProperty> PhysicalProperties
+        {
+            get => _physicalProperties;
+            set
+            {
+                _physicalProperties = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<ChemicalProperty> ChemicalProperties
+        {
+            get => _chemicalProperties;
+            set
+            {
+                _chemicalProperties = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<CompoundNote> Notes
+        {
+            get => _notes;
+            set
+            {
+                _notes = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        public CompoundViewModel()
+        {
+            // Khởi tạo các collection
+            Compound = new Compound();
+            Composition = new ObservableCollection<CompoundElement>();
+            PhysicalProperties = new ObservableCollection<PhysicalProperty>();
+            ChemicalProperties = new ObservableCollection<ChemicalProperty>();
+            Notes = new ObservableCollection<CompoundNote>();
+
+            _chemistryService = new ChemistryService();
+
+            AllElements = ChemistryDataCache.AllElements;
+            AllCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
+            AllUnits = ["g/mol", "°C", "K", "g/cm³", "kg/m³", "g/L", "J/(g·K)", "J/(kg·K)", "mmHg", "Pa", "kPa", "MPa", "atm", "bar", "Torr", "S/m", "g/100 mL", "mol/L", "mg/L", "kJ/mol", "J/g", "Pa·s", "cP"];
+            NoteTypeOptions = new ObservableCollection<EnumDisplay<CompoundNoteType>>(
+                Enum.GetValues(typeof(CompoundNoteType))
+                    .Cast<CompoundNoteType>()
+                    .Select(e => new EnumDisplay<CompoundNoteType>(e))
+            );
+            CompoundTypeOptions = new ObservableCollection<SelectableEnumDisplay<CompoundType>>(
+                Enum.GetValues(typeof(CompoundType))
+                    .Cast<CompoundType>()
+                    .Select(e => new SelectableEnumDisplay<CompoundType>(e))
+            );
+            PhaseOptions = new ObservableCollection<SelectableEnumDisplay<ChemicalPhase>>(
+                Enum.GetValues(typeof(ChemicalPhase))
+                    .Cast<ChemicalPhase>()
+                    .Select(e => new SelectableEnumDisplay<ChemicalPhase>(e))
+            );
+
+            #region Events
+            // Đăng ký sự kiện cho các thuộc tính CompoundTypeOptions
+            foreach (var item in CompoundTypeOptions)
+            {
+                item.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(item.IsSelected))
+                        OnPropertyChanged(nameof(SelectedCompoundTypeNames));
+                };
+            }
+
+            // Đăng ký sự kiện cho các thuộc tính PhaseOptions
+            foreach (var item in PhaseOptions)
+            {
+                item.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(item.IsSelected))
+                        OnPropertyChanged(nameof(SelectedPhaseNames));
+                };
+            }
+            #endregion
+
+            #region Commands
+            AddElementCommand = new RelayCommand<object>(
+                p => CanAddDefaultElement(),
+                p =>
+                {
+                    Composition.Add(new CompoundElement
+                    {
+                        Element = AllElements.FirstOrDefault(e => !Composition.Any(c => c.Element.Id == e.Id)) ?? new Element(),
+                        Quantity = 1
+                    });
+
+                    // ép re-evaluate CanExecute của tất cả command
+                    CommandManager.InvalidateRequerySuggested();
+                });
+            RemoveElementCommand = new RelayCommand<object>(p => true, p =>
+            {
+                if (p is CompoundElement element)
+                {
+                    Composition.Remove(element);
+                }
+            });
+
+            AddPhysicalPropertyCommand = new RelayCommand<object>(p => true, p =>
+            {
+                PhysicalProperties.Add(new PhysicalProperty());
+            });
+            RemovePhysicalPropertyCommand = new RelayCommand<object>(p => true, p =>
+            {
+                if (p is PhysicalProperty property)
+                {
+                    PhysicalProperties.Remove(property);
+                }
+            });
+
+            AddChemicalPropertyCommand = new RelayCommand<object>(p => true, p =>
+            {
+                ChemicalProperties.Add(new ChemicalProperty());
+            });
+            RemoveChemicalPropertyCommand = new RelayCommand<object>(p => true, p =>
+            {
+                if (p is ChemicalProperty property)
+                {
+                    ChemicalProperties.Remove(property);
+                }
+            });
+
+            AddNoteCommand = new RelayCommand<object>(p => true, p =>
+            {
+                Notes.Add(new CompoundNote());
+            });
+            RemoveNoteCommand = new RelayCommand<object>(p => true, p =>
+            {
+                if (p is CompoundNote note)
+                {
+                    Notes.Remove(note);
+                }
+            });
+
+            SaveCommand = new RelayCommand<object>(p => CanSave(), p =>
+            {
+                if (CanAddDefaultElement())
+                {
+                    Compound.Id = AllCompounds.Count + 1;
+                    Compound.Composition = Composition.ToList();
+                    Compound.CompoundTypes = CompoundTypeOptions.Where(x => x.IsSelected)
+                                                                .Select(x => x.Value)
+                                                                .ToList();
+                    Compound.Phases = PhaseOptions.Where(x => x.IsSelected)
+                                                  .Select(x => x.Value)
+                                                  .ToList();
+                    Compound.PhysicalProperties = PhysicalProperties.ToList();
+                    Compound.ChemicalProperties = ChemicalProperties.ToList();
+                    Compound.Notes = Notes.ToList();
+
+                    _chemistryService.AddCompound(Compound);
+
+                    var thisWindow = p as AddCompoundWindow;
+                    thisWindow.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Có nguyên tố trùng lặp trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            });
+            #endregion
+        }
+
+        private bool CanSave()
+        {
+            if (string.IsNullOrWhiteSpace(Compound.Name))
+            {
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Compound.Formula))
+            {
+                return false;
+            }
+            if (Compound.MolecularMass.Equals(0))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool CanAddDefaultElement()
+        {
+            return !Composition
+                .GroupBy(c => c.Element.Id)
+                .Any(g => g.Count() > 1);
+        }
+    }
+}

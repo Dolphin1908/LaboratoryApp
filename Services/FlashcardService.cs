@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using LaboratoryApp.Models.English;
+using LaboratoryApp.Models.English.FlashcardFunction;
 
 namespace LaboratoryApp.Services
 {
@@ -123,7 +123,7 @@ namespace LaboratoryApp.Services
         /// </summary>
         /// <param name="setId">ID of flashcard set</param>
         /// <param name="flashcard">Data of new flashcard</param>
-        public void AddFlashcardToSet(long setId, FlashcardModel flashcard)
+        public void AddFlashcardToSet(long setId, Flashcard flashcard)
         {
             var set = _flashcardSets.FirstOrDefault(s => s.Id == setId);
             if (set != null)
@@ -135,7 +135,7 @@ namespace LaboratoryApp.Services
             }
         }
 
-        public void UpdateFlashcard(long setId, FlashcardModel flashcard)
+        public void UpdateFlashcard(long setId, Flashcard flashcard)
         {
             var set = _flashcardSets.FirstOrDefault(s => s.Id == setId);
             if (set != null)
@@ -150,7 +150,7 @@ namespace LaboratoryApp.Services
             }
         }
 
-        public void DeleteFlashcardFromSet(long setId, FlashcardModel flashcard)
+        public void DeleteFlashcardFromSet(long setId, Flashcard flashcard)
         {
             var set = _flashcardSets.FirstOrDefault(s => s.Id == setId);
             if (set != null)

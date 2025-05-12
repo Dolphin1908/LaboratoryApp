@@ -8,10 +8,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using LaboratoryApp.Support.Interface;
-using LaboratoryApp.ViewModels.Chemistry.PeriodicTable.SubWin;
+using LaboratoryApp.ViewModels.Chemistry.PeriodicTableFunction.SubWin;
 using LaboratoryApp.ViewModels.UC;
 using LaboratoryApp.ViewModels.UI;
-using LaboratoryApp.Views.Chemistry.PeriodicTable.SubWin;
+using LaboratoryApp.Views.Chemistry.PeriodicTableFunction.SubWin;
 using LaboratoryApp.Views.SubWin;
 using LaboratoryApp.Views.UI;
 
@@ -35,7 +35,7 @@ namespace LaboratoryApp.ViewModels
 
         #region Commands
         public ICommand NavigateToDashboardCommand { get; set; }
-        public ICommand NavigateToPeriodicTableCommand { get; set; }
+        public ICommand OpenPeriodicTableCommand { get; set; }
         public ICommand NavigateToToolkitCommand { get; set; }
         public ICommand OpenAuthenticationCommand { get; set; }
         #endregion
@@ -69,7 +69,7 @@ namespace LaboratoryApp.ViewModels
             });
 
             // Navigate to the periodic table page
-            NavigateToPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
+            OpenPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var periodicWindow = new PeriodicTableWindow
                 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LaboratoryApp.Models.English;
+using LaboratoryApp.Models.English.DictionaryFunction;
 using LaboratoryApp.Database.Provider;
 using LaboratoryApp.Support.Helpers;
 
@@ -15,28 +15,28 @@ namespace LaboratoryApp.Services
     {
         private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
 
-        public List<WordModel> GetAllWords()
+        public List<Word> GetAllWords()
         {
             using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<WordModel>("SELECT * FROM Words");
+            return db.ExecuteQuery<Word>("SELECT * FROM Words");
         }
 
-        public List<PosModel> GetAllPos()
+        public List<Pos> GetAllPos()
         {
             using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<PosModel>("SELECT * FROM Pos");
+            return db.ExecuteQuery<Pos>("SELECT * FROM Pos");
         }
 
-        public List<ExampleModel> GetAllExamples()
+        public List<Example> GetAllExamples()
         {
             using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<ExampleModel>("SELECT * FROM Examples");
+            return db.ExecuteQuery<Example>("SELECT * FROM Examples");
         }
 
-        public List<DefinitionModel> GetAllDefinitions()
+        public List<Definition> GetAllDefinitions()
         {
             using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<DefinitionModel>("SELECT * FROM Definitions");
+            return db.ExecuteQuery<Definition>("SELECT * FROM Definitions");
         }
     }
 }

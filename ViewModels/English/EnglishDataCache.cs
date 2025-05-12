@@ -1,19 +1,20 @@
-﻿using LaboratoryApp.Models.English;
-using LaboratoryApp.Services;
+﻿using LaboratoryApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LaboratoryApp.ViewModels.English
+using LaboratoryApp.Models.English.DictionaryFunction;
+
+namespace LaboratoryApp.ViewModels.English.DictionaryFunction
 {
     public class EnglishDataCache
     {
-        public static List<WordModel> AllWords { get; set; }
-        public static List<PosModel> AllPos { get; set; }
-        public static List<DefinitionModel> AllDefinitions { get; set; }
-        public static List<ExampleModel> AllExamples { get; set; }
+        public static List<Word> AllWords { get; set; }
+        public static List<Pos> AllPos { get; set; }
+        public static List<Definition> AllDefinitions { get; set; }
+        public static List<Example> AllExamples { get; set; }
 
         public static bool IsLoaded => AllWords != null;
 

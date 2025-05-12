@@ -356,6 +356,10 @@ video {
     position: relative;
 }
 
+#webcrumbs .m-6 {
+    margin: 24px;
+}
+
 #webcrumbs .mx-auto {
     margin-left: auto;
     margin-right: auto;

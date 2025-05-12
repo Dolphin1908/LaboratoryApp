@@ -32,9 +32,7 @@
                     Background="#F1F1F1"
                     BorderThickness="0"
                     Content="%"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding PercentCommand}"/>
             <Button Height="50"
                     Width="75"
@@ -42,9 +40,7 @@
                     BorderThickness="0"
                     Margin="6,0,3,0"
                     Content="CE"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding ClearNumberCommand}"/>
             <Button Height="50"
                     Width="75"
@@ -52,17 +48,13 @@
                     BorderThickness="0"
                     Margin="3,0,6,0"
                     Content="C"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding ClearFormulaCommand}"/>
             <Button Height="50"
                     Width="75"
                     Background="#F1F1F1"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding BackspaceCommand}">
                 <materialDesign:PackIcon Kind="BackspaceOutline"/>
             </Button>
@@ -75,9 +67,7 @@
                     Width="75"
                     Background="#F1F1F1"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding OneDivideXCommand}">
                 <materialDesign:PackIcon Kind="FractionOneHalf"/>
             </Button>
@@ -86,9 +76,7 @@
                     Background="#F1F1F1"
                     BorderThickness="0"
                     Margin="6,0,3,0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding SquareCommand}">
                 <Image Source="/Resources/Icons/squared.png" Width="12" Height="12"/>
             </Button>
@@ -97,9 +85,7 @@
                     Background="#F1F1F1"
                     BorderThickness="0"
                     Margin="3,0,6,0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding SquareRootCommand}">
                 <materialDesign:PackIcon Kind="SquareRoot" Width="20" Height="20"/>
             </Button>
@@ -107,9 +93,7 @@
                     Width="75"
                     Background="#F1F1F1"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddOperatorCommand}"
                     CommandParameter="/">
                 <Image Source="/Resources/Icons/divide.png" Width="20" Height="20"/>
@@ -125,9 +109,7 @@
                     BorderThickness="0"
                     Content="7"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="7"/>
             <Button Height="50"
@@ -137,9 +119,7 @@
                     Margin="6,0,3,0"
                     Content="8"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="8"/>
             <Button Height="50"
@@ -149,18 +129,14 @@
                     Margin="3,0,6,0"
                     Content="9"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="9"/>
             <Button Height="50"
                     Width="75"
                     Background="#F1F1F1"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddOperatorCommand}"
                     CommandParameter="*">
                 <materialDesign:PackIcon Kind="Close"/>
@@ -176,9 +152,7 @@
                     BorderThickness="0"
                     Content="4"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="4"/>
             <Button Height="50"
@@ -188,9 +162,7 @@
                     Margin="6,0,3,0"
                     Content="5"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="5"/>
             <Button Height="50"
@@ -200,18 +172,14 @@
                     Margin="3,0,6,0"
                     Content="6"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="6"/>
             <Button Height="50"
                     Width="75"
                     Background="#F1F1F1"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddOperatorCommand}"
                     CommandParameter="-">
                 <materialDesign:PackIcon Kind="Minus"/>
@@ -227,9 +195,7 @@
                     BorderThickness="0"
                     Content="1"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="1"/>
             <Button Height="50"
@@ -239,9 +205,7 @@
                     Margin="6,0,3,0"
                     Content="2"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="2"/>
             <Button Height="50"
@@ -251,18 +215,14 @@
                     Margin="3,0,6,0"
                     Content="3"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="3"/>
             <Button Height="50"
                     Width="75"
                     Background="#F1F1F1"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddOperatorCommand}"
                     CommandParameter="+">
                 <materialDesign:PackIcon Kind="Plus"/>
@@ -276,9 +236,7 @@
                     Width="75"
                     Background="#DDDDDD"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding ChangeSignCommand}">
                 <materialDesign:PackIcon Kind="PlusMinusVariant"/>
             </Button>
@@ -289,9 +247,7 @@
                     Margin="6,0,3,0"
                     Content="0"
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="0"/>
             <Button Height="50"
@@ -301,18 +257,14 @@
                     Margin="3,0,6,0"
                     Content="."
                     FontWeight="Bold"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding AddNumberCommand}"
                     CommandParameter="."/>
             <Button Height="50"
                     Width="75"
                     Background="#2AF7FF"
                     BorderThickness="0"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    ToolTip="Resource name: MaterialDesignRaisedButton"
                     Command="{Binding CalculateCommand}">
                 <materialDesign:PackIcon Kind="Equal"/>
             </Button>

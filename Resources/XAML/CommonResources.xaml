@@ -35,5 +35,7 @@
     
     <!-- Control -->
     <ctrl:BindableWebView2 x:Key="BindableWebView2"></ctrl:BindableWebView2>
-
+    
+    <!-- Rule -->
+    
 </ResourceDictionary>

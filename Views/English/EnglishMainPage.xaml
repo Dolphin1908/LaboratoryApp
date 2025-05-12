@@ -47,9 +47,7 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="SpringGreen"
                             BorderBrush="SpringGreen"
                             Command="{Binding OpenDictionaryCommand}">
@@ -62,9 +60,7 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ffff72"
                             BorderBrush="#ffff72"
                             Command="{Binding NavigateToFlashcardManagerCommand}">
@@ -77,9 +73,7 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ff9e40"
                             BorderBrush="#ff9e40"
                             Command="{Binding NavigateToLectureCommand}">
@@ -94,7 +88,6 @@
                             materialDesign:ButtonAssist.CornerRadius="10"
                             IsEnabled="False"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#ff96c8"
                             BorderBrush="#ff96c8">
                         <TextBlock Text="Luyện nghe" />
@@ -108,7 +101,6 @@
                             materialDesign:ButtonAssist.CornerRadius="10"
                             IsEnabled="False"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#d872e8"
                             BorderBrush="#d872e8">
                         <TextBlock Text="Bài tập" />
@@ -122,7 +114,6 @@
                             materialDesign:ButtonAssist.CornerRadius="10"
                             IsEnabled="False"
                             Style="{StaticResource MaterialDesignRaisedButton}"
-                            ToolTip="MaterialDesignRaisedButton with Round Corners"
                             Background="#42a5f5"
                             BorderBrush="#42a5f5">
                         <TextBlock Text="Kiểm tra" />

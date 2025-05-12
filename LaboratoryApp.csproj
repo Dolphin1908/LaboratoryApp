@@ -52,6 +52,8 @@
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3179.45" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="MongoDB.Bson" Version="3.4.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
     <PackageReference Include="System.Speech" Version="9.0.3" />
@@ -83,22 +85,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\DTOs\English\" />
     <Folder Include="Models\Physics\" />
     <Folder Include="Models\Math\" />
     <Folder Include="Resources\Components\JS\" />
-    <Folder Include="ViewModels\Chemistry\PeriodicTable\UC\" />
-    <Folder Include="ViewModels\Chemistry\PeriodicTable\UI\" />
-    <Folder Include="ViewModels\English\Flashcard\UC\" />
-    <Folder Include="ViewModels\English\Dictionary\UC\" />
-    <Folder Include="ViewModels\English\Dictionary\UI\" />
+    <Folder Include="Support\Rules\" />
+    <Folder Include="ViewModels\Chemistry\CompoundFunction\UC\" />
+    <Folder Include="ViewModels\Chemistry\PeriodicTableFunction\UC\" />
+    <Folder Include="ViewModels\Chemistry\PeriodicTableFunction\UI\" />
+    <Folder Include="ViewModels\English\FlashcardFunction\UC\" />
+    <Folder Include="ViewModels\English\DictionaryFunction\UC\" />
+    <Folder Include="ViewModels\English\DictionaryFunction\UI\" />
     <Folder Include="ViewModels\Maths\SubWin\" />
     <Folder Include="ViewModels\Maths\UC\" />
     <Folder Include="ViewModels\Maths\UI\" />
     <Folder Include="ViewModels\Physics\SubWin\" />
     <Folder Include="ViewModels\Physics\UC\" />
     <Folder Include="ViewModels\Physics\UI\" />
-    <Folder Include="Views\Chemistry\PeriodicTable\UI\" />
-    <Folder Include="Views\English\Dictionary\UI\" />
+    <Folder Include="Views\Chemistry\PeriodicTableFunction\UI\" />
+    <Folder Include="Views\English\DictionaryFunction\UI\" />
     <Folder Include="Views\Maths\SubWin\" />
     <Folder Include="Views\Maths\UC\" />
     <Folder Include="Views\Maths\UI\" />

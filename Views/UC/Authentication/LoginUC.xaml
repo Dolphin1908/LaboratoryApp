@@ -66,9 +66,7 @@
                         Background="SpringGreen"
                         Foreground="Black"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
                         Command="{Binding}"/>
 
                 <Button Grid.Column="1"
@@ -78,9 +76,7 @@
                         Background="Cyan"
                         Foreground="Black"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
                         Command="{Binding}"/>
 
                 <Button Grid.Column="2"
@@ -90,9 +86,7 @@
                         Background="Yellow"
                         Foreground="Black"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
                         Command="{Binding}"/>
             </Grid>
         </StackPanel>

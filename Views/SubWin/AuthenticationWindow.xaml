@@ -14,7 +14,11 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"      
         mc:Ignorable="d"
-        Title="AuthenticationWindow" Height="310" Width="600">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="AuthenticationWindow" 
+        Height="310"
+        Width="500">
     <Grid>
         <uc:LoginUC/>
     </Grid>
