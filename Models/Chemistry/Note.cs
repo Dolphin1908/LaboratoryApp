@@ -9,7 +9,6 @@ namespace LaboratoryApp.Models.Chemistry
 {
     public abstract class Note
     {
-        public long Id { get; set; }
         public string Content { get; set; } = String.Empty;
     }
 

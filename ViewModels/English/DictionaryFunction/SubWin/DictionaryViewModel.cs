@@ -50,7 +50,6 @@ namespace LaboratoryApp.ViewModels.English.DictionaryFunction.SubWin
                 UpdateSuggestions();
             }
         }
-
         public ObservableCollection<DictionarySearchResultDTO> DictionarySearchResultDTOs
         {
             get => _dictionarySearchResultDTOs;
@@ -60,7 +59,6 @@ namespace LaboratoryApp.ViewModels.English.DictionaryFunction.SubWin
                 OnPropertyChanged();
             }
         }
-
         public WordResultDTO SelectedWordResult
         {
             get => _selectedWordResult;
@@ -70,7 +68,6 @@ namespace LaboratoryApp.ViewModels.English.DictionaryFunction.SubWin
                 OnPropertyChanged();
             }
         }
-
         public WordResultDTO AIResult
         {
             get => _aiResult;
@@ -89,7 +86,6 @@ namespace LaboratoryApp.ViewModels.English.DictionaryFunction.SubWin
                 OnPropertyChanged();
             }
         }
-
         public bool IsLoadingAI
         {
             get => _isLoadingAI;

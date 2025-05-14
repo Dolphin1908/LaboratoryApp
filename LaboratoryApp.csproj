@@ -85,7 +85,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DTOs\English\" />
     <Folder Include="Models\Physics\" />
     <Folder Include="Models\Math\" />
     <Folder Include="Resources\Components\JS\" />

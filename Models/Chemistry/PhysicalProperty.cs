@@ -10,8 +10,6 @@ namespace LaboratoryApp.Models.Chemistry
 {
     public class PhysicalProperty
     {
-        public long Id { get; set; }
-
         public string PropertyName { get; set; }
 
         public string Unit { get; set; }

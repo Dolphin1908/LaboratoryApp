@@ -1,7 +1,9 @@
-﻿using LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin;
+﻿using LaboratoryApp.Models.Chemistry;
+using LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin;
 using LaboratoryApp.Views.Chemistry.CompoundFunction.SubWin;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +15,14 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UI
     public class CompoundManagerViewModel : BaseViewModel
     {
         private string _searchText;
+        private Compound _selectedCompound;
+
+        private ObservableCollection<Compound> _compounds;
+        private List<Compound> _allCompounds; // Assuming you have a list of all compounds to search from
 
         #region Commands
         public ICommand AddCompoundCommand { get; set; }
+        public ICommand SelectResultCommand { get; set; }
         #endregion
 
         #region Properties
@@ -26,12 +33,35 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UI
             {
                 _searchText = value;
                 OnPropertyChanged();
+                UpdateSuggestions();
+            }
+        }
+        public Compound SelectedCompound
+        {
+            get => _selectedCompound;
+            set
+            {
+                _selectedCompound = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<Compound> Compounds
+        {
+            get => _compounds;
+            set
+            {
+                _compounds = value;
+                OnPropertyChanged();
             }
         }
         #endregion
 
         public CompoundManagerViewModel()
         {
+            _compounds = new ObservableCollection<Compound>();
+
+            _allCompounds = ChemistryDataCache.AllCompounds; // Assuming you have a data cache or repository to get all compounds
+
             AddCompoundCommand = new RelayCommand<object>(p => true, p =>
             {
                 var addCompoundWindow = new AddCompoundWindow
@@ -40,6 +70,28 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UI
                 };
                 addCompoundWindow.ShowDialog();
             });
+            SelectResultCommand = new RelayCommand<object>(p => true, p => 
+            {
+                SelectedCompound = (Compound)p;
+                SearchText = string.Empty;
+            });
+        }
+
+        public void UpdateSuggestions()
+        {
+            Compounds.Clear();
+
+            if (string.IsNullOrWhiteSpace(SearchText)) return;
+
+            var matches = _allCompounds.AsParallel()
+                                       .Where(c => c.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                                       .Take(10)
+                                       .ToList();
+
+            foreach (var match in matches)
+            {
+                Compounds.Add(match);
+            }
         }
     }
 }

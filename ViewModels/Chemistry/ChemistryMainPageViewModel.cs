@@ -16,6 +16,7 @@ namespace LaboratoryApp.ViewModels.Chemistry
     public class ChemistryMainPageViewModel : BaseViewModel
     {
         private readonly INavigationService _navigationService;
+
         #region Commands
         public ICommand OpenPeriodicTableCommand { get; set; } // Command to open the periodic table window
         public ICommand NavigateToCompoundCommand { get; set; } // Command to navigate to the compound page

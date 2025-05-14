@@ -26,84 +26,175 @@
         </Grid.RowDefinitions>
         
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <StackPanel HorizontalAlignment="Stretch"
-                        Margin="10"
-                        Width="220">
-                <!-- Phần thông tin hợp chất -->
-                <TextBlock Text="Thông tin phản ứng"
+            <Grid HorizontalAlignment="Stretch"
+                  Margin="10"
+                  Width="220">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Phần Thông tin Phản ứng -->
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="Thông tin phản ứng"
+                               FontWeight="Bold"
+                               FontSize="20"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,5"/>
+
+                    <!-- Loại phản ứng -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox VerticalAlignment="Top"
+                                 materialDesign:HintAssist.Hint="Loại phản ứng"
+                                 Focusable="False"
+                                 IsReadOnly="True"
+                                 Grid.Column="0"
+                                 TextWrapping="WrapWithOverflow"
+                                 Text="{Binding SelectedReactionTypeNames, Mode=OneWay}"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+
+                        <!-- Nút để mở popup -->
+                        <ToggleButton Name="TypeToggle"
+                                      Grid.Column="1"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Margin="4,0,0,0"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                      Content="▾"/>
+
+                        <!-- Popup sẽ xuất hiện dưới ToggleButton -->
+                        <Popup PlacementTarget="{Binding ElementName=TypeToggle}"
+                               Placement="Bottom"
+                               StaysOpen="False"
+                               AllowsTransparency="True"
+                               IsOpen="{Binding IsChecked, ElementName=TypeToggle}"
+                               PopupAnimation="Fade">
+                            <Border Background="White"
+                                    BorderBrush="Gray"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    Padding="8">
+                                <StackPanel>
+                                    <ListView ItemsSource="{Binding ReactionTypeOptions}"
+                                              Width="250" 
+                                              Height="150"
+                                              materialDesign:ListBoxItemAssist.ShowSelection="False"
+                                              ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                              VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding DisplayName}"
+                                                               Margin="8,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </Grid>
+
+                    <!-- Hiệu suất phản ứng -->
+                    <TextBox VerticalAlignment="Top"
+                             materialDesign:HintAssist.Hint="Hiệu suất phản ứng (0 - 100)"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Margin="0,0,0,20"
+                             Text="{Binding Reaction.YieldPercent}"/>
+                </StackPanel>
+
+                <!-- Phần Điều kiện Phản ứng -->
+                <TextBlock Grid.Row="1" Text="Điều kiện phản ứng"
                            FontWeight="Bold"
                            FontSize="20"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,5"/>
 
-                <TextBox VerticalAlignment="Top"
-                         materialDesign:HintAssist.Hint="Tên hợp chất"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Margin="0,0,0,20">
-                    <TextBox.Text>
-                        <Binding Path="Compound.Name"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <ScrollViewer Grid.Row="2"
+                              VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <!-- Nhiệt độ (°C) -->
+                        <TextBox VerticalAlignment="Top"
+                                 materialDesign:HintAssist.Hint="Nhiệt độ (°C)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,20"
+                                 Text="{Binding Reaction.Condition.Temperature}"/>
 
-                <TextBox VerticalAlignment="Top"
-                         materialDesign:HintAssist.Hint="Công thức hợp chất"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Margin="0,0,0,20">
-                    <TextBox.Text>
-                        <Binding Path="Compound.Formula"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                        <!-- Áp suất (atm) -->
+                        <TextBox VerticalAlignment="Top"
+                                 materialDesign:HintAssist.Hint="Áp suất (atm)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,20"
+                                 Text="{Binding Reaction.Condition.Pressure}"/>
 
-                <TextBox VerticalAlignment="Top"
-                         materialDesign:HintAssist.Hint="Khối lượng mol"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Margin="0,0,0,20">
-                    <TextBox.Text>
-                        <Binding Path="Compound.MolecularMass"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
 
-                <TextBox VerticalAlignment="Top"
-                         materialDesign:HintAssist.Hint="Màu hợp chất"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Margin="0,0,0,20"
-                         Text="{Binding Compound.CompoundColor}"/>
+                        <TextBox VerticalAlignment="Top"
+                                 materialDesign:HintAssist.Hint="Chất xúc tác"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,20"
+                                 Text="{Binding Reaction.Condition.Catalyst}"/>
 
-                <TextBox VerticalAlignment="Top"
-                         materialDesign:HintAssist.Hint="Trạng thái"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Margin="0,0,0,20"
-                         Text="{Binding Compound.Phase}"/>
+                        <TextBox VerticalAlignment="Top"
+                                 materialDesign:HintAssist.Hint="Dung môi"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,20"
+                                 Text="{Binding Reaction.Condition.Solvent}"/>
 
-                <TextBox VerticalAlignment="Top"
-                         materialDesign:HintAssist.Hint="Khối lượng riêng (g/cm³)"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Margin="0,0,0,20"
-                         Text="{Binding Compound.Density}"/>
+                        <TextBox VerticalAlignment="Top"
+                                 materialDesign:HintAssist.Hint="Độ pH (0 - 14)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,20"
+                                 Text="{Binding Reaction.Condition.PH}"/>
 
-                <TextBox VerticalAlignment="Top"
-                         materialDesign:HintAssist.Hint="Mã số đăng ký (CAS)"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         Margin="0,0,0,10"
-                         Text="{Binding Compound.CASNumber}"/>
-            </StackPanel>
+                        <TextBlock Text="Các điều kiện khác"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,5"/>
 
+                        <!-- Danh sách các điều kiện -->
+                        <ItemsControl ItemsSource="{Binding Reaction.Condition.OtherConditions}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                        <TextBox Text="{Binding ., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 Width="160"
+                                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+                                        <Button Content="Xóa"
+                                                Foreground="Red"
+                                                Command="{Binding DataContext.RemoveOtherConditionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignFlatButton}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Nút thêm điều kiện -->
+                        <Button Content="Thêm điều kiện"
+                                Margin="0,0,0,10"
+                                Width="218"
+                                Background="SpringGreen"
+                                Foreground="Black"
+                                BorderThickness="0"
+                                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
+                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Command="{Binding AddOtherConditionCommand}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            
             <Separator HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Width="400"
@@ -113,7 +204,7 @@
                 </Separator.LayoutTransform>
             </Separator>
 
-            <!-- Phần Cấu tạo -->
+            <!-- Phần Chất tham gia -->
             <Grid Margin="10" 
                   Width="220">
                 <Grid.RowDefinitions>
@@ -125,7 +216,7 @@
 
                 <!-- Header + Button cố định -->
                 <StackPanel Grid.Row="0">
-                    <TextBlock Text="Cấu tạo (Nguyên tố)"
+                    <TextBlock Text="Chất tham gia"
                                FontWeight="Bold"
                                FontSize="20"
                                HorizontalAlignment="Center"

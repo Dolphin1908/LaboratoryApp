@@ -57,4 +57,22 @@ namespace LaboratoryApp.Support.Helpers
             IsSelected = false;
         }
     }
+
+    public static class EnumExtensions
+    {
+        /// <summary>
+        /// Lấy DisplayAttribute.Name của enum, fallback về ToString() nếu không có.
+        /// </summary>
+        public static string GetDisplayName(this Enum enumValue)
+        {
+            var member = enumValue.GetType()
+                                  .GetMember(enumValue.ToString())
+                                  .FirstOrDefault();
+            if (member == null)
+                return enumValue.ToString();
+
+            var displayAttr = member.GetCustomAttribute<DisplayAttribute>();
+            return displayAttr?.GetName() ?? enumValue.ToString();
+        }
+    }
 }

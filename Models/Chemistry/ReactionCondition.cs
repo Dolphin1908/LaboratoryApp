@@ -22,6 +22,6 @@ namespace LaboratoryApp.Models.Chemistry
 
         public string? PH { get; set; }
 
-        public string? OtherConditions { get; set; }
+        public List<string>? OtherConditions { get; set; }
     }
 }
