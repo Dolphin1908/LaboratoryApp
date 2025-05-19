@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.Views.Chemistry.CompoundFunction.UI
+namespace LaboratoryApp.Views.Chemistry.ReactionFunction.UI
 {
     /// <summary>
     /// Interaction logic for Reaction.xaml

@@ -12,6 +12,6 @@ namespace LaboratoryApp.Models.Chemistry
     {
         public Element Element { get; set; } = null!; // The element in the compound
 
-        public int Quantity { get; set; }
+        public string Quantity { get; set; } = string.Empty;
     }
 }

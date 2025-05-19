@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace LaboratoryApp.Models.Chemistry
 {
-    public abstract class Note
+    public abstract class Notes
     {
-        public string Content { get; set; } = String.Empty;
+        public List<string> Content { get; set; } = new List<string>();
     }
 
-    public class CompoundNote : Note
+    public class CompoundNote : Notes
     {
         public CompoundNoteType NoteType { get; set; }
     }
 
-    public class ReactionNote : Note
+    public class ReactionNote : Notes
     {
         public ReactionNoteType NoteType { get; set; }
     }

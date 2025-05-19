@@ -84,7 +84,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UI
             if (string.IsNullOrWhiteSpace(SearchText)) return;
 
             var matches = _allCompounds.AsParallel()
-                                       .Where(c => c.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                                       .Where(c => c.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase) || c.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                                        .Take(10)
                                        .ToList();
 

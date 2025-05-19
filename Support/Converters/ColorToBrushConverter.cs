@@ -12,16 +12,17 @@ namespace LaboratoryApp.Support.Converters
         {
             if (value is string colorString)
             {
+                colorString = colorString.ToLower();
                 try
                 {
-                    if (colorString == "FFFFFF" || colorString == "")
-                        colorString = "BDBDBD";
+                    if (colorString == "ffffff" || colorString == "")
+                        colorString = "bdbdbd";
                     var color = (Color)ColorConverter.ConvertFromString("#" + colorString);
                     return new SolidColorBrush(color);
                 }
                 catch
                 {
-                    var color = (Color)ColorConverter.ConvertFromString("#BDBDBD");
+                    var color = (Color)ColorConverter.ConvertFromString("#bdbdbd");
                     return new SolidColorBrush(color); // Default background
                 }
             }

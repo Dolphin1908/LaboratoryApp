@@ -28,7 +28,7 @@ namespace LaboratoryApp.Services
         }
         #endregion
 
-        #region MongoDB
+        #region CompoundMongoDB
         /// <summary>
         /// Get all compounds from the MongoDB database.
         /// </summary>
@@ -63,6 +63,48 @@ namespace LaboratoryApp.Services
         {
             using var db = new MongoDBProvider(_chemMongoDbPath, "chemistry");
             db.Delete<Compound>("compounds", compound.Id); // Explicitly specify the type argument
+        }
+        #endregion
+
+        #region ReactionMongoDB
+        /// <summary>
+        /// Get all reactions from the MongoDB database.
+        /// </summary>
+        /// <returns></returns>
+        public List<Reaction> GetAllReactions()
+        {
+            using var db = new MongoDBProvider(_chemMongoDbPath, "chemistry");
+            return db.GetAll<Reaction>("reactions");
+        }
+
+        /// <summary>
+        /// Get all reactions from the MongoDB database.
+        /// </summary>
+        /// <param name="reaction"></param>
+        public void AddReaction(Reaction reaction)
+        {
+            using var db = new MongoDBProvider(_chemMongoDbPath, "chemistry");
+            db.Insert<Reaction>("reactions", reaction);
+        }
+
+        /// <summary>
+        /// Update an existing reaction in the MongoDB database.
+        /// </summary>
+        /// <param name="reaction"></param>
+        public void UpdateReaction(Reaction reaction)
+        {
+            using var db = new MongoDBProvider(_chemMongoDbPath, "chemistry");
+            db.Update<Reaction>("reactions", reaction.Id, reaction);
+        }
+
+        /// <summary>
+        /// Delete a reaction from the MongoDB database.
+        /// </summary>
+        /// <param name="reaction"></param>
+        public void DeleteReaction(Reaction reaction)
+        {
+            using var db = new MongoDBProvider(_chemMongoDbPath, "chemistry");
+            db.Delete<Reaction>("reactions", reaction.Id); // Explicitly specify the type argument
         }
         #endregion
     }

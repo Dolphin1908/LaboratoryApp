@@ -140,7 +140,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTableFunction.SubWin
             {
                 AtomicNumber = "57 - 71",
                 Name = "Lanthanides",
-                Symbol = "La - Lu",
+                Formula = "La - Lu",
                 Phase = "Chất rắn",
                 Color = "",
                 Category = "Họ Lanthan",
@@ -152,7 +152,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.PeriodicTableFunction.SubWin
             {
                 AtomicNumber = "89 - 103",
                 Name = "Actinides",
-                Symbol = "Ac - Lr",
+                Formula = "Ac - Lr",
                 Phase = "Chất rắn",
                 Color = "",
                 Category = "Họ Actini",

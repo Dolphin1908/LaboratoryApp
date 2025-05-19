@@ -12,16 +12,22 @@ namespace LaboratoryApp.Models.Chemistry
     {
         public long Id { get; set; }
 
-        public string Temperature { get; set; } = string.Empty;
+        public string Temperature { get; set; } = string.Empty; // Nhiệt độ
 
-        public string Pressure { get; set; } = string.Empty;
+        public string Pressure { get; set; } = string.Empty; // Áp suất
 
-        public string? Catalyst { get; set; }
+        public string? Catalyst { get; set; } // Chất xúc tác
 
-        public string? Solvent { get; set; }
+        public string? Solvent { get; set; } // Dung môi
 
-        public string? PH { get; set; }
+        public string? PH { get; set; } // Độ pH
 
-        public List<string>? OtherConditions { get; set; }
+        public List<ReactionOtherCondition>? OtherConditions { get; set; }
+    }
+
+    public class ReactionOtherCondition
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }

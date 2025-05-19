@@ -22,6 +22,7 @@ namespace LaboratoryApp.ViewModels.Chemistry
             {
                 AllElements = service.GetAllElements();
                 AllCompounds = service.GetAllCompounds();
+                AllReactions = service.GetAllReactions();
             }
         }
     }

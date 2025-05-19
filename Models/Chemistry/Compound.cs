@@ -21,6 +21,8 @@ namespace LaboratoryApp.Models.Chemistry
 
         public string CompoundColor { get; set; } = String.Empty;
 
+        public string CompoundColorCode { get; set; } = String.Empty; // Hex color code
+
         public List<ChemicalPhase> Phases { get; set; } = new List<ChemicalPhase>();
 
         public double? Density { get; set; } // Density in g/cm³

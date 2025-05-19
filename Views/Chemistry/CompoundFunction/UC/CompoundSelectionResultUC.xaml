@@ -56,8 +56,9 @@
                                        FontSize="16"
                                        FontWeight="Bold"/>
                             <TextBlock Text="{Binding MolecularMass}"
-                                       FontSize="16"/>
-                            <TextBlock Text=" g/mol"
+                                       FontSize="16"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock Text="g/mol"
                                        FontSize="16"/>
                         </StackPanel>
 
@@ -67,8 +68,9 @@
                                        FontSize="16"
                                        FontWeight="Bold"/>
                             <TextBlock Text="{Binding Density}"
-                                       FontSize="16"/>
-                            <TextBlock Text=" g/cm³"
+                                       FontSize="16"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock Text="g/cm³"
                                        FontSize="16"/>
                         </StackPanel>
 
@@ -116,13 +118,17 @@
                                                FontWeight="DemiBold"/>
                                     <StackPanel Orientation="Horizontal"
                                                 Visibility="{Binding Unit, Converter={StaticResource NullToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Value}" FontSize="16"/>
-                                        <TextBlock Text="{Binding Unit}" FontSize="16"/>
+                                        <TextBlock Text="{Binding Value}"
+                                                   FontSize="16" 
+                                                   Margin="10,0,5,0"/>
+                                        <TextBlock Text="{Binding Unit}"
+                                                   FontSize="16"/>
                                     </StackPanel>
                                     <TextBlock Text="{Binding Description}"
                                                Visibility="{Binding Description, Converter={StaticResource NullToVisibilityConverter}}"
                                                TextWrapping="Wrap"
-                                               FontSize="16"/>
+                                               FontSize="16"
+                                               Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -154,12 +160,52 @@
                                     <TextBlock Text="{Binding Description}"
                                                Visibility="{Binding Description, Converter={StaticResource NullToVisibilityConverter}}"
                                                TextWrapping="Wrap" 
-                                               FontSize="16"/>
+                                               FontSize="16"
+                                               Margin="10,0,0,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </Grid>
+                
+                <!-- Ghi chú -->
+                <Grid Margin="0,0,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Ghi chú"
+                               Grid.Row="0"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"
+                               Foreground="DarkSlateBlue" />
+
+                    <ItemsControl ItemsSource="{Binding Notes}"
+                                  Grid.Row="1">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="10,0,0,10">
+                                    <TextBlock Text="{Binding NoteType, Converter={StaticResource EnumDisplayNameConverter}}"
+                                               FontSize="16"
+                                               FontWeight="DemiBold"/>
+                                    <ItemsControl ItemsSource="{Binding Content}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}"
+                                                           TextWrapping="Wrap"
+                                                           FontSize="16"
+                                                           Margin="10,0,0,0"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

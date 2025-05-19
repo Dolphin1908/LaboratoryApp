@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using LaboratoryApp.ViewModels.Chemistry.ReactionFunction.SubWin;
+using LaboratoryApp.Views.Chemistry.ReactionFunction.SubWin;
 
-using LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin;
-using LaboratoryApp.Views.Chemistry.CompoundFunction.SubWin;
-
-namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UI
+namespace LaboratoryApp.ViewModels.Chemistry.ReactionFunction.UI
 {
     public class ReactionManagerViewModel : BaseViewModel
     {

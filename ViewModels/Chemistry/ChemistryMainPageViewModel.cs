@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using LaboratoryApp.Services;
 using LaboratoryApp.Support.Interface;
+using LaboratoryApp.ViewModels.Chemistry.ReactionFunction.UI;
 using LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UI;
-using LaboratoryApp.ViewModels.Chemistry.PeriodicTableFunction.SubWin;
+using LaboratoryApp.Views.Chemistry.ReactionFunction.UI;
 using LaboratoryApp.Views.Chemistry.CompoundFunction.UI;
+using LaboratoryApp.ViewModels.Chemistry.PeriodicTableFunction.SubWin;
 using LaboratoryApp.Views.Chemistry.PeriodicTableFunction.SubWin;
 
 namespace LaboratoryApp.ViewModels.Chemistry

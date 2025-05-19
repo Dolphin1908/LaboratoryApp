@@ -17,6 +17,6 @@ namespace LaboratoryApp.Models.Chemistry
 
         public Compound? Compound { get; set; }
 
-        public int StoichiometricCoefficient { get; set; }
+        public string StoichiometricCoefficient { get; set; } = string.Empty; // Hệ số tỉ lệ
     }
 }

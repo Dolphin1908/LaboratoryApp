@@ -29,6 +29,7 @@
     <cv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"></cv:InverseBooleanToVisibilityConverter>
     <cv:FlipConverter x:Key="FlipConverter"></cv:FlipConverter>
     <cv:HtmlToDataUriConverter x:Key="HtmlToDataUriConverter"></cv:HtmlToDataUriConverter>
+    <cv:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter"></cv:EnumDisplayNameConverter>
 
     <!-- Domain -->
     <domain:NotEmptyValidationRule x:Key="NotEmptyValidationRule"></domain:NotEmptyValidationRule>

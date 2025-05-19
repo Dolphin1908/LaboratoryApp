@@ -12,6 +12,7 @@ using LaboratoryApp.Views.Chemistry.CompoundFunction.SubWin;
 using LaboratoryApp.Support.Helpers;
 using LaboratoryApp.Models.Chemistry.Enums;
 using LaboratoryApp.Services;
+using LaboratoryApp.ViewModels.Chemistry.CompoundFunction.UC;
 
 namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
 {
@@ -25,7 +26,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
         private ObservableCollection<CompoundElement> _composition;
         private ObservableCollection<PhysicalProperty> _physicalProperties;
         private ObservableCollection<ChemicalProperty> _chemicalProperties;
-        private ObservableCollection<CompoundNote> _notes;
+        private ObservableCollection<CompoundNoteViewModel> _notes;
 
         private ChemistryService _chemistryService;
 
@@ -36,8 +37,8 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
         public ICommand RemovePhysicalPropertyCommand { get; set; }
         public ICommand AddChemicalPropertyCommand { get; set; }
         public ICommand RemoveChemicalPropertyCommand { get; set; }
-        public ICommand AddNoteCommand { get; set; }
-        public ICommand RemoveNoteCommand { get; set; }
+        public ICommand AddNoteGroupCommand { get; set; }
+        public ICommand RemoveNoteGroupCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         #endregion
 
@@ -89,7 +90,6 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
                 return names.Any() ? string.Join("\n", names) : String.Empty;
             }
         }
-        public ObservableCollection<EnumDisplay<CompoundNoteType>> NoteTypeOptions { get; }
         public ObservableCollection<SelectableEnumDisplay<CompoundType>> CompoundTypeOptions { get; }
         public ObservableCollection<SelectableEnumDisplay<ChemicalPhase>> PhaseOptions { get; }
         public Compound Compound
@@ -128,7 +128,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<CompoundNote> Notes
+        public ObservableCollection<CompoundNoteViewModel> Notes
         {
             get => _notes;
             set
@@ -146,18 +146,13 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
             Composition = new ObservableCollection<CompoundElement>();
             PhysicalProperties = new ObservableCollection<PhysicalProperty>();
             ChemicalProperties = new ObservableCollection<ChemicalProperty>();
-            Notes = new ObservableCollection<CompoundNote>();
+            Notes = new ObservableCollection<CompoundNoteViewModel>();
 
             _chemistryService = new ChemistryService();
 
             AllElements = ChemistryDataCache.AllElements;
             AllCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
             AllUnits = ["g/mol", "°C", "K", "g/cm³", "kg/m³", "g/L", "J/(g·K)", "J/(kg·K)", "mmHg", "Pa", "kPa", "MPa", "atm", "bar", "Torr", "S/m", "g/100 mL", "mol/L", "mg/L", "kJ/mol", "J/g", "Pa·s", "cP"];
-            NoteTypeOptions = new ObservableCollection<EnumDisplay<CompoundNoteType>>(
-                Enum.GetValues(typeof(CompoundNoteType))
-                    .Cast<CompoundNoteType>()
-                    .Select(e => new EnumDisplay<CompoundNoteType>(e))
-            );
             CompoundTypeOptions = new ObservableCollection<SelectableEnumDisplay<CompoundType>>(
                 Enum.GetValues(typeof(CompoundType))
                     .Cast<CompoundType>()
@@ -199,7 +194,7 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
                     Composition.Add(new CompoundElement
                     {
                         Element = AllElements.FirstOrDefault(e => !Composition.Any(c => c.Element.Id == e.Id)) ?? new Element(),
-                        Quantity = 1
+                        Quantity = "1"
                     });
 
                     // ép re-evaluate CanExecute của tất cả command
@@ -237,13 +232,13 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
                 }
             });
 
-            AddNoteCommand = new RelayCommand<object>(p => true, p =>
+            AddNoteGroupCommand = new RelayCommand<object>(p => true, p =>
             {
-                Notes.Add(new CompoundNote());
+                Notes.Add(new CompoundNoteViewModel());
             });
-            RemoveNoteCommand = new RelayCommand<object>(p => true, p =>
+            RemoveNoteGroupCommand = new RelayCommand<object>(p => true, p =>
             {
-                if (p is CompoundNote note)
+                if (p is CompoundNoteViewModel note)
                 {
                     Notes.Remove(note);
                 }
@@ -263,9 +258,14 @@ namespace LaboratoryApp.ViewModels.Chemistry.CompoundFunction.SubWin
                                                   .ToList();
                     Compound.PhysicalProperties = PhysicalProperties.ToList();
                     Compound.ChemicalProperties = ChemicalProperties.ToList();
-                    Compound.Notes = Notes.ToList();
+                    Compound.Notes = Notes.Select(vm => new CompoundNote
+                    {
+                        NoteType = vm.CompoundNoteType,
+                        Content = vm.CompoundNotes.Select(n => n.Text).ToList()
+                    }).ToList();
 
                     _chemistryService.AddCompound(Compound);
+                    ChemistryDataCache.AllCompounds.Add(Compound);
 
                     var thisWindow = p as AddCompoundWindow;
                     thisWindow.Close();

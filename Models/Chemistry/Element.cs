@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace LaboratoryApp.Models.Chemistry
 
         public string AtomicNumber { get; set; } = String.Empty; // Atomic number of the element
 
-        public string Symbol { get; set; } = String.Empty;
+        public string Formula { get; set; } = String.Empty;
 
         public string Name { get; set; } = String.Empty;
         
@@ -21,8 +22,25 @@ namespace LaboratoryApp.Models.Chemistry
         
         public string Color { get; set; } = String.Empty; // Color of the element in the periodic table
         
-        public string ElementColor { get; set; } = String.Empty; // Real color of the element
-        
+        public string CPKColor { get; set; } = String.Empty; // Real color of the element
+
+        // Raw storage for real-world colors (comma-separated)
+        public string RealColorRaw { get; set; } = string.Empty;
+
+        // Exposed as a list of color codes
+        [NotMapped]
+        public List<string> RealColors
+        {
+            get => string.IsNullOrWhiteSpace(RealColorRaw)
+                ? new List<string>()
+                : RealColorRaw.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                               .Select(c => c.Trim())
+                               .ToList();
+            set => RealColorRaw = value != null
+                ? string.Join(',', value)
+                : string.Empty;
+        }
+
         public string ElectronConfiguration { get; set; } = String.Empty;
         
         public double? Electronegativity { get; set; }

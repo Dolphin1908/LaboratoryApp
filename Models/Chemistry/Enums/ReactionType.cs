@@ -9,7 +9,7 @@ namespace LaboratoryApp.Models.Chemistry.Enums
 {
     public enum ReactionType
     {
-        [Display(Name = "Phản ứng tổng hợp")] Synthesis,              // A + B → AB
+        [Display(Name = "Phản ứng hóa hợp")] Synthesis,              // A + B → AB
         [Display(Name = "Phản ứng phân hủy")] Decomposition,         // AB → A + B
         [Display(Name = "Phản ứng thế")] SingleDisplacement,         // A + BC → AC + B
         [Display(Name = "Phản ứng hai chất thế")] DoubleDisplacement,// AB + CD → AD + CB

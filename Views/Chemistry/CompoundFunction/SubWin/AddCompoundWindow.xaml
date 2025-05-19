@@ -20,7 +20,8 @@
         Width="1220"
         Title="Thêm hợp chất mới">
 
-    <Grid>
+    <Grid HorizontalAlignment="Center"
+          VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -97,6 +98,27 @@
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                  Margin="0,0,0,20"
                                  Text="{Binding Compound.CompoundColor}"/>
+
+                        <!-- Mã màu hợp chất -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox Grid.Column="0"
+                                     VerticalAlignment="Top"
+                                     materialDesign:HintAssist.Hint="Mã màu (HEX) hợp chất (nếu có)"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Margin="0,0,10,0"
+                                     Text="{Binding Compound.CompoundColorCode}"/>
+                            <Border Grid.Column="1"
+                                    Width="15" Height="50"
+                                    Background="{Binding Compound.CompoundColorCode, Converter={StaticResource ColorToBrushConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                    CornerRadius="3"
+                                    BorderThickness="1"
+                                    BorderBrush="Black"/>
+                        </Grid>
 
                         <!-- Loại hợp chất -->
                         <Grid Margin="0,0,0,20">
@@ -269,7 +291,7 @@
                             BorderThickness="0"
                             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-                            materialDesign:ButtonAssist.CornerRadius="10"
+                            materialDesign:ButtonAssist.CornerRadius="15"
                             Command="{Binding AddElementCommand}"/>
                 </StackPanel>
 
@@ -283,7 +305,7 @@
                                 <StackPanel Orientation="Vertical" 
                                             Margin="0,0,0,10">
                                     <!-- Nội dung từng phần tử -->
-                                    <TextBlock Text="{Binding Element.Symbol}"
+                                    <TextBlock Text="{Binding Element.Formula}"
                                                FontSize="40"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Center"
@@ -342,14 +364,14 @@
                                HorizontalAlignment="Center"
                                Margin="0,0,0,5"/>
                     <Button Content="Thêm tính chất" 
-                                Width="218"
-                                Margin="0,0,0,10"
-                                Background="SpringGreen"
-                                Foreground="Black"
-                                BorderThickness="0"
-                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-                                materialDesign:ButtonAssist.CornerRadius="10"
-                                Command="{Binding AddPhysicalPropertyCommand}"/>
+                            Width="218"
+                            Margin="0,0,0,10"
+                            Background="SpringGreen"
+                            Foreground="Black"
+                            BorderThickness="0"
+                            Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                            materialDesign:ButtonAssist.CornerRadius="15"
+                            Command="{Binding AddPhysicalPropertyCommand}"/>
 
                 </StackPanel>
                 <ScrollViewer Grid.Row="1"
@@ -370,13 +392,13 @@
                                                 Margin="0,0,0,10"
                                                 HorizontalAlignment="Center">
                                         <TextBox Margin="0,0,10,0"
-                                                 Width="110"
+                                                 Width="100"
                                                  Text="{Binding Value}"
                                                  materialDesign:HintAssist.Hint="Giá trị"
                                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
 
                                         <ComboBox IsEditable="True"
-                                                  Width="100"
+                                                  Width="110"
                                                   materialDesign:HintAssist.Hint="Đơn vị"
                                                   Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                                   ItemsSource="{Binding DataContext.AllUnits, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -435,7 +457,7 @@
                             Foreground="Black"
                             BorderThickness="0"
                             Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-                            materialDesign:ButtonAssist.CornerRadius="10"
+                            materialDesign:ButtonAssist.CornerRadius="15"
                             Command="{Binding AddChemicalPropertyCommand}"/>
 
                 </StackPanel>
@@ -497,15 +519,15 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,5"/>
-                    <Button Content="Thêm ghi chú" 
+                    <Button Content="Thêm nhóm ghi chú" 
                             Width="218"
                             Margin="0,0,0,10"
                             Background="SpringGreen"
                             Foreground="Black"
                             BorderThickness="0"
                             Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-                            materialDesign:ButtonAssist.CornerRadius="10"
-                            Command="{Binding AddNoteCommand}"/>
+                            materialDesign:ButtonAssist.CornerRadius="15"
+                            Command="{Binding AddNoteGroupCommand}"/>
 
                 </StackPanel>
                 <ScrollViewer Grid.Row="1"
@@ -519,23 +541,57 @@
                                     <ComboBox IsEditable="False"
                                               materialDesign:HintAssist.Hint="Loại note"
                                               Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                              ItemsSource="{Binding DataContext.NoteTypeOptions, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              ItemsSource="{Binding NoteTypeOptions}"
                                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                               DisplayMemberPath="DisplayName"
                                               SelectedValuePath="Value"
-                                              SelectedValue="{Binding NoteType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValue="{Binding CompoundNoteType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               Margin="0,0,0,10"/>
 
-                                    <TextBox Height="Auto"
-                                             Text="{Binding Content}"
-                                             TextWrapping="Wrap"
-                                             materialDesign:HintAssist.Hint="Mô tả"
-                                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             Margin="0,0,0,10"/>
+                                    <!-- Danh sách nội dung cho từng loại -->
+                                    <ItemsControl ItemsSource="{Binding CompoundNotes}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,0,0,10"
+                                                      VerticalAlignment="Center">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    
+                                                    <TextBox Grid.Column="0"
+                                                             Height="Auto"
+                                                             Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             TextWrapping="Wrap"
+                                                             materialDesign:HintAssist.Hint="Mô tả"
+                                                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                             Margin="0,0,5,0"/>
+                                                    
+                                                    <Button Grid.Column="1"
+                                                            Height="Auto"
+                                                            Content="Xóa"
+                                                            Foreground="Red"
+                                                            Command="{Binding DataContext.RemoveNoteCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}"
+                                                            Style="{StaticResource MaterialDesignFlatButton}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                    <Button Content="Xóa" 
+                                    <Button Content="Thêm ghi chú" 
+                                            Width="200"
+                                            Margin="0,0,0,10"
+                                            Background="SpringGreen"
+                                            Foreground="Black"
+                                            BorderThickness="0"
+                                            Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                                            materialDesign:ButtonAssist.CornerRadius="15"
+                                            Command="{Binding AddNoteCommand}"/>
+
+                                    <Button Content="Xóa nhóm" 
                                             Foreground="Red"
-                                            Command="{Binding DataContext.RemoveNoteCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            Command="{Binding DataContext.RemoveNoteGroupCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
                                             CommandParameter="{Binding}"
                                             Style="{StaticResource MaterialDesignFlatButton}"/>
                                 </StackPanel>
@@ -556,7 +612,7 @@
                 Foreground="Black"
                 BorderThickness="0"
                 Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
-                materialDesign:ButtonAssist.CornerRadius="10"
+                materialDesign:ButtonAssist.CornerRadius="15"
                 Command="{Binding SaveCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
     </Grid>

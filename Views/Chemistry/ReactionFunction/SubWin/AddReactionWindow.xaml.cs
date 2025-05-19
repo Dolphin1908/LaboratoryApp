@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.Views.Chemistry.CompoundFunction.SubWin
+namespace LaboratoryApp.Views.Chemistry.ReactionFunction.SubWin
 {
     /// <summary>
     /// Interaction logic for AddReactionWindow.xaml

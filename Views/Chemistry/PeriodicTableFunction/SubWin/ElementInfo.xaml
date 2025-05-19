@@ -4,6 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LaboratoryApp.Views.Chemistry.PeriodicTableFunction.SubWin"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         MinHeight="450" MaxHeight="450"
         MinWidth="400" MaxWidth="400"
@@ -21,8 +28,9 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+        
         <StackPanel Grid.Row="0">
-            <TextBlock Text="{Binding Element.Symbol}" 
+            <TextBlock Text="{Binding Element.Formula}" 
                        FontSize="80" 
                        FontWeight="Bold" 
                        HorizontalAlignment="Center" 
@@ -33,13 +41,15 @@
                        HorizontalAlignment="Center" 
                        Margin="0,0,0,10"/>
         </StackPanel>
+        
         <Grid Grid.Row="1" 
               Margin="0,0,0,15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+            <StackPanel Grid.Column="0" 
+                        Margin="0,0,10,0">
                 <TextBlock Text="Khối lượng nguyên tử: " 
                            FontSize="12"/>
                 <TextBlock Text="Cấu hình electron: " 
@@ -66,7 +76,10 @@
                            FontSize="12"/>
                 <TextBlock Text="Năm phát hiện: " 
                            FontSize="12"/>
+                <TextBlock Text="Màu thực tế: "
+                           FontSize="12"/>
             </StackPanel>
+            
             <StackPanel Grid.Column="1">
                 <TextBlock Text="{Binding Element.AtomicMass}"
                            FontSize="12"/>
@@ -84,18 +97,47 @@
                            FontSize="12"/>
                 <TextBlock Text="{Binding Element.Phase}"
                            FontSize="12"/>
-                <TextBlock Text="{Binding Element.MeltingPoint}" 
-                           FontSize="12"/>
-                <TextBlock Text="{Binding Element.BoilingPoint}" 
-                           FontSize="12"/>
-                <TextBlock Text="{Binding Element.Density}" 
-                           FontSize="12"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Element.MeltingPoint}" 
+                               FontSize="12"/>
+                    <TextBlock Text=" (K)" 
+                               FontSize="12"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Element.BoilingPoint}" 
+                               FontSize="12"/>
+                    <TextBlock Text=" (K)" 
+                               FontSize="12"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Element.Density}" 
+                               FontSize="12"/>
+                    <TextBlock Text=" (g/cm³)" 
+                               FontSize="12"/>
+                </StackPanel>
                 <TextBlock Text="{Binding Element.Category}" 
                            FontSize="12"/>
                 <TextBlock Text="{Binding Element.DiscoveryYear}" 
                            FontSize="12"/>
+                <ItemsControl ItemsSource="{Binding Element.RealColors}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="20" Height="12" Margin="2"
+                                    Background="{Binding Converter={StaticResource ColorToBrushConverter}}"
+                                    CornerRadius="3"
+                                    BorderThickness="1"
+                                    BorderBrush="Black"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Grid>
+        
         <Grid Grid.Row="2">
             <Button Width="100"
                     Content="Done"

@@ -121,18 +121,18 @@ Please replace the values accordingly and do not include any explanation or code
                 }
             };
 
-            var jsonBody = JsonConvert.SerializeObject(requestBody);
-            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            var jsonBody = JsonConvert.SerializeObject(requestBody); // Chuyển đổi đối tượng thành chuỗi JSON
+            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json"); // Chuyển đổi đối tượng thành chuỗi JSON và tạo nội dung yêu cầu
 
-            var response = await _httpClient.PostAsync(endpoint, content);
-            if (!response.IsSuccessStatusCode) return null;
+            var response = await _httpClient.PostAsync(endpoint, content); // Gửi yêu cầu POST đến API
+            if (!response.IsSuccessStatusCode) return null; // Kiểm tra mã trạng thái phản hồi
 
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync(); // Đọc nội dung phản hồi
 
-            var jsonObject = JObject.Parse(responseContent);
-            var jsonString = jsonObject["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString();
+            var jsonObject = JObject.Parse(responseContent); // Chuyển đổi chuỗi JSON thành JObject
+            var jsonString = jsonObject["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString(); // Lấy giá trị của trường "text" trong JSON
 
-            if (string.IsNullOrEmpty(jsonString)) return null;
+            if (string.IsNullOrEmpty(jsonString)) return null; // Kiểm tra nếu jsonString là null hoặc rỗng
 
             // Xử lý nếu bị bọc trong ```json hoặc ```
             if (jsonString.Trim().StartsWith("```"))
@@ -144,7 +144,7 @@ Please replace the values accordingly and do not include any explanation or code
 
             try
             {
-                var wordResult = JsonConvert.DeserializeObject<WordResultDTO>(jsonString);
+                var wordResult = JsonConvert.DeserializeObject<WordResultDTO>(jsonString); // Chuyển đổi chuỗi JSON thành đối tượng WordResultDTO
                 return wordResult;
             }
             catch (JsonException ex)
@@ -152,6 +152,6 @@ Please replace the values accordingly and do not include any explanation or code
                 return null;
             }
         }
-    
+
     }
 }
