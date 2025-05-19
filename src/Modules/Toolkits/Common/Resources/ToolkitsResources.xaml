@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:main="clr-namespace:LaboratoryApp.src.Modules.Toolkits.Common.ViewModels"
+                    xmlns:calculator="clr-namespace:LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.ViewModels">
+    <!-- Main -->
+    <main:ToolkitsViewModel x:Key="ToolkitsVM"></main:ToolkitsViewModel>
+
+    <!-- Calculator -->
+    <calculator:CalculatorViewModel x:Key="CalculatorVM"></calculator:CalculatorViewModel>
+</ResourceDictionary>

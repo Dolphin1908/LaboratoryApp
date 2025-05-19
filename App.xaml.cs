@@ -2,11 +2,6 @@
 using System.Data;
 using System.Windows;
 
-using LaboratoryApp.Views;
-using LaboratoryApp.Support;
-using LaboratoryApp.ViewModels;
-using LaboratoryApp.ViewModels.UC;
-
 namespace LaboratoryApp
 {
     /// <summary>

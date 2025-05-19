@@ -1,0 +1,46 @@
+﻿<Window x:Class="LaboratoryApp.src.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaboratoryApp.src.UI.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Style="{StaticResource MaterialDesignWindow}"
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="Laboratory"
+        MinHeight="600"
+        MinWidth="1225"
+        Height="600"
+        Width="1225">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <local:ControlBarUC Grid.Row="0"
+                            DataContext="{Binding ControlBarVM}"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <local:NavigationUC DataContext="{Binding}" 
+                                    Visibility="{Binding IsNavigationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

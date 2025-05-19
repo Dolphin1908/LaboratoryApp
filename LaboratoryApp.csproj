@@ -6,45 +6,41 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\Laboratory.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Images\Laboratory.ico</ApplicationIcon>
     <PackageIcon>Laboratory.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Support\INavigationService.cs" />
+    <None Remove="resources\Components\CSS\style.css" />
+    <None Remove="resources\Components\CSS\style2.css" />
+    <None Remove="resources\Components\HTML\topic_4.html" />
+    <None Remove="resources\Element.jpg" />
+    <None Remove="resources\Images\Icons\divide.png" />
+    <None Remove="resources\Images\Icons\squared.png" />
+    <None Remove="resources\Laboratory.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Components\CSS\style.css" />
-    <None Remove="Resources\Components\CSS\style2.css" />
-    <None Remove="Resources\Components\HTML\topic_4.html" />
-    <None Remove="Resources\Element.jpg" />
-    <None Remove="Resources\Icons\divide.png" />
-    <None Remove="Resources\Icons\squared.png" />
-    <None Remove="Resources\Laboratory.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\Components\CSS\style.css">
+    <Content Include="resources\Components\CSS\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Components\HTML\topic_3.html">
+    <Content Include="resources\Components\HTML\topic_3.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Components\HTML\topic_2.html">
+    <Content Include="resources\Components\HTML\topic_2.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Components\HTML\topic_1.html">
+    <Content Include="resources\Components\HTML\topic_1.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Components\HTML\topic_4.html">
+    <Content Include="resources\Components\HTML\topic_4.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Laboratory.ico" />
+    <Content Include="Resources\Images\Laboratory.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Support\Interface\INavigationService.cs" />
+    <None Include="src\Shared\Interface\INavigationService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,54 +57,45 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Element.jpg" />
-    <Resource Include="Resources\Icons\divide.png" />
-    <Resource Include="Resources\Icons\squared.png" />
-    <Resource Include="Resources\Laboratory.ico" />
-    <Resource Include="Resources\Laboratory.png" />
+    <Resource Include="resources\Images\Element.jpg" />
+    <Resource Include="resources\Images\Icons\divide.png" />
+    <Resource Include="resources\Images\Icons\squared.png" />
+    <Resource Include="resources\Images\Laboratory.ico" />
+    <Resource Include="resources\Images\Laboratory.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Database\chem.db">
+    <None Update="src\Data\Database\chem.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Database\dictionary.db">
+    <None Update="src\Data\Database\dictionary.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Database\flashcards.json">
+    <None Update="src\Data\Database\flashcards.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Laboratory.png">
+    <None Update="resources\Images\Laboratory.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Physics\" />
-    <Folder Include="Models\Math\" />
-    <Folder Include="Resources\Components\JS\" />
-    <Folder Include="Support\Rules\" />
-    <Folder Include="ViewModels\Chemistry\PeriodicTableFunction\UC\" />
-    <Folder Include="ViewModels\Chemistry\PeriodicTableFunction\UI\" />
-    <Folder Include="ViewModels\English\FlashcardFunction\UC\" />
-    <Folder Include="ViewModels\English\DictionaryFunction\UC\" />
-    <Folder Include="ViewModels\English\DictionaryFunction\UI\" />
-    <Folder Include="ViewModels\Maths\SubWin\" />
-    <Folder Include="ViewModels\Maths\UC\" />
-    <Folder Include="ViewModels\Maths\UI\" />
-    <Folder Include="ViewModels\Physics\SubWin\" />
-    <Folder Include="ViewModels\Physics\UC\" />
-    <Folder Include="ViewModels\Physics\UI\" />
-    <Folder Include="Views\Chemistry\PeriodicTableFunction\UI\" />
-    <Folder Include="Views\Chemistry\ReactionFunction\UC\" />
-    <Folder Include="Views\English\DictionaryFunction\UI\" />
-    <Folder Include="Views\Maths\SubWin\" />
-    <Folder Include="Views\Maths\UC\" />
-    <Folder Include="Views\Maths\UI\" />
-    <Folder Include="Views\Physics\SubWin\" />
-    <Folder Include="Views\Physics\UC\" />
-    <Folder Include="Views\Physics\UI\" />
+    <Folder Include="src\Core\Models\Physics\" />
+    <Folder Include="src\Core\Models\Math\" />
+    <Folder Include="resources\Components\JS\" />
+    <Folder Include="src\Modules\Authentication\Resources\" />
+    <Folder Include="src\Modules\Authentication\ViewModels\" />
+    <Folder Include="src\Modules\Chemistry\CompoundFunction\Resources\" />
+    <Folder Include="src\Modules\Chemistry\PeriodicFunction\Resources\" />
+    <Folder Include="src\Modules\Admin\" />
+    <Folder Include="src\Modules\Chemistry\ReactionFunction\Resources\" />
+    <Folder Include="src\Modules\English\DictionaryFunction\Resources\" />
+    <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
+    <Folder Include="src\Modules\English\LectureFunction\Resources\" />
+    <Folder Include="src\Modules\Toolkits\CalculatorFunction\Resources\" />
+    <Folder Include="src\Modules\Toolkits\Common\ViewModels\" />
+    <Folder Include="src\Modules\Toolkits\Common\Views\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:main="clr-namespace:LaboratoryApp.src.UI.ViewModels"
+                    xmlns:cv="clr-namespace:LaboratoryApp.src.Shared.Converters"
+                    xmlns:domain="clr-namespace:LaboratoryApp.src.Core.Domains"
+                    xmlns:ctrl="clr-namespace:LaboratoryApp.src.Shared.Controls">
+
+    <!-- Main -->
+    <main:MainWindowViewModel x:Key="MainVM"></main:MainWindowViewModel>
+    <main:DashboardViewModel x:Key="DashboardVM"></main:DashboardViewModel>
+    <main:ControlBarViewModel x:Key="ControlBarVM"></main:ControlBarViewModel>
+
+    <!-- Converter -->
+    <cv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></cv:BooleanToVisibilityConverter>
+    <cv:ColorToBrushConverter x:Key="ColorToBrushConverter"></cv:ColorToBrushConverter>
+    <cv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"></cv:NullToVisibilityConverter>
+    <cv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"></cv:InverseBooleanToVisibilityConverter>
+    <cv:FlipConverter x:Key="FlipConverter"></cv:FlipConverter>
+    <cv:HtmlToDataUriConverter x:Key="HtmlToDataUriConverter"></cv:HtmlToDataUriConverter>
+    <cv:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter"></cv:EnumDisplayNameConverter>
+
+    <!-- Domain -->
+    <domain:NotEmptyValidationRule x:Key="NotEmptyValidationRule"></domain:NotEmptyValidationRule>
+    
+    <!-- Control -->
+    <ctrl:BindableWebView2 x:Key="BindableWebView2"></ctrl:BindableWebView2>
+
+</ResourceDictionary>

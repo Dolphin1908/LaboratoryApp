@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:main="clr-namespace:LaboratoryApp.src.Modules.Chemistry.Common.ViewModels"
+                    xmlns:periodic="clr-namespace:LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels"
+                    xmlns:compound="clr-namespace:LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels"
+                    xmlns:reaction="clr-namespace:LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels">
+    <!-- Main -->
+    <main:ChemistryMainPageViewModel x:Key="ChemistryMainVM"></main:ChemistryMainPageViewModel>
+
+    <!-- Periodic -->
+    <periodic:ElementInfoViewModel x:Key="ElementInfoVM"></periodic:ElementInfoViewModel>
+    <periodic:PeriodicTableViewModel x:Key="PeriodicTableVM"></periodic:PeriodicTableViewModel>
+
+
+    <!-- Compound -->
+    <compound:CompoundManagerViewModel x:Key="CompoundManagerVM"></compound:CompoundManagerViewModel>
+    <compound:CompoundViewModel x:Key="CompoundVM"></compound:CompoundViewModel>
+
+    <!-- Reaction -->
+    <reaction:ReactionViewModel x:Key="ReactionVM"></reaction:ReactionViewModel>
+    <reaction:ReactionManagerViewModel x:Key="ReactionManagerVM"></reaction:ReactionManagerViewModel>
+
+</ResourceDictionary>

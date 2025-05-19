@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/src/UI/Resources/CommonResources.xaml"/>
+        <ResourceDictionary Source="/src/Modules/Chemistry/Common/Resources/ChemistryResources.xaml"/>
+        <ResourceDictionary Source="/src/Modules/English/Common/Resources/EnglishResources.xaml"/>
+        <ResourceDictionary Source="/src/Modules/Maths/Common/Resources/MathResources.xaml"/>
+        <ResourceDictionary Source="/src/Modules/Physics/Common/Resources/PhysicsResources.xaml"/>
+        <ResourceDictionary Source="/src/Modules/Toolkits/Common/Resources/ToolkitsResources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>
