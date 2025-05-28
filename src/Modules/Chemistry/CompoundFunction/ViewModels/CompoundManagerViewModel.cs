@@ -9,8 +9,11 @@ using System.Windows.Input;
 
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels;
 using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Helpers;
+using System.Configuration;
 
 namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
 {
@@ -90,10 +93,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
                                        .Take(10)
                                        .ToList();
 
-            foreach (var match in matches)
-            {
-                Compounds.Add(match);
-            }
+            Compounds = new ObservableCollection<Compound>(matches);
         }
     }
 }

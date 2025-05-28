@@ -88,7 +88,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
                 var names = ReactionTypeOptions
                     .Where(e => e.IsSelected)
                     .Select(e => e.DisplayName);
-                return names.Any() ? string.Join("\n", names) : string.Empty;
+                return names.Any() ? string.Join("", names) : string.Empty;
             }
         }
         public ReactionComponent SelectedReactant { get; set; }

@@ -14,7 +14,6 @@
 
     <!-- Compound -->
     <compound:CompoundManagerViewModel x:Key="CompoundManagerVM"></compound:CompoundManagerViewModel>
-    <compound:CompoundViewModel x:Key="CompoundVM"></compound:CompoundViewModel>
 
     <!-- Reaction -->
     <reaction:ReactionViewModel x:Key="ReactionVM"></reaction:ReactionViewModel>

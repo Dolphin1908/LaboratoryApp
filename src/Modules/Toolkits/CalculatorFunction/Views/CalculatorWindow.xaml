@@ -73,9 +73,9 @@
             
             <!--Buttons Grid-->
             <local:CalculateStandardButtons Grid.Row="2"
-                                Width="Auto"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
+                                            Width="Auto"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
         </Grid>
 
         

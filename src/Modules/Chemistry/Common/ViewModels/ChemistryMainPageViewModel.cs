@@ -28,6 +28,11 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
         public ICommand NavigateToReactionCommand { get; set; } // Command to navigate to the reaction page
         #endregion
 
+        public ChemistryMainPageViewModel()
+        {
+            // Default constructor
+        }
+
         public ChemistryMainPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;

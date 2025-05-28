@@ -35,6 +35,15 @@ namespace LaboratoryApp.src.Data.Providers
             return collection.Find(FilterDefinition<T>.Empty).ToList();
         }
 
+        public T? GetOne<T>(string collectionName, FilterDefinition<T> filter)
+        {
+            if (string.IsNullOrEmpty(collectionName))
+                throw new ArgumentException("Collection name must be provided.", nameof(collectionName));
+
+            var collection = _database.GetCollection<T>(collectionName);
+            return collection.Find(filter).FirstOrDefault();
+        }
+
         public void Insert<T>(string collectionName, T document)
         {
             if (string.IsNullOrEmpty(collectionName))

@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.ViewModels.Chemistry.UC;
 
-namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
 {
     public class CompoundNoteViewModel : BaseViewModel
     {

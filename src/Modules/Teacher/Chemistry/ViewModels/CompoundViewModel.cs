@@ -12,10 +12,10 @@ using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
 using LaboratoryApp.src.Core.Caches;
 
-namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
 {
     public class CompoundViewModel : BaseViewModel
     {
@@ -78,7 +78,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
                 var names = CompoundTypeOptions
                     .Where(x => x.IsSelected)
                     .Select(x => x.DisplayName);
-                return names.Any() ? string.Join("\n", names) : string.Empty;
+                return names.Any() ? string.Join("", names) : string.Empty;
             }
         }
         public string SelectedPhaseNames
@@ -88,7 +88,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
                 var names = PhaseOptions
                     .Where(x => x.IsSelected)
                     .Select(x => x.DisplayName);
-                return names.Any() ? string.Join("\n", names) : string.Empty;
+                return names.Any() ? string.Join("", names) : string.Empty;
             }
         }
         public ObservableCollection<SelectableEnumDisplay<CompoundType>> CompoundTypeOptions { get; }

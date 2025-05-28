@@ -7,6 +7,7 @@ using System.Windows.Input;
 
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.Views;
+using LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.ViewModels;
 
 namespace LaboratoryApp.src.Modules.Toolkits.Common.ViewModels
 {

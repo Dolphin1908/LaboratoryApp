@@ -34,6 +34,11 @@ namespace LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels
         public int Row => Element.Row - 1;
         public int Column => Element.Column - 1;
 
+        public ElementInfoViewModel()
+        {
+            // Default constructor
+        }
+
         public ElementInfoViewModel(Element element)
         {
             Element = element;

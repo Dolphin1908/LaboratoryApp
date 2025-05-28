@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.Views
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.Views
 {
     /// <summary>
     /// Interaction logic for AddCompoundWindow.xaml

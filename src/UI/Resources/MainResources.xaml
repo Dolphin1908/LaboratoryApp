@@ -8,6 +8,8 @@
         <ResourceDictionary Source="/src/Modules/Maths/Common/Resources/MathResources.xaml"/>
         <ResourceDictionary Source="/src/Modules/Physics/Common/Resources/PhysicsResources.xaml"/>
         <ResourceDictionary Source="/src/Modules/Toolkits/Common/Resources/ToolkitsResources.xaml"/>
+        <ResourceDictionary Source="/src/Modules/Authentication/Resources/AuthenticationResources.xaml"/>
+        <ResourceDictionary Source="/src/Modules/Teacher/Common/Resources/TeacherResources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>

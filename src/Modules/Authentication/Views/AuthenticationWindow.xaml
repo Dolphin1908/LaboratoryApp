@@ -16,9 +16,20 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Title="AuthenticationWindow" 
-        Height="310"
-        Width="500">
-    <Grid>
-        <local:LoginUC/>
+        Height="400"
+        Width="600">
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+        <TabControl>
+            <TabItem Header="Đăng nhập">
+                <local:LoginUC/>
+            </TabItem>
+            <TabItem Header="Đăng ký">
+                <local:RegisterUC/>
+            </TabItem>
+            <TabItem Header="Quên mật khẩu">
+                <local:ForgotPasswordUC/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
