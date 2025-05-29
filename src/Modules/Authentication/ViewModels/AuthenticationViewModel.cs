@@ -11,6 +11,7 @@ using LaboratoryApp.src.Data.Providers;
 using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.Core.Helpers;
 using System.Windows.Input;
+using System.Windows;
 
 namespace LaboratoryApp.src.Modules.Authentication.ViewModels
 {
@@ -90,11 +91,11 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             #region Commands
             LoginCommand = new RelayCommand<object>(p => true, p =>
             {
-
+                OnLogin();
             });
             RegisterCommand = new RelayCommand<object>(p => true, p =>
             {
-
+                OnRegister();
             });
             ForgotPasswordCommand = new RelayCommand<object>(p => true, p =>
             {
@@ -106,11 +107,15 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
         private void OnLogin()
         {
             // Logic for login
+
+            MessageBox.Show($"{Username}, {Password}");
         }
 
         private void OnRegister()
         {
             // Logic for registration
+
+            MessageBox.Show($"{Username}, {Password}");
         }
 
         private void OnForgotPassword()
@@ -118,3 +123,4 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             // Logic for forgot password
         }
     }
+}

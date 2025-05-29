@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Authentication.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:domain="clr-namespace:LaboratoryApp.src.Core.Domains"
+             xmlns:helper="clr-namespace:LaboratoryApp.src.Core.Helpers"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="13"
@@ -41,9 +42,10 @@
                 <PasswordBox VerticalAlignment="Top"
                              Margin="0,0,0,20"
                              Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
-                             materialDesign:PasswordBoxAssist.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, RelativeSource={RelativeSource AncestorType=Window}}"
                              materialDesign:HintAssist.HelperText="Ít nhất 8 ký tự"
-                             materialDesign:HintAssist.Hint="Password"/>
+                             materialDesign:HintAssist.Hint="Password"
+                             helper:PasswordBoxHelper.Attach="True"
+                             helper:PasswordBoxHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </ScrollViewer>
 
@@ -56,6 +58,6 @@
                 Foreground="Black"
                 materialDesign:ButtonAssist.CornerRadius="10"
                 Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                Command="{Binding}"/>
+                Command="{Binding LoginCommand}"/>
     </Grid>
 </UserControl>
