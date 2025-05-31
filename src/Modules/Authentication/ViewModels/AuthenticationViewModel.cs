@@ -12,6 +12,9 @@ using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.Core.Helpers;
 using System.Windows.Input;
 using System.Windows;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.UI.Views;
+using LaboratoryApp.src.Modules.Authentication.Views;
 
 namespace LaboratoryApp.src.Modules.Authentication.ViewModels
 {
@@ -84,19 +87,22 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             var conn = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
             var dbProvider = new MongoDBProvider(conn, "authentication");
             var userProvider = new UserProvider(dbProvider);
+            var roleProvider = new RoleProvider(dbProvider);
             var refreshTokenProvider = new RefreshTokenProvider(dbProvider);
 
-            _authService = new AuthenticationService(userProvider, refreshTokenProvider);
+            _authService = new AuthenticationService(userProvider, roleProvider, refreshTokenProvider);
 
             #region Commands
             LoginCommand = new RelayCommand<object>(p => true, p =>
             {
                 OnLogin();
             });
+
             RegisterCommand = new RelayCommand<object>(p => true, p =>
             {
                 OnRegister();
             });
+
             ForgotPasswordCommand = new RelayCommand<object>(p => true, p =>
             {
 
@@ -104,18 +110,29 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             #endregion
         }
 
-        private void OnLogin()
+        private async void OnLogin()
         {
             // Logic for login
+            await _authService.LoginAsync(Username, Password);
 
-            MessageBox.Show($"{Username}, {Password}");
+            if (AuthenticationCache.CurrentUser != null)
+            {
+                var currentWindow = Application.Current.Windows.OfType<AuthenticationWindow>().FirstOrDefault();
+                if (currentWindow != null)
+                {
+                    currentWindow.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Đăng nhập thất bại, vui lòng kiểm tra lại thông tin", "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
-        private void OnRegister()
+        private async void OnRegister()
         {
             // Logic for registration
-
-            MessageBox.Show($"{Username}, {Password}");
+            await _authService.RegisterAsync(Username, Password, ConfirmPassword, Email, PhoneNumber);
         }
 
         private void OnForgotPassword()

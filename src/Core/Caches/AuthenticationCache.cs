@@ -9,20 +9,21 @@ namespace LaboratoryApp.src.Core.Caches
 {
     public static class AuthenticationCache
     {
-        public static long? CurrentUserId { get; private set; }
+        public static User? CurrentUser { get; private set; }
         public static string? AccessToken { get; private set; }
         public static string? RefreshToken { get; private set; }
+        public static bool IsAuthenticated => CurrentUser != null && !string.IsNullOrEmpty(AccessToken) && !string.IsNullOrEmpty(RefreshToken);
 
-        public static void Set(long userId, string accessToken, string refreshToken)
+        public static void Set(User user, string accessToken, string refreshToken)
         {
-            CurrentUserId = userId;
+            CurrentUser = user;
             AccessToken = accessToken;
             RefreshToken = refreshToken;
         }
 
         public static void Clear()
         {
-            CurrentUserId = null;
+            CurrentUser = null;
             AccessToken = null;
             RefreshToken = null;
         }

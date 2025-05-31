@@ -14,7 +14,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels
 {
     public class ElementInfoViewModel : BaseViewModel
     {
-        #region commands
+        #region Commands
         public ICommand ElementCellClickedCommand { get; set; }
         public ICommand CloseElementInfoCommand { get; set; }
         #endregion

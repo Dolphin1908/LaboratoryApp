@@ -36,7 +36,7 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
             return users;
         }
 
-        public User GetUserById(long id)
+        public User? GetUserById(long id)
         {
             var filter = Builders<User>.Filter.Eq(u => u.Id, id);
             var user = _db.GetOne("users", filter);

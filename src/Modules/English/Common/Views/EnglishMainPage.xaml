@@ -20,7 +20,7 @@
           HorizontalAlignment="Stretch"
           VerticalAlignment="Center">
         <StackPanel VerticalAlignment="Stretch">
-            <Image Source="../../Resources/Laboratory.png"
+            <Image Source="/resources/Images/Laboratory.png"
                    Width="64"
                    Height="64"
                    Margin="0,0,0,20"/>

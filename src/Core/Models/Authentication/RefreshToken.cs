@@ -9,8 +9,7 @@ namespace LaboratoryApp.src.Core.Models.Authentication
 {
     public class RefreshToken
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; } // Id của người dùng
+        public long Id { get; set; } // Id của Token
         public string Token { get; set; } = null!; // Token được sử dụng để xác thực lại người dùng
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Thời gian tạo token
         public DateTime ExpiresAt { get; set; } = DateTime.UtcNow.AddDays(7); // Thời gian hết hạn token

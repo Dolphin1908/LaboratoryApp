@@ -8,6 +8,7 @@ using LaboratoryApp.src.Data.Providers.Authentication;
 using LaboratoryApp.src.Modules.Authentication.Views;
 using LaboratoryApp.src.Modules.Authentication.ViewModels;
 using LaboratoryApp.src.Services.Authentication;
+using LaboratoryApp.src.UI.Views;
 
 namespace LaboratoryApp
 {
@@ -18,11 +19,7 @@ namespace LaboratoryApp
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var window = new AuthenticationWindow
-            {
-                DataContext = new AuthenticationViewModel()
-            };
-            window.ShowDialog();
+            base.OnStartup(e);
         }
     }
 

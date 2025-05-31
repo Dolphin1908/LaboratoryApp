@@ -15,6 +15,8 @@ using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels;
 using LaboratoryApp.src.Modules.Authentication.Views;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Modules.Authentication.ViewModels;
 
 namespace LaboratoryApp.src.UI.ViewModels
 {
@@ -24,6 +26,26 @@ namespace LaboratoryApp.src.UI.ViewModels
         private DashboardViewModel _dashboardVM;
         private ToolkitsViewModel _toolkitsVM;
         private bool _isNavigationVisible;
+
+        #region Properties
+        public string CurrentUser
+        {
+            get => AuthenticationCache.CurrentUser?.Username ?? "Guest"; // Get the current user's username or "Guest" if not authenticated
+            set
+            {
+                // This property is read-only, so we don't need to set it.
+                OnPropertyChanged(nameof(CurrentUser));
+            }
+        }
+        public bool IsAuthenticated
+        {
+            get => AuthenticationCache.IsAuthenticated; // Check if the user is authenticated
+            set
+            {
+                // This property is read-only, so we don't need to set it.
+                OnPropertyChanged(nameof(IsAuthenticated));
+            }
+        }
         public bool IsNavigationVisible
         {
             get => _isNavigationVisible;
@@ -34,11 +56,13 @@ namespace LaboratoryApp.src.UI.ViewModels
             }
         }
         public ControlBarViewModel ControlBarVM { get; set; }
+        #endregion
 
         #region Commands
         public ICommand NavigateToDashboardCommand { get; set; }
         public ICommand OpenPeriodicTableCommand { get; set; }
         public ICommand NavigateToToolkitCommand { get; set; }
+        public ICommand LogoutCommand { get; set; }
         public ICommand OpenAuthenticationCommand { get; set; }
         #endregion
 
@@ -92,11 +116,33 @@ namespace LaboratoryApp.src.UI.ViewModels
                 _navigationService.NavigateTo(toolkitsPage);
             });
 
+            // Logout command
+            LogoutCommand = new RelayCommand<object>((p)=>true, (p) =>
+            {
+                AuthenticationCache.Clear(); // Clear authentication cache
+                // Update the current user and authentication status
+                OnPropertyChanged(nameof(CurrentUser));
+                OnPropertyChanged(nameof(IsAuthenticated));
+
+                // Open the authentication window for re-login
+                var authenticationWindow = new AuthenticationWindow
+                {
+                    DataContext = new AuthenticationViewModel()
+                };
+                authenticationWindow.ShowDialog();
+            });
+
             // Open the authentication window
             OpenAuthenticationCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var authenticationWindow = new AuthenticationWindow();
-                authenticationWindow.Show();
+                var authenticationWindow = new AuthenticationWindow
+                {
+                    DataContext = new AuthenticationViewModel()
+                };
+                authenticationWindow.ShowDialog();
+                // After authentication, update the current user
+                OnPropertyChanged(nameof(CurrentUser));
+                OnPropertyChanged(nameof(IsAuthenticated));
             });
         }
     }

@@ -32,5 +32,24 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
             _db.Update("refreshTokens", token.Id, token);
             return Task.CompletedTask;
         }
+
+        public Task<RefreshToken?> GetLatestByUserIdAsync(long userId)
+        {
+            var filter = Builders<RefreshToken>.Filter.Eq(t => t.User.Id, userId);
+            var sort = Builders<RefreshToken>.Sort.Descending(t => t.CreatedAt);
+            return Task.FromResult(
+                _db.GetAll<RefreshToken>("refreshTokens")
+                   .Where(t => t.User.Id == userId)
+                   .OrderByDescending(t => t.CreatedAt)
+                   .FirstOrDefault()
+            );
+        }
+
+        public long GetNextId()
+        {
+            var tokens = _db.GetAll<RefreshToken>("refreshTokens");
+            return tokens.Count == 0 ? 1 : tokens.Max(t => t.Id) + 1;
+        }
+
     }
 }

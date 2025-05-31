@@ -76,7 +76,9 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
 
             // Initialize commands
             OpenFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) => OpenFlashcardSet((long)p)); // không dùng RelayCommand<long> được vì không thể cast từ object sang long
+
             AddFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) => AddNewSet());
+
             OpenUpdateFlashcardSetWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var window = new UpdateFlashcardSetWindow
@@ -85,7 +87,9 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
                 };
                 window.ShowDialog();
             });
+
             DeleteFlashcardSetCommand = new RelayCommand<FlashcardSet>((p) => true, (p) => DeleteSet(p));
+
             OpenAddFlashcardWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var flashcard = new Flashcard();
@@ -96,6 +100,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
                 };
                 window.ShowDialog();
             });
+
             OpenUpdateFlashcardWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var flashcard = _selectedFlashcardSet.Flashcards.FirstOrDefault(f => f.Id == (long)p);
@@ -106,7 +111,9 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
                 };
                 window.ShowDialog();
             });
+
             DeleteFlashcardCommand = new RelayCommand<object>((p) => true, (p) => DeleteFlashcard((long)p));
+
             StartFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var tempFlashcards = SelectedFlashcardSet.Flashcards.Where(i => i.NextReview < DateTime.Now).ToList();
