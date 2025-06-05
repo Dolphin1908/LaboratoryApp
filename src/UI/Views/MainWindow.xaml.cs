@@ -19,11 +19,11 @@ namespace LaboratoryApp.src.UI.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Frame mainFrame => this.MainFrame;
+
         public MainWindow()
         {
             InitializeComponent();
-            var navigationService = new NavigateService(MainFrame);
-            DataContext = new MainWindowViewModel(navigationService);
         }
     }
 }

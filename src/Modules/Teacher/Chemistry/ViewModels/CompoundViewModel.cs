@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry;
@@ -19,6 +21,8 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
 {
     public class CompoundViewModel : BaseViewModel
     {
+        private readonly IServiceProvider _serviceProvider;
+
         private List<Element> _allElements;
         private ObservableCollection<Compound> _allCompounds;
         private List<string> _allUnits;
@@ -78,7 +82,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
                 var names = CompoundTypeOptions
                     .Where(x => x.IsSelected)
                     .Select(x => x.DisplayName);
-                return names.Any() ? string.Join("", names) : string.Empty;
+                return names.Any() ? string.Join("\n", names) : string.Empty;
             }
         }
         public string SelectedPhaseNames
@@ -88,7 +92,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
                 var names = PhaseOptions
                     .Where(x => x.IsSelected)
                     .Select(x => x.DisplayName);
-                return names.Any() ? string.Join("", names) : string.Empty;
+                return names.Any() ? string.Join("\n", names) : string.Empty;
             }
         }
         public ObservableCollection<SelectableEnumDisplay<CompoundType>> CompoundTypeOptions { get; }
@@ -140,8 +144,10 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
         }
         #endregion
 
-        public CompoundViewModel()
+        public CompoundViewModel(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
+
             // Khởi tạo các collection
             Compound = new Compound();
             Composition = new ObservableCollection<CompoundElement>();
@@ -235,7 +241,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
 
             AddNoteGroupCommand = new RelayCommand<object>(p => true, p =>
             {
-                Notes.Add(new CompoundNoteViewModel());
+                Notes.Add(_serviceProvider.GetRequiredService<CompoundNoteViewModel>());
             });
             RemoveNoteGroupCommand = new RelayCommand<object>(p => true, p =>
             {

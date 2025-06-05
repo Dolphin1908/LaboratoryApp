@@ -11,7 +11,7 @@ using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
 
 namespace LaboratoryApp.src.Services.English.FlashcardFunction
 {
-    public class FlashcardService
+    public class FlashcardService : IFlashcardService
     {
         private List<FlashcardSet> _flashcardSets; // List of flashcard sets
         private readonly string _jsonPath;
@@ -110,7 +110,7 @@ namespace LaboratoryApp.src.Services.English.FlashcardFunction
         public void DeleteFlashcardSet(FlashcardSet deletedSet)
         {
             var index = _flashcardSets.FindIndex(s => s.Id == deletedSet.Id);
-            if (index != null)
+            if (index != -1)
             {
                 _flashcardSets.RemoveAt(index);
                 SaveData();

@@ -29,7 +29,6 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
         private string _description;
         private FlashcardSet _originalSet;
         private Action<FlashcardSet> _updateCallback;
-        private FlashcardService _flashcardService;
 
         #region Commands
         public ICommand UpdateFlashcardCommand { get; set; } // Command to edit a flashcard
@@ -104,7 +103,13 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
         }
         #endregion
 
-        public FlashcardViewModel(FlashcardSet flashcardSet, Action<FlashcardSet> updateSet)
+        /// <summary>
+        /// Constructor cho việc cập nhật một bộ thẻ flashcard.
+        /// </summary>
+        /// <param name="flashcardSet"></param>
+        /// <param name="updateSet"></param>
+        public FlashcardViewModel(FlashcardSet flashcardSet, 
+                                  Action<FlashcardSet> updateSet)
         {
             _originalSet = flashcardSet;
             _updateCallback = updateSet;
@@ -115,7 +120,14 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
             UpdateFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) => UpdateSet(p));
         }
 
-        public FlashcardViewModel(Flashcard flashcard, Action<Flashcard> flashcardCommand)
+        /// <summary>
+        /// Constructor cho việc thêm/sửa một thẻ flashcard cụ thể.
+        /// </summary>
+        /// <param name="flashcard"></param>
+        /// <param name="flashcardCommand"></param>
+        public FlashcardViewModel(Flashcard flashcard, 
+                                  Action<Flashcard> flashcardCommand, 
+                                  Func<DictionaryWindow> dictionaryWindowFactory)
         {
             _flashcard = flashcard;
             _flashcardCommandCallback = flashcardCommand;
@@ -128,10 +140,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
             UpdateFlashcardCommand = new RelayCommand<object>((p) => true, (p) => UpdateFlashcard(p));
             OpenDictionaryWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var window = new DictionaryWindow
-                {
-                    DataContext = new DictionaryViewModel()
-                };
+                var window = dictionaryWindowFactory();
                 window.Show();
             });
         }
