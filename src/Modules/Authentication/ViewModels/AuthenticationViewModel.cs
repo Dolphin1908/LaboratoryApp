@@ -20,7 +20,7 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
 {
     public class AuthenticationViewModel : BaseViewModel
     {
-        private readonly AuthenticationService _authService;
+        private readonly IAuthenticationService _authService;
 
         private string _username;
         private string _password;
@@ -82,15 +82,10 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
         }
         #endregion
 
-        public AuthenticationViewModel()
+        public AuthenticationViewModel(IAuthenticationService authService)
         {
-            var conn = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
-            var dbProvider = new MongoDBProvider(conn, "authentication");
-            var userProvider = new UserProvider(dbProvider);
-            var roleProvider = new RoleProvider(dbProvider);
-            var refreshTokenProvider = new RefreshTokenProvider(dbProvider);
 
-            _authService = new AuthenticationService(userProvider, roleProvider, refreshTokenProvider);
+            _authService = authService;
 
             #region Commands
             LoginCommand = new RelayCommand<object>(p => true, p =>

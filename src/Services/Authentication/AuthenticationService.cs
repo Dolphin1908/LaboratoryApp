@@ -4,32 +4,38 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Windows;
 
 using MongoDB.Driver;
 
-using LaboratoryApp.src.Core.Models.Authentication;
 using LaboratoryApp.src.Data.Providers;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Data.Providers.Authentication;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
-using System.Security.Cryptography;
-using System.Windows;
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+
 using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Data.Providers.Interfaces;
 
 namespace LaboratoryApp.src.Services.Authentication
 {
-    public class AuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
-        private readonly UserProvider _userProvider;
-        private readonly RoleProvider _roleProvider;
-        private readonly RefreshTokenProvider _refreshTokenProvider;
-        private readonly string _mongoDbPath = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
+        private readonly IUserProvider _userProvider;
+        private readonly IRoleProvider _roleProvider;
+        private readonly IRefreshTokenProvider _refreshTokenProvider;
+        private readonly IMongoDBProvider _db;
 
-        public AuthenticationService(UserProvider userProvider, RoleProvider roleProvider, RefreshTokenProvider refreshTokentProvider)
+        public AuthenticationService(IUserProvider userProvider, 
+                                     IRoleProvider roleProvider, 
+                                     IRefreshTokenProvider refreshTokentProvider,
+                                     IMongoDBProvider db)
         {
             _userProvider = userProvider;
             _roleProvider = roleProvider;
             _refreshTokenProvider = refreshTokentProvider;
+            _db = db;
         }
 
         public async Task RegisterAsync(string username, string password, string confirmPassword, string email, string phoneNumber)
@@ -136,16 +142,8 @@ namespace LaboratoryApp.src.Services.Authentication
             };
         }
 
-        private void AddUser(User user)
-        {
-            using var db = new MongoDBProvider(_mongoDbPath, "authentication");
-            db.Insert("users", user);
-        }
+        private void AddUser(User user) => _db.Insert("users", user);
 
-        private void AddUserRole(UserRole userRole)
-        {
-            using var db = new MongoDBProvider(_mongoDbPath, "authentication");
-            db.Insert("userRoles", userRole);
-        }
+        private void AddUserRole(UserRole userRole) => _db.Insert("userRoles", userRole);
     }
 }

@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Data.Providers;
+using LaboratoryApp.src.Data.Providers.Interfaces;
 using LaboratoryApp.src.Data.Providers.Authentication;
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 
 using LaboratoryApp.src.Modules.Authentication.Views;
 using LaboratoryApp.src.Modules.Authentication.ViewModels;
@@ -41,13 +43,13 @@ using LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels;
 using LaboratoryApp.src.Modules.Toolkits.Common.Views;
 using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
 
-using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.UI.Views;
 using LaboratoryApp.src.Shared;
 using LaboratoryApp.src.Shared.Interface;
 using LaboratoryApp.src.UI.ViewModels;
 using LaboratoryApp.src.Services.English.FlashcardFunction;
 using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+using LaboratoryApp.src.Services.Authentication;
 
 namespace LaboratoryApp
 {
@@ -75,6 +77,18 @@ namespace LaboratoryApp
             // Đăng ký các dịch vụ cần thiết
             service.AddSingleton<INavigationService>(navigateService);
             service.AddSingleton<IFlashcardService, FlashcardService>();
+            service.AddTransient<IAuthenticationService, AuthenticationService>();
+
+            // Đăng ký các providers
+            service.AddSingleton<IMongoDBProvider>(sp =>
+            {
+                var conn = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
+                return new MongoDBProvider(conn, "authentication");
+            });
+
+            service.AddSingleton<IUserProvider>(sp =>new UserProvider(sp.GetRequiredService<IMongoDBProvider>()));
+            service.AddSingleton<IRoleProvider>(sp =>new RoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
+            service.AddSingleton<IRefreshTokenProvider>(sp => new RefreshTokenProvider(sp.GetRequiredService<IMongoDBProvider>()));
 
             // Đăng ký các ViewModels theo modules
             #region UI

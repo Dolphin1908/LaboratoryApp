@@ -1,18 +1,21 @@
-﻿using LaboratoryApp.src.Core.Models.Authentication;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+
+using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 
 namespace LaboratoryApp.src.Data.Providers.Authentication
 {
-    public class RefreshTokenProvider
+    public class RefreshTokenProvider : IRefreshTokenProvider
     {
-        private readonly MongoDBProvider _db;
+        private readonly IMongoDBProvider _db;
 
-        public RefreshTokenProvider(MongoDBProvider db) => _db = db;
+        public RefreshTokenProvider(IMongoDBProvider db) => _db = db;
 
         public Task CreateAsync(RefreshToken token)
         {
