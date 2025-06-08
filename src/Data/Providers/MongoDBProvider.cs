@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LaboratoryApp.src.Data.Providers.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers
 {
-    public class MongoDBProvider : IDisposable
+    public class MongoDBProvider : IMongoDBProvider, IDisposable
     {
         private readonly IMongoClient _client;
         private readonly IMongoDatabase _database;

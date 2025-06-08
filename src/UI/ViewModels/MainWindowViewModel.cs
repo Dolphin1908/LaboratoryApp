@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LaboratoryApp.src.UI.Views;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Shared.Interface;
@@ -23,8 +25,7 @@ namespace LaboratoryApp.src.UI.ViewModels
     public class MainWindowViewModel : BaseViewModel
     {
         private readonly INavigationService _navigationService;
-        private DashboardViewModel _dashboardVM;
-        private ToolkitsViewModel _toolkitsVM;
+        private readonly IServiceProvider _serviceProvider;
         private bool _isNavigationVisible;
 
         #region Properties
@@ -70,26 +71,15 @@ namespace LaboratoryApp.src.UI.ViewModels
         /// Constructor
         /// </summary>
         /// <param name="navigationService"></param>
-        public MainWindowViewModel(INavigationService navigationService)
+        public MainWindowViewModel(INavigationService navigationService, IServiceProvider serviceProvider)
         {
             ControlBarVM = new ControlBarViewModel(this);
 
             _navigationService = navigationService;
-
-            // Initialize the dashboard view model
-            _dashboardVM = new DashboardViewModel(_navigationService);
-            _toolkitsVM = new ToolkitsViewModel();
+            _serviceProvider = serviceProvider;
 
             // Initialize the dashboard page with the dashboard view model
-            var dashboardPage = new Dashboard
-            {
-                DataContext = _dashboardVM
-            };
-
-            var toolkitsPage = new ToolkitsMainPage
-            {
-                DataContext = _toolkitsVM
-            };
+            var dashboardPage = _serviceProvider.GetRequiredService<Dashboard>();
 
             // Navigate to the welcome page when the application starts
             _navigationService.NavigateTo(dashboardPage);
@@ -97,49 +87,45 @@ namespace LaboratoryApp.src.UI.ViewModels
             // Navigate to the dashboard page
             NavigateToDashboardCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo(dashboardPage);
+                var page = _serviceProvider.GetRequiredService<Dashboard>();
+                _navigationService.NavigateTo(page);
             });
 
             // Navigate to the periodic table page
             OpenPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var periodicWindow = new PeriodicTableWindow
-                {
-                    DataContext = new PeriodicTableViewModel()
-                };
-                periodicWindow.Show();
+                var window = _serviceProvider.GetRequiredService<PeriodicTableWindow>();
+                window.Show();
             });
 
             // Navigate to the toolkits page
             NavigateToToolkitCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                _navigationService.NavigateTo(toolkitsPage);
+                var page = _serviceProvider.GetRequiredService<ToolkitsMainPage>();
+                _navigationService.NavigateTo(page);
             });
 
             // Logout command
             LogoutCommand = new RelayCommand<object>((p)=>true, (p) =>
             {
-                AuthenticationCache.Clear(); // Clear authentication cache
+                // Clear authentication cache
+                AuthenticationCache.Clear();
+
                 // Update the current user and authentication status
                 OnPropertyChanged(nameof(CurrentUser));
                 OnPropertyChanged(nameof(IsAuthenticated));
 
                 // Open the authentication window for re-login
-                var authenticationWindow = new AuthenticationWindow
-                {
-                    DataContext = new AuthenticationViewModel()
-                };
+                var authenticationWindow = _serviceProvider.GetRequiredService<AuthenticationWindow>();
                 authenticationWindow.ShowDialog();
             });
 
             // Open the authentication window
             OpenAuthenticationCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var authenticationWindow = new AuthenticationWindow
-                {
-                    DataContext = new AuthenticationViewModel()
-                };
+                var authenticationWindow = _serviceProvider.GetRequiredService<AuthenticationWindow>();
                 authenticationWindow.ShowDialog();
+                
                 // After authentication, update the current user
                 OnPropertyChanged(nameof(CurrentUser));
                 OnPropertyChanged(nameof(IsAuthenticated));

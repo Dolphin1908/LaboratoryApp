@@ -25,7 +25,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
         private int _currentCardIndex = 1;
         private List<Flashcard> _flashcards;
         private Flashcard _currentFlashcard;
-        private FlashcardService _flashcardService;
+        private readonly IFlashcardService _flashcardService;
 
 
         // Property cho FlipTransform để binding trong XAML
@@ -79,7 +79,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
         }
         #endregion
 
-        public FlashcardStudyViewModel(FlashcardSet flashcardSet, FlashcardService flashcardService)
+        public FlashcardStudyViewModel(FlashcardSet flashcardSet, IFlashcardService flashcardService)
         {
             _flashcardService = flashcardService;
             _flashcardSet = flashcardSet;

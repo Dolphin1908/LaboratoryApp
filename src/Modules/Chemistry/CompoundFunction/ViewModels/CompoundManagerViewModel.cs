@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
@@ -19,6 +21,8 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
 {
     public class CompoundManagerViewModel : BaseViewModel
     {
+        private readonly IServiceProvider _serviceProvider;
+
         private string _searchText;
         private Compound _selectedCompound;
 
@@ -61,19 +65,18 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         }
         #endregion
 
-        public CompoundManagerViewModel()
+        public CompoundManagerViewModel(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
+
             _compounds = new ObservableCollection<Compound>();
 
             _allCompounds = ChemistryDataCache.AllCompounds; // Assuming you have a data cache or repository to get all compounds
 
             AddCompoundCommand = new RelayCommand<object>(p => true, p =>
             {
-                var addCompoundWindow = new AddCompoundWindow
-                {
-                    DataContext = new CompoundViewModel()
-                };
-                addCompoundWindow.ShowDialog();
+                var window = _serviceProvider.GetRequiredService<AddCompoundWindow>();
+                window.ShowDialog();
             });
             SelectResultCommand = new RelayCommand<object>(p => true, p => 
             {

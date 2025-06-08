@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 
 using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 
 namespace LaboratoryApp.src.Data.Providers.Authentication
 {
-    public class RoleProvider
+    public class RoleProvider : IRoleProvider
     {
-        private readonly MongoDBProvider _db;
-        public RoleProvider(MongoDBProvider db) => _db = db;
+        private readonly IMongoDBProvider _db;
+        public RoleProvider(IMongoDBProvider db) => _db = db;
 
         public List<Role> GetAllRoles()
         {

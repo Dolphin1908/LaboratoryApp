@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
@@ -21,6 +23,7 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
     class EnglishMainPageViewModel : BaseViewModel
     {
         private readonly INavigationService _navigationService;
+        private readonly IServiceProvider _serviceProvider;
 
         #region Commands
         public ICommand OpenDictionaryCommand { get; set; } // Open Dictionary
@@ -28,9 +31,10 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
         public ICommand NavigateToLectureCommand { get; set; } // Navigate to Lecture
         #endregion
 
-        public EnglishMainPageViewModel(INavigationService navigationService)
+        public EnglishMainPageViewModel(INavigationService navigationService, IServiceProvider serviceProvider)
         {
             _navigationService = navigationService;
+            _serviceProvider = serviceProvider;
 
             // Load all datas from database
             EnglishDataCache.LoadAllData(new EnglishService());
@@ -39,28 +43,19 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
             OpenDictionaryCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Open Dictionary Window
-                var dictionaryWindow = new DictionaryWindow
-                {
-                    DataContext = new DictionaryViewModel()
-                };
-                dictionaryWindow.Show();
+                var window = _serviceProvider.GetRequiredService<DictionaryWindow>();
+                window.Show();
             });
             NavigateToFlashcardManagerCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var flashcardManagerPage = new FlashcardManagerPage
-                {
-                    DataContext = new FlashcardManagerViewModel()
-                };
-                _navigationService.NavigateTo(flashcardManagerPage);
+                var page = _serviceProvider.GetRequiredService<FlashcardManagerPage>();
+                _navigationService.NavigateTo(page);
             });
             NavigateToLectureCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Navigate to Lecture Page
-                var lecturePage = new LectureMainPage
-                {
-                    DataContext = new LectureMainPageViewModel(_navigationService)
-                };
-                _navigationService.NavigateTo(lecturePage);
+                var page = _serviceProvider.GetRequiredService<LectureMainPage>();
+                _navigationService.NavigateTo(page);
             });
         }
     }
