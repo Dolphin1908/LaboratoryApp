@@ -33,7 +33,7 @@ namespace LaboratoryApp.src.Modules.English.LectureFunction.ViewModels
 
         public LectureContentViewModel()
         {
-            HtmlPath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Components", "HTML", "topic_1.html");
+            HtmlPath = Path.Combine(Directory.GetCurrentDirectory(), "resources", "Components", "HTML", "topic_1.html");
 
             ChooseLectureCommand = new RelayCommand<long>((p) => true, (p) => ChooseLecture(p));
         }
@@ -42,7 +42,7 @@ namespace LaboratoryApp.src.Modules.English.LectureFunction.ViewModels
         {
             var filename = $"topic_{topicId}.html";
 
-            HtmlPath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Components", "HTML", filename);
+            HtmlPath = Path.Combine(Directory.GetCurrentDirectory(), "resources", "Components", "HTML", filename);
         }
     }
 }

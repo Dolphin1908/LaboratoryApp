@@ -8,27 +8,30 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Linq;
 
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry;
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels
 {
-    public class PeriodicTableViewModel : BaseViewModel
+    public class PeriodicTableViewModel : BaseViewModel, IAsyncInitializable
     {
         #region Commands
 
         #endregion
 
         private List<Element> _elements;
+        private readonly IChemistryService _chemistryService;
+
         public ObservableCollection<ElementInfoViewModel> ElementCells { get; set; }
 
-
-        public PeriodicTableViewModel()
+        public PeriodicTableViewModel(IChemistryService chemistryService)
         {
-            _elements = LoadElement();
-            ElementCells = new ObservableCollection<ElementInfoViewModel>(_elements.Select(e => new ElementInfoViewModel(e)));
+            _chemistryService = chemistryService;
         }
 
         /// <summary>
@@ -127,14 +130,14 @@ namespace LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels
         }
 
         /// <summary>
-        /// Load elements from database
+        /// Initialize the periodic table with all elements and their properties.
         /// </summary>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        private List<Element> LoadElement()
+        public async Task InitializeAsync(CancellationToken cancellationToken = default)
         {
-            var elements = ChemistryDataCache.AllElements;
+            var elements = await Task.Run(() => _chemistryService.GetAllElements(), cancellationToken);
 
-            // Add Lanthanide group and Actinide group
             elements.Add(new Element
             {
                 AtomicNumber = "57 - 71",
@@ -147,6 +150,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels
                 Row = 6,
                 Column = 3,
             });
+
             elements.Add(new Element
             {
                 AtomicNumber = "89 - 103",
@@ -166,7 +170,14 @@ namespace LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels
                 LoadColorCategory(element);
             }
 
-            return elements;
+            // Update the elements in the view model
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _elements = elements;
+                ElementCells = new ObservableCollection<ElementInfoViewModel>(_elements.Select(e => new ElementInfoViewModel(e)));
+                OnPropertyChanged(nameof(ElementCells));
+            });
+
         }
     }
 }

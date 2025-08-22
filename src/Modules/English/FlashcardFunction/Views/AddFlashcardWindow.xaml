@@ -14,6 +14,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Height="445" 
         Width="400"

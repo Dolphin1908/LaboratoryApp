@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LaboratoryApp.ViewModels.Chemistry.UC
+namespace LaboratoryApp.src.Core.ViewModels
 {
     public class NoteLineViewModel : BaseViewModel
     {

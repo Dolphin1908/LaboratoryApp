@@ -71,7 +71,8 @@ namespace LaboratoryApp.src.UI.ViewModels
         /// Constructor
         /// </summary>
         /// <param name="navigationService"></param>
-        public MainWindowViewModel(INavigationService navigationService, IServiceProvider serviceProvider)
+        public MainWindowViewModel(INavigationService navigationService, 
+                                   IServiceProvider serviceProvider)
         {
             ControlBarVM = new ControlBarViewModel(this);
 
@@ -96,6 +97,10 @@ namespace LaboratoryApp.src.UI.ViewModels
             {
                 var window = _serviceProvider.GetRequiredService<PeriodicTableWindow>();
                 window.Show();
+                if (window.DataContext is IAsyncInitializable init)
+                {
+                    _ = init.InitializeAsync(); // Ensure the periodic table data is loaded
+                }
             });
 
             // Navigate to the toolkits page

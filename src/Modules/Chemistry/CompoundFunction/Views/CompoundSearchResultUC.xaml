@@ -17,10 +17,10 @@
         <StackPanel Orientation="Vertical"
                     Margin="0, 5">
             <TextBlock Text="{Binding Formula}"
-                   FontSize="16"
-                   FontWeight="Bold"
-                   Foreground="DarkSlateBlue"
-                   HorizontalAlignment="Left"/>
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Foreground="DarkSlateBlue"
+                       HorizontalAlignment="Left"/>
             <TextBlock Text="{Binding Name}"
                        FontSize="12"/>
             <TextBlock Text="{Binding MolecularMass}"

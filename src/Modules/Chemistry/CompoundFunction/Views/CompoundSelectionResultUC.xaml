@@ -28,7 +28,7 @@
                                Grid.Row="0"
                                FontSize="32" 
                                FontWeight="Bold"
-                               Foreground="DarkSlateBlue" />
+                               Foreground="SlateBlue" />
                     <TextBlock Text="{Binding Name}"
                                Grid.Row="1"
                                FontStyle="Italic"

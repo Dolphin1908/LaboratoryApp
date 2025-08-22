@@ -53,7 +53,7 @@
                               Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                               IsChecked="{Binding DataContext.IsNavigationVisible, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"
                               Command="{Binding ToggleNavigationCommand}"/>
-                <Image Source="../../Resources/Laboratory.png" Height="20"/>
+                <Image Source="/resources/Images/Laboratory.png" Height="20"/>
                 <TextBlock Margin="5,0,10,0"
                            VerticalAlignment="Center"
                            Text="Laboratory"/>

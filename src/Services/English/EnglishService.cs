@@ -10,7 +10,7 @@ using LaboratoryApp.src.Data.Providers;
 
 namespace LaboratoryApp.src.Services.English
 {
-    public class EnglishService
+    public class EnglishService : IEnglishService
     {
         private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
 

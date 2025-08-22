@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views
 {
     /// <summary>
-    /// Interaction logic for AddReactionWindow.xaml
+    /// Interaction logic for ReactionSearchResultUC.xaml
     /// </summary>
-    public partial class AddReactionWindow : Window
+    public partial class ReactionSearchResultUC : UserControl
     {
-        public AddReactionWindow()
+        public ReactionSearchResultUC()
         {
             InitializeComponent();
         }

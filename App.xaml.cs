@@ -50,6 +50,9 @@ using LaboratoryApp.src.UI.ViewModels;
 using LaboratoryApp.src.Services.English.FlashcardFunction;
 using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
 using LaboratoryApp.src.Services.Authentication;
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Services.English;
 
 namespace LaboratoryApp
 {
@@ -58,7 +61,7 @@ namespace LaboratoryApp
     /// </summary>
     public partial class App : Application
     {
-        private IServiceProvider _serviceProvider;
+        private IServiceProvider? _serviceProvider;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -78,6 +81,8 @@ namespace LaboratoryApp
             service.AddSingleton<INavigationService>(navigateService);
             service.AddSingleton<IFlashcardService, FlashcardService>();
             service.AddTransient<IAuthenticationService, AuthenticationService>();
+            service.AddSingleton<IChemistryService, ChemistryService>();
+            service.AddSingleton<IEnglishService, EnglishService>();
 
             // Đăng ký các providers
             service.AddSingleton<IMongoDBProvider>(sp =>
@@ -85,10 +90,13 @@ namespace LaboratoryApp
                 var conn = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
                 return new MongoDBProvider(conn, "authentication");
             });
-
             service.AddSingleton<IUserProvider>(sp =>new UserProvider(sp.GetRequiredService<IMongoDBProvider>()));
             service.AddSingleton<IRoleProvider>(sp =>new RoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
             service.AddSingleton<IRefreshTokenProvider>(sp => new RefreshTokenProvider(sp.GetRequiredService<IMongoDBProvider>()));
+
+            // Đăng ký các caches
+            service.AddSingleton<ChemistryDataCache>();
+            service.AddSingleton<EnglishDataCache>();
 
             // Đăng ký các ViewModels theo modules
             #region UI
@@ -109,10 +117,7 @@ namespace LaboratoryApp
             service.AddTransient<ElementInfoViewModel>();
             service.AddTransient<PeriodicTableViewModel>();
 
-            service.AddTransient<ReactionComponentViewModel>();
             service.AddTransient<ReactionManagerViewModel>();
-            service.AddTransient<ReactionNoteViewModel>();
-            service.AddTransient<ReactionViewModel>();
             #endregion
 
             #region English
@@ -124,12 +129,9 @@ namespace LaboratoryApp
             service.AddTransient<FlashcardViewModel>();
             service.AddTransient<FlashcardStudyViewModel>();
             // Đăng ký các hàm tạo cho FlashcardViewModel và FlashcardStudyViewModel
-            service.AddTransient<Func<FlashcardSet, Action<FlashcardSet>, FlashcardViewModel>>(sp => 
-            (set, callback) => new FlashcardViewModel(set, callback));
-            service.AddTransient<Func<Flashcard, Action<Flashcard>, Func<DictionaryWindow>, FlashcardViewModel>>(sp =>
-            (flashcard, callback, dictFactory) => new FlashcardViewModel(flashcard, callback, dictFactory));
-            service.AddTransient<Func<FlashcardSet, IFlashcardService, FlashcardStudyViewModel>>(sp =>
-            (set, service) => new FlashcardStudyViewModel(set, service));
+            service.AddTransient<Func<FlashcardSet, Action<FlashcardSet>, FlashcardViewModel>>(sp => (set, callback) => new FlashcardViewModel(set, callback));
+            service.AddTransient<Func<Flashcard, Action<Flashcard>, Func<DictionaryWindow>, FlashcardViewModel>>(sp => (flashcard, callback, dictFactory) => new FlashcardViewModel(flashcard, callback, dictFactory));
+            service.AddTransient<Func<FlashcardSet, IFlashcardService, FlashcardStudyViewModel>>(sp => (set, service) => new FlashcardStudyViewModel(set, service));
 
             service.AddTransient<LectureMainPageViewModel>();
             service.AddTransient<LectureContentViewModel>();
@@ -146,6 +148,10 @@ namespace LaboratoryApp
             #region Teacher
             service.AddTransient<CompoundNoteViewModel>();
             service.AddTransient<CompoundViewModel>();
+
+            service.AddTransient<ReactionComponentViewModel>();
+            service.AddTransient<ReactionNoteViewModel>();
+            service.AddTransient<ReactionViewModel>();
             #endregion
 
             #region Toolkits
@@ -199,12 +205,6 @@ namespace LaboratoryApp
             {
                 var vm = sp.GetRequiredService<ReactionManagerViewModel>();
                 return new ReactionManagerPage { DataContext = vm };
-            });
-
-            service.AddTransient<AddReactionWindow>(sp =>
-            {
-                var vm = sp.GetRequiredService<ReactionViewModel>();
-                return new AddReactionWindow { DataContext = vm };
             });
             #endregion
 
@@ -265,6 +265,12 @@ namespace LaboratoryApp
             {
                 var vm = sp.GetRequiredService<CompoundViewModel>();
                 return new AddCompoundWindow { DataContext = vm };
+            }); 
+            
+            service.AddTransient<AddReactionWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<ReactionViewModel>();
+                return new AddReactionWindow { DataContext = vm };
             });
             #endregion
 

@@ -20,10 +20,12 @@ using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.English.Common.ViewModels
 {
-    class EnglishMainPageViewModel : BaseViewModel
+    class EnglishMainPageViewModel : BaseViewModel, IAsyncInitializable
     {
         private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IEnglishService _englishService;
+        private readonly EnglishDataCache _englishDataCache;
 
         #region Commands
         public ICommand OpenDictionaryCommand { get; set; } // Open Dictionary
@@ -31,13 +33,15 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
         public ICommand NavigateToLectureCommand { get; set; } // Navigate to Lecture
         #endregion
 
-        public EnglishMainPageViewModel(INavigationService navigationService, IServiceProvider serviceProvider)
+        public EnglishMainPageViewModel(INavigationService navigationService,
+                                        IServiceProvider serviceProvider,
+                                        IEnglishService englishService,
+                                        EnglishDataCache englishDataCache)
         {
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
-
-            // Load all datas from database
-            EnglishDataCache.LoadAllData(new EnglishService());
+            _englishService = englishService;
+            _englishDataCache = englishDataCache;
 
             // Open Dictionary Command
             OpenDictionaryCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -45,6 +49,11 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
                 // Open Dictionary Window
                 var window = _serviceProvider.GetRequiredService<DictionaryWindow>();
                 window.Show();
+                if (window.DataContext is DictionaryViewModel vm && vm is IAsyncInitializable init)
+                {
+                    // Initialize the dictionary window asynchronously
+                    _ = init.InitializeAsync();
+                }
             });
             NavigateToFlashcardManagerCommand = new RelayCommand<object>((p) => true, (p) =>
             {
@@ -57,6 +66,15 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
                 var page = _serviceProvider.GetRequiredService<LectureMainPage>();
                 _navigationService.NavigateTo(page);
             });
+        }
+
+        public async Task InitializeAsync(CancellationToken cancellationToken = default)
+        {
+            await Task.Run(() =>
+            {
+                // Load any additional data or perform setup tasks here
+                _englishDataCache.LoadAllData(_englishService);
+            }, cancellationToken);
         }
     }
 }
