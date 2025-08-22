@@ -15,7 +15,7 @@ namespace LaboratoryApp.src.Core.Models.English.DictionaryFunction
         [Column("Content")]
         public string Content { get; set; } = string.Empty;
 
-        [Column("Prononciation")]
-        public string Prononciation { get; set; } = string.Empty;
+        [Column("Pronunciation")]
+        public string Pronunciation { get; set; } = string.Empty;
     }
 }

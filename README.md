@@ -20,7 +20,7 @@ _This application focus on some courses such as: Math, Physics, Chemistry, Engli
 
 - **Chemistry**:
 	- [x] Interactive periodic table: Displays detailed information about each element.
-	- [ ] Chemical formulas & reactions: Look up chemical reaction equations, balance equations.
+	- [x] Chemical formulas & reactions: Look up chemical reaction equations, balance equations.
 	- [ ] Exercises & tests: Practice theoretical exercises, chemistry problems.
 	- [ ] Experimental simulation: Practice virtual experiments such as acid-base reactions, electrolysis.
 	- [ ] Chemical calculator: Calculate molar mass, solution concentration, reaction rate.

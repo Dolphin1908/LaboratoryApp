@@ -8,17 +8,24 @@ using System.Threading.Tasks;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Shared.Interface;
 
-namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
 {
-    public class ReactionComponentViewModel : BaseViewModel
+    public class ReactionComponentViewModel : BaseViewModel, IAsyncInitializable
     {
+        private readonly ChemistryDataCache _chemistryDataCache;
+        private readonly IChemistryService _chemistryService;
+        private readonly IServiceProvider _serviceProvider;
+
         private string _searchText;
         private bool _isSuggestionOpen;
+        private object _selectedSuggestion;
+        private decimal _coefficient;
         private ObservableCollection<object> _searchResult;
         private SubstanceKind _kind;
-        private object _selectedSuggestion;
-        private string _stoichiometricCoefficient;
 
         #region Properties
         public string SearchText
@@ -28,7 +35,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             {
                 _searchText = value;
                 OnPropertyChanged();
-                UpdateSuggestions(_searchText);
+                UpdateSuggestions();
             }
         }
         public bool IsSuggestionOpen
@@ -61,12 +68,12 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
                 IsSuggestionOpen = false;
             }
         }
-        public string StoichiometricCoefficient
+        public decimal Coefficient
         {
-            get => _stoichiometricCoefficient;
+            get => _coefficient;
             set
             {
-                _stoichiometricCoefficient = value;
+                _coefficient = value;
                 OnPropertyChanged();
             }
         }
@@ -86,22 +93,29 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         public Element SelectedElement { get; set; }
         public Compound SelectedCompound { get; set; }
 
-        private readonly List<Element> _allElements;
-        private readonly ObservableCollection<Compound> _allCompounds;
+        private ObservableCollection<Element> _allElements;
+        private ObservableCollection<Compound> _allCompounds;
 
-        public ReactionComponentViewModel(List<Element> allElements, ObservableCollection<Compound> allCompounds)
+        public ReactionComponentViewModel(ChemistryDataCache chemistryDataCache,
+                                          IChemistryService chemistryService,
+                                          IServiceProvider serviceProvider)
         {
-            _allElements = allElements;
-            _allCompounds = allCompounds;
+            _serviceProvider = serviceProvider;
+            _chemistryDataCache = chemistryDataCache;
+            _chemistryService = chemistryService;
+
+            _allElements = new ObservableCollection<Element>();
+            _allCompounds = new ObservableCollection<Compound>();
+
             SearchResult = new ObservableCollection<object>();
             Kind = SubstanceKind.Element;
         }
 
-        private void UpdateSuggestions(string text)
+        private void UpdateSuggestions()
         {
-            SearchResult.Clear();
+            SearchResult?.Clear();
 
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(SearchText))
             {
                 IsSuggestionOpen = false;
                 return;
@@ -110,7 +124,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             if (Kind == SubstanceKind.Element)
             {
                 var elements = _allElements
-                    .Where(e => e.Name.Contains(text, StringComparison.OrdinalIgnoreCase) || e.Formula.Contains(text, StringComparison.OrdinalIgnoreCase))
+                    .Where(e => e.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) || e.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                     .ToList();
                 foreach (var element in elements)
                 {
@@ -120,7 +134,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             else if (Kind == SubstanceKind.Compound)
             {
                 var compounds = _allCompounds
-                    .Where(c => c.Formula.Contains(text, StringComparison.OrdinalIgnoreCase))
+                    .Where(c => c.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                     .ToList();
                 foreach (var compound in compounds)
                 {
@@ -140,6 +154,20 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 
             SearchText = (item as dynamic).Formula;
             IsSuggestionOpen = false;
+        }
+
+        public async Task InitializeAsync(CancellationToken cancellationToken = default)
+        {
+            await Task.Run(() =>
+            {
+                _chemistryDataCache.LoadAllData(_chemistryService);
+
+                _allElements = new ObservableCollection<Element>(_chemistryDataCache.AllElements);
+                _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+            }, cancellationToken);
+
+            // If there is a search text, update suggestions immediately
+            UpdateSuggestions();
         }
     }
 }

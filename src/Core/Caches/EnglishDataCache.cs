@@ -10,21 +10,28 @@ namespace LaboratoryApp.src.Core.Caches
 {
     public class EnglishDataCache
     {
-        public static List<Word> AllWords { get; set; }
-        public static List<Pos> AllPos { get; set; }
-        public static List<Definition> AllDefinitions { get; set; }
-        public static List<Example> AllExamples { get; set; }
+        private readonly object _lock = new();
+        public bool IsLoaded { get; private set; } = false;
 
-        public static bool IsLoaded => AllWords != null;
+        public List<Word> AllWords { get; set; } = new List<Word>();
+        public List<Pos> AllPos { get; set; } = new List<Pos>();
+        public List<Definition> AllDefinitions { get; set; } = new List<Definition>();
+        public List<Example> AllExamples { get; set; } = new List<Example>();
 
-        public static void LoadAllData(EnglishService service)
+
+        public void LoadAllData(IEnglishService service)
         {
-            if (!IsLoaded)
+            if (IsLoaded) return;
+            lock (_lock)
             {
+                if (IsLoaded) return; // Double-check after acquiring the lock
+
                 AllWords = service.GetAllWords();
                 AllPos = service.GetAllPos();
                 AllDefinitions = service.GetAllDefinitions();
                 AllExamples = service.GetAllExamples();
+
+                IsLoaded = true;
             }
         }
     }

@@ -16,24 +16,25 @@ using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
 using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
 {
-    public class CompoundViewModel : BaseViewModel
+    public class CompoundViewModel : BaseViewModel, IAsyncInitializable
     {
+        private readonly IChemistryService _chemistryService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ChemistryDataCache _chemistryDataCache;
 
-        private List<Element> _allElements;
-        private ObservableCollection<Compound> _allCompounds;
         private List<string> _allUnits;
+        private ObservableCollection<Element> _allElements;
+        private ObservableCollection<Compound> _allCompounds;
 
         private Compound _compound;
         private ObservableCollection<CompoundElement> _composition;
         private ObservableCollection<PhysicalProperty> _physicalProperties;
         private ObservableCollection<ChemicalProperty> _chemicalProperties;
         private ObservableCollection<CompoundNoteViewModel> _notes;
-
-        private ChemistryService _chemistryService;
 
         #region Commands
         public ICommand AddElementCommand { get; set; }
@@ -48,7 +49,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
         #endregion
 
         #region Properties
-        public List<Element> AllElements
+        public ObservableCollection<Element> AllElements
         {
             get => _allElements;
             set
@@ -144,22 +145,30 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
         }
         #endregion
 
-        public CompoundViewModel(IServiceProvider serviceProvider)
+        public CompoundViewModel(IServiceProvider serviceProvider,
+                                 IChemistryService chemistryService,
+                                 ChemistryDataCache chemistryDataCache
+            )
         {
             _serviceProvider = serviceProvider;
+            _chemistryService = chemistryService;
+            _chemistryDataCache = chemistryDataCache;
+
+            // Khởi tạo các thuộc tính
+            _allUnits = new List<string>();
+            _allElements = new ObservableCollection<Element>();
+            _allCompounds = new ObservableCollection<Compound>();
 
             // Khởi tạo các collection
-            Compound = new Compound();
-            Composition = new ObservableCollection<CompoundElement>();
-            PhysicalProperties = new ObservableCollection<PhysicalProperty>();
-            ChemicalProperties = new ObservableCollection<ChemicalProperty>();
-            Notes = new ObservableCollection<CompoundNoteViewModel>();
+            _compound = new Compound();
+            _composition = new ObservableCollection<CompoundElement>();
+            _physicalProperties = new ObservableCollection<PhysicalProperty>();
+            _chemicalProperties = new ObservableCollection<ChemicalProperty>();
+            _notes = new ObservableCollection<CompoundNoteViewModel>();
 
             _chemistryService = new ChemistryService();
 
-            AllElements = ChemistryDataCache.AllElements;
-            AllCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
-            AllUnits = ["g/mol", "°C", "K", "g/cm³", "kg/m³", "g/L", "J/(g·K)", "J/(kg·K)", "mmHg", "Pa", "kPa", "MPa", "atm", "bar", "Torr", "S/m", "g/100 mL", "mol/L", "mg/L", "kJ/mol", "J/g", "Pa·s", "cP"];
+            _allUnits = ["g/mol", "°C", "K", "g/cm³", "kg/m³", "g/L", "J/(g·K)", "J/(kg·K)", "mmHg", "Pa", "kPa", "MPa", "atm", "bar", "Torr", "S/m", "g/100 mL", "mol/L", "mg/L", "kJ/mol", "J/g", "Pa·s", "cP"];
             CompoundTypeOptions = new ObservableCollection<SelectableEnumDisplay<CompoundType>>(
                 Enum.GetValues(typeof(CompoundType))
                     .Cast<CompoundType>()
@@ -256,14 +265,33 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
                 if (CanAddDefaultElement())
                 {
                     Compound.Id = AllCompounds.Count + 1;
+
+                    if (Composition.Count == 0)
+                    {
+                        MessageBox.Show("Vui lòng điền đầy đủ thông tin cho các nguyên tố trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                     Compound.Composition = Composition.ToList();
+
                     Compound.CompoundTypes = CompoundTypeOptions.Where(x => x.IsSelected)
                                                                 .Select(x => x.Value)
                                                                 .ToList();
                     Compound.Phases = PhaseOptions.Where(x => x.IsSelected)
                                                   .Select(x => x.Value)
                                                   .ToList();
+
+                    if (PhysicalProperties.Count == 0)
+                    {
+                        MessageBox.Show("Vui lòng điền đầy đủ thông tin cho các thuộc tính vật lý", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                     Compound.PhysicalProperties = PhysicalProperties.ToList();
+
+                    if (ChemicalProperties.Count == 0)
+                    {
+                        MessageBox.Show("Vui lòng điền đầy đủ thông tin cho các thuộc tính hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                     Compound.ChemicalProperties = ChemicalProperties.ToList();
                     Compound.Notes = Notes.Select(vm => new CompoundNote
                     {
@@ -272,16 +300,23 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
                     }).ToList();
 
                     _chemistryService.AddCompound(Compound);
-                    ChemistryDataCache.AllCompounds.Add(Compound);
+                    _chemistryDataCache.AllCompounds.Add(Compound);
 
-                    var thisWindow = p as AddCompoundWindow;
-                    thisWindow.Close();
+                    if (p is AddCompoundWindow thisWindow)
+                    {
+                        thisWindow.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không thể thực thi", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Có nguyên tố trùng lặp trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Có nguyên tố trùng lặp trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             });
+            _chemistryService = chemistryService;
             #endregion
         }
 
@@ -307,6 +342,17 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
             return !Composition
                 .GroupBy(c => c.Element.Id)
                 .Any(g => g.Count() > 1);
+        }
+
+        public async Task InitializeAsync(CancellationToken cancellationToken = default)
+        {
+            // Load initial data if needed
+            await Task.Run(() =>
+            {
+                _chemistryDataCache.LoadAllData(_chemistryService);
+                _allElements = new ObservableCollection<Element>(_chemistryDataCache.AllElements);
+                _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+            }, cancellationToken);
         }
     }
 }

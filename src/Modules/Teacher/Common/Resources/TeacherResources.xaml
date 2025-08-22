@@ -4,5 +4,10 @@
     <!-- Chemistry -->
     <chemistry:CompoundViewModel x:Key="CompoundVM"></chemistry:CompoundViewModel>
     <chemistry:CompoundNoteViewModel x:Key="CompoundNoteVM"></chemistry:CompoundNoteViewModel>
+    <chemistry:ReactionNoteViewModel x:Key="ReactionNoteVM"></chemistry:ReactionNoteViewModel>
+    <chemistry:ReactionViewModel x:Key="ReactionVM"></chemistry:ReactionViewModel>
+    <chemistry:ReactionComponentViewModel x:Key="ReactionComponentVM"></chemistry:ReactionComponentViewModel>
+
+
 
 </ResourceDictionary>

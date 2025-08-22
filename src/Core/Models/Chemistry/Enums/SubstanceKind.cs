@@ -9,7 +9,7 @@ namespace LaboratoryApp.src.Core.Models.Chemistry.Enums
 {
     public enum SubstanceKind
     {
-        [Display(Name = "Đơn chất")]Element,
-        [Display(Name = "Hợp chất")] Compound
+        [Display(Name = "Đơn chất")] Element, // 0 is Element
+        [Display(Name = "Hợp chất")] Compound // 1 is Compound
     }
 }

@@ -4,13 +4,14 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Data.Providers;
 
 namespace LaboratoryApp.src.Services.Chemistry
 {
-    public class ChemistryService
+    public class ChemistryService : IChemistryService
     {
         private readonly string _chemDbPath = ConfigurationManager.AppSettings["ChemistryDbPath"];
         private readonly string _mongoDbPath = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);

@@ -10,11 +10,9 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 {
     public class ReactionCondition
     {
-        public long Id { get; set; }
+        public string? Temperature { get; set; } // Nhiệt độ
 
-        public string Temperature { get; set; } = string.Empty; // Nhiệt độ
-
-        public string Pressure { get; set; } = string.Empty; // Áp suất
+        public string? Pressure { get; set; } // Áp suất
 
         public string? Catalyst { get; set; } // Chất xúc tác
 

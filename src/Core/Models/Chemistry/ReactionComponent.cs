@@ -17,6 +17,27 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 
         public Compound? Compound { get; set; }
 
-        public string StoichiometricCoefficient { get; set; } = string.Empty; // Hệ số tỉ lệ
+        public decimal Coefficient { get; set; } // Hệ số tỉ lệ
+
+        [NotMapped]
+        public string Formula => Element?.Formula ?? Compound?.Formula ?? string.Empty;
+
+        [NotMapped]
+        public string DisplayCoefficient
+        {
+            get
+            {
+                if (Coefficient == 1)
+                    return string.Empty; // Do not display coefficient if it is 1
+                
+                if (Coefficient % 1 == 0)
+                    return ((int)Coefficient).ToString(); // Display as integer if it is a whole number
+
+                return Coefficient.ToString("0.##"); // Display up to 2 decimal places
+            }
+        }
+
+        [NotMapped]
+        public string Display => string.IsNullOrEmpty(DisplayCoefficient) ? Formula : $"{DisplayCoefficient} {Formula}";
     }
 }

@@ -87,7 +87,7 @@
                                                         HorizontalAlignment="Stretch"
                                                         HorizontalContentAlignment="Left"
                                                         Height="60"
-                                                        Command="{Binding DataContext.SelectResultCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                                        Command="{Binding DataContext.SelectCompoundCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                                         CommandParameter="{Binding .}">
                                                     <local:CompoundSearchResultUC HorizontalAlignment="Left"/>
                                                 </Button>
@@ -135,8 +135,8 @@
         </StackPanel>
 
         <local:CompoundSelectionResultUC Grid.Row="1"
-                                      DataContext="{Binding SelectedCompound}"
-                                      Margin="10, 0"
-                                      Visibility="{Binding DataContext.SelectedCompound, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                         DataContext="{Binding SelectedCompound}"
+                                         Margin="10, 0"
+                                         Visibility="{Binding DataContext.SelectedCompound, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource NullToVisibilityConverter}}"/>
     </Grid>
 </Page>
