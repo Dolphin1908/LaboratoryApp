@@ -31,6 +31,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
         public ICommand OpenPeriodicTableCommand { get; set; } // Command to open the periodic table window
         public ICommand NavigateToCompoundCommand { get; set; } // Command to navigate to the compound page
         public ICommand NavigateToReactionCommand { get; set; } // Command to navigate to the reaction page
+        public ICommand NavigateBackCommand { get; set; } // Command to navigate back
         #endregion
 
         /// <summary>
@@ -83,6 +84,11 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
                     // Initialize the reaction manager page asynchronously
                     _ = initPage.InitializeAsync();
                 }
+            });
+
+            NavigateBackCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                _navigationService.NavigateBack();
             });
             #endregion
         }

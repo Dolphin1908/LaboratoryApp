@@ -23,5 +23,13 @@ namespace LaboratoryApp.src.Shared
         {
             _mainFrame.Navigate(page);
         }
+
+        public void NavigateBack()
+        {
+            if (_mainFrame.CanGoBack)
+            {
+                _mainFrame.GoBack();
+            }
+        }
     }
 }

@@ -4,15 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
 
 namespace LaboratoryApp.src.Services.English
 {
     public interface IEnglishService
     {
+        #region DiaryMongoDB
+        public void AddDiary(DiaryContent diary);
+        public List<DiaryContent> GetAllDiaries();
+        #endregion
+
+        #region DictionarySQLite
         public List<Word> GetAllWords();
         public List<Pos> GetAllPos();
         public List<Example> GetAllExamples();
         public List<Definition> GetAllDefinitions();
+        #endregion
     }
 }

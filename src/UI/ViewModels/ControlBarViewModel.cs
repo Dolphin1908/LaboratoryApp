@@ -9,17 +9,21 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.UI.ViewModels
 {
     public class ControlBarViewModel : BaseViewModel
     {
-        #region commands
+        private readonly INavigationService _navigationService;
+
+        #region Commands
         public ICommand CloseWindowCommand { get; set; }
         public ICommand MaximizeWindowCommand { get; set; }
         public ICommand MinimizeWindowCommand { get; set; }
         public ICommand MouseMoveWindowCommand { get; set; }
         public ICommand ToggleClickCommand { get; set; }
+        public ICommand NavigateBackCommand { get; set; }
         #endregion
 
         private MainWindowViewModel _mainWindowVM;
@@ -28,9 +32,11 @@ namespace LaboratoryApp.src.UI.ViewModels
         /// Constructor
         /// </summary>
         /// <param name="mainWindowVM"></param>
-        public ControlBarViewModel(MainWindowViewModel mainWindowVM)
+        public ControlBarViewModel(MainWindowViewModel mainWindowVM,
+                                   INavigationService navigationService)
         {
             _mainWindowVM = mainWindowVM;
+            _navigationService = navigationService;
 
             // Handle the click event of the toggle button to show/hide the navigation bar
             ToggleClickCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -81,6 +87,11 @@ namespace LaboratoryApp.src.UI.ViewModels
                 {
                     w.DragMove();
                 }
+            });
+
+            NavigateBackCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                _navigationService.NavigateBack();
             });
         }
     }

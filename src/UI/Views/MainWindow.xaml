@@ -35,8 +35,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <local:NavigationUC DataContext="{Binding}" 
-                                    Visibility="{Binding IsNavigationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <local:NavigationUC DataContext="{Binding}"/>
             </Grid>
             <Grid Grid.Column="1">
                 <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>

@@ -15,8 +15,10 @@ namespace LaboratoryApp.src.Shared.Converters
                 colorString = colorString.ToLower();
                 try
                 {
-                    if (colorString == "ffffff" || colorString == "")
-                        colorString = "bdbdbd";
+                    //if (colorstring == "ffffff" || colorstring == "")
+                    //    colorstring = "bdbdbd";
+                    if (colorString.StartsWith("#"))
+                        colorString = colorString.Substring(1);
                     var color = (Color)ColorConverter.ConvertFromString("#" + colorString);
                     return new SolidColorBrush(color);
                 }

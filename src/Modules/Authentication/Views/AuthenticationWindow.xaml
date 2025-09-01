@@ -16,7 +16,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Title="AuthenticationWindow" 
-        Height="400"
+        Height="430"
         Width="600">
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">

@@ -74,7 +74,7 @@ namespace LaboratoryApp.src.UI.ViewModels
         public MainWindowViewModel(INavigationService navigationService, 
                                    IServiceProvider serviceProvider)
         {
-            ControlBarVM = new ControlBarViewModel(this);
+            ControlBarVM = new ControlBarViewModel(this, navigationService);
 
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;

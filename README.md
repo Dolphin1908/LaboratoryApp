@@ -38,6 +38,10 @@ _This application focus on some courses such as: Math, Physics, Chemistry, Engli
 - **Common**:
 	- [x] Calculator: Used for calculations
 
+- **Teacher**:
+    - [x] Add new compound: Allow teachers to add new compounds to the chemistry section.
+    - [x] Add new reaction: Allow teachers to add new chemical reactions to the chemistry section.
+
 ## How to run
 1. Clone the repository:
 ```git clone https://github.com/Dolphin1908/LaboratoryApp.git```
