@@ -15,6 +15,7 @@
     <None Remove="resources\Components\CSS\style2.css" />
     <None Remove="resources\Components\HTML\topic_4.html" />
     <None Remove="resources\Element.jpg" />
+    <None Remove="resources\Images\Icons\color.png" />
     <None Remove="resources\Images\Icons\divide.png" />
     <None Remove="resources\Images\Icons\squared.png" />
     <None Remove="resources\Laboratory.ico" />
@@ -46,21 +47,24 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3296.44" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="MongoDB.Bson" Version="3.4.0" />
-    <PackageReference Include="MongoDB.Driver" Version="3.4.0" />
+    <PackageReference Include="MongoDB.Bson" Version="3.4.3" />
+    <PackageReference Include="MongoDB.Driver" Version="3.4.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
-    <PackageReference Include="System.Speech" Version="9.0.5" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.11" />
+    <PackageReference Include="System.Data.SQLite" Version="2.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+    <PackageReference Include="System.Speech" Version="9.0.8" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
     <PackageReference Include="WPF-UI" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="resources\Images\Element.jpg" />
+    <Resource Include="resources\Images\Icons\color.png" />
     <Resource Include="resources\Images\Icons\divide.png" />
     <Resource Include="resources\Images\Icons\squared.png" />
     <Resource Include="resources\Images\Laboratory.ico" />
@@ -84,6 +88,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="src\Core\Models\English\DiaryFunction\DTOs\" />
     <Folder Include="src\Core\Models\Physics\" />
     <Folder Include="src\Core\Models\Math\" />
     <Folder Include="resources\Components\JS\" />
@@ -93,6 +98,7 @@
     <Folder Include="src\Modules\Chemistry\CompoundFunction\Resources\" />
     <Folder Include="src\Modules\Chemistry\PeriodicFunction\Resources\" />
     <Folder Include="src\Modules\Chemistry\ReactionFunction\Resources\" />
+    <Folder Include="src\Modules\English\DiaryFunction\Resources\" />
     <Folder Include="src\Modules\English\DictionaryFunction\Resources\" />
     <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
     <Folder Include="src\Modules\English\LectureFunction\Resources\" />
@@ -105,6 +111,7 @@
     <Folder Include="src\Modules\Toolkits\CalculatorFunction\Resources\" />
     <Folder Include="src\Modules\Toolkits\Common\ViewModels\" />
     <Folder Include="src\Modules\Toolkits\Common\Views\" />
+    <Folder Include="src\Shared\ViewModels\" />
   </ItemGroup>
 
 </Project>

@@ -30,6 +30,8 @@ using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
+using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
+using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
 
 using LaboratoryApp.src.Modules.Maths.Common.Views;
 using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
@@ -44,15 +46,16 @@ using LaboratoryApp.src.Modules.Toolkits.Common.Views;
 using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
 
 using LaboratoryApp.src.UI.Views;
+using LaboratoryApp.src.UI.ViewModels;
 using LaboratoryApp.src.Shared;
 using LaboratoryApp.src.Shared.Interface;
-using LaboratoryApp.src.UI.ViewModels;
 using LaboratoryApp.src.Services.English.FlashcardFunction;
-using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
 using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Services.English;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
 
 namespace LaboratoryApp
 {
@@ -90,8 +93,8 @@ namespace LaboratoryApp
                 var conn = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
                 return new MongoDBProvider(conn, "authentication");
             });
-            service.AddSingleton<IUserProvider>(sp =>new UserProvider(sp.GetRequiredService<IMongoDBProvider>()));
-            service.AddSingleton<IRoleProvider>(sp =>new RoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
+            service.AddSingleton<IUserProvider>(sp => new UserProvider(sp.GetRequiredService<IMongoDBProvider>()));
+            service.AddSingleton<IRoleProvider>(sp => new RoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
             service.AddSingleton<IRefreshTokenProvider>(sp => new RefreshTokenProvider(sp.GetRequiredService<IMongoDBProvider>()));
 
             // Đăng ký các caches
@@ -123,11 +126,16 @@ namespace LaboratoryApp
             #region English
             service.AddTransient<EnglishMainPageViewModel>();
 
+            service.AddTransient<DiaryViewModel>();
+            service.AddTransient<DiaryManagerViewModel>();
+            service.AddTransient<Func<IUserProvider,DiaryContent, DiaryDetailViewModel>>(sp => (service, diary) => new DiaryDetailViewModel(service, diary));
+
             service.AddTransient<DictionaryViewModel>();
 
             service.AddTransient<FlashcardManagerViewModel>();
             service.AddTransient<FlashcardViewModel>();
             service.AddTransient<FlashcardStudyViewModel>();
+
             // Đăng ký các hàm tạo cho FlashcardViewModel và FlashcardStudyViewModel
             service.AddTransient<Func<FlashcardSet, Action<FlashcardSet>, FlashcardViewModel>>(sp => (set, callback) => new FlashcardViewModel(set, callback));
             service.AddTransient<Func<Flashcard, Action<Flashcard>, Func<DictionaryWindow>, FlashcardViewModel>>(sp => (flashcard, callback, dictFactory) => new FlashcardViewModel(flashcard, callback, dictFactory));
@@ -215,12 +223,23 @@ namespace LaboratoryApp
                 return new EnglishMainPage { DataContext = vm };
             });
 
+            service.AddTransient<DiaryDetailWindow>();
+            service.AddTransient<DiaryManagerPage>(sp =>
+            {
+                var vm = sp.GetRequiredService<DiaryManagerViewModel>();
+                return new DiaryManagerPage { DataContext = vm };
+            });
+            service.AddTransient<AddDiaryWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<DiaryViewModel>();
+                return new AddDiaryWindow { DataContext = vm };
+            });
+
             service.AddTransient<DictionaryWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<DictionaryViewModel>();
                 return new DictionaryWindow { DataContext = vm };
             });
-
             service.AddTransient<Func<DictionaryWindow>>(sp =>
             {
                 return () => sp.GetRequiredService<DictionaryWindow>();
@@ -231,7 +250,6 @@ namespace LaboratoryApp
                 var vm = sp.GetRequiredService<FlashcardManagerViewModel>();
                 return new FlashcardManagerPage { DataContext = vm };
             });
-
             service.AddTransient<FlashcardStudyWindow>();
             service.AddTransient<AddFlashcardWindow>();
             service.AddTransient<UpdateFlashcardWindow>();

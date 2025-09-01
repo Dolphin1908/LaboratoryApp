@@ -1,19 +1,35 @@
-﻿using System;
+﻿using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
+using LaboratoryApp.src.Data.Providers;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using LaboratoryApp.src.Data.Providers;
-
 namespace LaboratoryApp.src.Services.English
 {
     public class EnglishService : IEnglishService
     {
         private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
+        private readonly string _mongoDbPath = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
 
+        #region DiaryMongoDB
+        public void AddDiary(DiaryContent diary)
+        {
+            using var db = new MongoDBProvider(_mongoDbPath, "english");
+            db.Insert("diaries", diary);
+        }
+        public List<DiaryContent> GetAllDiaries()
+        {
+            using var db = new MongoDBProvider(_mongoDbPath, "english");
+            return db.GetAll<DiaryContent>("diaries");
+        }
+        #endregion
+
+        #region DictionarySQLite
         public List<Word> GetAllWords()
         {
             using var db = new SQLiteDataProvider(_englishDbPath);
@@ -37,5 +53,6 @@ namespace LaboratoryApp.src.Services.English
             using var db = new SQLiteDataProvider(_englishDbPath);
             return db.ExecuteQuery<Definition>("SELECT * FROM Definitions");
         }
+        #endregion
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
-
 using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.Caches;
@@ -15,6 +15,8 @@ using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
+using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
+using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
 using LaboratoryApp.src.Services.English;
 using LaboratoryApp.src.Shared.Interface;
 
@@ -31,6 +33,8 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
         public ICommand OpenDictionaryCommand { get; set; } // Open Dictionary
         public ICommand NavigateToFlashcardManagerCommand { get; set; } // Navigate to Flashcard
         public ICommand NavigateToLectureCommand { get; set; } // Navigate to Lecture
+        public ICommand NavigateToDiaryCommand { get; set; } // Navigate to Diary UI
+        public ICommand NavigateBackCommand { get; set; } // Navigate back
         #endregion
 
         public EnglishMainPageViewModel(INavigationService navigationService,
@@ -48,12 +52,12 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
             {
                 // Open Dictionary Window
                 var window = _serviceProvider.GetRequiredService<DictionaryWindow>();
-                window.Show();
                 if (window.DataContext is DictionaryViewModel vm && vm is IAsyncInitializable init)
                 {
                     // Initialize the dictionary window asynchronously
                     _ = init.InitializeAsync();
                 }
+                window.Show();
             });
             NavigateToFlashcardManagerCommand = new RelayCommand<object>((p) => true, (p) =>
             {
@@ -66,6 +70,21 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
                 var page = _serviceProvider.GetRequiredService<LectureMainPage>();
                 _navigationService.NavigateTo(page);
             });
+            NavigateToDiaryCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                var page = _serviceProvider.GetRequiredService<DiaryManagerPage>();
+                _navigationService.NavigateTo(page);
+                if (page.DataContext is DiaryManagerViewModel vm && vm is IAsyncInitializable initPage)
+                {
+                    // Initialize the diary page asynchronously
+                    _ = initPage.InitializeAsync();
+                }
+            });
+            NavigateBackCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                // Navigate back to the previous page
+                _navigationService.NavigateBack();
+            });
         }
 
         public async Task InitializeAsync(CancellationToken cancellationToken = default)
@@ -75,6 +94,12 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
                 // Load any additional data or perform setup tasks here
                 _englishDataCache.LoadAllData(_englishService);
             }, cancellationToken);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                // Update UI elements if necessary after loading data
+                OnPropertyChanged(nameof(NavigateToDiaryCommand));
+            });
         }
     }
 }

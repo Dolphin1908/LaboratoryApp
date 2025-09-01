@@ -10,5 +10,6 @@ namespace LaboratoryApp.src.Shared.Interface
     public interface INavigationService
 	{
         void NavigateTo(Page page);
-	}
+        void NavigateBack();
+    }
 }

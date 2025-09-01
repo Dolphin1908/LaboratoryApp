@@ -3,7 +3,8 @@
                     xmlns:main="clr-namespace:LaboratoryApp.src.Modules.English.Common.ViewModels"
                     xmlns:dictionary="clr-namespace:LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels"
                     xmlns:flashcard="clr-namespace:LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels"
-                    xmlns:lecture="clr-namespace:LaboratoryApp.src.Modules.English.LectureFunction.ViewModels">
+                    xmlns:lecture="clr-namespace:LaboratoryApp.src.Modules.English.LectureFunction.ViewModels"
+                    xmlns:diary="clr-namespace:LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels">
     <!-- Main -->
     <main:EnglishMainPageViewModel x:Key="EnglishMainVM"></main:EnglishMainPageViewModel>
 
@@ -12,9 +13,13 @@
     
     <!-- Flashcard -->
     <flashcard:FlashcardViewModel x:Key="FlashcardVM"></flashcard:FlashcardViewModel>
+    <flashcard:FlashcardStudyViewModel x:Key="FlashcardStudyVM"></flashcard:FlashcardStudyViewModel>
     <flashcard:FlashcardManagerViewModel x:Key="FlashcardManagerVM"></flashcard:FlashcardManagerViewModel>
     
     <!-- Lecture -->
     <lecture:LectureMainPageViewModel x:Key="LectureMainVM"></lecture:LectureMainPageViewModel>
+    
+    <!-- Diary -->
+    <diary:DiaryManagerViewModel x:Key="DiaryManagerVM"></diary:DiaryManagerViewModel>
 
 </ResourceDictionary>

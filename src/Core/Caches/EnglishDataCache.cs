@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
 using LaboratoryApp.src.Services.English;
 
@@ -12,6 +13,8 @@ namespace LaboratoryApp.src.Core.Caches
     {
         private readonly object _lock = new();
         public bool IsLoaded { get; private set; } = false;
+
+        public List<DiaryContent> AllDiaries { get; set; } = new List<DiaryContent>();
 
         public List<Word> AllWords { get; set; } = new List<Word>();
         public List<Pos> AllPos { get; set; } = new List<Pos>();
@@ -25,6 +28,8 @@ namespace LaboratoryApp.src.Core.Caches
             lock (_lock)
             {
                 if (IsLoaded) return; // Double-check after acquiring the lock
+
+                AllDiaries = service.GetAllDiaries();
 
                 AllWords = service.GetAllWords();
                 AllPos = service.GetAllPos();

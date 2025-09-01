@@ -1,0 +1,143 @@
+﻿<Window x:Class="LaboratoryApp.src.Modules.English.DiaryFunction.Views.AddDiaryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaboratoryApp.src.Modules.English.DiaryFunction.Views"
+        xmlns:helpers="clr-namespace:LaboratoryApp.src.Core.Helpers"
+        xmlns:shared="clr-namespace:LaboratoryApp.src.Shared.UserControls"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="Thêm nhật ký mới"
+        MinHeight="450" 
+        MinWidth="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ToolBar Grid.Column="0">
+                <ListBox SelectedIndex="0">
+                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignLeft}" />
+                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignCenter}" />
+                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignRight}" />
+                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignJustify}" />
+                </ListBox>
+                <Separator />
+                <ListBox SelectionMode="Extended">
+                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatBold}" />
+                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatItalic}" />
+                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatUnderline}" />
+                </ListBox>
+                <Separator />
+                <Label VerticalAlignment="Center"
+                           Content="Font size:" />
+                <ComboBox ItemsSource="{Binding FontSizes}"
+                          Focusable="False"
+                          SelectedItem="{Binding SelectedFontSize, Mode=TwoWay}"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                          Width="40"/>
+                <Border BorderBrush="Gray"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        VerticalAlignment="Center"
+                        Height="25">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0">
+                        <StackPanel Width="20"
+                                    VerticalAlignment="Center"
+                                    Margin="0">
+                            <TextBlock Text="A"
+                                       FontSize="16"
+                                       FontFamily="Arial"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding }"
+                                       Margin="0,-2,0,0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+
+                            <Grid Background="{Binding SelectedColor, Converter={StaticResource ColorToBrushConverter}, Mode=TwoWay}"
+                                  Height="2"
+                                  Width="15"/>
+                        </StackPanel>
+                        <Button Background="Transparent"
+                                BorderBrush="Gray"
+                                BorderThickness="1,0,0,0"
+                                Focusable="False"
+                                Width="20" Height="25"
+                                Padding="0"
+                                HorizontalContentAlignment="Center"
+                                materialDesign:ButtonAssist.CornerRadius="0"
+                                Command="{Binding OpenFontColorCommand}">
+                            <materialDesign:PackIcon Kind="ChevronDown" 
+                                                     Width="15" Height="15"/>
+                        </Button>
+
+                        <Popup IsOpen="{Binding IsPopupOpen}">
+                            <shared:ColorPicker DataContext="{Binding .}"/>
+                        </Popup>
+                    </StackPanel>
+                </Border>
+            </ToolBar>
+            <Button Grid.Column="1"
+                    Width="100"
+                    Content="Done"
+                    Background="Cyan"
+                    Foreground="Black"
+                    BorderThickness="0"
+                    VerticalAlignment="Center"
+                    Margin="10,0"
+                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                    materialDesign:ButtonAssist.CornerRadius="15"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            <TextBox Width="250"
+                     Height="50"
+                     Text="{Binding Title}"
+                     FontSize="13"
+                     HorizontalAlignment="Left"
+                     Margin="10"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                     materialDesign:HintAssist.Hint="Tên nhật ký"/>
+
+            <ComboBox ItemsSource="{Binding Modes}"
+                      Focusable="False"
+                      SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                      Width="120"
+                      materialDesign:HintAssist.Hint="Chế độ hiển thị"
+                      Style="{StaticResource MaterialDesignOutlinedComboBox}"/>
+        </StackPanel>
+        
+        <RichTextBox Grid.Row="2"
+                     helpers:RichTextBoxBindingHelper.BindableDocument="{Binding BoundDocument, Mode=TwoWay}"
+                     helpers:RichTextBoxFormatHelper.Foreground="{Binding SelectedColor, Mode=TwoWay}"
+                     helpers:RichTextBoxFormatHelper.FontSize="{Binding SelectedFontSize, Mode=TwoWay}"
+                     AcceptsReturn="True" AcceptsTab="True"
+                     VerticalContentAlignment="Stretch"
+                     Padding="10"
+                     BorderBrush="Gray"
+                     BorderThickness="0,1,0,0"/>
+    </Grid>
+</Window>

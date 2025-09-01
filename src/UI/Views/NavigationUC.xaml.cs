@@ -24,5 +24,21 @@ namespace LaboratoryApp.src.UI.Views
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Không hiểu sao phải dùng sự kiện Loaded mới chỉnh font size của Hamburger Button được
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RootNavigation_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (RootNavigation.Template.FindName("PART_ToggleButton", RootNavigation) is Button toggleButton)
+            {
+                toggleButton.FontSize = 24;
+                toggleButton.FontWeight = FontWeights.ExtraBold;
+                toggleButton.Margin = new Thickness(9, 0, 0, 0);
+                toggleButton.Padding = new Thickness(0);
+            }    
+        }
     }
 }
