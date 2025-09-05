@@ -165,10 +165,17 @@
                     <ItemsControl ItemsSource="{Binding PrivateDiaries}"
                                   Margin="10"
                                   VerticalAlignment="Top">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button Background="Transparent"
-                                        BorderBrush="Black">
+                                        BorderBrush="Black"
+                                        Command="{Binding DataContext.OpenDiaryDetailCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding .}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding Title}"/>
                                     </StackPanel>

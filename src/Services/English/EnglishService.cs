@@ -27,6 +27,16 @@ namespace LaboratoryApp.src.Services.English
             using var db = new MongoDBProvider(_mongoDbPath, "english");
             return db.GetAll<DiaryContent>("diaries");
         }
+        public void UpdateDiary(DiaryContent diary)
+        {
+            using var db = new MongoDBProvider(_mongoDbPath, "english");
+            db.Update("diaries", diary.Id, diary);
+        }
+        public void DeleteDiary(long id)
+        {
+            using var db = new MongoDBProvider(_mongoDbPath, "english");
+            db.Delete<DiaryContent>("diaries", id);
+        }
         #endregion
 
         #region DictionarySQLite

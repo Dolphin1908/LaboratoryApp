@@ -127,8 +127,15 @@ namespace LaboratoryApp
             service.AddTransient<EnglishMainPageViewModel>();
 
             service.AddTransient<DiaryViewModel>();
+            service.AddTransient<Func<DiaryContent, DiaryViewModel>>(sp => (diary) => ActivatorUtilities.CreateInstance<DiaryViewModel>(sp, diary));
+            service.AddTransient<Func<IEnglishService, EnglishDataCache, DiaryContent, DiaryViewModel>>(sp => (service, cache, doc) => new DiaryViewModel(service, cache, doc));
             service.AddTransient<DiaryManagerViewModel>();
-            service.AddTransient<Func<IUserProvider,DiaryContent, DiaryDetailViewModel>>(sp => (service, diary) => new DiaryDetailViewModel(service, diary));
+            service.AddTransient<Func<IUserProvider, IServiceProvider, IEnglishService, EnglishDataCache, DiaryContent, DiaryDetailViewModel>>(sp => 
+            (userService, service, engService, engDataCache, diary) =>
+            {
+                var diaryVmFactory = sp.GetRequiredService<Func<DiaryContent, DiaryViewModel>>();
+                return new DiaryDetailViewModel(userService, service, engService, engDataCache, diary, diaryVmFactory);
+            });
 
             service.AddTransient<DictionaryViewModel>();
 
