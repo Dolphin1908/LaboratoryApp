@@ -25,19 +25,82 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
-            <TextBlock Text="{Binding DiaryContent.Title}"
-                       FontSize="32"
-                       FontWeight="Bold"
-                       Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding Author.Username}"
-                       FontSize="12"
-                       FontStyle="Italic"
-                       Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding DiaryContent.CreatedAt}"
-                       FontSize="12"
-                       FontStyle="Italic"/>
-        </StackPanel>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="{Binding DiaryContent.Title}"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Author.Username}"
+                           FontSize="14"
+                           FontStyle="Italic"
+                           Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding DiaryContent.CreatedAt}"
+                           FontSize="12"
+                           FontStyle="Italic"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="Cyan"
+                        BorderThickness="0"
+                        Width="80"
+                        Height="32"
+                        Margin="0,0,0,5"
+                        Visibility="{Binding IsAuthor, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        Command="{Binding EditCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <Grid VerticalAlignment="Center"
+                          HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0"
+                                                 Kind="Edit"
+                                                 Width="16"
+                                                 Height="16"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Sửa"
+                                   Margin="5,0,0,0"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="Red"
+                        BorderThickness="0"
+                        Width="80"
+                        Height="32"
+                        Margin="0,5,0,0"
+                        Visibility="{Binding IsAuthor, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        Command="{Binding DeleteCommand}">
+                    <Grid VerticalAlignment="Center"
+                          HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0"
+                                                 Kind="Delete"
+                                                 Width="16"
+                                                 Height="16"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Xóa"
+                                   Margin="5,0,0,0"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+            
+        </Grid>
 
         <Separator Grid.Row="1"
                    Margin="0,5"

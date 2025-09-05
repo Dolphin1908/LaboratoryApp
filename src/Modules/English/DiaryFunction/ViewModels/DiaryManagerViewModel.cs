@@ -28,7 +28,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         private ObservableCollection<DiaryContent> _publicDiaries;
         private ObservableCollection<DiaryContent> _privateDiaries;
 
-        private readonly Func<IUserProvider, DiaryContent, DiaryDetailViewModel> _diaryDetailvmFactory;
+        private readonly Func<IUserProvider, IServiceProvider, IEnglishService, EnglishDataCache, DiaryContent, DiaryDetailViewModel> _diaryDetailvmFactory;
 
         #region Properties
         public ObservableCollection<DiaryContent> PublicDiaries
@@ -46,6 +46,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             set
             {
                 _privateDiaries = value;
+                OnPropertyChanged(nameof(AuthenticationCache.IsAuthenticated));
                 OnPropertyChanged(nameof(PrivateDiaries));
             }
         }
@@ -60,7 +61,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                                      EnglishDataCache englishDataCache,
                                      IEnglishService englishService,
                                      IUserProvider userProvider,
-                                     Func<IUserProvider, DiaryContent, DiaryDetailViewModel> diaryDetailvmFactory)
+                                     Func<IUserProvider, IServiceProvider, IEnglishService, EnglishDataCache, DiaryContent, DiaryDetailViewModel> diaryDetailvmFactory)
         {
             _serviceProvider = serviceProvider;
             _englishDataCache = englishDataCache;
@@ -82,15 +83,18 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 window.ShowDialog();
 
                 PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "public").ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private").ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private" && d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             });
 
             OpenDiaryDetailCommand = new RelayCommand<object>((p) => p is DiaryContent, (p) =>
             {
                 var diary = p as DiaryContent;
                 var window = _serviceProvider.GetRequiredService<DiaryDetailWindow>();
-                window.DataContext = _diaryDetailvmFactory(_userProvider, diary);
+                window.DataContext = _diaryDetailvmFactory(_userProvider, _serviceProvider, _englishService, _englishDataCache, diary);
                 window.ShowDialog();
+
+                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "public").ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private" && d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             });
             #endregion
         }
@@ -102,7 +106,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 // Load any additional data or perform setup tasks here
                 _englishDataCache.LoadAllData(_englishService);
                 PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "public").ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private").ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private" && d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             }, cancellationToken);
         }
     }

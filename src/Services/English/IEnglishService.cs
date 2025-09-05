@@ -14,6 +14,8 @@ namespace LaboratoryApp.src.Services.English
         #region DiaryMongoDB
         public void AddDiary(DiaryContent diary);
         public List<DiaryContent> GetAllDiaries();
+        public void UpdateDiary(DiaryContent diary);
+        public void DeleteDiary(long id);
         #endregion
 
         #region DictionarySQLite

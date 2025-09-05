@@ -14,6 +14,7 @@ using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
 using LaboratoryApp.src.Services.English;
 
 namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
@@ -24,6 +25,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         private readonly EnglishDataCache _englishDataCache;
 
         private bool _isPopupOpen = false;
+        private bool _isEdit = false;
         private string _selectedColor = "#000000";
         private double _selectedFontSize = 12;
         private string _title;
@@ -40,6 +42,15 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             set
             {
                 _isPopupOpen = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsEdit
+        {
+            get { return _isEdit; }
+            set
+            {
+                _isEdit = value;
                 OnPropertyChanged();
             }
         }
@@ -96,6 +107,11 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         public ICommand SaveCommand { get; set; }
         #endregion
 
+        /// <summary>
+        /// Constructor for creating a new diary entry
+        /// </summary>
+        /// <param name="englishService"></param>
+        /// <param name="englishDataCache"></param>
         public DiaryViewModel(IEnglishService englishService,
                               EnglishDataCache englishDataCache)
         {
@@ -122,7 +138,54 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
             SaveCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                SaveDiary();
+                if (MessageBox.Show("Do you want to save changes?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    SaveDiary();
+
+                if (p is AddDiaryWindow window)
+                    window.Close();
+            });
+            #endregion
+        }
+
+        /// <summary>
+        /// Constructor for editing an existing diary entry
+        /// </summary>
+        /// <param name="englishService"></param>
+        /// <param name="englishDataCache"></param>
+        /// <param name="diaryContent"></param>
+        public DiaryViewModel(IEnglishService englishService,
+                              EnglishDataCache englishDataCache,
+                              DiaryContent diaryContent)
+        {
+            _englishService = englishService;
+            _englishDataCache = englishDataCache;
+
+            Modes = new ObservableCollection<string>() { "private", "public" };
+            FontSizes = new ObservableCollection<double>() { 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 };
+            SelectedFontSize = 12;
+
+            #region Commands
+            OpenFontColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                IsPopupOpen = !IsPopupOpen;
+            });
+
+            SelectColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                SelectedColor = p as string;
+                IsPopupOpen = !IsPopupOpen;
+            });
+
+            SaveCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                if (MessageBox.Show("Do you want to save changes?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    SaveChanges(diaryContent);
+
+                if (p is AddDiaryWindow window)
+                {
+                    window.DialogResult = true;
+                    window.Close();
+                }
             });
             #endregion
         }
@@ -132,13 +195,6 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             // Lưu nhật ký
             if (BoundDocument == null)
                 BoundDocument = new FlowDocument();
-
-            // Lấy plain text (đúng cách)
-            var textRange = new TextRange(BoundDocument.ContentStart, BoundDocument.ContentEnd);
-            string plainText = textRange.Text ?? string.Empty;
-
-            // Debug: show plain text ngắn (không show base64)
-            MessageBox.Show(string.IsNullOrWhiteSpace(plainText) ? "(Empty)" : plainText);
 
             byte[] data = FlowDocumentSerializer.SerializeToBytes(BoundDocument);
 
@@ -156,10 +212,42 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             {
                 _englishService.AddDiary(entry);
                 _englishDataCache.AllDiaries.Add(entry);
+                MessageBox.Show("Diary saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error saving diary: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void SaveChanges(DiaryContent diaryContent)
+        {
+            // Cập nhật nhật ký
+            if (BoundDocument == null)
+                BoundDocument = new FlowDocument();
+
+            // Chuyển FlowDocument thành byte array
+            byte[] data = FlowDocumentSerializer.SerializeToBytes(BoundDocument);
+
+            // Cập nhật các trường
+            diaryContent.Title = this.Title ?? "Untitled";
+            diaryContent.Mode = this.SelectedMode;
+            diaryContent.ContentBytes = data;
+            diaryContent.UpdatedAt = DateTime.UtcNow;
+
+            try
+            {
+                // Cập nhật trong database
+                _englishService.UpdateDiary(diaryContent);
+
+                // Cập nhật trong cache
+                var index = _englishDataCache.AllDiaries.FindIndex(d => d.Id == diaryContent.Id);
+                if (index >= 0) 
+                    _englishDataCache.AllDiaries[index] = diaryContent;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating diary: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
