@@ -88,7 +88,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\Core\Models\English\DiaryFunction\DTOs\" />
     <Folder Include="src\Core\Models\Physics\" />
     <Folder Include="src\Core\Models\Math\" />
     <Folder Include="resources\Components\JS\" />
@@ -100,6 +99,7 @@
     <Folder Include="src\Modules\Chemistry\ReactionFunction\Resources\" />
     <Folder Include="src\Modules\English\DiaryFunction\Resources\" />
     <Folder Include="src\Modules\English\DictionaryFunction\Resources\" />
+    <Folder Include="src\Modules\English\PracticeFunction\Resources\" />
     <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
     <Folder Include="src\Modules\English\LectureFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\English\Resources\" />

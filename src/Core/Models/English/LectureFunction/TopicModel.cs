@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LaboratoryApp.src.Core.Models.English.PracticeFunction;
+
 namespace LaboratoryApp.src.Core.Models.English.LectureFunction
 {
     public class TopicModel

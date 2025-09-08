@@ -47,6 +47,9 @@ namespace LaboratoryApp.src.Services.English.FlashcardFunction
             LoadData();
         }
 
+        /// <summary>
+        /// Load flashcard sets from the JSON file.
+        /// </summary>
         private void LoadData()
         {
             if (File.Exists(_jsonPath))

@@ -5,6 +5,10 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+
 using LaboratoryApp.src.Data.Providers;
 using LaboratoryApp.src.Data.Providers.Interfaces;
 using LaboratoryApp.src.Data.Providers.Authentication;
@@ -24,14 +28,16 @@ using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
 
 using LaboratoryApp.src.Modules.English.Common.Views;
 using LaboratoryApp.src.Modules.English.Common.ViewModels;
+using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
+using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
-using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
+using LaboratoryApp.src.Modules.English.PracticeFunction.Views;
+using LaboratoryApp.src.Modules.English.PracticeFunction.ViewModels;
 
 using LaboratoryApp.src.Modules.Maths.Common.Views;
 using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
@@ -47,15 +53,15 @@ using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
 
 using LaboratoryApp.src.UI.Views;
 using LaboratoryApp.src.UI.ViewModels;
-using LaboratoryApp.src.Shared;
-using LaboratoryApp.src.Shared.Interface;
-using LaboratoryApp.src.Services.English.FlashcardFunction;
+
+using LaboratoryApp.src.Services.AI;
 using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Services.English;
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+using LaboratoryApp.src.Services.English.FlashcardFunction;
+
+using LaboratoryApp.src.Shared;
+using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp
 {
@@ -81,13 +87,17 @@ namespace LaboratoryApp
             var service = new ServiceCollection();
 
             // Đăng ký các dịch vụ cần thiết
+            #region Services
             service.AddSingleton<INavigationService>(navigateService);
-            service.AddSingleton<IFlashcardService, FlashcardService>();
+            service.AddSingleton<IAIService, AIService>();
             service.AddTransient<IAuthenticationService, AuthenticationService>();
             service.AddSingleton<IChemistryService, ChemistryService>();
+            service.AddSingleton<IFlashcardService, FlashcardService>();
             service.AddSingleton<IEnglishService, EnglishService>();
+            #endregion
 
             // Đăng ký các providers
+            #region Providers
             service.AddSingleton<IMongoDBProvider>(sp =>
             {
                 var conn = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
@@ -96,10 +106,13 @@ namespace LaboratoryApp
             service.AddSingleton<IUserProvider>(sp => new UserProvider(sp.GetRequiredService<IMongoDBProvider>()));
             service.AddSingleton<IRoleProvider>(sp => new RoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
             service.AddSingleton<IRefreshTokenProvider>(sp => new RefreshTokenProvider(sp.GetRequiredService<IMongoDBProvider>()));
+            #endregion
 
             // Đăng ký các caches
+            #region Caches
             service.AddSingleton<ChemistryDataCache>();
             service.AddSingleton<EnglishDataCache>();
+            #endregion
 
             // Đăng ký các ViewModels theo modules
             #region UI
@@ -128,7 +141,6 @@ namespace LaboratoryApp
 
             service.AddTransient<DiaryViewModel>();
             service.AddTransient<Func<DiaryContent, DiaryViewModel>>(sp => (diary) => ActivatorUtilities.CreateInstance<DiaryViewModel>(sp, diary));
-            service.AddTransient<Func<IEnglishService, EnglishDataCache, DiaryContent, DiaryViewModel>>(sp => (service, cache, doc) => new DiaryViewModel(service, cache, doc));
             service.AddTransient<DiaryManagerViewModel>();
             service.AddTransient<Func<IUserProvider, IServiceProvider, IEnglishService, EnglishDataCache, DiaryContent, DiaryDetailViewModel>>(sp => 
             (userService, service, engService, engDataCache, diary) =>
@@ -150,6 +162,8 @@ namespace LaboratoryApp
 
             service.AddTransient<LectureMainPageViewModel>();
             service.AddTransient<LectureContentViewModel>();
+
+            service.AddTransient<PracticeManagerViewModel>();
             #endregion
 
             #region Maths
@@ -236,10 +250,10 @@ namespace LaboratoryApp
                 var vm = sp.GetRequiredService<DiaryManagerViewModel>();
                 return new DiaryManagerPage { DataContext = vm };
             });
-            service.AddTransient<AddDiaryWindow>(sp =>
+            service.AddTransient<DiaryWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<DiaryViewModel>();
-                return new AddDiaryWindow { DataContext = vm };
+                return new DiaryWindow { DataContext = vm };
             });
 
             service.AddTransient<DictionaryWindow>(sp =>
@@ -266,6 +280,12 @@ namespace LaboratoryApp
             {
                 var vm = sp.GetRequiredService<LectureMainPageViewModel>();
                 return new LectureMainPage { DataContext = vm };
+            });
+
+            service.AddTransient<PracticeManagerPage>(sp =>
+            {
+                var vm = sp.GetRequiredService<PracticeManagerViewModel>();
+                return new PracticeManagerPage { DataContext = vm };
             });
             #endregion
 

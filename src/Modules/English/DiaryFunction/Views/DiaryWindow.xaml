@@ -1,4 +1,4 @@
-﻿<Window x:Class="LaboratoryApp.src.Modules.English.DiaryFunction.Views.AddDiaryWindow"
+﻿<Window x:Class="LaboratoryApp.src.Modules.English.DiaryFunction.Views.DiaryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,8 +17,8 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Title="Thêm nhật ký mới"
-        MinHeight="450" 
-        MinWidth="800">
+        MinHeight="450" Height="450" 
+        MinWidth="800" Width="800">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -34,18 +34,40 @@
             </Grid.ColumnDefinitions>
 
             <ToolBar Grid.Column="0">
-                <ListBox SelectedIndex="0">
-                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignLeft}" />
-                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignCenter}" />
-                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignRight}" />
-                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatAlignJustify}" />
-                </ListBox>
-                <Separator />
-                <ListBox SelectionMode="Extended">
-                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatBold}" />
-                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatItalic}" />
-                    <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatUnderline}" />
-                </ListBox>
+                <StackPanel Orientation="Horizontal">
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Margin="5"
+                            Padding="5"
+                            Command="{Binding SelectAlignCommand}"
+                            CommandParameter="Left">
+                        <materialDesign:PackIcon Kind="FormatAlignLeft"/>
+                    </Button>
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Margin="5"
+                            Padding="5"
+                            Command="{Binding SelectAlignCommand}"
+                            CommandParameter="Center">
+                        <materialDesign:PackIcon Kind="FormatAlignCenter"/>
+                    </Button>
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Margin="5"
+                            Padding="5"
+                            Command="{Binding SelectAlignCommand}"
+                            CommandParameter="Right">
+                        <materialDesign:PackIcon Kind="FormatAlignRight"/>
+                    </Button>
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Margin="5"
+                            Padding="5"
+                            Command="{Binding SelectAlignCommand}"
+                            CommandParameter="Justify">
+                        <materialDesign:PackIcon Kind="FormatAlignJustify"/>
+                    </Button>
+                </StackPanel>
                 <Separator />
                 <Label VerticalAlignment="Center"
                            Content="Font size:" />
@@ -121,19 +143,74 @@
                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                      materialDesign:HintAssist.Hint="Tên nhật ký"/>
 
-            <ComboBox ItemsSource="{Binding Modes}"
-                      Focusable="False"
-                      SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                      Width="120"
-                      materialDesign:HintAssist.Hint="Chế độ hiển thị"
-                      Style="{StaticResource MaterialDesignOutlinedComboBox}"/>
+            <CheckBox Focusable="False"
+                      Content="Công khai"
+                      IsChecked="{Binding IsPublic, Mode=TwoWay}"
+                      Width="Auto"/>
+
+            <Button Width="120"
+                    Height="50"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Background="Cyan"
+                    BorderThickness="0"
+                    Margin="10"
+                    materialDesign:ButtonAssist.CornerRadius="15"
+                    Command="{Binding EditWithAICommand}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:PackIcon Kind="Robot"
+                                             Grid.Column="0"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="0,0,5,0" 
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1"
+                               Text="Gợi ý từ AI" 
+                               FontSize="13"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </Button>
+
+            <Button Width="120"
+                    Height="50"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Background="Cyan"
+                    BorderThickness="0"
+                    materialDesign:ButtonAssist.CornerRadius="15"
+                    Command="{Binding OpenDictionaryCommand}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:PackIcon Kind="Magnify"
+                                             Grid.Column="0"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="0,0,5,0" 
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1"
+                               Text="Từ điển" 
+                               FontSize="13"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </Button>
         </StackPanel>
         
         <RichTextBox Grid.Row="2"
                      helpers:RichTextBoxBindingHelper.BindableDocument="{Binding BoundDocument, Mode=TwoWay}"
                      helpers:RichTextBoxFormatHelper.Foreground="{Binding SelectedColor, Mode=TwoWay}"
                      helpers:RichTextBoxFormatHelper.FontSize="{Binding SelectedFontSize, Mode=TwoWay}"
+                     helpers:RichTextBoxFormatHelper.Align="{Binding SelectedAlignment, Mode=TwoWay}"
                      AcceptsReturn="True" AcceptsTab="True"
                      VerticalContentAlignment="Stretch"
                      Padding="10"

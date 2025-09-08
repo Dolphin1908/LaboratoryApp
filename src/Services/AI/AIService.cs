@@ -7,26 +7,32 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using LaboratoryApp.src.Core.Models.English.DictionaryFunction.DTOs;
 using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+using System.Windows.Documents;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction.DTOs;
 
 namespace LaboratoryApp.src.Services.AI
 {
-    public class AIService
+    public class AIService : IAIService
     {
         private readonly HttpClient _httpClient;
-
-        private readonly string _apiKey = ConfigurationManager.AppSettings["GeminiApiKey"];
+        private readonly string _decrypted;
+        private readonly string _endpoint;
 
         public AIService()
         {
             _httpClient = new HttpClient();
+
+            var encryptedApiKey = ConfigurationManager.AppSettings["GeminiApiKey"];
+            _decrypted = !string.IsNullOrEmpty(encryptedApiKey)
+                ? SecureConfigHelper.Decrypt(encryptedApiKey)
+                : string.Empty;
+
+            _endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={_decrypted}";
         }
 
         public async Task<WordResultDTO> SearchWordWithAIAsync(string word)
         {
-            var decrypted = SecureConfigHelper.Decrypt(_apiKey);
-
-            var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={decrypted}";
-
             var prompt = @$"
 Given the English word: \""{word}\"".
 
@@ -123,7 +129,7 @@ Please replace the values accordingly and do not include any explanation or code
             var jsonBody = JsonConvert.SerializeObject(requestBody); // Chuyển đổi đối tượng thành chuỗi JSON
             var content = new StringContent(jsonBody, Encoding.UTF8, "application/json"); // Chuyển đổi đối tượng thành chuỗi JSON và tạo nội dung yêu cầu
 
-            var response = await _httpClient.PostAsync(endpoint, content); // Gửi yêu cầu POST đến API
+            var response = await _httpClient.PostAsync(_endpoint, content); // Gửi yêu cầu POST đến API
             if (!response.IsSuccessStatusCode) return null; // Kiểm tra mã trạng thái phản hồi
 
             var responseContent = await response.Content.ReadAsStringAsync(); // Đọc nội dung phản hồi
@@ -152,5 +158,79 @@ Please replace the values accordingly and do not include any explanation or code
             }
         }
 
+        public async Task<DiaryResultDTO> EditDiaryWithAIAsync(string title, string body)
+        {
+            var prompt = @$"
+You are a diary assistant.  
+The user will provide a diary entry with a title and a body.  
+
+Your job:
+- Correct grammar and spelling.
+- Keep the style natural and personal.
+- Do not change the meaning or emotions.
+
+Return ONLY a single JSON object (no explanation, no code block, no extra text), with this exact structure:
+
+{{
+  ""title"": ""Corrected title here"",
+  ""content"": ""Corrected body here""
+}}
+
+Requirements:
+- Output must be raw JSON only.
+- No markdown, no explanation, no extra formatting.
+
+User entry:
+{{
+""title"": ""{title}"",
+""content"": ""{body}"",
+}}
+";
+
+            var requestBody = new
+            {
+                contents = new[]
+                {
+                    new
+                    {
+                        parts = new[]
+                        {
+                            new { text = prompt }
+                        }
+                    }
+                }
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(requestBody); // Chuyển đổi đối tượng thành chuỗi JSON
+            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json"); // Chuyển đổi đối tượng thành chuỗi JSON và tạo nội dung yêu cầu
+
+            var response = await _httpClient.PostAsync(_endpoint, content); // Gửi yêu cầu POST đến API
+            if (!response.IsSuccessStatusCode) return null; // Kiểm tra mã trạng thái phản hồi
+
+            var responseContent = await response.Content.ReadAsStringAsync(); // Đọc nội dung phản hồi
+
+            var jsonObject = JObject.Parse(responseContent); // Chuyển đổi chuỗi JSON thành JObject
+            var jsonString = jsonObject["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString(); // Lấy giá trị của trường "text" trong JSON
+
+            if (string.IsNullOrEmpty(jsonString)) return null; // Kiểm tra nếu jsonString là null hoặc rỗng
+
+            // Xử lý nếu bị bọc trong ```json hoặc ```
+            if (jsonString.Trim().StartsWith("```"))
+            {
+                jsonString = jsonString.Replace("```json", "")
+                                       .Replace("```", "")
+                                       .Trim();
+            }
+
+            try
+            {
+                var result = JsonConvert.DeserializeObject<DiaryResultDTO>(jsonString); // Chuyển đổi chuỗi JSON thành đối tượng DiaryContent
+                return result;
+            }
+            catch (JsonException ex)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace LaboratoryApp.src.Core.Models.English.DiaryFunction
         #region DiaryInfo
         public long Id { get; set; }
         public string Title { get; set; }
-        public string Mode { get; set; }
+        public bool IsPublic { get; set; } = false;
 
         // Lưu nội dung FlowDocument dạng base64 string
         public byte[] ContentBytes { get; set; } = Array.Empty<byte>();

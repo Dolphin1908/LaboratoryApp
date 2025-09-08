@@ -102,10 +102,10 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
                 vm.IsEdit = true;
                 vm.Title = _diaryContent.Title;
-                vm.SelectedMode = _diaryContent.Mode;
+                vm.IsPublic = _diaryContent.IsPublic;
                 vm.BoundDocument = FlowDocumentSerializer.DeserializeFromBytes(_diaryContent.ContentBytes) ?? new FlowDocument();
 
-                var window = new AddDiaryWindow
+                var window = new DiaryWindow
                 {
                     DataContext = vm
                 };
