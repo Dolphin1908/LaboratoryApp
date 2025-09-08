@@ -17,9 +17,9 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.Views
     /// <summary>
     /// Interaction logic for AddDiaryWindow.xaml
     /// </summary>
-    public partial class AddDiaryWindow : Window
+    public partial class DiaryWindow : Window
     {
-        public AddDiaryWindow()
+        public DiaryWindow()
         {
             InitializeComponent();
         }

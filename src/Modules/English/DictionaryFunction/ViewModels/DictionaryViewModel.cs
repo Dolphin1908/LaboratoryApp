@@ -45,7 +45,7 @@ namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
         // Speech synthesizer for text-to-speech functionality
         private SpeechSynthesizer _synthesizer;
         // AI service for searching words with AI
-        private AIService _aiService;
+        private IAIService _aiService;
 
         #region Commands
         public ICommand SelectResultCommand { get; set; }
@@ -111,9 +111,11 @@ namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
         }
         #endregion
 
-        public DictionaryViewModel(IEnglishService englishService,
+        public DictionaryViewModel(IAIService aiService,
+                                   IEnglishService englishService,
                                    EnglishDataCache englishDataCache)
         {
+            _aiService = aiService;
             _englishService = englishService;
             _englishDataCache = englishDataCache;
 
@@ -129,7 +131,6 @@ namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
 
             // Initialize commands and properties here if needed
             _dictionarySearchResultDTOs = new ObservableCollection<DictionarySearchResultDTO>();
-            _aiService = new AIService();
 
             SelectResultCommand = new RelayCommand<DictionarySearchResultDTO>((p) => p != null, (p) => SelectResult(p));
             SpeechTextCommand = new RelayCommand<string>((p) => !string.IsNullOrWhiteSpace(p) && _synthesizer != null, (p) =>

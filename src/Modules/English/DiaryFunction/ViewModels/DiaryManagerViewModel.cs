@@ -1,20 +1,22 @@
-﻿using System;
+﻿using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
+using LaboratoryApp.src.Services.English;
+using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections.ObjectModel;
-
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
-using LaboratoryApp.src.Services.English;
-using LaboratoryApp.src.Shared.Interface;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 
 namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 {
@@ -46,7 +48,6 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             set
             {
                 _privateDiaries = value;
-                OnPropertyChanged(nameof(AuthenticationCache.IsAuthenticated));
                 OnPropertyChanged(nameof(PrivateDiaries));
             }
         }
@@ -70,6 +71,8 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
             _diaryDetailvmFactory = diaryDetailvmFactory;
 
+            AuthenticationCache.CurrentUserChanged += OnUserChanged;
+
             #region Commands
             AddDiaryCommand = new RelayCommand<object>((p) => true, (p) =>
             {
@@ -79,35 +82,57 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                     MessageBox.Show("Vui lòng đăng nhập để có thể viết nhật ký mới", "Yêu cầu đăng nhập", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-                var window = _serviceProvider.GetRequiredService<AddDiaryWindow>();
+                var window = _serviceProvider.GetRequiredService<DiaryWindow>();
                 window.ShowDialog();
 
-                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "public").ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private" && d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             });
 
             OpenDiaryDetailCommand = new RelayCommand<object>((p) => p is DiaryContent, (p) =>
             {
                 var diary = p as DiaryContent;
                 var window = _serviceProvider.GetRequiredService<DiaryDetailWindow>();
+
                 window.DataContext = _diaryDetailvmFactory(_userProvider, _serviceProvider, _englishService, _englishDataCache, diary);
                 window.ShowDialog();
 
-                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "public").ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private" && d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             });
             #endregion
         }
 
+        /// <summary>
+        /// Khởi tạo ViewModel bất đồng bộ
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task InitializeAsync(CancellationToken cancellationToken = default)
         {
             await Task.Run(() =>
             {
                 // Load any additional data or perform setup tasks here
                 _englishDataCache.LoadAllData(_englishService);
-                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "public").ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.Mode == "private" && d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             }, cancellationToken);
+        }
+
+        /// <summary>
+        /// Xử lý khi người dùng đăng nhập hoặc đăng xuất
+        /// </summary>
+        /// <param name="user"></param>
+        private void OnUserChanged(User? user)
+        {
+            // Refresh when login state changes
+            PublicDiaries = new ObservableCollection<DiaryContent>(
+                _englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList()
+            );
+
+            PrivateDiaries = new ObservableCollection<DiaryContent>(
+                _englishDataCache.AllDiaries.Where(d => d.UserId == (user?.Id ?? 0)).ToList()
+            );
         }
     }
 }

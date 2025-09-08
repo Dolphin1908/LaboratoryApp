@@ -9,10 +9,39 @@ namespace LaboratoryApp.src.Core.Caches
 {
     public static class AuthenticationCache
     {
-        public static User? CurrentUser { get; private set; }
-        public static string? AccessToken { get; private set; }
-        public static string? RefreshToken { get; private set; }
-        public static bool IsAuthenticated => CurrentUser != null && !string.IsNullOrEmpty(AccessToken) && !string.IsNullOrEmpty(RefreshToken);
+        private static User? _currentUser;
+        private static string? _accessToken;
+        private static string? _refreshToken;
+
+        public static event Action<User?>? CurrentUserChanged;
+
+        public static User? CurrentUser
+        {
+            get => _currentUser;
+            private set
+            {
+                if (_currentUser != value)
+                {
+                    _currentUser = value;
+                    CurrentUserChanged?.Invoke(_currentUser);
+                }
+            }
+        }
+        public static string? AccessToken
+        {
+            get => _accessToken;
+            private set => _accessToken = value;
+        }
+        public static string? RefreshToken
+        {
+            get => _refreshToken;
+            private set => _refreshToken = value;
+        }
+
+        public static bool IsAuthenticated => 
+            CurrentUser != null && 
+            !string.IsNullOrEmpty(AccessToken) && 
+            !string.IsNullOrEmpty(RefreshToken);
 
         public static void Set(User user, string accessToken, string refreshToken)
         {

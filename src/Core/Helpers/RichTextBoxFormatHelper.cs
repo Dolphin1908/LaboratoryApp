@@ -52,5 +52,50 @@ namespace LaboratoryApp.src.Core.Helpers
         }
         #endregion
 
+        #region Align
+        public static readonly DependencyProperty AlignProperty =
+            DependencyProperty.RegisterAttached(
+                "Align",
+                typeof(TextAlignment),
+                typeof(RichTextBoxFormatHelper),
+                new FrameworkPropertyMetadata(TextAlignment.Left, FrameworkPropertyMetadataOptions.Inherits, OnAlignChanged));
+
+        public static TextAlignment GetAlign(DependencyObject obj) => (TextAlignment)obj.GetValue(AlignProperty);
+        public static void SetAlign(DependencyObject obj, TextAlignment value) => obj.SetValue(AlignProperty, value);
+
+        private static void OnAlignChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is RichTextBox rtb && e.NewValue is TextAlignment alignment)
+            {
+                var start = rtb.Selection.Start;
+                var end = rtb.Selection.End;
+
+                // Move through all paragraphs in the selection range
+                var pointer = start;
+                while (pointer != null && pointer.CompareTo(end) <= 0)
+                {
+                    var paragraph = pointer.Paragraph;
+                    if (paragraph != null)
+                    {
+                        paragraph.TextAlignment = alignment;
+                        // Jump to the end of the paragraph to avoid looping infinitely
+                        pointer = paragraph.ContentEnd.GetNextInsertionPosition(LogicalDirection.Forward);
+                    }
+                    else
+                    {
+                        pointer = pointer.GetNextInsertionPosition(LogicalDirection.Forward);
+                    }
+                }
+            }
+            //if (d is RichTextBox rtb && e.NewValue is TextAlignment alignment)
+            //{
+            //    var paragraph = rtb.Selection.Start.Paragraph;
+            //    if (paragraph != null)
+            //    {
+            //        paragraph.TextAlignment = alignment;
+            //    }
+            //}
+        }
+        #endregion
     }
 }

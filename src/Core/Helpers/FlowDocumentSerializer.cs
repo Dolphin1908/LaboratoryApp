@@ -6,11 +6,44 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LaboratoryApp.src.Core.Helpers
 {
     public static class FlowDocumentSerializer
     {
+        /// <summary>
+        /// Lưu FlowDocument thành chuỗi thường
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public static string SerializeToString(FlowDocument document)
+        {
+            // Do nothing
+            return "nothing";
+        }
+
+        /// <summary>
+        /// Tạo FlowDocument từ chuỗi thường
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static FlowDocument DeserializeFromString (string str)
+        {
+            var doc = new FlowDocument();
+            if (string.IsNullOrEmpty(str)) return doc;
+            try
+            {
+                doc.Blocks.Add(new Paragraph(new Run(str)));
+                return doc;
+            }
+            catch
+            {
+                // Nếu giải mã thất bại, trả về FlowDocument trống
+                return new FlowDocument();
+            }
+        }
+
         /// <summary>
         /// Lưu FlowDocument thành chuỗi Base64
         /// </summary>

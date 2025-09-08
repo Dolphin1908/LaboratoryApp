@@ -40,94 +40,109 @@ namespace LaboratoryApp.src.Services.Authentication
 
         public async Task RegisterAsync(string username, string password, string confirmPassword, string email, string phoneNumber)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) ||
+            try
+            {
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) ||
                 string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(phoneNumber))
+                {
+                    MessageBox.Show("All fields are required");
+                    return;
+                }
+
+                if (password != confirmPassword)
+                {
+                    MessageBox.Show("Passwords do not match");
+                    return;
+                }
+
+                var existingUser = await _userProvider.GetByUsernameAsync(username);
+                if (existingUser != null)
+                {
+                    MessageBox.Show("Username already exists");
+                    return;
+                }
+
+                var userId = _userProvider.GetAllUsers().Count > 0
+                    ? _userProvider.GetAllUsers().Max(u => u.Id) + 1
+                    : 1;
+                var user = new User
+                {
+                    Id = userId,
+                    Username = username,
+                    Email = email,
+                    PhoneNumber = phoneNumber,
+                    Password = SecureConfigHelper.Encrypt(password),
+                };
+
+                AddUser(user);
+
+                var userRole = new UserRole
+                {
+                    User = user,
+                    Role = _roleProvider.GetRoleById(1),
+                    IsActive = true,
+                };
+
+                AddUserRole(userRole);
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("All fields are required");
+                MessageBox.Show($"Error: {ex.Message}");
                 return;
             }
-
-            if (password != confirmPassword)
-            {
-                MessageBox.Show("Passwords do not match");
-                return;
-            }
-
-            var existingUser = await _userProvider.GetByUsernameAsync(username);
-            if (existingUser != null)
-            {
-                MessageBox.Show("Username already exists");
-                return;
-            }
-
-            var userId = _userProvider.GetAllUsers().Count > 0
-                ? _userProvider.GetAllUsers().Max(u => u.Id) + 1
-                : 1;
-            var user = new User
-            {
-                Id = userId,
-                Username = username,
-                Email = email,
-                PhoneNumber = phoneNumber,
-                Password = SecureConfigHelper.Encrypt(password),
-            };
-
-            AddUser(user);
-
-            var userRole = new UserRole
-            {
-                User = user,
-                Role = _roleProvider.GetRoleById(1),
-                IsActive = true,
-            };
-
-            AddUserRole(userRole);
         }
 
         public async Task<AuthenticationResponseDTO?> LoginAsync(string username, string password)
         {
-            var user = await _userProvider.GetByUsernameAsync(username);
-            if (user == null || SecureConfigHelper.Encrypt(password) != user.Password)
-                return null;
-
-            var (access, expires) = JwtTokenHelper.GenerateToken(user);
-
-            var refresh = new RefreshToken();
-            var existingToken = await _refreshTokenProvider.GetLatestByUserIdAsync(user.Id);
-
-            if (existingToken != null && existingToken.ExpiresAt > DateTime.UtcNow && existingToken.RevokedAt == null)
+            try
             {
-                refresh = existingToken;
-            }
-            else
-            {
-                refresh = GenerateRefreshToken(user);
-                refresh.Id = _refreshTokenProvider.GetNextId();
+                var user = await _userProvider.GetByUsernameAsync(username);
+                if (user == null || SecureConfigHelper.Encrypt(password) != user.Password)
+                    return null;
 
-                if (existingToken != null)
+                var (access, expires) = JwtTokenHelper.GenerateToken(user);
+
+                var refresh = new RefreshToken();
+                var existingToken = await _refreshTokenProvider.GetLatestByUserIdAsync(user.Id);
+
+                if (existingToken != null && existingToken.ExpiresAt > DateTime.UtcNow && existingToken.RevokedAt == null)
                 {
-                    existingToken.RevokedAt = DateTime.UtcNow;
-                    existingToken.ReplacedBy = refresh.Token;
-                    await _refreshTokenProvider.UpdateAsync(existingToken);
+                    refresh = existingToken;
+                }
+                else
+                {
+                    refresh = GenerateRefreshToken(user);
+                    refresh.Id = _refreshTokenProvider.GetNextId();
+
+                    if (existingToken != null)
+                    {
+                        existingToken.RevokedAt = DateTime.UtcNow;
+                        existingToken.ReplacedBy = refresh.Token;
+                        await _refreshTokenProvider.UpdateAsync(existingToken);
+                    }
+
+                    await _refreshTokenProvider.CreateAsync(refresh);
                 }
 
-                await _refreshTokenProvider.CreateAsync(refresh);
+                //var refresh = GenerateRefreshToken(user);
+                //await _refreshTokenProvider.CreateAsync(refresh);
+
+                AuthenticationCache.Set(user, access, refresh.Token);
+
+                return new AuthenticationResponseDTO
+                {
+                    User = user,
+                    AccessToken = access,
+                    RefreshToken = refresh.Token,
+                    ExpiresAt = expires,
+                };
             }
-
-            //var refresh = GenerateRefreshToken(user);
-            //await _refreshTokenProvider.CreateAsync(refresh);
-
-            AuthenticationCache.Set(user, access, refresh.Token);
-
-            return new AuthenticationResponseDTO
+            catch (Exception ex)
             {
-                User = user,
-                AccessToken = access,
-                RefreshToken = refresh.Token,
-                ExpiresAt = expires,
-            };
-
+                MessageBox.Show($"Error: {ex.Message}");
+                return null;
+            }
         }
 
         private RefreshToken GenerateRefreshToken(User user)
@@ -142,7 +157,18 @@ namespace LaboratoryApp.src.Services.Authentication
             };
         }
 
-        private void AddUser(User user) => _db.Insert("users", user);
+        private void AddUser(User user)
+        {
+            try
+            {
+                _db.Insert("users", user);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding user: {ex.Message}");
+                return;
+            }
+        }
 
         private void AddUserRole(UserRole userRole) => _db.Insert("userRoles", userRole);
     }

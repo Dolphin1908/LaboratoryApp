@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace LaboratoryApp.src.Services.English
 {
@@ -17,25 +18,76 @@ namespace LaboratoryApp.src.Services.English
         private readonly string _mongoDbPath = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
 
         #region DiaryMongoDB
+        /// <summary>
+        /// Add a new diary entry to the MongoDB database.
+        /// </summary>
+        /// <param name="diary"></param>
         public void AddDiary(DiaryContent diary)
         {
-            using var db = new MongoDBProvider(_mongoDbPath, "english");
-            db.Insert("diaries", diary);
+            try
+            {
+                using var db = new MongoDBProvider(_mongoDbPath, "english");
+                db.Insert("diaries", diary);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while adding a diary entry: {ex.Message}");
+                return;
+            }
         }
+
+        /// <summary>
+        /// Get all diary entries from the MongoDB database.
+        /// </summary>
+        /// <returns></returns>
         public List<DiaryContent> GetAllDiaries()
         {
-            using var db = new MongoDBProvider(_mongoDbPath, "english");
-            return db.GetAll<DiaryContent>("diaries");
+            try
+            {
+                using var db = new MongoDBProvider(_mongoDbPath, "english");
+                return db.GetAll<DiaryContent>("diaries");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching diary entries: {ex.Message}");
+                return new List<DiaryContent>();
+            }
         }
+
+        /// <summary>
+        /// Update an existing diary entry.
+        /// </summary>
+        /// <param name="diary"></param>
         public void UpdateDiary(DiaryContent diary)
         {
-            using var db = new MongoDBProvider(_mongoDbPath, "english");
-            db.Update("diaries", diary.Id, diary);
+            try
+            {
+                using var db = new MongoDBProvider(_mongoDbPath, "english");
+                db.Update("diaries", diary.Id, diary);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while updating the diary entry: {ex.Message}");
+                return;
+            }
         }
+
+        /// <summary>
+        /// Delete a diary entry by its ID.
+        /// </summary>
+        /// <param name="id"></param>
         public void DeleteDiary(long id)
         {
-            using var db = new MongoDBProvider(_mongoDbPath, "english");
-            db.Delete<DiaryContent>("diaries", id);
+            try
+            {
+                using var db = new MongoDBProvider(_mongoDbPath, "english");
+                db.Delete<DiaryContent>("diaries", id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while deleting the diary entry: {ex.Message}");
+                return;
+            }
         }
         #endregion
 

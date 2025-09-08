@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LaboratoryApp.src.Core.Models.English.LectureFunction.Enums;
 
-namespace LaboratoryApp.src.Core.Models.English.LectureFunction
+using LaboratoryApp.src.Core.Models.English.PracticeFunction.Enums;
+
+namespace LaboratoryApp.src.Core.Models.English.PracticeFunction
 {
     public class ExerciseModel
     {
