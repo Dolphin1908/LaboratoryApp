@@ -1,13 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:chemistry="clr-namespace:LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels">
-    <!-- Chemistry -->
-    <chemistry:CompoundViewModel x:Key="CompoundVM"></chemistry:CompoundViewModel>
-    <chemistry:CompoundNoteViewModel x:Key="CompoundNoteVM"></chemistry:CompoundNoteViewModel>
-    <chemistry:ReactionNoteViewModel x:Key="ReactionNoteVM"></chemistry:ReactionNoteViewModel>
-    <chemistry:ReactionViewModel x:Key="ReactionVM"></chemistry:ReactionViewModel>
-    <chemistry:ReactionComponentViewModel x:Key="ReactionComponentVM"></chemistry:ReactionComponentViewModel>
+                    xmlns:compound="clr-namespace:LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels"
+                    xmlns:reaction="clr-namespace:LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels">
+    <!-- Compound -->
+    <compound:CompoundViewModel x:Key="CompoundVM"></compound:CompoundViewModel>
+    <compound:CompoundNoteViewModel x:Key="CompoundNoteVM"></compound:CompoundNoteViewModel>
 
-
+    <!-- Reaction -->
+    <reaction:ReactionNoteViewModel x:Key="ReactionNoteVM"></reaction:ReactionNoteViewModel>
+    <reaction:ReactionViewModel x:Key="ReactionVM"></reaction:ReactionViewModel>
+    <reaction:ReactionComponentViewModel x:Key="ReactionComponentVM"></reaction:ReactionComponentViewModel>
 
 </ResourceDictionary>

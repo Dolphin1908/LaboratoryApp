@@ -102,10 +102,11 @@
     <Folder Include="src\Modules\English\PracticeFunction\Resources\" />
     <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
     <Folder Include="src\Modules\English\LectureFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\English\Resources\" />
-    <Folder Include="src\Modules\Teacher\English\ViewModels\" />
-    <Folder Include="src\Modules\Teacher\English\Views\" />
-    <Folder Include="src\Modules\Teacher\Chemistry\Resources\" />
+    <Folder Include="src\Modules\Teacher\Chemistry\CompoundFunction\Resources\" />
+    <Folder Include="src\Modules\Teacher\Chemistry\ReactionFunction\Resources\" />
+    <Folder Include="src\Modules\Teacher\English\PracticeFunction\Resources\" />
+    <Folder Include="src\Modules\Teacher\English\PracticeFunction\ViewModels\" />
+    <Folder Include="src\Modules\Teacher\English\PracticeFunction\Views\" />
     <Folder Include="src\Modules\Teacher\Common\ViewModels\" />
     <Folder Include="src\Modules\Teacher\Common\Views\" />
     <Folder Include="src\Modules\Toolkits\CalculatorFunction\Resources\" />

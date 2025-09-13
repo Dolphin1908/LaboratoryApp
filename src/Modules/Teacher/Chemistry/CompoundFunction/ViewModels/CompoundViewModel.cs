@@ -9,16 +9,19 @@ using System.Windows.Input;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+using LaboratoryApp.src.Core.ViewModels;
+
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
+
 using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
-using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Shared.Interface;
 
-namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels
 {
     public class CompoundViewModel : BaseViewModel, IAsyncInitializable
     {

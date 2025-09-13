@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Core.Models.Authentication
 {
-    public class UserRole
+    public class UserRole : BaseAuthentication
     {
         public User User { get; set; }
         public Role Role { get; set; }

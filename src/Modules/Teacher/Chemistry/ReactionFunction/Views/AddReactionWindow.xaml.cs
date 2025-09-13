@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.src.Modules.Teacher.Chemistry.Views
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views
 {
     /// <summary>
-    /// Interaction logic for AddCompoundWindow.xaml
+    /// Interaction logic for AddReactionWindow.xaml
     /// </summary>
-    public partial class AddCompoundWindow : Window
+    public partial class AddReactionWindow : Window
     {
-        public AddCompoundWindow()
+        public AddReactionWindow()
         {
             InitializeComponent();
         }

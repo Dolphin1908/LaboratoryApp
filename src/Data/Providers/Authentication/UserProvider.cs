@@ -30,6 +30,30 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
         }
 
         /// <summary>
+        /// Lấy thông tin người dùng từ database theo email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns> 
+        public Task<User?> GetByEmailAsync(string email)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            var user = _db.GetOne("users", filter);
+            return Task.FromResult(user);
+        }
+
+        /// <summary>
+        /// Lấy thông tin người dùng từ database theo số điện thoại
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
+        public Task<User?> GetByPhoneNumberAsync(string phoneNumber)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.PhoneNumber, phoneNumber);
+            var user = _db.GetOne("users", filter);
+            return Task.FromResult(user);
+        }
+
+        /// <summary>
         /// Lấy tất cả người dùng từ database
         /// </summary>
         /// <returns></returns>
@@ -44,6 +68,12 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
             var filter = Builders<User>.Filter.Eq(u => u.Id, id);
             var user = _db.GetOne("users", filter);
             return user;
+        }
+
+        public long GetNextUserId()
+        {
+            var users = GetAllUsers();
+            return users.Count > 0 ? users.Max(u => u.Id) + 1 : 1;
         }
     }
 }

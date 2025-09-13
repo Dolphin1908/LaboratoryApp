@@ -24,21 +24,24 @@ namespace LaboratoryApp.src.Services.Authentication
     {
         private readonly IUserProvider _userProvider;
         private readonly IRoleProvider _roleProvider;
+        private readonly IUserRoleProvider _userRoleProvider;
         private readonly IRefreshTokenProvider _refreshTokenProvider;
         private readonly IMongoDBProvider _db;
 
         public AuthenticationService(IUserProvider userProvider, 
                                      IRoleProvider roleProvider, 
+                                     IUserRoleProvider userRoleProvider,
                                      IRefreshTokenProvider refreshTokentProvider,
                                      IMongoDBProvider db)
         {
             _userProvider = userProvider;
             _roleProvider = roleProvider;
+            _userRoleProvider = userRoleProvider;
             _refreshTokenProvider = refreshTokentProvider;
             _db = db;
         }
 
-        public async Task RegisterAsync(string username, string password, string confirmPassword, string email, string phoneNumber)
+        public async Task<bool> RegisterAsync(string username, string password, string confirmPassword, string email, string phoneNumber)
         {
             try
             {
@@ -47,28 +50,38 @@ namespace LaboratoryApp.src.Services.Authentication
                 string.IsNullOrWhiteSpace(phoneNumber))
                 {
                     MessageBox.Show("All fields are required");
-                    return;
+                    return false;
                 }
 
                 if (password != confirmPassword)
                 {
                     MessageBox.Show("Passwords do not match");
-                    return;
+                    return false;
                 }
 
-                var existingUser = await _userProvider.GetByUsernameAsync(username);
-                if (existingUser != null)
+                var existingUsername = await _userProvider.GetByUsernameAsync(username);
+                var existingEmail = await _userProvider.GetByEmailAsync(email);
+                var existingPhoneNumber = await _userProvider.GetByPhoneNumberAsync(phoneNumber);
+
+                if (existingUsername != null)
                 {
                     MessageBox.Show("Username already exists");
-                    return;
+                    return false;
+                }
+                else if (existingEmail != null)
+                {
+                    MessageBox.Show("Email already exists");
+                    return false;
+                }
+                else if (existingPhoneNumber != null)
+                {
+                    MessageBox.Show("Phone number already exists");
+                    return false;
                 }
 
-                var userId = _userProvider.GetAllUsers().Count > 0
-                    ? _userProvider.GetAllUsers().Max(u => u.Id) + 1
-                    : 1;
                 var user = new User
                 {
-                    Id = userId,
+                    Id = _userProvider.GetNextUserId(),
                     Username = username,
                     Email = email,
                     PhoneNumber = phoneNumber,
@@ -79,17 +92,20 @@ namespace LaboratoryApp.src.Services.Authentication
 
                 var userRole = new UserRole
                 {
+                    Id = _userRoleProvider.GetNextUserRoleId(),
                     User = user,
                     Role = _roleProvider.GetRoleById(1),
                     IsActive = true,
                 };
 
                 AddUserRole(userRole);
+
+                return true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
-                return;
+                return false;
             }
         }
 
@@ -128,7 +144,9 @@ namespace LaboratoryApp.src.Services.Authentication
                 //var refresh = GenerateRefreshToken(user);
                 //await _refreshTokenProvider.CreateAsync(refresh);
 
-                AuthenticationCache.Set(user, access, refresh.Token);
+                var userRole = await _userRoleProvider.GetUserRolesAsync(user.Id);
+
+                AuthenticationCache.Set(user, access, refresh.Token, userRole.Role.Id);
 
                 return new AuthenticationResponseDTO
                 {

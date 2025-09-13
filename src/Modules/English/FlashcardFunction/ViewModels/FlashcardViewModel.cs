@@ -1,17 +1,18 @@
-﻿using System;
+﻿using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
+using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
+using LaboratoryApp.src.Services.English.FlashcardFunction;
+using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows;
+using System.Windows.Input;
 using System.Xml.Linq;
-
-using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
-using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
-using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
-using LaboratoryApp.src.Services.English.FlashcardFunction;
 
 namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
 {
@@ -24,6 +25,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
         private string _note;
         private Flashcard _flashcard;
         private Action<Flashcard> _flashcardCommandCallback;
+        private IServiceProvider _serviceProvider;
 
         private string _name;
         private string _description;
@@ -125,10 +127,12 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
         /// </summary>
         /// <param name="flashcard"></param>
         /// <param name="flashcardCommand"></param>
-        public FlashcardViewModel(Flashcard flashcard, 
+        public FlashcardViewModel(IServiceProvider serviceProvider,
+                                  Flashcard flashcard, 
                                   Action<Flashcard> flashcardCommand, 
                                   Func<DictionaryWindow> dictionaryWindowFactory)
         {
+            _serviceProvider = serviceProvider;
             _flashcard = flashcard;
             _flashcardCommandCallback = flashcardCommand;
 
@@ -140,7 +144,12 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
             UpdateFlashcardCommand = new RelayCommand<object>((p) => true, (p) => UpdateFlashcard(p));
             OpenDictionaryWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var window = dictionaryWindowFactory();
+                var window = _serviceProvider.GetRequiredService<DictionaryWindow>();
+                if (window.DataContext is DictionaryViewModel vm && vm is IAsyncInitializable init)
+                {
+                    // Initialize the dictionary window asynchronously
+                    _ = init.InitializeAsync();
+                }
                 window.Show();
             });
         }

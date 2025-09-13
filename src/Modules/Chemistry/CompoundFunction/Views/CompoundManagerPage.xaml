@@ -108,6 +108,7 @@
                         Height="Auto"
                         Width="Auto"
                         materialDesign:ButtonAssist.CornerRadius="10"
+                        Visibility="{Binding IsTeacher, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding AddCompoundCommand}">
                     <Grid VerticalAlignment="Center"
                           HorizontalAlignment="Center">

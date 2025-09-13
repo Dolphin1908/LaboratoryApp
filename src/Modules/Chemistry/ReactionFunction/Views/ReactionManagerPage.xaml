@@ -116,10 +116,11 @@
             <Button Style="{StaticResource MaterialDesignRaisedButton}"
                     BorderThickness="0"
                     Background="SpringGreen"
-                    Margin="5"
+                    Margin="5,5,5,10"
                     Height="30"
                     Width="200"
                     materialDesign:ButtonAssist.CornerRadius="10"
+                    Visibility="{Binding IsTeacher, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding AddReactionCommand}">
                 <Grid VerticalAlignment="Center"
                       HorizontalAlignment="Center">
