@@ -121,18 +121,40 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             else
             {
                 MessageBox.Show("Đăng nhập thất bại, vui lòng kiểm tra lại thông tin", "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
         }
 
-        private async void OnRegister()
+        private async Task OnRegister()
         {
             // Logic for registration
-            await _authService.RegisterAsync(Username, Password, ConfirmPassword, Email, PhoneNumber);
+            try
+            {
+                var isRegister = await _authService.RegisterAsync(Username, Password, ConfirmPassword, Email, PhoneNumber);
+                if (!isRegister) return;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Lỗi đăng ký", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            MessageBox.Show("Đăng ký thành công, bạn có thể đăng nhập ngay bây giờ", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+            ClearFields();
         }
 
         private void OnForgotPassword()
         {
             // Logic for forgot password
+        }
+
+        private void ClearFields()
+        {
+            Username = string.Empty;
+            Password = string.Empty;
+            ConfirmPassword = string.Empty;
+            Email = string.Empty;
+            PhoneNumber = string.Empty;
         }
     }
 }

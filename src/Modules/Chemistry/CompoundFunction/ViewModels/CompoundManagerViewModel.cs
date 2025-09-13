@@ -12,10 +12,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Authentication;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels;
+
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
+
 using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Shared.Interface;
 
@@ -28,6 +31,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         private readonly ChemistryDataCache _chemistryDataCache;
 
         private string _searchText;
+        private bool _isTeacher;
         private Compound _selectedCompound;
 
         private ObservableCollection<Compound> _compounds;
@@ -47,6 +51,15 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
                 _searchText = value;
                 OnPropertyChanged();
                 UpdateSuggestions();
+            }
+        }
+        public bool IsTeacher
+        {
+            get => _isTeacher;
+            set
+            {
+                _isTeacher = value;
+                OnPropertyChanged(nameof(IsTeacher));
             }
         }
         public Compound SelectedCompound
@@ -86,6 +99,8 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
             _compounds = new ObservableCollection<Compound>();
             _allCompounds = new ObservableCollection<Compound>();
 
+            AuthenticationCache.CurrentUserChanged += OnUserChanged;
+
             AddCompoundCommand = new RelayCommand<object>(p => true, p =>
             {
                 var window = _serviceProvider.GetRequiredService<AddCompoundWindow>();
@@ -100,6 +115,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
 
                 _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
             });
+
             SelectCompoundCommand = new RelayCommand<object>(p => true, p =>
             {
                 SelectedCompound = (Compound)p;
@@ -138,10 +154,20 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
                 _chemistryDataCache.LoadAllData(_chemistryService);
 
                 _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+                _isTeacher = AuthenticationCache.RoleId == 2;
             }, cancellationToken);
 
             if (!string.IsNullOrWhiteSpace(SearchText))
                 UpdateSuggestions();
+        }
+
+        /// <summary>
+        /// Triggered when the current user changes, updating the IsTeacher property accordingly.
+        /// </summary>
+        /// <param name="user"></param>
+        private void OnUserChanged(User? user)
+        {
+            IsTeacher = AuthenticationCache.RoleId == 2;
         }
     }
 }

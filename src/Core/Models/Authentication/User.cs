@@ -16,5 +16,9 @@ namespace LaboratoryApp.src.Core.Models.Authentication
         public string PhoneNumber { get; set; } = null!;
         public string Address { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
+
+        public bool IsEmailVerified { get; set; } = false;
+        public bool IsPhoneVerified { get; set; } = false;
+        public bool IsActive { get; set; } = true;
     }
 }

@@ -211,7 +211,7 @@
                     </ItemsControl>
                 </Grid>
 
-                <Grid Margin="0,0,0,10">
+                <Grid Margin="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>

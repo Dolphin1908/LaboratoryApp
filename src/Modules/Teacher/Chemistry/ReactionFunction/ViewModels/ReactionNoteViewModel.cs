@@ -10,7 +10,7 @@ using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 
-namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
 {
     public class ReactionNoteViewModel : BaseViewModel
     {

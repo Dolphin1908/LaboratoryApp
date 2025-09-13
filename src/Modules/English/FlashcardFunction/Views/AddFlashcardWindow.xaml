@@ -16,7 +16,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Height="445" 
+        Height="450"
         Width="400"
         Title="Thêm thẻ mới">
     

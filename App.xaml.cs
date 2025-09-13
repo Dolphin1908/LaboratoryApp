@@ -45,8 +45,10 @@ using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
 using LaboratoryApp.src.Modules.Physics.Common.Views;
 using LaboratoryApp.src.Modules.Physics.Common.ViewModels;
 
-using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
 
 using LaboratoryApp.src.Modules.Toolkits.Common.Views;
 using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
@@ -62,6 +64,8 @@ using LaboratoryApp.src.Services.English.FlashcardFunction;
 
 using LaboratoryApp.src.Shared;
 using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
 
 namespace LaboratoryApp
 {
@@ -105,6 +109,7 @@ namespace LaboratoryApp
             });
             service.AddSingleton<IUserProvider>(sp => new UserProvider(sp.GetRequiredService<IMongoDBProvider>()));
             service.AddSingleton<IRoleProvider>(sp => new RoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
+            service.AddSingleton<IUserRoleProvider>(sp => new UserRoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
             service.AddSingleton<IRefreshTokenProvider>(sp => new RefreshTokenProvider(sp.GetRequiredService<IMongoDBProvider>()));
             #endregion
 
@@ -157,7 +162,12 @@ namespace LaboratoryApp
 
             // Đăng ký các hàm tạo cho FlashcardViewModel và FlashcardStudyViewModel
             service.AddTransient<Func<FlashcardSet, Action<FlashcardSet>, FlashcardViewModel>>(sp => (set, callback) => new FlashcardViewModel(set, callback));
-            service.AddTransient<Func<Flashcard, Action<Flashcard>, Func<DictionaryWindow>, FlashcardViewModel>>(sp => (flashcard, callback, dictFactory) => new FlashcardViewModel(flashcard, callback, dictFactory));
+            service.AddTransient<Func<Flashcard, Action<Flashcard>, Func<DictionaryWindow>, FlashcardViewModel>>(sp =>
+            (flashcard, callback, dictFactory) =>
+            {
+                var serviceProvider = sp;
+                return new FlashcardViewModel(sp, flashcard, callback, dictFactory);
+            });
             service.AddTransient<Func<FlashcardSet, IFlashcardService, FlashcardStudyViewModel>>(sp => (set, service) => new FlashcardStudyViewModel(set, service));
 
             service.AddTransient<LectureMainPageViewModel>();

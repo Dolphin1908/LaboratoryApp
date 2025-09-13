@@ -13,8 +13,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Style="{StaticResource MaterialDesignWindow}"
-        MinHeight="600"
-        MinWidth="400"
+        MinHeight="600" Height="600"
+        MinWidth="400" Width="400"
         Loaded="Window_Loaded"
         mc:Ignorable="d"
         Title="Từ điển Anh - Việt">

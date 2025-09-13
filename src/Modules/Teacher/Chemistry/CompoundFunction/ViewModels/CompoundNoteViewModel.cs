@@ -9,7 +9,7 @@ using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Core.ViewModels;
 
-namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels
 {
     public class CompoundNoteViewModel : BaseViewModel
     {

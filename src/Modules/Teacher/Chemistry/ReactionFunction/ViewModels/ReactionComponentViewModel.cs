@@ -12,7 +12,7 @@ using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Shared.Interface;
 
-namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
 {
     public class ReactionComponentViewModel : BaseViewModel, IAsyncInitializable
     {

@@ -17,6 +17,7 @@ using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Shared.Interface;
 using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
+using LaboratoryApp.src.Core.Models.Authentication;
 
 namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
 {
@@ -32,6 +33,9 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
         public ICommand NavigateToCompoundCommand { get; set; } // Command to navigate to the compound page
         public ICommand NavigateToReactionCommand { get; set; } // Command to navigate to the reaction page
         public ICommand NavigateBackCommand { get; set; } // Command to navigate back
+        #endregion
+
+        #region Properties
         #endregion
 
         /// <summary>

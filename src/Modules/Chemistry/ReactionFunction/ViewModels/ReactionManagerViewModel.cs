@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +11,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Core.Models.Authentication;
 using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels;
+
 using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
+
 using LaboratoryApp.src.Shared.Interface;
+
 using LaboratoryApp.src.Services.Chemistry;
-using System.Collections.ObjectModel;
 
 namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 {
@@ -28,6 +33,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 
         private string _reactants;
         private string _products;
+        private bool _isTeacher;
 
         private ObservableCollection<Reaction> _allReactions;
         private ObservableCollection<Reaction> _reactions;
@@ -49,6 +55,15 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             {
                 _products = value;
                 OnPropertyChanged();
+            }
+        }
+        public bool IsTeacher
+        {
+            get => _isTeacher;
+            set
+            {
+                _isTeacher = value;
+                OnPropertyChanged(nameof(IsTeacher));
             }
         }
         public ObservableCollection<Reaction> Reactions
@@ -82,6 +97,8 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 
             _reactions = new ObservableCollection<Reaction>();
             _allReactions = new ObservableCollection<Reaction>();
+
+            AuthenticationCache.CurrentUserChanged += OnUserChanged;
 
             AddReactionCommand = new RelayCommand<object>((p) => true, (p) =>
             {
@@ -185,6 +202,11 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 
             if (!string.IsNullOrWhiteSpace(Reactants) || !string.IsNullOrWhiteSpace(Products)) 
                 SearchReaction();
+        }
+
+        private void OnUserChanged(User? user)
+        {
+            IsTeacher = AuthenticationCache.RoleId == 2;
         }
     }
 }

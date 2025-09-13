@@ -20,7 +20,7 @@ namespace LaboratoryApp.src.Services.Authentication
 {
     public interface IAuthenticationService
     {
-        Task RegisterAsync(string username, string password, string confirmPassword, string email, string phoneNumber);
+        Task<bool> RegisterAsync(string username, string password, string confirmPassword, string email, string phoneNumber);
         Task<AuthenticationResponseDTO?> LoginAsync(string username, string password);
     }
 }

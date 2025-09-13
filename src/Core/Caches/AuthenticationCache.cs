@@ -12,6 +12,7 @@ namespace LaboratoryApp.src.Core.Caches
         private static User? _currentUser;
         private static string? _accessToken;
         private static string? _refreshToken;
+        private static long _roleId;
 
         public static event Action<User?>? CurrentUserChanged;
 
@@ -37,24 +38,32 @@ namespace LaboratoryApp.src.Core.Caches
             get => _refreshToken;
             private set => _refreshToken = value;
         }
-
-        public static bool IsAuthenticated => 
-            CurrentUser != null && 
-            !string.IsNullOrEmpty(AccessToken) && 
+        public static long? RoleId
+        {
+            get => _roleId;
+            set => _roleId = value ?? 0;
+        }
+        public static bool IsAuthenticated =>
+            CurrentUser != null &&
+            !string.IsNullOrEmpty(AccessToken) &&
             !string.IsNullOrEmpty(RefreshToken);
 
-        public static void Set(User user, string accessToken, string refreshToken)
+
+
+        public static void Set(User user, string accessToken, string refreshToken, long roleId)
         {
-            CurrentUser = user;
             AccessToken = accessToken;
             RefreshToken = refreshToken;
+            RoleId = roleId;
+            CurrentUser = user;
         }
 
         public static void Clear()
         {
-            CurrentUser = null;
             AccessToken = null;
             RefreshToken = null;
+            RoleId = 0;
+            CurrentUser = null;
         }
     }
 }

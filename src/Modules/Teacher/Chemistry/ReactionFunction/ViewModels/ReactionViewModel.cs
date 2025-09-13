@@ -7,17 +7,21 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
 
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.Views;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Shared.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ViewModels
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Chemistry;
+using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+using LaboratoryApp.src.Core.ViewModels;
+
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
+
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Shared.Interface;
+
+namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
 {
     public class ReactionViewModel : BaseViewModel, IAsyncInitializable
     {
