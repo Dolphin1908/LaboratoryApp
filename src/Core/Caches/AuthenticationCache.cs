@@ -1,22 +1,24 @@
-﻿using LaboratoryApp.src.Core.Models.Authentication;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+
 namespace LaboratoryApp.src.Core.Caches
 {
     public static class AuthenticationCache
     {
-        private static User? _currentUser;
+        private static UserDTO? _currentUser;
         private static string? _accessToken;
         private static string? _refreshToken;
         private static long _roleId;
 
-        public static event Action<User?>? CurrentUserChanged;
+        public static event Action<UserDTO?>? CurrentUserChanged;
 
-        public static User? CurrentUser
+        public static UserDTO? CurrentUser
         {
             get => _currentUser;
             private set
@@ -50,7 +52,7 @@ namespace LaboratoryApp.src.Core.Caches
 
 
 
-        public static void Set(User user, string accessToken, string refreshToken, long roleId)
+        public static void Set(UserDTO user, string accessToken, string refreshToken, long roleId)
         {
             AccessToken = accessToken;
             RefreshToken = refreshToken;

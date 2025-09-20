@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:compound="clr-namespace:LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels"
                     xmlns:reaction="clr-namespace:LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels">
+    
     <!-- Compound -->
     <compound:CompoundViewModel x:Key="CompoundVM"></compound:CompoundViewModel>
     <compound:CompoundNoteViewModel x:Key="CompoundNoteVM"></compound:CompoundNoteViewModel>

@@ -16,7 +16,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
 {
     public class ReactionComponentViewModel : BaseViewModel, IAsyncInitializable
     {
-        private readonly ChemistryDataCache _chemistryDataCache;
         private readonly IChemistryService _chemistryService;
         private readonly IServiceProvider _serviceProvider;
 
@@ -96,12 +95,10 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
         private ObservableCollection<Element> _allElements;
         private ObservableCollection<Compound> _allCompounds;
 
-        public ReactionComponentViewModel(ChemistryDataCache chemistryDataCache,
-                                          IChemistryService chemistryService,
+        public ReactionComponentViewModel(IChemistryService chemistryService,
                                           IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _chemistryDataCache = chemistryDataCache;
             _chemistryService = chemistryService;
 
             _allElements = new ObservableCollection<Element>();
@@ -160,10 +157,8 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
         {
             await Task.Run(() =>
             {
-                _chemistryDataCache.LoadAllData(_chemistryService);
-
-                _allElements = new ObservableCollection<Element>(_chemistryDataCache.AllElements);
-                _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+                _allElements = new ObservableCollection<Element>(ChemistryDataCache.AllElements);
+                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
             }, cancellationToken);
 
             // If there is a search text, update suggestions immediately

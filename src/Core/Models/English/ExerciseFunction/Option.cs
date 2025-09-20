@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LaboratoryApp.src.Core.Models.English.PracticeFunction
+namespace LaboratoryApp.src.Core.Models.English.ExerciseFunction
 {
-    public class OptionModel
+    public class Option
     {
         public long Id { get; set; }
         public string Text { get; set; } = string.Empty;

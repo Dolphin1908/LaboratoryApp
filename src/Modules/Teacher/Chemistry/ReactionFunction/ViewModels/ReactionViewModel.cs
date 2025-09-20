@@ -20,6 +20,7 @@ using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
 
 using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Core.Models.Chemistry.Common.Enums;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
 {
@@ -27,7 +28,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IChemistryService _chemistryService;
-        private readonly ChemistryDataCache _chemistryDataCache;
 
         private ObservableCollection<Element> _allElements;
         private ObservableCollection<Compound> _allCompounds;
@@ -146,11 +146,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
         #endregion
 
         public ReactionViewModel(IChemistryService chemistryService,
-                                 ChemistryDataCache chemistryDataCache,
                                  IServiceProvider serviceProvider)
         {
             _chemistryService = chemistryService;
-            _chemistryDataCache = chemistryDataCache;
             _serviceProvider = serviceProvider;
 
             _allElements = new ObservableCollection<Element>();
@@ -239,7 +237,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
 
             SaveCommand = new RelayCommand<object>(p => CanSave(), p =>
             {
-                Reaction.Id = AllReactions.Count + 1;
+                Reaction.Id = AllReactions.Max(r => r.Id) + 1;
 
                 Reaction.ReactionType = ReactionTypeOptions.Where(e => e.IsSelected)
                                                            .Select(e => e.Value)
@@ -249,8 +247,8 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 .Select(vm => new ReactionComponent
                 {
                     Kind = vm.Kind,
-                    Element = vm.SelectedElement,
-                    Compound = vm.SelectedCompound,
+                    ElementId = vm.SelectedElement.Id,
+                    CompoundId = vm.SelectedCompound.Id,
                     Coefficient = vm.Coefficient
                 })
                 .ToList();
@@ -259,8 +257,8 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 .Select(vm => new ReactionComponent
                 {
                     Kind = vm.Kind,
-                    Element = vm.SelectedElement,
-                    Compound = vm.SelectedCompound,
+                    ElementId = vm.SelectedElement.Id,
+                    CompoundId = vm.SelectedCompound.Id,
                     Coefficient = vm.Coefficient
                 })
                 .ToList();
@@ -274,7 +272,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 Reaction.Condition.OtherConditions = OtherConditions.ToList();
 
                 _chemistryService.AddReaction(Reaction);
-                _chemistryDataCache.AllReactions.Add(Reaction);
+                ChemistryDataCache.AllReactions.Add(Reaction);
 
                 var thisWindow = p as AddReactionWindow;
                 thisWindow.Close();
@@ -323,11 +321,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
         {
             await Task.Run(() =>
             {
-                _chemistryDataCache.LoadAllData(_chemistryService);
-
-                _allElements = new ObservableCollection<Element>(_chemistryDataCache.AllElements);
-                _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
-                _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
+                _allElements = new ObservableCollection<Element>(ChemistryDataCache.AllElements);
+                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
+                _allReactions = new ObservableCollection<Reaction>(ChemistryDataCache.AllReactions);
             }, cancellationToken);
         }
     }

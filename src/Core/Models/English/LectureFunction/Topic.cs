@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LaboratoryApp.src.Core.Models.English.PracticeFunction;
+using LaboratoryApp.src.Core.Models.English.ExerciseFunction;
 
 namespace LaboratoryApp.src.Core.Models.English.LectureFunction
 {
-    public class TopicModel
+    public class Topic
     {
         public long Id { get; set; }
         public string Title { get; set; }
@@ -16,7 +16,7 @@ namespace LaboratoryApp.src.Core.Models.English.LectureFunction
         public string ContentHTML { get; set; }
 
         public long? ParentTopicId { get; set; }
-        public List<TopicModel> SubTopics { get; set; }
-        public List<ExerciseModel> Exercises { get; set; }
+        public List<Topic> SubTopics { get; set; }
+        public List<Exercise> Exercises { get; set; }
     }
 }

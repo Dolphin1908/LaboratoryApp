@@ -19,7 +19,7 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
 
         public async Task<UserRole?> GetUserRolesAsync (long userId)
         {
-            var filter = Builders<UserRole>.Filter.Eq(ur => ur.User.Id, userId);
+            var filter = Builders<UserRole>.Filter.Eq(ur => ur.UserId, userId);
             var userRole = _db.GetOne("userRoles", filter);
             return await Task.FromResult(userRole);
         }

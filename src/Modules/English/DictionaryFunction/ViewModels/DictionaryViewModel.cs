@@ -19,7 +19,6 @@ namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
     {
         // Dependencies
         private readonly IEnglishService _englishService;
-        private readonly EnglishDataCache _englishDataCache;
 
         // Private fields for search and AI results
         private string _searchText;
@@ -112,12 +111,10 @@ namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
         #endregion
 
         public DictionaryViewModel(IAIService aiService,
-                                   IEnglishService englishService,
-                                   EnglishDataCache englishDataCache)
+                                   IEnglishService englishService)
         {
             _aiService = aiService;
             _englishService = englishService;
-            _englishDataCache = englishDataCache;
 
             // Initialize collections and dictionaries
             _allWords = new List<Word>();
@@ -349,14 +346,11 @@ namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
         {
             await Task.Run(() =>
             {
-                // Load all data from the English service if not already loaded
-                _englishDataCache.LoadAllData(_englishService);
-
                 // Get all words, pos, examples, and definitions from the cache
-                _allWords = _englishDataCache.AllWords;
-                _allPos = _englishDataCache.AllPos;
-                _allExamples = _englishDataCache.AllExamples;
-                _allDefinitions = _englishDataCache.AllDefinitions;
+                _allWords = EnglishDataCache.AllWords;
+                _allPos = EnglishDataCache.AllPos;
+                _allExamples = EnglishDataCache.AllExamples;
+                _allDefinitions = EnglishDataCache.AllDefinitions;
 
                 IndexData(); // Index the data for faster access
                 SetupSpeechSynthesizer(); // Set up the SpeechSynthesizer

@@ -15,7 +15,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Height="445" 
+        Height="450" 
         Width="400"
         Title="Cập nhật thông tin thẻ">
 

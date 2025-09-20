@@ -1,6 +1,7 @@
 ﻿using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
 using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
@@ -25,12 +26,11 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         private readonly IServiceProvider _serviceProvider;
         private readonly IEnglishService _englishService;
         private readonly IUserProvider _userProvider;
-        private readonly EnglishDataCache _englishDataCache;
 
         private ObservableCollection<DiaryContent> _publicDiaries;
         private ObservableCollection<DiaryContent> _privateDiaries;
 
-        private readonly Func<IUserProvider, IServiceProvider, IEnglishService, EnglishDataCache, DiaryContent, DiaryDetailViewModel> _diaryDetailvmFactory;
+        private readonly Func<IUserProvider, IServiceProvider, IEnglishService, DiaryContent, DiaryDetailViewModel> _diaryDetailvmFactory;
 
         #region Properties
         public ObservableCollection<DiaryContent> PublicDiaries
@@ -59,13 +59,11 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         #endregion
 
         public DiaryManagerViewModel(IServiceProvider serviceProvider,
-                                     EnglishDataCache englishDataCache,
                                      IEnglishService englishService,
                                      IUserProvider userProvider,
-                                     Func<IUserProvider, IServiceProvider, IEnglishService, EnglishDataCache, DiaryContent, DiaryDetailViewModel> diaryDetailvmFactory)
+                                     Func<IUserProvider, IServiceProvider, IEnglishService, DiaryContent, DiaryDetailViewModel> diaryDetailvmFactory)
         {
             _serviceProvider = serviceProvider;
-            _englishDataCache = englishDataCache;
             _englishService = englishService;
             _userProvider = userProvider;
 
@@ -85,8 +83,8 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 var window = _serviceProvider.GetRequiredService<DiaryWindow>();
                 window.ShowDialog();
 
-                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PublicDiaries = new ObservableCollection<DiaryContent>(EnglishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(EnglishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             });
 
             OpenDiaryDetailCommand = new RelayCommand<object>((p) => p is DiaryContent, (p) =>
@@ -94,11 +92,11 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 var diary = p as DiaryContent;
                 var window = _serviceProvider.GetRequiredService<DiaryDetailWindow>();
 
-                window.DataContext = _diaryDetailvmFactory(_userProvider, _serviceProvider, _englishService, _englishDataCache, diary);
+                window.DataContext = _diaryDetailvmFactory(_userProvider, _serviceProvider, _englishService, diary);
                 window.ShowDialog();
 
-                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PublicDiaries = new ObservableCollection<DiaryContent>(EnglishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(EnglishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             });
             #endregion
         }
@@ -113,9 +111,8 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             await Task.Run(() =>
             {
                 // Load any additional data or perform setup tasks here
-                _englishDataCache.LoadAllData(_englishService);
-                PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PublicDiaries = new ObservableCollection<DiaryContent>(EnglishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(EnglishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
             }, cancellationToken);
         }
 
@@ -123,15 +120,15 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         /// Xử lý khi người dùng đăng nhập hoặc đăng xuất
         /// </summary>
         /// <param name="user"></param>
-        private void OnUserChanged(User? user)
+        private void OnUserChanged(UserDTO? user)
         {
             // Refresh when login state changes
             PublicDiaries = new ObservableCollection<DiaryContent>(
-                _englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList()
+                EnglishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList()
             );
 
             PrivateDiaries = new ObservableCollection<DiaryContent>(
-                _englishDataCache.AllDiaries.Where(d => d.UserId == (user?.Id ?? 0)).ToList()
+                EnglishDataCache.AllDiaries.Where(d => d.UserId == (user?.Id ?? 0)).ToList()
             );
         }
     }

@@ -174,6 +174,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
                 win.Close();
             }
         }
+
         private void UpdateSet(object window)
         {
             _originalSet.Name = Name;
@@ -184,6 +185,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
             if (window is Window win)
                 win.Close();
         }
+
         private void LoadUI()
         {
             Word = _flashcard.Word;

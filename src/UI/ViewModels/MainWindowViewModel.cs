@@ -9,16 +9,18 @@ using System.Windows.Input;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using LaboratoryApp.src.UI.Views;
+using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Shared.Interface;
+
 using LaboratoryApp.src.Modules.Toolkits.Common.Views;
 using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels;
 using LaboratoryApp.src.Modules.Authentication.Views;
-using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Modules.Authentication.ViewModels;
+
+using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.UI.Views;
 
 namespace LaboratoryApp.src.UI.ViewModels
 {
@@ -123,6 +125,10 @@ namespace LaboratoryApp.src.UI.ViewModels
                 // Open the authentication window for re-login
                 var authenticationWindow = _serviceProvider.GetRequiredService<AuthenticationWindow>();
                 authenticationWindow.ShowDialog();
+
+                // After authentication, update the current user
+                OnPropertyChanged(nameof(CurrentUser));
+                OnPropertyChanged(nameof(IsAuthenticated));
             });
 
             // Open the authentication window

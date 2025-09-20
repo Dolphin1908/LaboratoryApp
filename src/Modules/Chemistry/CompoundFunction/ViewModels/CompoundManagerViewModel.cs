@@ -1,26 +1,23 @@
-﻿using System;
-using System.Configuration;
+﻿using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Chemistry;
+using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.ViewModels;
-
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
-
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
 {
@@ -28,7 +25,6 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IChemistryService _chemistryService;
-        private readonly ChemistryDataCache _chemistryDataCache;
 
         private string _searchText;
         private bool _isTeacher;
@@ -89,12 +85,10 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         /// <param name="chemistryService"></param>
         /// <param name="chemistryDataCache"></param>
         public CompoundManagerViewModel(IServiceProvider serviceProvider,
-                                        IChemistryService chemistryService,
-                                        ChemistryDataCache chemistryDataCache)
+                                        IChemistryService chemistryService)
         {
             _serviceProvider = serviceProvider;
             _chemistryService = chemistryService;
-            _chemistryDataCache = chemistryDataCache;
 
             _compounds = new ObservableCollection<Compound>();
             _allCompounds = new ObservableCollection<Compound>();
@@ -113,7 +107,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
 
                 window.ShowDialog(); // Because this is a modal dialog, it will block the current thread until closed
 
-                _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
             });
 
             SelectCompoundCommand = new RelayCommand<object>(p => true, p =>
@@ -151,9 +145,8 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _chemistryDataCache.LoadAllData(_chemistryService);
-
-                _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+                _isTeacher = AuthenticationCache.RoleId == 2;
+                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
                 _isTeacher = AuthenticationCache.RoleId == 2;
             }, cancellationToken);
 
@@ -165,7 +158,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         /// Triggered when the current user changes, updating the IsTeacher property accordingly.
         /// </summary>
         /// <param name="user"></param>
-        private void OnUserChanged(User? user)
+        private void OnUserChanged(UserDTO? user)
         {
             IsTeacher = AuthenticationCache.RoleId == 2;
         }

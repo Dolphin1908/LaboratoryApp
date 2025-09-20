@@ -9,20 +9,20 @@ using LaboratoryApp.src.Services.English;
 
 namespace LaboratoryApp.src.Core.Caches
 {
-    public class EnglishDataCache
+    public static class EnglishDataCache
     {
-        private readonly object _lock = new();
-        public bool IsLoaded { get; private set; } = false;
+        private static readonly object _lock = new();
+        public static bool IsLoaded { get; private set; } = false;
 
-        public List<DiaryContent> AllDiaries { get; set; } = new List<DiaryContent>();
+        public static List<DiaryContent> AllDiaries { get; set; } = new List<DiaryContent>();
 
-        public List<Word> AllWords { get; set; } = new List<Word>();
-        public List<Pos> AllPos { get; set; } = new List<Pos>();
-        public List<Definition> AllDefinitions { get; set; } = new List<Definition>();
-        public List<Example> AllExamples { get; set; } = new List<Example>();
+        public static List<Word> AllWords { get; set; } = new List<Word>();
+        public static List<Pos> AllPos { get; set; } = new List<Pos>();
+        public static List<Definition> AllDefinitions { get; set; } = new List<Definition>();
+        public static List<Example> AllExamples { get; set; } = new List<Example>();
 
 
-        public void LoadAllData(IEnglishService service)
+        public static void LoadAllData(IEnglishService service)
         {
             if (IsLoaded) return;
             lock (_lock)

@@ -10,7 +10,7 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 {
     public class CompoundElement
     {
-        public Element Element { get; set; } = null!; // The element in the compound
+        public long ElementId { get; set; } // The element in the compound
 
         public string Quantity { get; set; } = string.Empty;
     }

@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+﻿using LaboratoryApp.src.Core.Models.Chemistry.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

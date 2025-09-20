@@ -38,11 +38,11 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
 
         public Task<RefreshToken?> GetLatestByUserIdAsync(long userId)
         {
-            var filter = Builders<RefreshToken>.Filter.Eq(t => t.User.Id, userId);
+            var filter = Builders<RefreshToken>.Filter.Eq(t => t.UserId, userId);
             var sort = Builders<RefreshToken>.Sort.Descending(t => t.CreatedAt);
             return Task.FromResult(
                 _db.GetAll<RefreshToken>("refreshTokens")
-                   .Where(t => t.User.Id == userId)
+                   .Where(t => t.UserId == userId)
                    .OrderByDescending(t => t.CreatedAt)
                    .FirstOrDefault()
             );

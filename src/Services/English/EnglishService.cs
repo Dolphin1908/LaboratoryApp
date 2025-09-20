@@ -1,8 +1,4 @@
-﻿using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using LaboratoryApp.src.Data.Providers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -10,12 +6,36 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using LaboratoryApp.src.Core.Helpers;
+
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
+using LaboratoryApp.src.Core.Models.English.ExerciseFunction;
+
+using LaboratoryApp.src.Data.Providers;
+
 namespace LaboratoryApp.src.Services.English
 {
     public class EnglishService : IEnglishService
     {
         private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
         private readonly string _mongoDbPath = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
+
+        #region ExerciseMongoDB
+        public void AddExerciseSet(ExerciseSet exerciseSet)
+        {
+            try
+            {
+                using var db = new MongoDBProvider(_mongoDbPath, "english");
+                db.Insert("exercises", exerciseSet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while adding an exercise set: {ex.Message}");
+                return;
+            }
+        }
+        #endregion
 
         #region DiaryMongoDB
         /// <summary>

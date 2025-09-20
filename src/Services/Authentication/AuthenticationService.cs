@@ -93,8 +93,8 @@ namespace LaboratoryApp.src.Services.Authentication
                 var userRole = new UserRole
                 {
                     Id = _userRoleProvider.GetNextUserRoleId(),
-                    User = user,
-                    Role = _roleProvider.GetRoleById(1),
+                    UserId = user.Id,
+                    RoleId = 1,
                     IsActive = true,
                 };
 
@@ -145,12 +145,24 @@ namespace LaboratoryApp.src.Services.Authentication
                 //await _refreshTokenProvider.CreateAsync(refresh);
 
                 var userRole = await _userRoleProvider.GetUserRolesAsync(user.Id);
+                var userDTO = new UserDTO
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    DateOfBirth = user.DateOfBirth,
+                    IsActive = user.IsActive
+                };
 
-                AuthenticationCache.Set(user, access, refresh.Token, userRole.Role.Id);
+                AuthenticationCache.Set(userDTO, access, refresh.Token, userRole.RoleId);
 
                 return new AuthenticationResponseDTO
                 {
-                    User = user,
+                    User = userDTO,
                     AccessToken = access,
                     RefreshToken = refresh.Token,
                     ExpiresAt = expires,
@@ -168,7 +180,7 @@ namespace LaboratoryApp.src.Services.Authentication
             var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             return new RefreshToken
             {
-                User = user,
+                UserId = user.Id,
                 Token = token,
                 ExpiresAt = DateTime.UtcNow.AddDays(7),
                 CreatedAt = DateTime.UtcNow

@@ -8,7 +8,7 @@ namespace LaboratoryApp.src.Core.Models.Authentication.DTOs
 {
     public class AuthenticationResponseDTO
     {
-        public User User { get; set; } = null!;
+        public UserDTO User { get; set; } = null!;
         public string AccessToken { get; set; } = null!;
         public DateTime ExpiresAt { get; set; }
         public string? RefreshToken { get; set; }

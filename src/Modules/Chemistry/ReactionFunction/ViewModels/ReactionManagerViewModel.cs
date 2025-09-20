@@ -1,4 +1,16 @@
-﻿using System;
+﻿using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Chemistry;
+using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,29 +19,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-using Microsoft.Extensions.DependencyInjection;
-
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Core.Models.Chemistry;
-
-using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
-
-using LaboratoryApp.src.Shared.Interface;
-
-using LaboratoryApp.src.Services.Chemistry;
-
 namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 {
     public class ReactionManagerViewModel : BaseViewModel, IAsyncInitializable
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IChemistryService _chemistryService; // Assuming you have a service for chemistry operations
-        private readonly ChemistryDataCache _chemistryDataCache; // Assuming you have a cache for chemistry data
 
         private string _reactants;
         private string _products;
@@ -88,12 +83,10 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         /// </summary>
         /// <param name="serviceProvider"></param>
         public ReactionManagerViewModel(IServiceProvider serviceProvider,
-                                        IChemistryService chemistryService,
-                                        ChemistryDataCache chemistryDataCache)
+                                        IChemistryService chemistryService)
         {
             _serviceProvider = serviceProvider;
             _chemistryService = chemistryService;
-            _chemistryDataCache = chemistryDataCache;
 
             _reactions = new ObservableCollection<Reaction>();
             _allReactions = new ObservableCollection<Reaction>();
@@ -113,7 +106,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 
                 window.ShowDialog();
 
-                _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
+                _allReactions = new ObservableCollection<Reaction>(ChemistryDataCache.AllReactions);
             });
 
             SearchReactionCommand = new RelayCommand<object>((p) => true, (p) => SearchReaction());
@@ -144,11 +137,11 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             var matches = _allReactions.AsParallel()
                                        .Where(r =>
                                        {
-                                           var rReactants = r.Reactants.Select(x => x.Compound?.Formula ?? x.Element?.Formula ?? string.Empty)
+                                           var rReactants = r.Reactants.Select(x => ChemistryDataCache.AllCompounds.FirstOrDefault(c => c.Id == x.CompoundId)?.Formula ?? ChemistryDataCache.AllElements.FirstOrDefault(c => c.Id == x.ElementId)?.Formula ?? string.Empty)
                                                                        .Where(x => !string.IsNullOrWhiteSpace(x))
                                                                        .ToList();
 
-                                           var rProducts = r.Products.Select(x => x.Compound?.Formula ?? x.Element?.Formula ?? string.Empty)
+                                           var rProducts = r.Products.Select(x => ChemistryDataCache.AllCompounds.FirstOrDefault(c => c.Id == x.CompoundId)?.Formula ?? ChemistryDataCache.AllElements.FirstOrDefault(c => c.Id == x.ElementId)?.Formula ?? string.Empty)
                                                                      .Where(x => !string.IsNullOrWhiteSpace(x))
                                                                      .ToList();
 
@@ -196,15 +189,15 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _chemistryDataCache.LoadAllData(_chemistryService);
-                _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
+                _isTeacher = AuthenticationCache.RoleId == 2;
+                _allReactions = new ObservableCollection<Reaction>(ChemistryDataCache.AllReactions);
             }, cancellationToken);
 
             if (!string.IsNullOrWhiteSpace(Reactants) || !string.IsNullOrWhiteSpace(Products)) 
                 SearchReaction();
         }
 
-        private void OnUserChanged(User? user)
+        private void OnUserChanged(UserDTO? user)
         {
             IsTeacher = AuthenticationCache.RoleId == 2;
         }

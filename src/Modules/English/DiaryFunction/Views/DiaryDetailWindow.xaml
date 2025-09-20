@@ -81,7 +81,8 @@
                         Margin="0,5,0,0"
                         Visibility="{Binding IsAuthor, Converter={StaticResource BooleanToVisibilityConverter}}"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        Command="{Binding DeleteCommand}">
+                        Command="{Binding DeleteCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                     <Grid VerticalAlignment="Center"
                           HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
