@@ -11,6 +11,10 @@ namespace LaboratoryApp.src.Services.English
 {
     public interface IEnglishService
     {
+        #region ExerciseMongoDB
+
+        #endregion
+
         #region DiaryMongoDB
         public void AddDiary(DiaryContent diary);
         public List<DiaryContent> GetAllDiaries();

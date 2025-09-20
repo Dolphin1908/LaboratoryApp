@@ -11,6 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <Compile Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+    <EmbeddedResource Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <EmbeddedResource Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+    <None Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <None Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+    <Page Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <Page Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="resources\Components\CSS\style.css" />
     <None Remove="resources\Components\CSS\style2.css" />
     <None Remove="resources\Components\HTML\topic_4.html" />
@@ -88,6 +99,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="src\Core\Models\Authorization\Enums\" />
+    <Folder Include="src\Core\Models\Chemistry\CompoundFunction\DTOs\" />
     <Folder Include="src\Core\Models\Physics\" />
     <Folder Include="src\Core\Models\Math\" />
     <Folder Include="resources\Components\JS\" />
@@ -99,16 +112,16 @@
     <Folder Include="src\Modules\Chemistry\ReactionFunction\Resources\" />
     <Folder Include="src\Modules\English\DiaryFunction\Resources\" />
     <Folder Include="src\Modules\English\DictionaryFunction\Resources\" />
-    <Folder Include="src\Modules\English\PracticeFunction\Resources\" />
+    <Folder Include="src\Modules\English\ExerciseFunction\Resources\" />
     <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
     <Folder Include="src\Modules\English\LectureFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\Chemistry\CompoundFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\Chemistry\ReactionFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\English\PracticeFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\English\PracticeFunction\ViewModels\" />
-    <Folder Include="src\Modules\Teacher\English\PracticeFunction\Views\" />
     <Folder Include="src\Modules\Teacher\Common\ViewModels\" />
     <Folder Include="src\Modules\Teacher\Common\Views\" />
+    <Folder Include="src\Modules\Teacher\English\ExerciseFunction\Views\" />
+    <Folder Include="src\Modules\Teacher\English\ExerciseFunction\ViewModels\" />
+    <Folder Include="src\Modules\Teacher\English\ExerciseFunction\Resources\" />
     <Folder Include="src\Modules\Toolkits\CalculatorFunction\Resources\" />
     <Folder Include="src\Modules\Toolkits\Common\ViewModels\" />
     <Folder Include="src\Modules\Toolkits\Common\Views\" />

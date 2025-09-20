@@ -9,16 +9,16 @@ using LaboratoryApp.src.Core.Models.Chemistry;
 
 namespace LaboratoryApp.src.Core.Caches
 {
-    public class ChemistryDataCache
+    public static class ChemistryDataCache
     {
-        private readonly object _lock = new();
-        public bool IsLoaded { get; private set; } = false;
+        private static readonly object _lock = new();
+        public static bool IsLoaded { get; private set; } = false;
 
-        public List<Element> AllElements { get; set; } = new();
-        public List<Compound> AllCompounds { get; set; } = new();
-        public List<Reaction> AllReactions { get; set; } = new();
+        public static List<Element> AllElements { get; set; } = new();
+        public static List<Compound> AllCompounds { get; set; } = new();
+        public static List<Reaction> AllReactions { get; set; } = new();
 
-        public void LoadAllData(IChemistryService service)
+        public static void LoadAllData(IChemistryService service)
         {
             if(IsLoaded) return;
 

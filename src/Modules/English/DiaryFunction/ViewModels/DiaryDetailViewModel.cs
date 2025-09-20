@@ -24,7 +24,6 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         private readonly IEnglishService _englishService;
         private readonly IUserProvider _userProvider;
         private readonly IServiceProvider _serviceProvider;
-        private readonly EnglishDataCache _englishDataCache;
 
         private readonly Func<DiaryContent, DiaryViewModel> _diaryEditvmFactory;
 
@@ -80,19 +79,19 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         public DiaryDetailViewModel(IUserProvider userProvider,
                                     IServiceProvider serviceProvider,
                                     IEnglishService englishService,
-                                    EnglishDataCache englishDataCache,
                                     DiaryContent diaryContent,
                                     Func<DiaryContent, DiaryViewModel> diaryEditVmFactory)
         {
             _userProvider = userProvider;
             _serviceProvider = serviceProvider;
             _englishService = englishService;
-            _englishDataCache = englishDataCache;
             _diaryEditvmFactory = diaryEditVmFactory;
 
             _diaryContent = diaryContent;
+            _diaryContent.CreatedAt = _diaryContent.CreatedAt.ToLocalTime();
+            _diaryContent.UpdatedAt = _diaryContent.UpdatedAt.ToLocalTime();
             _boundDocument = FlowDocumentSerializer.DeserializeFromBytes(diaryContent.ContentBytes) ?? new FlowDocument();
-            _isAuthor = AuthenticationCache.CurrentUser != null && AuthenticationCache.CurrentUser.Id == diaryContent.UserId;
+            _isAuthor = AuthenticationCache.CurrentUser?.Id != 0 && AuthenticationCache.CurrentUser?.Id == diaryContent.UserId;
             _author = _userProvider.GetUserById(diaryContent.UserId) ?? new User();
 
             EditCommand = new RelayCommand<object>((p)=> true, (p) =>
@@ -122,13 +121,18 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             {
                 if (MessageBox.Show($"Bạn có muốn xóa {DiaryContent.Title}?", "Cảnh báo", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    var index = _englishDataCache.AllDiaries.IndexOf(diaryContent);
+                    var index = EnglishDataCache.AllDiaries.IndexOf(diaryContent);
                     if (index >= 0)
                     {
-                        _englishDataCache.AllDiaries.RemoveAt(index);
+                        EnglishDataCache.AllDiaries.RemoveAt(index);
                     }
                     _englishService.DeleteDiary(DiaryContent.Id);
-                }    
+                }
+
+                if (p is DiaryDetailWindow thisWin)
+                {
+                    thisWin.Close();
+                }
             });
         }
     }

@@ -36,8 +36,8 @@ using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.PracticeFunction.Views;
-using LaboratoryApp.src.Modules.English.PracticeFunction.ViewModels;
+using LaboratoryApp.src.Modules.English.ExerciseFunction.Views;
+using LaboratoryApp.src.Modules.English.ExerciseFunction.ViewModels;
 
 using LaboratoryApp.src.Modules.Maths.Common.Views;
 using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
@@ -64,8 +64,6 @@ using LaboratoryApp.src.Services.English.FlashcardFunction;
 
 using LaboratoryApp.src.Shared;
 using LaboratoryApp.src.Shared.Interface;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
 
 namespace LaboratoryApp
 {
@@ -113,12 +111,6 @@ namespace LaboratoryApp
             service.AddSingleton<IRefreshTokenProvider>(sp => new RefreshTokenProvider(sp.GetRequiredService<IMongoDBProvider>()));
             #endregion
 
-            // Đăng ký các caches
-            #region Caches
-            service.AddSingleton<ChemistryDataCache>();
-            service.AddSingleton<EnglishDataCache>();
-            #endregion
-
             // Đăng ký các ViewModels theo modules
             #region UI
             service.AddTransient<MainWindowViewModel>();
@@ -147,20 +139,19 @@ namespace LaboratoryApp
             service.AddTransient<DiaryViewModel>();
             service.AddTransient<Func<DiaryContent, DiaryViewModel>>(sp => (diary) => ActivatorUtilities.CreateInstance<DiaryViewModel>(sp, diary));
             service.AddTransient<DiaryManagerViewModel>();
-            service.AddTransient<Func<IUserProvider, IServiceProvider, IEnglishService, EnglishDataCache, DiaryContent, DiaryDetailViewModel>>(sp => 
-            (userService, service, engService, engDataCache, diary) =>
+            service.AddTransient<Func<IUserProvider, IServiceProvider, IEnglishService, DiaryContent, DiaryDetailViewModel>>(sp => 
+            (userService, service, engService, diary) =>
             {
                 var diaryVmFactory = sp.GetRequiredService<Func<DiaryContent, DiaryViewModel>>();
-                return new DiaryDetailViewModel(userService, service, engService, engDataCache, diary, diaryVmFactory);
+                return new DiaryDetailViewModel(userService, service, engService, diary, diaryVmFactory);
             });
 
             service.AddTransient<DictionaryViewModel>();
 
+            // Đăng ký các hàm tạo cho FlashcardViewModel và FlashcardStudyViewModel
             service.AddTransient<FlashcardManagerViewModel>();
             service.AddTransient<FlashcardViewModel>();
             service.AddTransient<FlashcardStudyViewModel>();
-
-            // Đăng ký các hàm tạo cho FlashcardViewModel và FlashcardStudyViewModel
             service.AddTransient<Func<FlashcardSet, Action<FlashcardSet>, FlashcardViewModel>>(sp => (set, callback) => new FlashcardViewModel(set, callback));
             service.AddTransient<Func<Flashcard, Action<Flashcard>, Func<DictionaryWindow>, FlashcardViewModel>>(sp =>
             (flashcard, callback, dictFactory) =>
@@ -173,7 +164,9 @@ namespace LaboratoryApp
             service.AddTransient<LectureMainPageViewModel>();
             service.AddTransient<LectureContentViewModel>();
 
-            service.AddTransient<PracticeManagerViewModel>();
+            service.AddTransient<ExerciseSetManagerViewModel>();
+            service.AddTransient<ExerciseManagerViewModel>();
+            service.AddTransient<ExerciseSetViewModel>();
             #endregion
 
             #region Maths
@@ -292,10 +285,15 @@ namespace LaboratoryApp
                 return new LectureMainPage { DataContext = vm };
             });
 
-            service.AddTransient<PracticeManagerPage>(sp =>
+            service.AddTransient<ExerciseSetManagerPage>(sp =>
             {
-                var vm = sp.GetRequiredService<PracticeManagerViewModel>();
-                return new PracticeManagerPage { DataContext = vm };
+                var vm = sp.GetRequiredService<ExerciseSetManagerViewModel>();
+                return new ExerciseSetManagerPage { DataContext = vm };
+            });
+            service.AddTransient<AddExerciseSetWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<ExerciseSetViewModel>();
+                return new AddExerciseSetWindow { DataContext = vm };
             });
             #endregion
 
@@ -340,6 +338,12 @@ namespace LaboratoryApp
 
             // Xây dựng ServiceProvider
             _serviceProvider = service.BuildServiceProvider();
+
+            // Khởi tạo dữ liệu cần thiết trước khi hiển thị MainWindow
+            #region Caches
+            ChemistryDataCache.LoadAllData(_serviceProvider.GetRequiredService<IChemistryService>());
+            EnglishDataCache.LoadAllData(_serviceProvider.GetRequiredService<IEnglishService>());
+            #endregion
 
             // Lấy MainWindowViewModel từ ServiceProvider
             var mainVM = _serviceProvider.GetRequiredService<MainWindowViewModel>();

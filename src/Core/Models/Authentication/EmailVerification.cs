@@ -11,7 +11,7 @@ namespace LaboratoryApp.src.Core.Models.Authentication
     {
         public long Id { get; set; }
         public string OtpCode { get; set; } = string.Empty;
-        public DateTime ExpiryTime { get; set; }
+        public DateTime ExpiresAt { get; set; }
         public bool IsUsed { get; set; } = false;
 
         public OtpType Type { get; set; }

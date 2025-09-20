@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+using LaboratoryApp.src.Core.Models.Chemistry.Common.Enums;
 using LaboratoryApp.src.Core.ViewModels;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels

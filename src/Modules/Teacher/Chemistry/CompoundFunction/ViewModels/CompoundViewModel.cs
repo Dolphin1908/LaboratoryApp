@@ -27,7 +27,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
     {
         private readonly IChemistryService _chemistryService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly ChemistryDataCache _chemistryDataCache;
 
         private List<string> _allUnits;
         private ObservableCollection<Element> _allElements;
@@ -149,13 +148,10 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
         #endregion
 
         public CompoundViewModel(IServiceProvider serviceProvider,
-                                 IChemistryService chemistryService,
-                                 ChemistryDataCache chemistryDataCache
-            )
+                                 IChemistryService chemistryService)
         {
             _serviceProvider = serviceProvider;
             _chemistryService = chemistryService;
-            _chemistryDataCache = chemistryDataCache;
 
             // Khởi tạo các thuộc tính
             _allUnits = new List<string>();
@@ -212,7 +208,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
                 {
                     Composition.Add(new CompoundElement
                     {
-                        Element = AllElements.FirstOrDefault(e => !Composition.Any(c => c.Element.Id == e.Id)) ?? new Element(),
+                        ElementId = AllElements.FirstOrDefault(e => !Composition.Any(c => c.ElementId == e.Id))?.Id ?? 1,
                         Quantity = "1"
                     });
 
@@ -267,7 +263,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
             {
                 if (CanAddDefaultElement())
                 {
-                    Compound.Id = AllCompounds.Count + 1;
+                    Compound.Id = AllCompounds.Max(c => c.Id) + 1;
 
                     if (Composition.Count == 0)
                     {
@@ -303,7 +299,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
                     }).ToList();
 
                     _chemistryService.AddCompound(Compound);
-                    _chemistryDataCache.AllCompounds.Add(Compound);
+                    ChemistryDataCache.AllCompounds.Add(Compound);
 
                     if (p is AddCompoundWindow thisWindow)
                     {
@@ -343,7 +339,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
         private bool CanAddDefaultElement()
         {
             return !Composition
-                .GroupBy(c => c.Element.Id)
+                .GroupBy(c => c.ElementId)
                 .Any(g => g.Count() > 1);
         }
 
@@ -352,9 +348,8 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _chemistryDataCache.LoadAllData(_chemistryService);
-                _allElements = new ObservableCollection<Element>(_chemistryDataCache.AllElements);
-                _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+                _allElements = new ObservableCollection<Element>(ChemistryDataCache.AllElements);
+                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
             }, cancellationToken);
         }
     }

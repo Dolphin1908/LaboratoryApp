@@ -127,11 +127,10 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            IsEnabled="False"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             Background="#18ffff"
                             BorderBrush="#18ffff"
-                            Command="{Binding }">
+                            Command="{Binding NavigateToPracticeCommand}">
                         <TextBlock Text="Bài tập" />
                     </Button>
                 </Grid>
@@ -155,11 +154,12 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
+                            IsEnabled="False"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             Background="#989898"
                             BorderBrush="#989898"
-                            Command="{Binding NavigateBackCommand}">
-                        <TextBlock Text="Trở về" />
+                            Command="{Binding }">
+                        <TextBlock Text="None" />
                     </Button>
                 </Grid>
             </Grid>

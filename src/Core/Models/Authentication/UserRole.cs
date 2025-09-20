@@ -8,8 +8,9 @@ namespace LaboratoryApp.src.Core.Models.Authentication
 {
     public class UserRole : BaseAuthentication
     {
-        public User User { get; set; }
-        public Role Role { get; set; }
+        public long UserId { get; set; }
+        public long RoleId { get; set; }
         public bool IsActive { get; set; }
     }
 }
+ 

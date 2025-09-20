@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LaboratoryApp.src.Core.Models.Chemistry.Enums
+namespace LaboratoryApp.src.Core.Models.Chemistry.Common.Enums
 {
     public enum ReactionNoteType
     {

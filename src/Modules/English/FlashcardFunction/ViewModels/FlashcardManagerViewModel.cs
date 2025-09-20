@@ -238,6 +238,9 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
             OnPropertyChanged(nameof(SelectedFlashcardSet));
         }
 
+        /// <summary>
+        /// Update the suggestions based on the search text.
+        /// </summary>
         private void UpdateSuggestions()
         {
             if (string.IsNullOrWhiteSpace(SearchText))

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.ViewModels;
+
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
@@ -17,6 +18,9 @@ using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
 using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
+using LaboratoryApp.src.Modules.English.ExerciseFunction.Views;
+using LaboratoryApp.src.Modules.English.ExerciseFunction.ViewModels;
+
 using LaboratoryApp.src.Services.English;
 using LaboratoryApp.src.Shared.Interface;
 
@@ -27,25 +31,22 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IEnglishService _englishService;
-        private readonly EnglishDataCache _englishDataCache;
 
         #region Commands
         public ICommand OpenDictionaryCommand { get; set; } // Open Dictionary
         public ICommand NavigateToFlashcardManagerCommand { get; set; } // Navigate to Flashcard
         public ICommand NavigateToLectureCommand { get; set; } // Navigate to Lecture
         public ICommand NavigateToDiaryCommand { get; set; } // Navigate to Diary UI
-        public ICommand NavigateBackCommand { get; set; } // Navigate back
+        public ICommand NavigateToPracticeCommand { get; set; } // Navigate to Practice
         #endregion
 
         public EnglishMainPageViewModel(INavigationService navigationService,
                                         IServiceProvider serviceProvider,
-                                        IEnglishService englishService,
-                                        EnglishDataCache englishDataCache)
+                                        IEnglishService englishService)
         {
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
             _englishService = englishService;
-            _englishDataCache = englishDataCache;
 
             // Open Dictionary Command
             OpenDictionaryCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -59,31 +60,44 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
                 }
                 window.Show();
             });
+
+            // Navigate to Flashcard Manager Command
             NavigateToFlashcardManagerCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var page = _serviceProvider.GetRequiredService<FlashcardManagerPage>();
                 _navigationService.NavigateTo(page);
             });
+
+            // Navigate to Lecture Command
             NavigateToLectureCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Navigate to Lecture Page
                 var page = _serviceProvider.GetRequiredService<LectureMainPage>();
                 _navigationService.NavigateTo(page);
             });
+
+            // Navigate to Diary Command
             NavigateToDiaryCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var page = _serviceProvider.GetRequiredService<DiaryManagerPage>();
-                _navigationService.NavigateTo(page);
                 if (page.DataContext is DiaryManagerViewModel vm && vm is IAsyncInitializable initPage)
                 {
                     // Initialize the diary page asynchronously
                     _ = initPage.InitializeAsync();
                 }
+                _navigationService.NavigateTo(page);
             });
-            NavigateBackCommand = new RelayCommand<object>((p) => true, (p) =>
+
+            // Navigate to Practice Command
+            NavigateToPracticeCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                // Navigate back to the previous page
-                _navigationService.NavigateBack();
+                var page = _serviceProvider.GetRequiredService<ExerciseSetManagerPage>();
+                if (page.DataContext is ExerciseSetManagerViewModel vm && vm is IAsyncInitializable initPage)
+                {
+                    // Initialize the practice page asynchronously
+                    _ = initPage.InitializeAsync();
+                }
+                _navigationService.NavigateTo(page);
             });
         }
 
@@ -92,7 +106,7 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
             await Task.Run(() =>
             {
                 // Load any additional data or perform setup tasks here
-                _englishDataCache.LoadAllData(_englishService);
+                EnglishDataCache.LoadAllData(_englishService);
             }, cancellationToken);
 
             Application.Current.Dispatcher.Invoke(() =>

@@ -32,7 +32,6 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         private readonly IAIService _aiService;
         private readonly IEnglishService _englishService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly EnglishDataCache _englishDataCache;
 
         private bool _isPopupOpen = false;
         private bool _isEdit = false;
@@ -136,13 +135,11 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         /// <param name="englishDataCache"></param>
         public DiaryViewModel(IAIService aiService,
                               IEnglishService englishService, 
-                              IServiceProvider serviceProvider, 
-                              EnglishDataCache englishDataCache)
+                              IServiceProvider serviceProvider)
         {
             _aiService = aiService;
             _englishService = englishService;
             _serviceProvider = serviceProvider;
-            _englishDataCache = englishDataCache;
 
             FontSizes = new ObservableCollection<double>() { 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 };
 
@@ -223,13 +220,11 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         public DiaryViewModel(IAIService aiService,
                               IEnglishService englishService,
                               IServiceProvider serviceProvider,
-                              EnglishDataCache englishDataCache,
                               DiaryContent diaryContent)
         {
             _aiService = aiService;
             _englishService = englishService;
             _serviceProvider = serviceProvider;
-            _englishDataCache = englishDataCache;
 
             FontSizes = new ObservableCollection<double>() { 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 };
 
@@ -312,7 +307,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
             var entry = new DiaryContent
             {
-                Id = _englishDataCache.AllDiaries.Count + 1,
+                Id = EnglishDataCache.AllDiaries.Max(d => d.Id) + 1,
                 Title = this.Title ?? "Untitled",
                 IsPublic = this.IsPublic,
                 UserId = AuthenticationCache.CurrentUser?.Id ?? 0,
@@ -323,7 +318,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             try
             {
                 _englishService.AddDiary(entry);
-                _englishDataCache.AllDiaries.Add(entry);
+                EnglishDataCache.AllDiaries.Add(entry);
                 MessageBox.Show("Diary saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -353,9 +348,9 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 _englishService.UpdateDiary(diaryContent);
 
                 // Cập nhật trong cache
-                var index = _englishDataCache.AllDiaries.FindIndex(d => d.Id == diaryContent.Id);
+                var index = EnglishDataCache.AllDiaries.FindIndex(d => d.Id == diaryContent.Id);
                 if (index >= 0) 
-                    _englishDataCache.AllDiaries[index] = diaryContent;
+                    EnglishDataCache.AllDiaries[index] = diaryContent;
             }
             catch (Exception ex)
             {

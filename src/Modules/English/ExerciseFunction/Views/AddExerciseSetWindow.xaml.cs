@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.src.Modules.English.PracticeFunction.Views
+namespace LaboratoryApp.src.Modules.English.ExerciseFunction.Views
 {
     /// <summary>
-    /// Interaction logic for ExerciseManagerPage.xaml
+    /// Interaction logic for AddExerciseSetWindow.xaml
     /// </summary>
-    public partial class PracticeManagerPage : Page
+    public partial class AddExerciseSetWindow : Window
     {
-        public PracticeManagerPage()
+        public AddExerciseSetWindow()
         {
             InitializeComponent();
         }

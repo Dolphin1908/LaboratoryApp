@@ -26,7 +26,6 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IChemistryService _chemistryService;
-        private readonly ChemistryDataCache _chemistryDataCache;
 
         #region Commands
         public ICommand OpenPeriodicTableCommand { get; set; } // Command to open the periodic table window
@@ -47,13 +46,11 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
         /// <param name="chemistryDataCache"></param>
         public ChemistryMainPageViewModel(INavigationService navigationService, 
                                           IServiceProvider serviceProvider,
-                                          IChemistryService chemistryService,
-                                          ChemistryDataCache chemistryDataCache)
+                                          IChemistryService chemistryService)
         {
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
             _chemistryService = chemistryService;
-            _chemistryDataCache = chemistryDataCache;
 
             #region Commands
             OpenPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -107,7 +104,6 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
             await Task.Run(() =>
             {
                 // Load any additional data or perform setup tasks here
-                _chemistryDataCache.LoadAllData(_chemistryService);
             }, cancellationToken);
 
             Application.Current.Dispatcher.Invoke(() =>

@@ -70,6 +70,12 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
             return user;
         }
 
+        public string GetUsernameById(long id)
+        {
+            var user = GetUserById(id);
+            return user?.Username ?? "Guest";
+        }
+
         public long GetNextUserId()
         {
             var users = GetAllUsers();
