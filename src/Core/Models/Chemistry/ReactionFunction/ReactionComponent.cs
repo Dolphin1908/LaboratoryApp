@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+
 using LaboratoryApp.src.Core.Caches;
+
+using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 
 namespace LaboratoryApp.src.Core.Models.Chemistry
 {
@@ -18,23 +20,20 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 
         public long? CompoundId { get; set; }
 
-        public decimal Coefficient { get; set; } // Hệ số tỉ lệ
+        public string Coefficient { get; set; } // Hệ số tỉ lệ
 
         [NotMapped]
-        public string Formula => ChemistryDataCache.AllElements.FirstOrDefault(e => e.Id == ElementId)?.Formula ?? ChemistryDataCache.AllCompounds.FirstOrDefault(c => c.Id == CompoundId)?.Formula ?? string.Empty;
+        public string Formula => ChemistryDataCache.AllElements.FirstOrDefault(e => e.Id == ElementId)?.Formula ?? ChemistryDataCache.AllCompounds.FirstOrDefault(e => e.Id == CompoundId)?.Formula ?? string.Empty;
 
         [NotMapped]
         public string DisplayCoefficient
         {
             get
             {
-                if (Coefficient == 1)
+                if (Coefficient == "1")
                     return string.Empty; // Do not display coefficient if it is 1
-                
-                if (Coefficient % 1 == 0)
-                    return ((int)Coefficient).ToString(); // Display as integer if it is a whole number
-
-                return Coefficient.ToString("0.##"); // Display up to 2 decimal places
+                else
+                    return Coefficient.ToString(); // Display as integer if it is a whole number
             }
         }
 

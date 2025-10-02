@@ -9,6 +9,8 @@ using System.Windows.Input;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using LaboratoryApp.src.Constants;
+
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Chemistry;
@@ -19,21 +21,24 @@ using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
 
 using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Services.Counter;
+
 using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels
 {
     public class CompoundViewModel : BaseViewModel, IAsyncInitializable
     {
-        private readonly IChemistryService _chemistryService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IChemistryService _chemistryService;
+        private readonly ICounterService _counterService;
 
         private List<string> _allUnits;
         private ObservableCollection<Element> _allElements;
         private ObservableCollection<Compound> _allCompounds;
 
         private Compound _compound;
-        private ObservableCollection<CompoundElement> _composition;
+        private ObservableCollection<CompoundComponentViewModel> _composition;
         private ObservableCollection<PhysicalProperty> _physicalProperties;
         private ObservableCollection<ChemicalProperty> _chemicalProperties;
         private ObservableCollection<CompoundNoteViewModel> _notes;
@@ -109,7 +114,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<CompoundElement> Composition
+        public ObservableCollection<CompoundComponentViewModel> Composition
         {
             get => _composition;
             set
@@ -148,10 +153,12 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
         #endregion
 
         public CompoundViewModel(IServiceProvider serviceProvider,
-                                 IChemistryService chemistryService)
+                                 IChemistryService chemistryService,
+                                 ICounterService counterService)
         {
             _serviceProvider = serviceProvider;
             _chemistryService = chemistryService;
+            _counterService = counterService;
 
             // Khởi tạo các thuộc tính
             _allUnits = new List<string>();
@@ -160,12 +167,10 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
 
             // Khởi tạo các collection
             _compound = new Compound();
-            _composition = new ObservableCollection<CompoundElement>();
+            _composition = new ObservableCollection<CompoundComponentViewModel>();
             _physicalProperties = new ObservableCollection<PhysicalProperty>();
             _chemicalProperties = new ObservableCollection<ChemicalProperty>();
             _notes = new ObservableCollection<CompoundNoteViewModel>();
-
-            _chemistryService = new ChemistryService();
 
             _allUnits = ["g/mol", "°C", "K", "g/cm³", "kg/m³", "g/L", "J/(g·K)", "J/(kg·K)", "mmHg", "Pa", "kPa", "MPa", "atm", "bar", "Torr", "S/m", "g/100 mL", "mol/L", "mg/L", "kJ/mol", "J/g", "Pa·s", "cP"];
             CompoundTypeOptions = new ObservableCollection<SelectableEnumDisplay<CompoundType>>(
@@ -203,24 +208,18 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
 
             #region Commands
             AddElementCommand = new RelayCommand<object>(
-                p => CanAddDefaultElement(),
+                p => CanAddDefaultElement(Composition),
                 p =>
                 {
-                    Composition.Add(new CompoundElement
-                    {
-                        ElementId = AllElements.FirstOrDefault(e => !Composition.Any(c => c.ElementId == e.Id))?.Id ?? 1,
-                        Quantity = "1"
-                    });
-
-                    // ép re-evaluate CanExecute của tất cả command
-                    CommandManager.InvalidateRequerySuggested();
+                    var vm = _serviceProvider.GetRequiredService<CompoundComponentViewModel>();
+                    if (vm is CompoundComponentViewModel compoundComponentVM && compoundComponentVM is IAsyncInitializable init)
+                        _ = init.InitializeAsync();
+                    Composition.Add(vm);
                 });
             RemoveElementCommand = new RelayCommand<object>(p => true, p =>
             {
-                if (p is CompoundElement element)
-                {
+                if (p is CompoundComponentViewModel element)
                     Composition.Remove(element);
-                }
             });
 
             AddPhysicalPropertyCommand = new RelayCommand<object>(p => true, p =>
@@ -261,53 +260,13 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
 
             SaveCommand = new RelayCommand<object>(p => CanSave(), p =>
             {
-                if (CanAddDefaultElement())
+                if (CanAddDefaultElement(Composition))
                 {
-                    Compound.Id = AllCompounds.Max(c => c.Id) + 1;
-
-                    if (Composition.Count == 0)
-                    {
-                        MessageBox.Show("Vui lòng điền đầy đủ thông tin cho các nguyên tố trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    Compound.Composition = Composition.ToList();
-
-                    Compound.CompoundTypes = CompoundTypeOptions.Where(x => x.IsSelected)
-                                                                .Select(x => x.Value)
-                                                                .ToList();
-                    Compound.Phases = PhaseOptions.Where(x => x.IsSelected)
-                                                  .Select(x => x.Value)
-                                                  .ToList();
-
-                    if (PhysicalProperties.Count == 0)
-                    {
-                        MessageBox.Show("Vui lòng điền đầy đủ thông tin cho các thuộc tính vật lý", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    Compound.PhysicalProperties = PhysicalProperties.ToList();
-
-                    if (ChemicalProperties.Count == 0)
-                    {
-                        MessageBox.Show("Vui lòng điền đầy đủ thông tin cho các thuộc tính hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    Compound.ChemicalProperties = ChemicalProperties.ToList();
-                    Compound.Notes = Notes.Select(vm => new CompoundNote
-                    {
-                        NoteType = vm.CompoundNoteType,
-                        Content = vm.CompoundNotes.Select(n => n.Text).ToList()
-                    }).ToList();
-
-                    _chemistryService.AddCompound(Compound);
-                    ChemistryDataCache.AllCompounds.Add(Compound);
+                    SaveCompound();
 
                     if (p is AddCompoundWindow thisWindow)
                     {
                         thisWindow.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Không thể thực thi", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -315,32 +274,64 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
                     MessageBox.Show("Có nguyên tố trùng lặp trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             });
-            _chemistryService = chemistryService;
             #endregion
+        }
+
+        private void SaveCompound()
+        {
+            Compound.Composition = Composition
+                .Select(vm => new CompoundComponent
+                {
+                    ElementId = vm.SelectedElement.Id,
+                    Formula = vm.SelectedElement.Formula,
+                    Quantity = vm.Quantity
+                })
+                .ToList();
+
+            Compound.CompoundTypes = CompoundTypeOptions.Where(x => x.IsSelected)
+                                                        .Select(x => x.Value)
+                                                        .ToList();
+            Compound.Phases = PhaseOptions.Where(x => x.IsSelected)
+                                          .Select(x => x.Value)
+                                          .ToList();
+
+            Compound.PhysicalProperties = PhysicalProperties.ToList();
+
+            Compound.ChemicalProperties = ChemicalProperties.ToList();
+
+            Compound.Notes = Notes.Select(vm => new CompoundNote
+            {
+                NoteType = vm.CompoundNoteType,
+                Content = vm.CompoundNotes.Select(n => n.Text).ToList()
+            }).ToList();
+
+            Compound.Id = _counterService.GetNextId(CollectionName.Compounds);
+
+            _chemistryService.AddCompound(Compound);
+            ChemistryDataCache.AllCompounds.Add(Compound);
+        }
+
+        private bool CanAddDefaultElement(ObservableCollection<CompoundComponentViewModel> list)
+        {
+            var elements = list.Select(vm => vm.SelectedElement)
+                               .Where(item => item != null)
+                               .Where(e => !string.IsNullOrEmpty(e.Formula))
+                               .ToList();
+
+            return !elements.GroupBy(e => e)
+                            .Any(g => g.Count() > 1);
         }
 
         private bool CanSave()
         {
-            if (string.IsNullOrWhiteSpace(Compound.Name))
-            {
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(Compound.Formula))
-            {
-                return false;
-            }
-            if (Compound.MolecularMass.Equals(0))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private bool CanAddDefaultElement()
-        {
-            return !Composition
-                .GroupBy(c => c.ElementId)
-                .Any(g => g.Count() > 1);
+            return Compound != null &&
+                   !string.IsNullOrWhiteSpace(Compound.Name) &&
+                   !string.IsNullOrWhiteSpace(Compound.Formula) &&
+                   !Compound.MolecularMass.Equals(0) &&
+                   Composition.Count > 0 &&
+                   CompoundTypeOptions.Any(c => c.IsSelected) &&
+                   PhaseOptions.Any(p => p.IsSelected) &&
+                   CanAddDefaultElement(Composition);
         }
 
         public async Task InitializeAsync(CancellationToken cancellationToken = default)

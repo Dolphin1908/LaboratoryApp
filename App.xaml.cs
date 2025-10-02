@@ -4,10 +4,12 @@ using System.Windows;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Constants;
+
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+using LaboratoryApp.src.Core.Helpers;
 
 using LaboratoryApp.src.Data.Providers;
 using LaboratoryApp.src.Data.Providers.Interfaces;
@@ -16,6 +18,11 @@ using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 
 using LaboratoryApp.src.Modules.Authentication.Views;
 using LaboratoryApp.src.Modules.Authentication.ViewModels;
+
+using LaboratoryApp.src.Modules.Assignment.Common.Views;
+using LaboratoryApp.src.Modules.Assignment.Common.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.Exercise.Views;
+using LaboratoryApp.src.Modules.Assignment.Exercise.ViewModels;
 
 using LaboratoryApp.src.Modules.Chemistry.Common.Views;
 using LaboratoryApp.src.Modules.Chemistry.Common.ViewModels;
@@ -36,8 +43,6 @@ using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.ExerciseFunction.Views;
-using LaboratoryApp.src.Modules.English.ExerciseFunction.ViewModels;
 
 using LaboratoryApp.src.Modules.Maths.Common.Views;
 using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
@@ -45,6 +50,8 @@ using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
 using LaboratoryApp.src.Modules.Physics.Common.Views;
 using LaboratoryApp.src.Modules.Physics.Common.ViewModels;
 
+using LaboratoryApp.src.Modules.Teacher.Assignment.Views;
+using LaboratoryApp.src.Modules.Teacher.Assignment.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
@@ -57,6 +64,7 @@ using LaboratoryApp.src.UI.Views;
 using LaboratoryApp.src.UI.ViewModels;
 
 using LaboratoryApp.src.Services.AI;
+using LaboratoryApp.src.Services.Assignment;
 using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Services.English;
@@ -64,6 +72,7 @@ using LaboratoryApp.src.Services.English.FlashcardFunction;
 
 using LaboratoryApp.src.Shared;
 using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Services.Counter;
 
 namespace LaboratoryApp
 {
@@ -73,6 +82,9 @@ namespace LaboratoryApp
     public partial class App : Application
     {
         private IServiceProvider? _serviceProvider;
+        private readonly string MongoConnString = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
+        private readonly string _chemDbPath = ConfigurationManager.AppSettings["ChemistryDbPath"];
+        private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -88,27 +100,35 @@ namespace LaboratoryApp
             // Khởi tạo dịch vụ ServiceCollection
             var service = new ServiceCollection();
 
-            // Đăng ký các dịch vụ cần thiết
-            #region Services
-            service.AddSingleton<INavigationService>(navigateService);
-            service.AddSingleton<IAIService, AIService>();
-            service.AddTransient<IAuthenticationService, AuthenticationService>();
-            service.AddSingleton<IChemistryService, ChemistryService>();
-            service.AddSingleton<IFlashcardService, FlashcardService>();
-            service.AddSingleton<IEnglishService, EnglishService>();
+            // Đăng ký các thiết lập cơ sở dữ liệu
+            #region DatabaseSettings
+            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AssignmentMongoDB));
+            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AuthenticationMongoDB));
+            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.ChemistryMongoDB));
+            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.EnglishMongoDB));
+            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.HelperMongoDB));
+            service.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(_chemDbPath));
+            service.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(_englishDbPath));
             #endregion
 
             // Đăng ký các providers
             #region Providers
-            service.AddSingleton<IMongoDBProvider>(sp =>
-            {
-                var conn = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
-                return new MongoDBProvider(conn, "authentication");
-            });
-            service.AddSingleton<IUserProvider>(sp => new UserProvider(sp.GetRequiredService<IMongoDBProvider>()));
-            service.AddSingleton<IRoleProvider>(sp => new RoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
-            service.AddSingleton<IUserRoleProvider>(sp => new UserRoleProvider(sp.GetRequiredService<IMongoDBProvider>()));
-            service.AddSingleton<IRefreshTokenProvider>(sp => new RefreshTokenProvider(sp.GetRequiredService<IMongoDBProvider>()));
+            service.AddSingleton<IUserProvider, UserProvider>();
+            service.AddSingleton<IRoleProvider, RoleProvider>();
+            service.AddSingleton<IUserRoleProvider, UserRoleProvider>();
+            service.AddSingleton<IRefreshTokenProvider, RefreshTokenProvider>();
+            #endregion
+
+            // Đăng ký các dịch vụ cần thiết
+            #region Services
+            service.AddSingleton<INavigationService>(navigateService);
+            service.AddSingleton<IAIService, AIService>();
+            service.AddSingleton<IAssignmentService, AssignmentService>();
+            service.AddSingleton<IAuthenticationService, AuthenticationService>();
+            service.AddSingleton<IChemistryService, ChemistryService>();
+            service.AddSingleton<IFlashcardService, FlashcardService>();
+            service.AddSingleton<IEnglishService, EnglishService>();
+            service.AddSingleton<ICounterService, CounterService>();
             #endregion
 
             // Đăng ký các ViewModels theo modules
@@ -120,6 +140,12 @@ namespace LaboratoryApp
 
             #region Authentication
             service.AddTransient<AuthenticationViewModel>();
+            #endregion
+
+            #region Assignment
+            service.AddTransient<AssignmentMainPageViewModel>();
+            service.AddTransient<ExerciseManagerViewModel>();
+            service.AddTransient<ExerciseSetViewModel>();
             #endregion
 
             #region Chemistry
@@ -163,10 +189,6 @@ namespace LaboratoryApp
 
             service.AddTransient<LectureMainPageViewModel>();
             service.AddTransient<LectureContentViewModel>();
-
-            service.AddTransient<ExerciseSetManagerViewModel>();
-            service.AddTransient<ExerciseManagerViewModel>();
-            service.AddTransient<ExerciseSetViewModel>();
             #endregion
 
             #region Maths
@@ -178,6 +200,7 @@ namespace LaboratoryApp
             #endregion
 
             #region Teacher
+            service.AddTransient<CompoundComponentViewModel>();
             service.AddTransient<CompoundNoteViewModel>();
             service.AddTransient<CompoundViewModel>();
 
@@ -189,7 +212,6 @@ namespace LaboratoryApp
             #region Toolkits
             service.AddTransient<ToolkitsViewModel>();
             #endregion
-
 
             // Đăng ký các Views và ViewModels theo modules
             #region UI
@@ -211,6 +233,19 @@ namespace LaboratoryApp
             {
                 var vm = sp.GetRequiredService<AuthenticationViewModel>();
                 return new AuthenticationWindow { DataContext = vm };
+            });
+            #endregion
+
+            #region Assignment
+            service.AddTransient<AssignmentMainPage>(sp =>
+            {
+                var vm = sp.GetRequiredService<AssignmentMainPageViewModel>();
+                return new AssignmentMainPage { DataContext = vm };
+            });
+            service.AddTransient<AddExerciseSetWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<ExerciseSetViewModel>();
+                return new AddExerciseSetWindow { DataContext = vm };
             });
             #endregion
 
@@ -284,17 +319,6 @@ namespace LaboratoryApp
                 var vm = sp.GetRequiredService<LectureMainPageViewModel>();
                 return new LectureMainPage { DataContext = vm };
             });
-
-            service.AddTransient<ExerciseSetManagerPage>(sp =>
-            {
-                var vm = sp.GetRequiredService<ExerciseSetManagerViewModel>();
-                return new ExerciseSetManagerPage { DataContext = vm };
-            });
-            service.AddTransient<AddExerciseSetWindow>(sp =>
-            {
-                var vm = sp.GetRequiredService<ExerciseSetViewModel>();
-                return new AddExerciseSetWindow { DataContext = vm };
-            });
             #endregion
 
             #region Maths
@@ -334,7 +358,6 @@ namespace LaboratoryApp
                 return new ToolkitsMainPage { DataContext = vm };
             });
             #endregion
-
 
             // Xây dựng ServiceProvider
             _serviceProvider = service.BuildServiceProvider();

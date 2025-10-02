@@ -9,13 +9,14 @@ using System.Windows;
 
 using MongoDB.Driver;
 
-using LaboratoryApp.src.Data.Providers;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+using LaboratoryApp.src.Constants;
 
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Authentication;
 using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 using LaboratoryApp.src.Data.Providers.Interfaces;
 
 namespace LaboratoryApp.src.Services.Authentication
@@ -26,21 +27,30 @@ namespace LaboratoryApp.src.Services.Authentication
         private readonly IRoleProvider _roleProvider;
         private readonly IUserRoleProvider _userRoleProvider;
         private readonly IRefreshTokenProvider _refreshTokenProvider;
-        private readonly IMongoDBProvider _db;
+        private readonly IMongoDBProvider _mongoDb;
 
         public AuthenticationService(IUserProvider userProvider, 
                                      IRoleProvider roleProvider, 
                                      IUserRoleProvider userRoleProvider,
                                      IRefreshTokenProvider refreshTokentProvider,
-                                     IMongoDBProvider db)
+                                     IEnumerable<IMongoDBProvider> mongoDb)
         {
             _userProvider = userProvider;
             _roleProvider = roleProvider;
             _userRoleProvider = userRoleProvider;
             _refreshTokenProvider = refreshTokentProvider;
-            _db = db;
+            _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.AuthenticationMongoDB);
         }
 
+        /// <summary>
+        /// Handle user registration
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="confirmPassword"></param>
+        /// <param name="email"></param>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
         public async Task<bool> RegisterAsync(string username, string password, string confirmPassword, string email, string phoneNumber)
         {
             try
@@ -109,6 +119,12 @@ namespace LaboratoryApp.src.Services.Authentication
             }
         }
 
+        /// <summary>
+        /// Handle user login
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task<AuthenticationResponseDTO?> LoginAsync(string username, string password)
         {
             try
@@ -175,6 +191,11 @@ namespace LaboratoryApp.src.Services.Authentication
             }
         }
 
+        /// <summary>
+        /// Generate a new refresh token
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private RefreshToken GenerateRefreshToken(User user)
         {
             var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
@@ -187,11 +208,15 @@ namespace LaboratoryApp.src.Services.Authentication
             };
         }
 
+        /// <summary>
+        /// Add a new user to the database
+        /// </summary>
+        /// <param name="user"></param>
         private void AddUser(User user)
         {
             try
             {
-                _db.Insert("users", user);
+                _mongoDb.Insert(CollectionName.Users, user);
             }
             catch (Exception ex)
             {
@@ -200,6 +225,10 @@ namespace LaboratoryApp.src.Services.Authentication
             }
         }
 
-        private void AddUserRole(UserRole userRole) => _db.Insert("userRoles", userRole);
+        /// <summary>
+        /// Add a new user role to the database
+        /// </summary>
+        /// <param name="userRole"></param>
+        private void AddUserRole(UserRole userRole) => _mongoDb.Insert(CollectionName.UserRole, userRole);
     }
 }

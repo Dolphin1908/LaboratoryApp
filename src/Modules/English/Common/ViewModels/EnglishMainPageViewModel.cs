@@ -18,8 +18,6 @@ using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
 using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.ExerciseFunction.Views;
-using LaboratoryApp.src.Modules.English.ExerciseFunction.ViewModels;
 
 using LaboratoryApp.src.Services.English;
 using LaboratoryApp.src.Shared.Interface;
@@ -37,7 +35,6 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
         public ICommand NavigateToFlashcardManagerCommand { get; set; } // Navigate to Flashcard
         public ICommand NavigateToLectureCommand { get; set; } // Navigate to Lecture
         public ICommand NavigateToDiaryCommand { get; set; } // Navigate to Diary UI
-        public ICommand NavigateToPracticeCommand { get; set; } // Navigate to Practice
         #endregion
 
         public EnglishMainPageViewModel(INavigationService navigationService,
@@ -87,18 +84,6 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
                 }
                 _navigationService.NavigateTo(page);
             });
-
-            // Navigate to Practice Command
-            NavigateToPracticeCommand = new RelayCommand<object>((p) => true, (p) =>
-            {
-                var page = _serviceProvider.GetRequiredService<ExerciseSetManagerPage>();
-                if (page.DataContext is ExerciseSetManagerViewModel vm && vm is IAsyncInitializable initPage)
-                {
-                    // Initialize the practice page asynchronously
-                    _ = initPage.InitializeAsync();
-                }
-                _navigationService.NavigateTo(page);
-            });
         }
 
         public async Task InitializeAsync(CancellationToken cancellationToken = default)
@@ -106,7 +91,6 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
             await Task.Run(() =>
             {
                 // Load any additional data or perform setup tasks here
-                EnglishDataCache.LoadAllData(_englishService);
             }, cancellationToken);
 
             Application.Current.Dispatcher.Invoke(() =>
