@@ -9,13 +9,16 @@ using System.Data;
 using System.Data.SQLite;
 using System.Configuration;
 using System.Xml.Linq;
+using LaboratoryApp.src.Data.Providers.Interfaces;
 
 
 namespace LaboratoryApp.src.Data.Providers
 {
-    public class SQLiteDataProvider : IDisposable
+    public class SQLiteDataProvider : ISQLiteDataProvider
     {
         private SQLiteConnection _connection;
+
+        public string DatabaseName { get; }
 
         // Constructor
         public SQLiteDataProvider(string dbPath)
@@ -27,6 +30,7 @@ namespace LaboratoryApp.src.Data.Providers
 
             var connectionString = $"Data Source={dbPath};Version=3;";
             _connection = new SQLiteConnection(connectionString);
+            DatabaseName = Path.GetFileNameWithoutExtension(dbPath);
             OpenConnection();
         }
 

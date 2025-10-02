@@ -16,13 +16,12 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
 {
     public class ReactionComponentViewModel : BaseViewModel, IAsyncInitializable
     {
-        private readonly IChemistryService _chemistryService;
         private readonly IServiceProvider _serviceProvider;
 
         private string _searchText;
         private bool _isSuggestionOpen;
         private object _selectedSuggestion;
-        private decimal _coefficient;
+        private string _coefficient;
         private ObservableCollection<object> _searchResult;
         private SubstanceKind _kind;
 
@@ -43,6 +42,26 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
             set
             {
                 _isSuggestionOpen = value;
+                OnPropertyChanged();
+            }
+        }
+        public object SelectedSuggestion
+        {
+            get => _selectedSuggestion;
+            set
+            {
+                _selectedSuggestion = value;
+                OnPropertyChanged();
+                if (value != null)
+                    SelectSuggestion(value);
+            }
+        }
+        public string Coefficient
+        {
+            get => _coefficient;
+            set
+            {
+                _coefficient = value;
                 OnPropertyChanged();
             }
         }
@@ -67,39 +86,17 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 IsSuggestionOpen = false;
             }
         }
-        public decimal Coefficient
-        {
-            get => _coefficient;
-            set
-            {
-                _coefficient = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
-        public object SelectedSuggestion
-        {
-            get => _selectedSuggestion;
-            set
-            {
-                _selectedSuggestion = value;
-                OnPropertyChanged();
-                if (value != null)
-                    SelectSuggestion(value);
-            }
-        }
         public Element SelectedElement { get; set; }
         public Compound SelectedCompound { get; set; }
 
         private ObservableCollection<Element> _allElements;
         private ObservableCollection<Compound> _allCompounds;
 
-        public ReactionComponentViewModel(IChemistryService chemistryService,
-                                          IServiceProvider serviceProvider)
+        public ReactionComponentViewModel(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _chemistryService = chemistryService;
 
             _allElements = new ObservableCollection<Element>();
             _allCompounds = new ObservableCollection<Compound>();
@@ -108,6 +105,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
             Kind = SubstanceKind.Element;
         }
 
+        /// <summary>
+        /// Câp nhật danh sách gợi ý dựa trên văn bản tìm kiếm hiện tại
+        /// </summary>
         private void UpdateSuggestions()
         {
             SearchResult?.Clear();
@@ -118,11 +118,14 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 return;
             }
 
+            // Tìm kiếm phần tử hoặc hợp chất dựa trên loại đã chọn
             if (Kind == SubstanceKind.Element)
             {
+                // Tìm kiếm theo tên hoặc công thức
                 var elements = _allElements
                     .Where(e => e.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) || e.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                     .ToList();
+                // Thêm các phần tử tìm được vào danh sách kết quả
                 foreach (var element in elements)
                 {
                     SearchResult.Add(element);
@@ -130,18 +133,24 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
             }
             else if (Kind == SubstanceKind.Compound)
             {
+                // Tìm kiếm theo công thức
                 var compounds = _allCompounds
                     .Where(c => c.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                     .ToList();
+                // Thêm các hợp chất tìm được vào danh sách kết quả
                 foreach (var compound in compounds)
                 {
                     SearchResult.Add(compound);
                 }
             }
-
+            // Mở danh sách gợi ý nếu có kết quả
             IsSuggestionOpen = SearchResult.Any();
         }
 
+        /// <summary>
+        /// Xử lý khi người dùng chọn một gợi ý từ danh sách
+        /// </summary>
+        /// <param name="item"></param>
         public void SelectSuggestion(object item)
         {
             if (item is Element element)

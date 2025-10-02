@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.ViewModels;
+
+using LaboratoryApp.src.Modules.Assignment.Common.Views;
 using LaboratoryApp.src.Modules.Chemistry.Common.Views;
-using LaboratoryApp.src.Modules.Chemistry.Common.ViewModels;
 using LaboratoryApp.src.Modules.English.Common.Views;
-using LaboratoryApp.src.Modules.English.Common.ViewModels;
 using LaboratoryApp.src.Modules.Physics.Common.Views;
-using LaboratoryApp.src.Modules.Physics.Common.ViewModels;
 using LaboratoryApp.src.Modules.Maths.Common.Views;
-using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
+
 using LaboratoryApp.src.Shared.Interface;
-using System.Windows.Controls;
+using LaboratoryApp.src.Modules.Assignment.Common.ViewModels;
 
 namespace LaboratoryApp.src.UI.ViewModels
 {
@@ -28,10 +28,11 @@ namespace LaboratoryApp.src.UI.ViewModels
         private readonly IServiceProvider _serviceProvider;
 
         #region Commands
-        public ICommand NavigateToMathMainWindow { get; set; } // Math
-        public ICommand NavigateToPhysicsMainWindow { get; set; } // Physics
-        public ICommand NavigateToChemistryMainWindow { get; set; } // Chemistry
-        public ICommand NavigateToEnglishMainWindow { get; set; } // English
+        public ICommand NavigateToMathMainPage { get; set; } // Math
+        public ICommand NavigateToPhysicsMainPage { get; set; } // Physics
+        public ICommand NavigateToChemistryMainPage { get; set; } // Chemistry
+        public ICommand NavigateToEnglishMainPage { get; set; } // English
+        public ICommand NavigateToAssignmentMainPage { get; set; } // Assignment
         #endregion
 
         public DashboardViewModel(INavigationService navigationService, IServiceProvider serviceProvider)
@@ -40,30 +41,41 @@ namespace LaboratoryApp.src.UI.ViewModels
             _serviceProvider = serviceProvider;
 
             // Navigate to the math page
-            NavigateToMathMainWindow = new RelayCommand<object>((p) => true, (p) =>
+            NavigateToMathMainPage = new RelayCommand<object>((p) => true, (p) =>
             {
                 var page = _serviceProvider.GetRequiredService<MathsMainPage>();
                 _navigationService.NavigateTo(page);
             });
 
             // Navigate to the physics page
-            NavigateToPhysicsMainWindow = new RelayCommand<object>((p) => true, (p) =>
+            NavigateToPhysicsMainPage = new RelayCommand<object>((p) => true, (p) =>
             {
                 var page = _serviceProvider.GetRequiredService<PhysicsMainPage>();
                 _navigationService.NavigateTo(page);
             });
 
             // Navigate to the chemistry page
-            NavigateToChemistryMainWindow = new RelayCommand<object>((p) => true, (p) =>
+            NavigateToChemistryMainPage = new RelayCommand<object>((p) => true, (p) =>
             {
                 var page = _serviceProvider.GetRequiredService<ChemistryMainPage>();
                 _navigationService.NavigateTo(page);
             });
 
             // Navigate to the english page
-            NavigateToEnglishMainWindow = new RelayCommand<object>((p) => true, (p) =>
+            NavigateToEnglishMainPage = new RelayCommand<object>((p) => true, (p) =>
             {
                 var page = _serviceProvider.GetRequiredService<EnglishMainPage>();
+                _navigationService.NavigateTo(page);
+            });
+
+            // 
+            NavigateToAssignmentMainPage = new RelayCommand<object>((p) => true, (p) =>
+            {
+                var page = _serviceProvider.GetRequiredService<AssignmentMainPage>();
+                if (page.DataContext is AssignmentMainPageViewModel vm && vm is IAsyncInitializable init)
+                {
+                    _ = init.InitializeAsync();
+                }
                 _navigationService.NavigateTo(page);
             });
         }

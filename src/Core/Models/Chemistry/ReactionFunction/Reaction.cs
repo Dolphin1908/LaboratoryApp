@@ -21,7 +21,7 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 
         public List<ReactionType> ReactionType { get; set; } = new List<ReactionType>();
 
-        public double? YieldPercent { get; set; } // 0-100
+        public string YieldPercent { get; set; } = string.Empty; // 0-100
 
         public DateTime? ReactionDate { get; set; } // DateTime
 

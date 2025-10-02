@@ -9,22 +9,21 @@ using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers
 {
-    public class MongoDBProvider : IMongoDBProvider, IDisposable
+    public class MongoDBProvider : IMongoDBProvider
     {
         private readonly IMongoClient _client;
-        private readonly IMongoDatabase _database;
+        private readonly IMongoDatabase _database; // Remove readonly
+
+        public string DatabaseName { get; }
 
         public MongoDBProvider(string connectionString, string databaseName)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("MongoDB connection string must be provided.", nameof(connectionString));
 
-            if (string.IsNullOrEmpty(databaseName))
-                throw new ArgumentException(
-                    "Connection string must include a default database name, e.g. mongodb+srv://user:pass@.../chemistryDb?...");
-
             _client = new MongoClient(connectionString);
             _database = _client.GetDatabase(databaseName);
+            DatabaseName = databaseName;
         }
 
         public List<T> GetAll<T>(string collectionName)

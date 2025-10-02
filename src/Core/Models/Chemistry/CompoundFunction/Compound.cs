@@ -32,7 +32,7 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 
         public List<CompoundType> CompoundTypes { get; set; } = new List<CompoundType>(); // List of compound types
 
-        public List<CompoundElement> Composition { get; set; } = new List<CompoundElement>(); // List of elements in the compound
+        public List<CompoundComponent> Composition { get; set; } = new List<CompoundComponent>(); // List of elements in the compound
 
         public List<ChemicalProperty> ChemicalProperties { get; set; } = new List<ChemicalProperty>(); // List of chemical properties
 

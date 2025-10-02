@@ -8,14 +8,15 @@ using MongoDB.Driver;
 using LaboratoryApp.src.Core.Models.Authentication;
 using LaboratoryApp.src.Data.Providers.Interfaces;
 using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+using LaboratoryApp.src.Constants;
 
 namespace LaboratoryApp.src.Data.Providers.Authentication
 {
     public class UserProvider : IUserProvider
     {
-        private readonly IMongoDBProvider _db;
+        private readonly IMongoDBProvider _mongoDb;
 
-        public UserProvider(IMongoDBProvider db) => _db = db;
+        public UserProvider(IEnumerable<IMongoDBProvider> mongoDb) => _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.AuthenticationMongoDB);
 
         /// <summary>
         /// Lấy thông tin người dùng từ database theo username
@@ -25,7 +26,7 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
         public Task<User?> GetByUsernameAsync(string username)
         {
             var filter = Builders<User>.Filter.Eq(u => u.Username, username);
-            var user = _db.GetOne("users", filter);
+            var user = _mongoDb.GetOne(CollectionName.Users, filter);
             return Task.FromResult(user);
         }
 
@@ -37,7 +38,7 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
         public Task<User?> GetByEmailAsync(string email)
         {
             var filter = Builders<User>.Filter.Eq(u => u.Email, email);
-            var user = _db.GetOne("users", filter);
+            var user = _mongoDb.GetOne(CollectionName.Users, filter);
             return Task.FromResult(user);
         }
 
@@ -49,7 +50,7 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
         public Task<User?> GetByPhoneNumberAsync(string phoneNumber)
         {
             var filter = Builders<User>.Filter.Eq(u => u.PhoneNumber, phoneNumber);
-            var user = _db.GetOne("users", filter);
+            var user = _mongoDb.GetOne(CollectionName.Users, filter);
             return Task.FromResult(user);
         }
 
@@ -59,14 +60,14 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
         /// <returns></returns>
         public List<User> GetAllUsers()
         {
-            var users = _db.GetAll<User>("users");
+            var users = _mongoDb.GetAll<User>(CollectionName.Users);
             return users;
         }
 
         public User? GetUserById(long id)
         {
             var filter = Builders<User>.Filter.Eq(u => u.Id, id);
-            var user = _db.GetOne("users", filter);
+            var user = _mongoDb.GetOne(CollectionName.Users, filter);
             return user;
         }
 

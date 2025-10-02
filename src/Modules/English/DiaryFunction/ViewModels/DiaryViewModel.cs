@@ -24,6 +24,8 @@ using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
 using LaboratoryApp.src.Services.AI;
 using LaboratoryApp.src.Services.English;
 using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Services.Counter;
+using LaboratoryApp.src.Constants;
 
 namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 {
@@ -31,6 +33,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
     {
         private readonly IAIService _aiService;
         private readonly IEnglishService _englishService;
+        private readonly ICounterService _counterService;
         private readonly IServiceProvider _serviceProvider;
 
         private bool _isPopupOpen = false;
@@ -135,10 +138,12 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         /// <param name="englishDataCache"></param>
         public DiaryViewModel(IAIService aiService,
                               IEnglishService englishService, 
+                              ICounterService counterService,
                               IServiceProvider serviceProvider)
         {
             _aiService = aiService;
             _englishService = englishService;
+            _counterService = counterService;
             _serviceProvider = serviceProvider;
 
             FontSizes = new ObservableCollection<double>() { 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 };
@@ -219,11 +224,13 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         /// <param name="diaryContent"></param>
         public DiaryViewModel(IAIService aiService,
                               IEnglishService englishService,
+                              ICounterService counterService,
                               IServiceProvider serviceProvider,
                               DiaryContent diaryContent)
         {
             _aiService = aiService;
             _englishService = englishService;
+            _counterService = counterService;
             _serviceProvider = serviceProvider;
 
             FontSizes = new ObservableCollection<double>() { 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 };
@@ -307,7 +314,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
             var entry = new DiaryContent
             {
-                Id = EnglishDataCache.AllDiaries.Max(d => d.Id) + 1,
+                Id = _counterService.GetNextId(CollectionName.Diaries),
                 Title = this.Title ?? "Untitled",
                 IsPublic = this.IsPublic,
                 UserId = AuthenticationCache.CurrentUser?.Id ?? 0,

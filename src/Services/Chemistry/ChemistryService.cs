@@ -5,16 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Data.Providers;
+using LaboratoryApp.src.Data.Providers.Interfaces;
 
 namespace LaboratoryApp.src.Services.Chemistry
 {
     public class ChemistryService : IChemistryService
     {
-        private readonly string _chemDbPath = ConfigurationManager.AppSettings["ChemistryDbPath"];
-        private readonly string _mongoDbPath = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
+        private readonly ISQLiteDataProvider _sqliteDb;
+        private readonly IMongoDBProvider _mongoDb;
+
+        public ChemistryService(IEnumerable<ISQLiteDataProvider> sqliteDb,
+                                IEnumerable<IMongoDBProvider> mongoDb)
+        {
+            _sqliteDb = sqliteDb.First(d => d.DatabaseName == DatabaseName.ChemistrySQLite);
+            _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.ChemistryMongoDB);
+        }
 
         #region SQLite
         /// <summary>
@@ -23,8 +32,15 @@ namespace LaboratoryApp.src.Services.Chemistry
         /// <returns>All elements</returns>
         public List<Element> GetAllElements()
         {
-            using var db = new SQLiteDataProvider(_chemDbPath);
-            return db.ExecuteQuery<Element>("SELECT * FROM Elements");
+            try
+            {
+                return _sqliteDb.ExecuteQuery<Element>($"SELECT * FROM {CollectionName.Elements}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching elements: {ex.Message}");
+                return new List<Element>();
+            }
         }
         #endregion
 
@@ -35,10 +51,9 @@ namespace LaboratoryApp.src.Services.Chemistry
         /// <returns>All compounds</returns>
         public List<Compound> GetAllCompounds()
         {
-            try
+            try 
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                return db.GetAll<Compound>("compounds");
+                return _mongoDb.GetAll<Compound>(CollectionName.Compounds);
             }
             catch (Exception ex)
             {
@@ -56,8 +71,7 @@ namespace LaboratoryApp.src.Services.Chemistry
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                db.Insert("compounds", compound);
+                _mongoDb.Insert(CollectionName.Compounds, compound);
             }
             catch (Exception ex)
             {
@@ -74,8 +88,7 @@ namespace LaboratoryApp.src.Services.Chemistry
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                db.Update("compounds", compound.Id, compound);
+                _mongoDb.Update(CollectionName.Compounds, compound.Id, compound);
             }
             catch (Exception ex)
             {
@@ -84,12 +97,15 @@ namespace LaboratoryApp.src.Services.Chemistry
             }
         }
 
+        /// <summary>
+        /// Delete a compound from the MongoDB database.
+        /// </summary>
+        /// <param name="compound"></param>
         public void DeleteCompound(Compound compound)
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                db.Delete<Compound>("compounds", compound.Id); // Explicitly specify the type argument
+                _mongoDb.Delete<Compound>(CollectionName.Compounds, compound.Id); // Explicitly specify the type argument
             }
             catch (Exception ex)
             {
@@ -108,8 +124,7 @@ namespace LaboratoryApp.src.Services.Chemistry
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                return db.GetAll<Reaction>("reactions");
+                return _mongoDb.GetAll<Reaction>(CollectionName.Reactions);
             }
             catch (Exception ex)
             {
@@ -126,8 +141,7 @@ namespace LaboratoryApp.src.Services.Chemistry
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                db.Insert("reactions", reaction);
+                _mongoDb.Insert(CollectionName.Reactions, reaction);
             }
             catch (Exception ex)
             {
@@ -144,8 +158,7 @@ namespace LaboratoryApp.src.Services.Chemistry
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                db.Update("reactions", reaction.Id, reaction);
+                _mongoDb.Update(CollectionName.Reactions, reaction.Id, reaction);
             }
             catch (Exception ex)
             {
@@ -162,8 +175,7 @@ namespace LaboratoryApp.src.Services.Chemistry
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "chemistry");
-                db.Delete<Reaction>("reactions", reaction.Id); // Explicitly specify the type argument
+                _mongoDb.Delete<Reaction>(CollectionName.Reactions, reaction.Id); // Explicitly specify the type argument
             }
             catch (Exception ex)
             {

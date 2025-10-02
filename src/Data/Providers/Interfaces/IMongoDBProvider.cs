@@ -8,8 +8,10 @@ using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers.Interfaces
 {
-    public interface IMongoDBProvider
+    public interface IMongoDBProvider : IDisposable
     {
+        public string DatabaseName { get; }
+
         List<T> GetAll<T>(string collectionName);
         T? GetOne<T>(string collectionName, FilterDefinition<T> filter);
         void Insert<T>(string collectionName, T document);

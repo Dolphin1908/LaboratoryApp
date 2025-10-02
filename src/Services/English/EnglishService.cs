@@ -6,36 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using LaboratoryApp.src.Constants;
+
 using LaboratoryApp.src.Core.Helpers;
 
 using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using LaboratoryApp.src.Core.Models.English.ExerciseFunction;
 
 using LaboratoryApp.src.Data.Providers;
+using LaboratoryApp.src.Data.Providers.Interfaces;
 
 namespace LaboratoryApp.src.Services.English
 {
     public class EnglishService : IEnglishService
     {
-        private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
-        private readonly string _mongoDbPath = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
+        private readonly ISQLiteDataProvider _sqliteDb;
+        private readonly IMongoDBProvider _mongoDb;
 
-        #region ExerciseMongoDB
-        public void AddExerciseSet(ExerciseSet exerciseSet)
+        public EnglishService(IEnumerable<ISQLiteDataProvider> sqliteDb,
+                              IEnumerable<IMongoDBProvider> mongoDb)
         {
-            try
-            {
-                using var db = new MongoDBProvider(_mongoDbPath, "english");
-                db.Insert("exercises", exerciseSet);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while adding an exercise set: {ex.Message}");
-                return;
-            }
+            _sqliteDb = sqliteDb.First(d => d.DatabaseName == DatabaseName.EnglishSQLite);
+            _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.EnglishMongoDB);
         }
-        #endregion
 
         #region DiaryMongoDB
         /// <summary>
@@ -46,8 +39,7 @@ namespace LaboratoryApp.src.Services.English
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "english");
-                db.Insert("diaries", diary);
+                _mongoDb.Insert(CollectionName.Diaries, diary);
             }
             catch (Exception ex)
             {
@@ -64,8 +56,7 @@ namespace LaboratoryApp.src.Services.English
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "english");
-                return db.GetAll<DiaryContent>("diaries");
+                return _mongoDb.GetAll<DiaryContent>(CollectionName.Diaries);
             }
             catch (Exception ex)
             {
@@ -82,8 +73,7 @@ namespace LaboratoryApp.src.Services.English
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "english");
-                db.Update("diaries", diary.Id, diary);
+                _mongoDb.Update(CollectionName.Diaries, diary.Id, diary);
             }
             catch (Exception ex)
             {
@@ -100,8 +90,7 @@ namespace LaboratoryApp.src.Services.English
         {
             try
             {
-                using var db = new MongoDBProvider(_mongoDbPath, "english");
-                db.Delete<DiaryContent>("diaries", id);
+                _mongoDb.Delete<DiaryContent>(CollectionName.Diaries, id);
             }
             catch (Exception ex)
             {
@@ -114,26 +103,54 @@ namespace LaboratoryApp.src.Services.English
         #region DictionarySQLite
         public List<Word> GetAllWords()
         {
-            using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<Word>("SELECT * FROM Words");
+            try
+            {
+                return _sqliteDb.ExecuteQuery<Word>($"SELECT * FROM {CollectionName.Words}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching words: {ex.Message}");
+                return new List<Word>();
+            }
         }
 
         public List<Pos> GetAllPos()
         {
-            using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<Pos>("SELECT * FROM Pos");
+            try
+            {
+                return _sqliteDb.ExecuteQuery<Pos>($"SELECT * FROM {CollectionName.Pos}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching pos: {ex.Message}");
+                return new List<Pos>();
+            }
         }
 
         public List<Example> GetAllExamples()
         {
-            using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<Example>("SELECT * FROM Examples");
+            try
+            {
+                return _sqliteDb.ExecuteQuery<Example>($"SELECT * FROM {CollectionName.Examples}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching examples: {ex.Message}");
+                return new List<Example>();
+            }
         }
 
         public List<Definition> GetAllDefinitions()
         {
-            using var db = new SQLiteDataProvider(_englishDbPath);
-            return db.ExecuteQuery<Definition>("SELECT * FROM Definitions");
+            try
+            {
+                return _sqliteDb.ExecuteQuery<Definition>($"SELECT * FROM {CollectionName.Definitions}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while fetching definitions: {ex.Message}");
+                return new List<Definition>();
+            }
         }
         #endregion
     }
