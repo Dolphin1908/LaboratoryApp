@@ -282,7 +282,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
             Reaction.ReactionNotes = Notes.Select(vm => new ReactionNote
             {
                 NoteType = vm.ReactionNoteType,
-                Content = vm.ReactionNotes.Select(n => n.Text).ToList()
+                Content = vm.ReactionNotes.Select(n => n.Text)
+                                          .Where(rn => !string.IsNullOrWhiteSpace(rn))
+                                          .ToList()
             }).ToList();
 
             Reaction.Condition.OtherConditions = OtherConditions.ToList();
@@ -324,10 +326,12 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
         private bool CanSave()
         {
             // Kiểm tra xem có đủ thông tin để lưu không
-            return Reaction != null &&
-                   Reactants.Count > 0 &&
-                   Products.Count > 0 &&
-                   ReactionTypeOptions.Any(r => r.IsSelected) && CanAddRP(Products) && CanAddRP(Reactants);
+            return Reaction != null && // Phản ứng không null
+                   Reactants.Count > 0 && Reactants.Any(r => (r.SelectedElement != null || r.SelectedCompound != null) && !string.IsNullOrWhiteSpace(r.Coefficient)) && // Có ít nhất 1 chất tham gia và có chất tham gia hợp lệ
+                   Products.Count > 0 && Products.Any(p => (p.SelectedElement != null || p.SelectedCompound != null) && !string.IsNullOrWhiteSpace(p.Coefficient)) && // Có ít nhất 1 sản phẩm và có sản phẩm hợp lệ
+                   (Notes.Count == 0 || Notes.Any(n => n.ReactionNotes.Any(note => !string.IsNullOrWhiteSpace(note.Text)))) && // Ghi chú nếu có thì phải có ít nhất 1 ghi chú hợp lệ
+                   (OtherConditions.Count == 0 || OtherConditions.Any(oc => !string.IsNullOrWhiteSpace(oc.Name) && !string.IsNullOrWhiteSpace(oc.Description))) && // Điều kiện khác nếu có thì phải có ít nhất 1 điều kiện hợp lệ
+                   ReactionTypeOptions.Any(r => r.IsSelected) && CanAddRP(Products) && CanAddRP(Reactants); // Có ít nhất 1 loại phản ứng được chọn và không có chất tham gia hay sản phẩm trùng lặp
         }
 
         public async Task InitializeAsync(CancellationToken cancellationToken = default)

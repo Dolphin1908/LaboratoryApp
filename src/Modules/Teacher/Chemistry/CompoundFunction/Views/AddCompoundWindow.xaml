@@ -315,10 +315,10 @@
                                         <ComboBox materialDesign:HintAssist.Hint="Nguyên tố"
                                                   Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                                   DisplayMemberPath="Name"
-                                                  Width="130"
+                                                  Width="120"
                                                   ItemsSource="{Binding DataContext.AllElements, RelativeSource={RelativeSource AncestorType=Window}}"
                                                   SelectedItem="{Binding SelectedElement, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <TextBox Width="80"
+                                        <TextBox Width="90"
                                                  Margin="5,0"
                                                  HorizontalContentAlignment="Center"
                                                  materialDesign:HintAssist.Hint="Số lượng"

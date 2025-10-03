@@ -28,7 +28,7 @@ namespace LaboratoryApp.src.Services.AI
                 ? SecureConfigHelper.Decrypt(encryptedApiKey)
                 : string.Empty;
 
-            _endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={_decrypted}";
+            _endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={_decrypted}";
         }
 
         public async Task<WordResultDTO> SearchWordWithAIAsync(string word)

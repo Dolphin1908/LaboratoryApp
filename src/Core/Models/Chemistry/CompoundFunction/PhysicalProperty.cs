@@ -14,7 +14,7 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 
         public string Unit { get; set; }
 
-        public double Value { get; set; }
+        public string Value { get; set; }
 
         public string Description { get; set; }
     }
