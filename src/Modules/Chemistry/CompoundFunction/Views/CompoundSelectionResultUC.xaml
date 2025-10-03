@@ -116,12 +116,13 @@
                                     <TextBlock Text="{Binding PropertyName}"
                                                FontSize="16"
                                                FontWeight="DemiBold"/>
-                                    <StackPanel Orientation="Horizontal"
-                                                Visibility="{Binding Unit, Converter={StaticResource NullToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Value}"
+                                                   Visibility="{Binding Value, Converter={StaticResource NullToVisibilityConverter}}"
                                                    FontSize="16" 
                                                    Margin="10,0,5,0"/>
                                         <TextBlock Text="{Binding Unit}"
+                                                   Visibility="{Binding Unit, Converter={StaticResource NullToVisibilityConverter}}"
                                                    FontSize="16"/>
                                     </StackPanel>
                                     <TextBlock Text="{Binding Description}"

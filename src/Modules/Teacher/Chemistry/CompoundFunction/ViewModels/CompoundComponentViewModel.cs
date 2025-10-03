@@ -49,14 +49,16 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
         {
             _serviceProvider = serviceProvider;
 
-            _allElements = new ObservableCollection<Element>();
+            _allElements = new ObservableCollection<Element>(ChemistryDataCache.AllElements);
+
+            SelectedElement = _allElements.First();
         }
 
         public async Task InitializeAsync(CancellationToken cancellationToken = default)
         {
             await Task.Run(() =>
             {
-                _allElements = new ObservableCollection<Element>(ChemistryDataCache.AllElements);
+                // Do nothing for now
             }, cancellationToken);
         }
     }

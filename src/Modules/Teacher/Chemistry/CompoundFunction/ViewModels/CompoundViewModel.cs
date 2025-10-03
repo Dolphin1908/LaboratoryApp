@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using LaboratoryApp.src.Constants;
-
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Core.ViewModels;
-
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
-
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Services.Counter;
-
 using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels
 {
@@ -295,14 +291,23 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
                                           .Select(x => x.Value)
                                           .ToList();
 
-            Compound.PhysicalProperties = PhysicalProperties.ToList();
+            Compound.PhysicalProperties = PhysicalProperties.Select(p => new PhysicalProperty
+                                                            { 
+                                                                PropertyName = p.PropertyName,
+                                                                Unit = string.IsNullOrWhiteSpace(p.Unit) ? null : p.Unit,
+                                                                Value = string.IsNullOrWhiteSpace(p.Value) ? null : p.Value,
+                                                                Description = string.IsNullOrWhiteSpace(p.Description) ? null : p.Description
+                                                            })
+                                                            .ToList();
 
             Compound.ChemicalProperties = ChemicalProperties.ToList();
 
             Compound.Notes = Notes.Select(vm => new CompoundNote
             {
                 NoteType = vm.CompoundNoteType,
-                Content = vm.CompoundNotes.Select(n => n.Text).ToList()
+                Content = vm.CompoundNotes.Select(n => n.Text)
+                                          .Where(cn => !string.IsNullOrWhiteSpace(cn))
+                                          .ToList()
             }).ToList();
 
             Compound.Id = _counterService.GetNextId(CollectionName.Compounds);
@@ -324,11 +329,12 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
 
         private bool CanSave()
         {
-            return Compound != null &&
-                   !string.IsNullOrWhiteSpace(Compound.Name) &&
-                   !string.IsNullOrWhiteSpace(Compound.Formula) &&
-                   !Compound.MolecularMass.Equals(0) &&
-                   Composition.Count > 0 &&
+            return Compound != null && // Kiểm tra Compound không null
+                   !string.IsNullOrWhiteSpace(Compound.Name) && !string.IsNullOrWhiteSpace(Compound.Formula) && !Compound.MolecularMass.Equals(0) && // Kiểm tra các thuộc tính bắt buộc
+                   Composition.Count > 0 && Composition.Any(c => c.SelectedElement != null && !string.IsNullOrWhiteSpace(c.Quantity)) &&
+                   (PhysicalProperties.Count == 0 || PhysicalProperties.All(pp => !string.IsNullOrWhiteSpace(pp.PropertyName) && (!string.IsNullOrWhiteSpace(pp.Value) || !string.IsNullOrWhiteSpace(pp.Description)))) &&
+                   (ChemicalProperties.Count == 0 || ChemicalProperties.All(cp => !string.IsNullOrWhiteSpace(cp.PropertyName) && !string.IsNullOrWhiteSpace(cp.Description))) &&
+                   (Notes.Count == 0 || Notes.Any(n => n.CompoundNotes.Any(cn => !string.IsNullOrWhiteSpace(cn.Text)))) &&
                    CompoundTypeOptions.Any(c => c.IsSelected) &&
                    PhaseOptions.Any(p => p.IsSelected) &&
                    CanAddDefaultElement(Composition);
