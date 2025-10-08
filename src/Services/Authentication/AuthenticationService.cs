@@ -55,9 +55,11 @@ namespace LaboratoryApp.src.Services.Authentication
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) ||
-                string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(email) ||
-                string.IsNullOrWhiteSpace(phoneNumber))
+                if (string.IsNullOrWhiteSpace(username) || 
+                    string.IsNullOrWhiteSpace(password) ||
+                    string.IsNullOrWhiteSpace(confirmPassword) || 
+                    string.IsNullOrWhiteSpace(email) ||
+                    string.IsNullOrWhiteSpace(phoneNumber))
                 {
                     MessageBox.Show("All fields are required");
                     return false;
@@ -98,7 +100,7 @@ namespace LaboratoryApp.src.Services.Authentication
                     Password = SecureConfigHelper.Encrypt(password),
                 };
 
-                AddUser(user);
+                await _userProvider.CreateNewUser(user);
 
                 var userRole = new UserRole
                 {
@@ -108,7 +110,7 @@ namespace LaboratoryApp.src.Services.Authentication
                     IsActive = true,
                 };
 
-                AddUserRole(userRole);
+                await _userRoleProvider.CreateUserRole(userRole);
 
                 return true;
             }
@@ -207,28 +209,5 @@ namespace LaboratoryApp.src.Services.Authentication
                 CreatedAt = DateTime.UtcNow
             };
         }
-
-        /// <summary>
-        /// Add a new user to the database
-        /// </summary>
-        /// <param name="user"></param>
-        private void AddUser(User user)
-        {
-            try
-            {
-                _mongoDb.Insert(CollectionName.Users, user);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error adding user: {ex.Message}");
-                return;
-            }
-        }
-
-        /// <summary>
-        /// Add a new user role to the database
-        /// </summary>
-        /// <param name="userRole"></param>
-        private void AddUserRole(UserRole userRole) => _mongoDb.Insert(CollectionName.UserRole, userRole);
     }
 }

@@ -1,91 +1,109 @@
-﻿using System;
+﻿using LaboratoryApp.src.Constants;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Assignment;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Authorization;
+using LaboratoryApp.src.Core.Models.Authorization.Enums;
+using LaboratoryApp.src.Data.Providers;
+using LaboratoryApp.src.Data.Providers.Assignment;
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+using LaboratoryApp.src.Data.Providers.Authorization;
+using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Services.Counter;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Assignment;
-
-using LaboratoryApp.src.Data.Providers;
-using LaboratoryApp.src.Data.Providers.Interfaces;
 
 namespace LaboratoryApp.src.Services.Assignment
 {
     public class AssignmentService : IAssignmentService
     {
-        private readonly IMongoDBProvider _mongoDb;
+        private readonly IAssignmentProvider _assignmentProvider;
+        private readonly IExerciseSetAccessProvider _exerciseSetAccessProvider;
+        private readonly ICounterService _counterService;
+        private readonly IUserProvider _userProvider;
 
-        public AssignmentService(IEnumerable<IMongoDBProvider> mongoDb) => _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.AssignmentMongoDB);
+        public AssignmentService (IAssignmentProvider assignmentProvider,
+                                  IExerciseSetAccessProvider exerciseSetAccessProvider,
+                                  ICounterService counterService,
+                                  IUserProvider userProvider)
+        {
+            _assignmentProvider = assignmentProvider;
+            _exerciseSetAccessProvider = exerciseSetAccessProvider;
+            _counterService = counterService;
+            _userProvider = userProvider;
+        }
+
+
 
         #region ExerciseSet
-        /// <summary>
-        /// Handle adding a new exercise set to the database
-        /// </summary>
-        /// <param name="set"></param>
-        public void AddExerciseSet(ExerciseSet set)
+        public void SaveNewExerciseSet(ExerciseSet set)
         {
+            set.Id = _counterService.GetNextId(CollectionName.ExerciseSets);
+
+            if (string.IsNullOrWhiteSpace(set.Title))
+            {
+                MessageBox.Show("Vui lòng nhập tên bộ!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            set.OwnerId = AuthenticationCache.CurrentUser?.Id ?? 0;
+            set.Password = string.IsNullOrEmpty(set.Password) ? null : SecureConfigHelper.Encrypt(set.Password);
+            set.Code = CodeGenerator.GenerateCode(8); // Tạo mã code 8 ký tự
+
+            var newAccess = new ExerciseSetAccess
+            {
+                ExerciseSetId = set.Id,
+                UserId = set.OwnerId,
+                Level = AccessLevel.Owner
+            };
+
+            // Lưu bộ bài tập
             try
             {
-                _mongoDb.Insert(CollectionName.ExerciseSets, set);
+                _assignmentProvider.CreateNewExerciseSet(set);
+                _exerciseSetAccessProvider.CreateNewAccess(newAccess);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while adding a exercise set: {ex.Message}");
+                MessageBox.Show($"Lỗi khi lưu bộ bài tập: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }
 
-        /// <summary>
-        /// Handle updating an existing exercise set in the database
-        /// </summary>
-        /// <param name="set"></param>
-        public void UpdateExerciseSet(ExerciseSet set)
+        public List<ExerciseSet> GetAllExerciseSetsByUserId(long userId)
         {
-            try
+            var accessList = AuthorizationCache.AllExerciseSetAccess.Where(esa => esa.UserId == userId);
+            var results = new List<ExerciseSet>();
+
+            foreach(var access in accessList)
             {
-                _mongoDb.Update(CollectionName.ExerciseSets, set.Id, set);
+                var sets = AssignmentCache.AllExerciseSets.Where(es => es.Id == access.ExerciseSetId);
+                foreach(var set in sets)
+                {
+                    var owner = _userProvider.GetUserById(set.OwnerId);
+                    set.OwnerInfo = new UserDTO
+                    {
+                        Id = owner.Id,
+                        Username = owner.Username,
+                        Email = owner.Email,
+                        PhoneNumber = owner.PhoneNumber,
+                        DateOfBirth = owner.DateOfBirth,
+                    };
+                    results.Add(set);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while updating the exercise set: {ex.Message}");
-                return;
-            }
+            return results;
         }
 
-        /// <summary>
-        /// Handle retrieving all exercise sets from the database
-        /// </summary>
-        public List<ExerciseSet> GetAllExerciseSets()
+        public void DeleteExerciseSet(long setId)
         {
-            try
-            {
-                return _mongoDb.GetAll<ExerciseSet>(CollectionName.ExerciseSets);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while retrieving exercise sets: {ex.Message}");
-                return new List<ExerciseSet>();
-            }
-        }
 
-        /// <summary>
-        /// Handle deleting an exercise set from the database
-        /// </summary>
-        /// <param name="id"></param>
-        public void DeleteExerciseSet(long id)
-        {
-            try
-            {
-                _mongoDb.Delete<ExerciseSet>(CollectionName.ExerciseSets, id); // TODO: Replace 0 with actual id
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while deleting the exercise set: {ex.Message}");
-                return;
-            }
         }
         #endregion
 

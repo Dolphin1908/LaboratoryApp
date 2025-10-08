@@ -13,8 +13,8 @@ namespace LaboratoryApp.src.Core.Helpers
 
         public static string GenerateCode(int length)
         {
-            return new string(Enumerable.Range(0, length)
-              .Select(_ => _chars[_random.Next(_chars.Length)]).ToArray());
+            return new string(Enumerable.Repeat(_chars, length)
+                                        .Select(s => s[_random.Next(s.Length)]).ToArray());
         }
     }
 }

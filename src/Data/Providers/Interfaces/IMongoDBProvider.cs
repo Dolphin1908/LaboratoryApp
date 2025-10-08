@@ -13,6 +13,7 @@ namespace LaboratoryApp.src.Data.Providers.Interfaces
         public string DatabaseName { get; }
 
         List<T> GetAll<T>(string collectionName);
+        List<T> GetAll<T>(string collectionName, FilterDefinition<T> filter);
         T? GetOne<T>(string collectionName, FilterDefinition<T> filter);
         void Insert<T>(string collectionName, T document);
         void Update<T>(string collectionName, long id, T document);

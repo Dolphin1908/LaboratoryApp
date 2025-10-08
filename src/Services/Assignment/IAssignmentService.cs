@@ -10,10 +10,8 @@ namespace LaboratoryApp.src.Services.Assignment
     public interface IAssignmentService
     {
         #region ExerciseSet
-        void AddExerciseSet(ExerciseSet set);
-        void UpdateExerciseSet(ExerciseSet set);
-        List<ExerciseSet> GetAllExerciseSets();
-        void DeleteExerciseSet(long id);
+        void SaveNewExerciseSet(ExerciseSet set);
+        List<ExerciseSet> GetAllExerciseSetsByUserId(long userId);
         #endregion
 
         #region Exercise

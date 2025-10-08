@@ -35,6 +35,15 @@ namespace LaboratoryApp.src.Data.Providers
             return collection.Find(FilterDefinition<T>.Empty).ToList();
         }
 
+        public List<T> GetAll<T>(string collectionName, FilterDefinition<T> filter)
+        {
+            if (string.IsNullOrEmpty(collectionName))
+                throw new ArgumentException("Collection name must be provided.", nameof(collectionName));
+
+            var collection = _database.GetCollection<T>(collectionName);
+            return collection.Find(filter).ToList();
+        }
+
         public T? GetOne<T>(string collectionName, FilterDefinition<T> filter)
         {
             if (string.IsNullOrEmpty(collectionName))
@@ -75,6 +84,16 @@ namespace LaboratoryApp.src.Data.Providers
             var collection = _database.GetCollection<T>(collectionName);
             var filter = Builders<T>.Filter.Eq("_id", id);
             collection.DeleteOne(filter);
+        }
+
+        public void DeleteAll<T>(string collectionName, string field, long id)
+        {
+            if(string.IsNullOrEmpty(collectionName))
+                throw new ArgumentException("Collection name must be provided.", nameof(collectionName));
+
+            var collection = _database.GetCollection<T>(collectionName);
+            var filter = Builders<T>.Filter.Eq(field, id);
+            collection.DeleteMany(filter);
         }
 
         public void Dispose()

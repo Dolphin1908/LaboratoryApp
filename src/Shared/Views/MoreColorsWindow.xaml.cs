@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LaboratoryApp.src.Modules.Teacher.Assignment.Views
+namespace LaboratoryApp.src.Shared.Views
 {
     /// <summary>
-    /// Interaction logic for AddExerciseSetWindow.xaml
+    /// Interaction logic for MoreColorsWindow.xaml
     /// </summary>
-    public partial class AddExerciseSetWindow : Window
+    public partial class MoreColorsWindow : Window
     {
-        public AddExerciseSetWindow()
+        public MoreColorsWindow()
         {
             InitializeComponent();
         }

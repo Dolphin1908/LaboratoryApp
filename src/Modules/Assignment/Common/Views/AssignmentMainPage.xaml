@@ -121,7 +121,7 @@
                                                  Height="20"
                                                  VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1"
-                                   Text="Nhập bài học"
+                                   Text="Nhập bộ"
                                    Margin="5,0,0,0"
                                    VerticalAlignment="Center"/>
                     </Grid>
@@ -149,7 +149,7 @@
                                                  Height="20"
                                                  VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1"
-                                   Text="Thêm bài học"
+                                   Text="Thêm bộ mới"
                                    Margin="5,0,0,0"
                                    VerticalAlignment="Center"/>
                     </Grid>
@@ -161,5 +161,33 @@
                        Background="Gray"
                        BorderBrush="Gray"/>
         </StackPanel>
+
+        <ItemsControl Grid.Row="1"
+                      ItemsSource="{Binding ExerciseSets}"
+                      Margin="5,0"
+                      VerticalAlignment="Top">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Background="Transparent"
+                            BorderBrush="Black"
+                            Margin="5"
+                            Command="{Binding DataContext.OpenExerciseSetCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                            CommandParameter="{Binding .}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Title}"/>
+                            <TextBlock Text="-"
+                                       Margin="5,0"/>
+                            <TextBlock Text="{Binding OwnerInfo.Username}"
+                                       Foreground="MediumPurple"/>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Page>

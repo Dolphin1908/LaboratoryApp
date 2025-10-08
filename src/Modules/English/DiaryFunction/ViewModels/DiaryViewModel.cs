@@ -18,13 +18,18 @@ using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.Models.English.DiaryFunction.DTOs;
 using LaboratoryApp.src.Core.ViewModels;
+
 using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
+
 using LaboratoryApp.src.Services.AI;
-using LaboratoryApp.src.Services.English;
-using LaboratoryApp.src.Shared.Interface;
 using LaboratoryApp.src.Services.Counter;
+using LaboratoryApp.src.Services.English;
+
+using LaboratoryApp.src.Shared.Views;
+using LaboratoryApp.src.Shared.Interface;
+
 using LaboratoryApp.src.Constants;
 
 namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
@@ -39,6 +44,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         private bool _isPopupOpen = false;
         private bool _isEdit = false;
         private bool _isPublic = false;
+        private string _selectColor = "#000000";
         private string _selectedColor = "#000000";
         private double _selectedFontSize = 13;
         private TextAlignment _selectedAlignment = TextAlignment.Left;
@@ -72,6 +78,15 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             set
             {
                 _isPublic = value;
+                OnPropertyChanged();
+            }
+        }
+        public string SelectColor
+        {
+            get { return _selectColor; }
+            set
+            {
+                _selectColor = value;
                 OnPropertyChanged();
             }
         }
@@ -124,6 +139,9 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
         #region Commands
         public ICommand OpenFontColorCommand { get; set; }
+        public ICommand OpenMoreFontColorCommand { get; set; }
+        public ICommand SelectMoreColorCommand { get; set; }
+        public ICommand CancelMoreColorCommand { get; set; }
         public ICommand SelectColorCommand { get; set; }
         public ICommand SelectAlignCommand { get; set; }
         public ICommand OpenDictionaryCommand { get; set; }
@@ -154,6 +172,35 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             OpenFontColorCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 IsPopupOpen = !IsPopupOpen;
+            });
+
+            OpenMoreFontColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                IsPopupOpen = !IsPopupOpen;
+                var moreColorWindow = new MoreColorsWindow
+                {
+                    DataContext = this
+                };
+                moreColorWindow.ShowDialog();
+            });
+
+            SelectMoreColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                SelectedColor = SelectColor;
+                if (p is MoreColorsWindow window)
+                {
+                    SelectColor = "#000000";
+                    window.Close();
+                }
+            });
+
+            CancelMoreColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                if (p is MoreColorsWindow window)
+                {
+                    SelectColor = "#000000";
+                    window.Close();
+                }   
             });
 
             SelectColorCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -241,6 +288,35 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 IsPopupOpen = !IsPopupOpen;
             });
 
+            OpenMoreFontColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                IsPopupOpen = !IsPopupOpen;
+                var moreColorWindow = new MoreColorsWindow
+                {
+                    DataContext = this
+                };
+                moreColorWindow.ShowDialog();
+            });
+
+            SelectMoreColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                SelectedColor = SelectColor;
+                if (p is MoreColorsWindow window)
+                {
+                    SelectColor = "#000000";
+                    window.Close();
+                }
+            });
+
+            CancelMoreColorCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                if (p is MoreColorsWindow window)
+                {
+                    SelectColor = "#000000";
+                    window.Close();
+                }
+            });
+
             SelectColorCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 SelectedColor = p as string;
@@ -290,7 +366,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 }
             });
 
-            SaveCommand = new RelayCommand<object>((p) => true, (p) =>
+            SaveCommand = new RelayCommand<object>((p) => CanSave(), (p) =>
             {
                 if (MessageBox.Show("Do you want to save changes?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     SaveChanges(diaryContent);
@@ -363,6 +439,12 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
             {
                 MessageBox.Show($"Error updating diary: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private bool CanSave()
+        {
+            // Kiểm tra điều kiện để lưu nhật ký
+            return !string.IsNullOrWhiteSpace(Title);
         }
     }
 }

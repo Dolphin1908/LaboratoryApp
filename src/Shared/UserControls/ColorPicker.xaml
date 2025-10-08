@@ -751,7 +751,8 @@
                     Margin="0,0,0,3"
                     Height="15"
                     Background="Transparent"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    Command="{Binding OpenMoreFontColorCommand}">
 
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/resources/Images/Icons/color.png"

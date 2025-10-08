@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,9 @@ namespace LaboratoryApp.src.Core.Models.Assignment
 
         #region Settings
         public string? Password { get; set; } // Optional password for access
-        public ExerciseType Type { get; set; }
+        public ExerciseType Type { get; set; } // e.g., Quiz, Test, Practice
+        public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Easy; // Overall difficulty level. E.g., Easy, Medium, Hard, Insane
         public List<TagType> Tags { get; set; } = new(); // Tags for categorization and search
-        public int MaxScore => Questions.Sum(q => q.Score);
 
         public int TimeLimitMinutes { get; set; } // Optional time limit for the exercise
         public bool ShuffleQuestions { get; set; } = true; // True to shuffle questions each time
@@ -29,7 +30,10 @@ namespace LaboratoryApp.src.Core.Models.Assignment
         #endregion
 
         #region Content
-        public List<Question> Questions { get; set; }
+        public List<long> QuestionIds { get; set; }
+
+        [NotMapped]
+        public int Count => QuestionIds.Count; // Total number of questions
         #endregion
     }
 }
