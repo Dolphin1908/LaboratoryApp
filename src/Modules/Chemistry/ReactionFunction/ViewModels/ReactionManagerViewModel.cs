@@ -30,6 +30,8 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         private string _products;
         private bool _isTeacher;
 
+        private Func<Reaction, ReactionSelectionResultViewModel> _selectedReactionVmFactory;
+
         private ObservableCollection<Reaction> _allReactions;
         private ObservableCollection<Reaction> _reactions;
 
@@ -83,10 +85,12 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         /// </summary>
         /// <param name="serviceProvider"></param>
         public ReactionManagerViewModel(IServiceProvider serviceProvider,
-                                        IChemistryService chemistryService)
+                                        IChemistryService chemistryService,
+                                        Func<Reaction, ReactionSelectionResultViewModel> selectedReactionVmFactory)
         {
             _serviceProvider = serviceProvider;
             _chemistryService = chemistryService;
+            _selectedReactionVmFactory = selectedReactionVmFactory;
 
             _reactions = new ObservableCollection<Reaction>();
             _allReactions = new ObservableCollection<Reaction>();
@@ -171,12 +175,16 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         /// <param name="selectedReaction"></param>
         private void SelectReaction(Reaction selectedReaction)
         {
-            var vm = new ReactionSelectionResultViewModel(selectedReaction);
-            var window = new ReactionSelectionResultWindow
-            {
-                DataContext = vm
-            };
+            var window = _serviceProvider.GetRequiredService<ReactionSelectionResultWindow>();
+            window.DataContext = _selectedReactionVmFactory(selectedReaction);
             window.Show();
+
+            //var vm = new ReactionSelectionResultViewModel(selectedReaction);
+            //var window = new ReactionSelectionResultWindow
+            //{
+            //    DataContext = vm
+            //};
+            //window.Show();
         }
 
         /// <summary>

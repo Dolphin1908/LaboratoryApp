@@ -15,6 +15,10 @@ namespace LaboratoryApp.src.Constants
         public const string RefreshTokens = "refresh_tokens";
         #endregion
 
+        #region Authorization
+        public const string ExerciseSetAccess = "exercise_set_access";
+        #endregion
+
         #region Chemistry
         public const string Compounds = "compounds";
         public const string Elements = "elements";

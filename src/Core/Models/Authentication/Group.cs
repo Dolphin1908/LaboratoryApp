@@ -11,6 +11,8 @@ namespace LaboratoryApp.src.Core.Models.Authentication
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        public long OwnerId { get; set; } // User who created the group
+
         public List<long> Members { get; set; } = new();
     }
 }

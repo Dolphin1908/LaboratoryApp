@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Core.Models.Assignment.Enums
 {
-    public enum ExerciseType
+    public enum QuestionType
     {
         [Display(Name = "Trắc nghiệm")]        MultipleChoice,   // bao gồm cả True/False, Matching
         [Display(Name = "Điền vào chỗ trống")] FillInBlank,      // bao gồm Dictation, ShortAnswer
@@ -16,7 +16,7 @@ namespace LaboratoryApp.src.Core.Models.Assignment.Enums
         [Display(Name = "Bài nghe")]           Listening         // bài nghe kèm nhiều câu hỏi
     }
 
-    public enum ExerciseSetType
+    public enum ExerciseType
     {
         [Display(Name = "Luyện tập")] Practice, // Luyện tập
         [Display(Name = "Kiểm tra")] Test,     // Kiểm tra

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LaboratoryApp.src.Core.Models.Assignment;
-using LaboratoryApp.src.Services.Assignment;
+using LaboratoryApp.src.Data.Providers.Assignment;
 
 namespace LaboratoryApp.src.Core.Caches
 {
@@ -15,11 +15,11 @@ namespace LaboratoryApp.src.Core.Caches
 
         public static List<ExerciseSet> AllExerciseSets { get; set; } = new();
 
-        public static void LoadAllData(IAssignmentService service)
+        public static void LoadAllData(IAssignmentProvider provider)
         {
             lock (_lock)
             {
-                AllExerciseSets = service.GetAllExerciseSets();
+                AllExerciseSets = provider.GetAllExerciseSets().GetAwaiter().GetResult();
             }
         }
     }

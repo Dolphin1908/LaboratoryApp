@@ -8,26 +8,25 @@ using System.Windows;
 using System.Windows.Input;
 
 using LaboratoryApp.src.Constants;
-
+using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Assignment;
 using LaboratoryApp.src.Core.Models.Assignment.Enums;
 using LaboratoryApp.src.Core.ViewModels;
 
-using LaboratoryApp.src.Modules.Teacher.Assignment.Views;
+using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
 
 using LaboratoryApp.src.Services.Assignment;
 using LaboratoryApp.src.Services.Counter;
 
 using LaboratoryApp.src.Shared.Interface;
 
-namespace LaboratoryApp.src.Modules.Teacher.Assignment.ViewModels
+namespace LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels
 {
     public class ExerciseSetViewModel : BaseViewModel, IAsyncInitializable
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IAssignmentService _assignmentService;
-        private readonly ICounterService _counterService;
 
         private ExerciseSet _exerciseSet;
 
@@ -41,7 +40,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.ViewModels
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<SelectableEnumDisplay<ExerciseSetType>> ExerciseTypeOptions { get; }
         public ObservableCollection<SelectableEnumDisplay<DifficultyLevel>> DifficultyLevelOptions { get; }
         #endregion
 
@@ -53,28 +51,19 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.ViewModels
         /// Constructor
         /// </summary>
         public ExerciseSetViewModel(IServiceProvider serviceProvider,
-                                    IAssignmentService assignmentService,
-                                    ICounterService counterService)
+                                    IAssignmentService assignmentService)
         {
             _serviceProvider = serviceProvider;
             _assignmentService = assignmentService;
-            _counterService = counterService;
 
             _exerciseSet = new ExerciseSet
             {
                 Title = string.Empty,
                 Description = string.Empty,
                 Code = string.Empty,
-                Password = null,
-                IsPublic = false,
-                RequireLogin = false
+                Password = null
             };
 
-            ExerciseTypeOptions = new ObservableCollection<SelectableEnumDisplay<ExerciseSetType>>(
-                Enum.GetValues(typeof(ExerciseSetType))
-                    .Cast<ExerciseSetType>()
-                    .Select(e => new SelectableEnumDisplay<ExerciseSetType>(e))
-            );
             DifficultyLevelOptions = new ObservableCollection<SelectableEnumDisplay<DifficultyLevel>>(
                 Enum.GetValues(typeof(DifficultyLevel))
                     .Cast<DifficultyLevel>()
@@ -85,27 +74,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.ViewModels
             #region Commands
             SaveCommand = new RelayCommand<object>(p => true, (p) =>
             {
-                ExerciseSet.Id = _counterService.GetNextId(CollectionName.ExerciseSets);
-
-                if (string.IsNullOrWhiteSpace(ExerciseSet.Title))
-                {
-                    MessageBox.Show("Vui lòng nhập tên bộ!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                ExerciseSet.Password = string.IsNullOrEmpty(ExerciseSet.Password) ? null : SecureConfigHelper.Encrypt(ExerciseSet.Password);
-                ExerciseSet.Code = GenerateUniqueCode();
-
-                // Lưu bộ bài tập
-                try
-                { 
-                    _assignmentService.AddExerciseSet(ExerciseSet); 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Lỗi khi lưu bộ bài tập: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                _assignmentService.SaveNewExerciseSet(ExerciseSet);
 
                 if (p is AddExerciseSetWindow window)
                 {
@@ -113,13 +82,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.ViewModels
                 }
             });
             #endregion
-        }
-
-        private string GenerateUniqueCode()
-        {
-            string code = string.Empty;
-
-            return code;
         }
 
         /// <summary>

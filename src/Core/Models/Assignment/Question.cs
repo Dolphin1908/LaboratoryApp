@@ -15,6 +15,7 @@ namespace LaboratoryApp.src.Core.Models.Assignment
         public string Explanation { get; set; } = string.Empty;
 
         public int Score { get; set; } = 1; // Default score for the question
+        public QuestionType Type { get; set; } // e.g., MultipleChoice, FillInTheBlank, Writing, Reading, Listening
         public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Easy;
         public List<string>? Attachments { get; set; } = new(); // URLs or file paths to attachments
     }

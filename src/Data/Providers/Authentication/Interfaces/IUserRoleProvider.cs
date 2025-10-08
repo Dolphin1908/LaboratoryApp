@@ -10,6 +10,7 @@ namespace LaboratoryApp.src.Data.Providers.Authentication.Interfaces
     public interface IUserRoleProvider
     {
         Task<UserRole?> GetUserRolesAsync(long userId);
+        Task CreateUserRole(UserRole userRole);
         long GetNextUserRoleId();
     }
 }

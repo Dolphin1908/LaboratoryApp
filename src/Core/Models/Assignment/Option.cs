@@ -8,7 +8,6 @@ namespace LaboratoryApp.src.Core.Models.Assignment
 {
     public class Option
     {
-        public long Id { get; set; }
         public string Text { get; set; } = string.Empty;
         public bool IsCorrect { get; set; }
     }

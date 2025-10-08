@@ -77,6 +77,12 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
             return user?.Username ?? "Guest";
         }
 
+        public Task CreateNewUser(User user)
+        {
+            _mongoDb.Insert(CollectionName.Users, user);
+            return Task.CompletedTask;
+        }
+
         public long GetNextUserId()
         {
             var users = GetAllUsers();

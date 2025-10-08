@@ -312,6 +312,8 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
 
             Compound.Id = _counterService.GetNextId(CollectionName.Compounds);
 
+            Compound.OwnerId = AuthenticationCache.CurrentUser?.Id ?? 0;
+
             _chemistryService.AddCompound(Compound);
             ChemistryDataCache.AllCompounds.Add(Compound);
         }

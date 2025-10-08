@@ -1,0 +1,66 @@
+﻿<Window x:Class="LaboratoryApp.src.Shared.Views.MoreColorsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaboratoryApp.src.Shared.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:xctk ="http://schemas.xceed.com/wpf/xaml/toolkit"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="LightGray"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="MoreColorsWindow" Height="450" Width="500">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="White"
+              Margin="0,0,5,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,10,0,10">
+                    <xctk:ColorCanvas x:Name="colorCanvas"
+                                      UsingAlphaChannel="False"
+                                      Width="300"
+                                      Height="300"
+                                      Margin="10,0,0,0"
+                                      SelectedColor="{Binding SelectColor, Mode=TwoWay}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Column="1"
+                Padding="10,0">
+            <StackPanel>
+                <Button Background="White"
+                        BorderThickness="1"
+                        BorderBrush="DarkCyan"
+                        Command="{Binding SelectMoreColorCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <TextBlock Text="OK" />
+                </Button>
+                <Button Background="White"
+                        BorderThickness="1"
+                        BorderBrush="Gray"
+                        Margin="0,5,0,0"
+                        Command="{Binding CancelMoreColorCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <TextBlock Text="Cancel" />
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

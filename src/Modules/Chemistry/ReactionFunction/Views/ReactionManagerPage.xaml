@@ -20,76 +20,57 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" 
                     Margin="5">
-            <Grid>
+            <!-- Search bar -->
+            <Grid Margin="5,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                
+                <TextBox Name="Reactants"
+                         Grid.Column="0"
+                         Text="{Binding Reactants, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Chất tham gia"
+                         VerticalAlignment="Center"
+                         BorderThickness="1"
+                         Background="Transparent"
+                         BorderBrush="Black"
+                         Foreground="Black"
+                         CaretBrush="Black"/>
 
-                <!-- Search bar -->
-                <Grid Grid.Column="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0"
-                            BorderBrush="Black"
-                            BorderThickness="1"
-                            CornerRadius="10"
-                            Margin="5">
-                        <TextBox Name="Reactants"
-                                 Text="{Binding Reactants, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 materialDesign:HintAssist.Hint="Chất tham gia"
-                                 VerticalAlignment="Center"
-                                 BorderThickness="0"
-                                 Background="Transparent"
-                                 Foreground="Black"
-                                 CaretBrush="Black"
-                                 BorderBrush="Transparent"
-                                 Margin="0">
-                        </TextBox>
-                    </Border>
+                <materialDesign:PackIcon Kind="ArrowRightThin"
+                                         Grid.Column="1"
+                                         Height="30"
+                                         Width="30"
+                                         Margin="5,0"
+                                         VerticalAlignment="Center"/>
 
-                    <materialDesign:PackIcon Kind="ArrowRightThin"
-                                             Grid.Column="1"
-                                             Height="30"
-                                             Width="30"
-                                             Margin="5,0"
-                                             VerticalAlignment="Center"/>
+                <TextBox Name="Products"
+                         Grid.Column="2"
+                         Text="{Binding Products, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Chất sản phẩm"
+                         VerticalAlignment="Center"
+                         BorderThickness="1"
+                         Background="Transparent"
+                         BorderBrush="Black"
+                         Foreground="Black"
+                         CaretBrush="Black"
+                         Margin="0"/>
 
-                    <Border Grid.Column="2"
-                            BorderBrush="Black"
-                            BorderThickness="1"
-                            CornerRadius="10"
-                            Margin="5">
-                        <TextBox Name="Products"
-                                 Text="{Binding Products, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 materialDesign:HintAssist.Hint="Chất sản phẩm"
-                                 VerticalAlignment="Center"
-                                 BorderThickness="0"
-                                 Background="Transparent"
-                                 Foreground="Black"
-                                 CaretBrush="Black"
-                                 BorderBrush="Transparent"
-                                 Margin="0">
-                        </TextBox>
-                    </Border>
-                </Grid>
-
-                <!-- Add reaction button -->
-                <Button Grid.Column="1"
+                <!-- Search reaction button -->
+                <Button Grid.Column="3"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         BorderThickness="0"
                         Background="Wheat"
-                        Margin="5"
+                        Margin="10,0,0,0"
                         Height="Auto"
                         Width="Auto"
                         materialDesign:ButtonAssist.CornerRadius="10"
@@ -113,10 +94,11 @@
                 </Button>
             </Grid>
 
+            <!-- Add reaction button -->
             <Button Style="{StaticResource MaterialDesignRaisedButton}"
                     BorderThickness="0"
                     Background="SpringGreen"
-                    Margin="5,5,5,10"
+                    Margin="5,0,5,10"
                     Height="30"
                     Width="200"
                     materialDesign:ButtonAssist.CornerRadius="10"
@@ -145,29 +127,30 @@
                        Background="Gray"
                        BorderBrush="Gray"/>
 
-            <ScrollViewer VerticalScrollBarVisibility="Hidden"
-                          Margin="10,5"
-                          VerticalAlignment="Stretch"
-                          HorizontalAlignment="Stretch">
-                <ItemsControl ItemsSource="{Binding Reactions}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Background="Transparent"
-                                    Cursor="Hand"
-                                    BorderThickness="1"
-                                    BorderBrush="DarkGray"
-                                    materialDesign:ButtonAssist.CornerRadius="10"
-                                    Margin="5"
-                                    Height="50"
-                                    HorizontalContentAlignment="Stretch"
-                                    Command="{Binding DataContext.SelectReactionCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                                    CommandParameter="{Binding .}">
-                                <local:ReactionSearchResultUC/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
         </StackPanel>
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Hidden"
+                      Margin="5,0"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch">
+            <ItemsControl ItemsSource="{Binding Reactions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Background="Transparent"
+                                Cursor="Hand"
+                                BorderThickness="1"
+                                BorderBrush="DarkGray"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Margin="5"
+                                Height="50"
+                                HorizontalContentAlignment="Stretch"
+                                Command="{Binding DataContext.SelectReactionCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                CommandParameter="{Binding .}">
+                            <local:ReactionSearchResultUC/>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Page>

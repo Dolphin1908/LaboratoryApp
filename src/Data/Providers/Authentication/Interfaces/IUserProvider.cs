@@ -13,6 +13,7 @@ namespace LaboratoryApp.src.Data.Providers.Authentication.Interfaces
         Task<User?> GetByUsernameAsync(string username);
         Task<User?> GetByEmailAsync(string email);
         Task<User?> GetByPhoneNumberAsync(string phoneNumber);
+        Task CreateNewUser(User user);
         List<User> GetAllUsers();
         User? GetUserById(long id);
         long GetNextUserId();

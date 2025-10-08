@@ -25,6 +25,12 @@ namespace LaboratoryApp.src.Data.Providers.Authentication
             return await Task.FromResult(userRole);
         }
 
+        public Task CreateUserRole (UserRole userRole)
+        {
+            _mongoDb.Insert(CollectionName.UserRole, userRole);
+            return Task.CompletedTask;
+        }
+
         public long GetNextUserRoleId()
         {
             var userRoles = _mongoDb.GetAll<UserRole>(CollectionName.UserRole);
