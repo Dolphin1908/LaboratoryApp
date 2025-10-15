@@ -51,7 +51,7 @@
                         <TextBox VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Tên hợp chất"
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Margin="0,0,0,20">
+                                 Margin="0,5,0,20">
                             <TextBox.Text>
                                 <Binding Path="Compound.Name"
                                          UpdateSourceTrigger="PropertyChanged">
@@ -76,7 +76,7 @@
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
-
+                        
                         <!-- Khối lượng mol -->
                         <TextBox VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Khối lượng mol"
@@ -91,6 +91,13 @@
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
+
+                        <!-- Tên người phát hiện -->
+                        <TextBox VerticalAlignment="Top"
+                                 materialDesign:HintAssist.Hint="Tên người phát hiện"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,20"
+                                 Text="{Binding Compound.Author}"/>
 
                         <!-- Màu hợp chất -->
                         <TextBox VerticalAlignment="Top"
@@ -281,7 +288,7 @@
                                Margin="0,0,0,5"/>
                     <Button Content="Thêm nguyên tố"
                             Width="218"
-                            Margin="0,0,0,10"
+                            Margin="0,5,0,10"
                             Background="SpringGreen"
                             Foreground="Black"
                             BorderThickness="0"
@@ -357,7 +364,7 @@
                                Margin="0,0,0,5"/>
                     <Button Content="Thêm tính chất" 
                             Width="218"
-                            Margin="0,0,0,10"
+                            Margin="0,5,0,10"
                             Background="SpringGreen"
                             Foreground="Black"
                             BorderThickness="0"
@@ -440,7 +447,7 @@
                                Margin="0,0,0,5"/>
                     <Button Content="Thêm tính chất" 
                             Width="218"
-                            Margin="0,0,0,10"
+                            Margin="0,5,0,10"
                             Background="SpringGreen"
                             Foreground="Black"
                             BorderThickness="0"
@@ -505,7 +512,7 @@
                                Margin="0,0,0,5"/>
                     <Button Content="Thêm nhóm ghi chú" 
                             Width="218"
-                            Margin="0,0,0,10"
+                            Margin="0,5,0,10"
                             Background="SpringGreen"
                             Foreground="Black"
                             BorderThickness="0"

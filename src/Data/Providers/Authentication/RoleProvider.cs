@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 
 using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Common;
 using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 using LaboratoryApp.src.Constants;
 

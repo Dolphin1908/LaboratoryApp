@@ -24,11 +24,10 @@ using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.English.Common.ViewModels
 {
-    class EnglishMainPageViewModel : BaseViewModel, IAsyncInitializable
+    class EnglishMainPageViewModel : BaseViewModel
     {
         private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly IEnglishService _englishService;
 
         #region Commands
         public ICommand OpenDictionaryCommand { get; set; } // Open Dictionary
@@ -38,23 +37,16 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
         #endregion
 
         public EnglishMainPageViewModel(INavigationService navigationService,
-                                        IServiceProvider serviceProvider,
-                                        IEnglishService englishService)
+                                        IServiceProvider serviceProvider)
         {
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
-            _englishService = englishService;
 
             // Open Dictionary Command
             OpenDictionaryCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Open Dictionary Window
                 var window = _serviceProvider.GetRequiredService<DictionaryWindow>();
-                if (window.DataContext is DictionaryViewModel vm && vm is IAsyncInitializable init)
-                {
-                    // Initialize the dictionary window asynchronously
-                    _ = init.InitializeAsync();
-                }
                 window.Show();
             });
 
@@ -83,20 +75,6 @@ namespace LaboratoryApp.src.Modules.English.Common.ViewModels
                     _ = initPage.InitializeAsync();
                 }
                 _navigationService.NavigateTo(page);
-            });
-        }
-
-        public async Task InitializeAsync(CancellationToken cancellationToken = default)
-        {
-            await Task.Run(() =>
-            {
-                // Load any additional data or perform setup tasks here
-            }, cancellationToken);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                // Update UI elements if necessary after loading data
-                OnPropertyChanged(nameof(NavigateToDiaryCommand));
             });
         }
     }

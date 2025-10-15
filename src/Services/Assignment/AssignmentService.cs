@@ -1,17 +1,4 @@
-﻿using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Assignment;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
-using LaboratoryApp.src.Core.Models.Authorization;
-using LaboratoryApp.src.Core.Models.Authorization.Enums;
-using LaboratoryApp.src.Data.Providers;
-using LaboratoryApp.src.Data.Providers.Assignment;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
-using LaboratoryApp.src.Data.Providers.Authorization;
-using LaboratoryApp.src.Data.Providers.Interfaces;
-using LaboratoryApp.src.Services.Counter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -19,24 +6,47 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using LaboratoryApp.src.Constants;
+
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Caches.Assignment;
+using LaboratoryApp.src.Core.Caches.Authorization;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Assignment;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Authorization;
+using LaboratoryApp.src.Core.Models.Authorization.Enums;
+
+using LaboratoryApp.src.Data.Providers.Assignment;
+using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+using LaboratoryApp.src.Data.Providers.Authorization;
+
+using LaboratoryApp.src.Services.Helper.Counter;
+
 namespace LaboratoryApp.src.Services.Assignment
 {
     public class AssignmentService : IAssignmentService
     {
         private readonly IAssignmentProvider _assignmentProvider;
+        private readonly IAuthorizationCache _authorizationCache;
         private readonly IExerciseSetAccessProvider _exerciseSetAccessProvider;
         private readonly ICounterService _counterService;
         private readonly IUserProvider _userProvider;
+        private readonly IAssignmentCache _assignmentCache;
 
         public AssignmentService (IAssignmentProvider assignmentProvider,
+                                  IAuthorizationCache authorizationCache,
                                   IExerciseSetAccessProvider exerciseSetAccessProvider,
                                   ICounterService counterService,
-                                  IUserProvider userProvider)
+                                  IUserProvider userProvider,
+                                  IAssignmentCache assignmentCache)
         {
             _assignmentProvider = assignmentProvider;
+            _authorizationCache = authorizationCache;
             _exerciseSetAccessProvider = exerciseSetAccessProvider;
             _counterService = counterService;
             _userProvider = userProvider;
+            _assignmentCache = assignmentCache;
         }
 
 
@@ -68,6 +78,7 @@ namespace LaboratoryApp.src.Services.Assignment
             {
                 _assignmentProvider.CreateNewExerciseSet(set);
                 _exerciseSetAccessProvider.CreateNewAccess(newAccess);
+                _authorizationCache.AllExerciseSetAccess.Add(newAccess);
             }
             catch (Exception ex)
             {
@@ -78,12 +89,12 @@ namespace LaboratoryApp.src.Services.Assignment
 
         public List<ExerciseSet> GetAllExerciseSetsByUserId(long userId)
         {
-            var accessList = AuthorizationCache.AllExerciseSetAccess.Where(esa => esa.UserId == userId);
+            var accessList = _authorizationCache.AllExerciseSetAccess.Where(esa => esa.UserId == userId);
             var results = new List<ExerciseSet>();
 
             foreach(var access in accessList)
             {
-                var sets = AssignmentCache.AllExerciseSets.Where(es => es.Id == access.ExerciseSetId);
+                var sets = _assignmentCache.AllExerciseSets.Where(es => es.Id == access.ExerciseSetId);
                 foreach(var set in sets)
                 {
                     var owner = _userProvider.GetUserById(set.OwnerId);

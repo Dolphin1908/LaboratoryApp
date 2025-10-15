@@ -11,11 +11,10 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 
 using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Helper;
-using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Common;
 
-namespace LaboratoryApp.src.Services.Counter
+namespace LaboratoryApp.src.Services.Helper.Counter
 {
     public class CounterService : ICounterService
     {

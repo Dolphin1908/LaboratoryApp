@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LaboratoryApp.src.Services.Counter
+namespace LaboratoryApp.src.Services.Helper.Counter
 {
     public interface ICounterService
     {

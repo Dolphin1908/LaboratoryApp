@@ -81,7 +81,7 @@ namespace LaboratoryApp.src.Modules.Assignment.Common.ViewModels
             {
                 // Thêm mới bài tập
                 var window = _serviceProvider.GetRequiredService<AddExerciseSetWindow>();
-                if(window.DataContext is ExerciseSetViewModel vm && vm is IAsyncInitializable init)
+                if (window.DataContext is ExerciseSetViewModel vm && vm is IAsyncInitializable init)
                 {
                     // Khởi tạo dữ liệu bất đồng bộ
                     _ = init.InitializeAsync();
@@ -113,6 +113,11 @@ namespace LaboratoryApp.src.Modules.Assignment.Common.ViewModels
         {
             IsTeacher = AuthenticationCache.RoleId == 2;
             ExerciseSets = new ObservableCollection<ExerciseSet>(_assignmentService.GetAllExerciseSetsByUserId(AuthenticationCache.CurrentUser?.Id ?? 0));
+        }
+
+        public void Dispose()
+        {
+            AuthenticationCache.CurrentUserChanged -= OnUserChanged;
         }
     }
 }

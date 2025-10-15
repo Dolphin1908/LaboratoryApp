@@ -12,9 +12,14 @@ namespace LaboratoryApp.src.Shared
 {
     public class NavigateService : INavigationService
     {
-        private Frame _mainFrame;
+        private Frame? _mainFrame;
 
-        public NavigateService(Frame mainFrame)
+        public NavigateService()
+        {
+            // Do nothing
+        }
+
+        public void Initialize(Frame mainFrame)
         {
             _mainFrame = mainFrame;
         }

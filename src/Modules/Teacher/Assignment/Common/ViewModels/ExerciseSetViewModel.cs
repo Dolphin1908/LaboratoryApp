@@ -17,7 +17,7 @@ using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
 
 using LaboratoryApp.src.Services.Assignment;
-using LaboratoryApp.src.Services.Counter;
+using LaboratoryApp.src.Services.Helper.Counter;
 
 using LaboratoryApp.src.Shared.Interface;
 

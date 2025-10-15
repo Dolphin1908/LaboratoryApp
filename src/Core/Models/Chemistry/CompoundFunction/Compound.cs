@@ -16,6 +16,8 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 
         public long OwnerId { get; set; } // User who created or owns the compound
 
+        public string Author { get; set; } = string.Empty; // Author's name
+
         public string Name { get; set; } = string.Empty;
 
         public string Formula { get; set; } = string.Empty;

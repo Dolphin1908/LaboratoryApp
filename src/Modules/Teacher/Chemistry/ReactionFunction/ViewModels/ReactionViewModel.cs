@@ -1,4 +1,19 @@
-﻿using System;
+﻿using LaboratoryApp.src.Constants;
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Caches.Chemistry;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.Models.Chemistry;
+using LaboratoryApp.src.Core.Models.Chemistry.Common.Enums;
+using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
+using LaboratoryApp.src.Services.Helper.Counter;
+using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,32 +22,13 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
 
-using Microsoft.Extensions.DependencyInjection;
-
-using LaboratoryApp.src.Constants;
-
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
-using LaboratoryApp.src.Core.Models.Chemistry.Common.Enums;
-using LaboratoryApp.src.Core.ViewModels;
-
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
-
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Services.Counter;
-
-using LaboratoryApp.src.Shared.Interface;
-
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
 {
-    public class ReactionViewModel : BaseViewModel, IAsyncInitializable
+    public class ReactionViewModel : BaseViewModel
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IChemistryService _chemistryService;
-        private readonly ICounterService _counterService;
+        private readonly IReactionService _reactionService;
+        private readonly IChemistryDataCache _chemistryDataCache;
 
         private ObservableCollection<Element> _allElements;
         private ObservableCollection<Compound> _allCompounds;
@@ -150,16 +146,16 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
         #endregion
 
         public ReactionViewModel(IServiceProvider serviceProvider, 
-                                 IChemistryService chemistryService,
-                                 ICounterService counterService)
+                                 IReactionService reactionService,
+                                 IChemistryDataCache chemistryDataCache)
         {
             _serviceProvider = serviceProvider;
-            _chemistryService = chemistryService;
-            _counterService = counterService;
+            _reactionService = reactionService;
+            _chemistryDataCache = chemistryDataCache;
 
-            _allElements = new ObservableCollection<Element>();
-            _allCompounds = new ObservableCollection<Compound>();
-            _allReactions = new ObservableCollection<Reaction>();
+            _allElements = new ObservableCollection<Element>(_chemistryDataCache.AllElements);
+            _allCompounds = new ObservableCollection<Compound>(_chemistryDataCache.AllCompounds);
+            _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
 
             _reaction = new Reaction();
             _otherConditions = new ObservableCollection<ReactionOtherCondition>();
@@ -206,8 +202,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 p =>
                 {
                     var vm = _serviceProvider.GetRequiredService<ReactionComponentViewModel>();
-                    if (vm is ReactionComponentViewModel reactantComponentVM && reactantComponentVM is IAsyncInitializable init)
-                        _ = init.InitializeAsync();
                     Reactants.Add(vm);
                 });
             RemoveReactantCommand = new RelayCommand<object>(p => true, p =>
@@ -221,8 +215,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 p =>
                 {
                     var vm = _serviceProvider.GetRequiredService<ReactionComponentViewModel>();
-                    if (vm is ReactionComponentViewModel productComponentVM && productComponentVM is IAsyncInitializable init)
-                        _ = init.InitializeAsync();
                     Products.Add(vm);
                 });
             RemoveProductCommand = new RelayCommand<object>(p => true, p =>
@@ -243,7 +235,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
 
             SaveCommand = new RelayCommand<object>(p => CanSave(), p =>
             {
-                SaveReaction();
+                var reactionToSave = MapToReactionModel();
+
+                _reactionService.SaveReaction(reactionToSave);
 
                 if (p is AddReactionWindow thisWindow)
                 {
@@ -253,33 +247,33 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
             #endregion
         }
 
-        private void SaveReaction()
+        private Reaction MapToReactionModel()
         {
-            Reaction.ReactionType = ReactionTypeOptions.Where(e => e.IsSelected)
+            var reaction = this.Reaction;
+
+            reaction.ReactionType = ReactionTypeOptions.Where(e => e.IsSelected)
                                                        .Select(e => e.Value)
                                                        .ToList();
 
-            Reaction.Reactants = Reactants
+            reaction.Reactants = Reactants
             .Select(vm => new ReactionComponent
             {
                 Kind = vm.Kind,
                 ElementId = vm.SelectedElement?.Id,
                 CompoundId = vm.SelectedCompound?.Id,
                 Coefficient = vm.Coefficient
-            })
-            .ToList();
+            }).ToList();
 
-            Reaction.Products = Products
+            reaction.Products = Products
             .Select(vm => new ReactionComponent
             {
                 Kind = vm.Kind,
                 ElementId = vm.SelectedElement?.Id,
                 CompoundId = vm.SelectedCompound?.Id,
                 Coefficient = vm.Coefficient
-            })
-            .ToList();
+            }).ToList();
 
-            Reaction.ReactionNotes = Notes.Select(vm => new ReactionNote
+            reaction.ReactionNotes = Notes.Select(vm => new ReactionNote
             {
                 NoteType = vm.ReactionNoteType,
                 Content = vm.ReactionNotes.Select(n => n.Text)
@@ -287,12 +281,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                                           .ToList()
             }).ToList();
 
-            Reaction.Condition.OtherConditions = OtherConditions.ToList();
+            reaction.Condition.OtherConditions = OtherConditions.ToList();
 
-            Reaction.Id = _counterService.GetNextId(CollectionName.Reactions);
-
-            _chemistryService.AddReaction(Reaction);
-            ChemistryDataCache.AllReactions.Add(Reaction);
+            return reaction;
         }
 
         /// <summary>
@@ -329,19 +320,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
             return Reaction != null && // Phản ứng không null
                    Reactants.Count > 0 && Reactants.Any(r => (r.SelectedElement != null || r.SelectedCompound != null) && !string.IsNullOrWhiteSpace(r.Coefficient)) && // Có ít nhất 1 chất tham gia và có chất tham gia hợp lệ
                    Products.Count > 0 && Products.Any(p => (p.SelectedElement != null || p.SelectedCompound != null) && !string.IsNullOrWhiteSpace(p.Coefficient)) && // Có ít nhất 1 sản phẩm và có sản phẩm hợp lệ
-                   (Notes.Count == 0 || Notes.Any(n => n.ReactionNotes.Any(note => !string.IsNullOrWhiteSpace(note.Text)))) && // Ghi chú nếu có thì phải có ít nhất 1 ghi chú hợp lệ
-                   (OtherConditions.Count == 0 || OtherConditions.Any(oc => !string.IsNullOrWhiteSpace(oc.Name) && !string.IsNullOrWhiteSpace(oc.Description))) && // Điều kiện khác nếu có thì phải có ít nhất 1 điều kiện hợp lệ
+                   (Notes.Count == 0 || Notes.All(n => n.ReactionNotes.Any(note => !string.IsNullOrWhiteSpace(note.Text)))) && // Ghi chú nếu có thì phải có ít nhất 1 ghi chú hợp lệ
+                   (OtherConditions.Count == 0 || OtherConditions.All(oc => !string.IsNullOrWhiteSpace(oc.Name) && !string.IsNullOrWhiteSpace(oc.Description))) && // Điều kiện khác nếu có thì phải có ít nhất 1 điều kiện hợp lệ
                    ReactionTypeOptions.Any(r => r.IsSelected) && CanAddRP(Products) && CanAddRP(Reactants); // Có ít nhất 1 loại phản ứng được chọn và không có chất tham gia hay sản phẩm trùng lặp
-        }
-
-        public async Task InitializeAsync(CancellationToken cancellationToken = default)
-        {
-            await Task.Run(() =>
-            {
-                _allElements = new ObservableCollection<Element>(ChemistryDataCache.AllElements);
-                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
-                _allReactions = new ObservableCollection<Reaction>(ChemistryDataCache.AllReactions);
-            }, cancellationToken);
         }
     }
 }

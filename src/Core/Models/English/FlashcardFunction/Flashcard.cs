@@ -12,11 +12,11 @@ namespace LaboratoryApp.src.Core.Models.English.FlashcardFunction
     {
         // Data
         public long Id { get; set; }
-        private string _word;
-        private string _pos;
-        private string _meaning;
-        private string _example;
-        private string _note;
+        private string? _word;
+        private string? _pos;
+        private string? _meaning;
+        private string? _example;
+        private string? _note;
 
         // Spaced‑Repetition / Trạng thái học
         private int _reviewCount; // số lần đã học
@@ -27,14 +27,14 @@ namespace LaboratoryApp.src.Core.Models.English.FlashcardFunction
         // **Mới**: đã hoàn thành (học thuộc)
         private bool _isLearned;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
 
         public string Word
         {
-            get => _word;
+            get => _word ?? string.Empty;
             set
             {
                 _word = value;
@@ -43,7 +43,7 @@ namespace LaboratoryApp.src.Core.Models.English.FlashcardFunction
         }
         public string Pos
         {
-            get => _pos;
+            get => _pos ?? string.Empty;
             set
             {
                 _pos = value;
@@ -52,7 +52,7 @@ namespace LaboratoryApp.src.Core.Models.English.FlashcardFunction
         }
         public string Meaning
         {
-            get => _meaning;
+            get => _meaning ?? string.Empty;
             set
             {
                 _meaning = value;
@@ -61,7 +61,7 @@ namespace LaboratoryApp.src.Core.Models.English.FlashcardFunction
         }
         public string Example
         {
-            get => _example;
+            get => _example ?? string.Empty;
             set
             {
                 _example = value;
@@ -70,7 +70,7 @@ namespace LaboratoryApp.src.Core.Models.English.FlashcardFunction
         }
         public string Note
         {
-            get => _note;
+            get => _note ?? string.Empty;
             set
             {
                 _note = value;

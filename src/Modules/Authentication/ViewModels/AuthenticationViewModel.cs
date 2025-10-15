@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Data.Providers.Authentication;
-using LaboratoryApp.src.Data.Providers;
+using LaboratoryApp.src.Data.Providers.Common;
 using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.Core.Helpers;
 using System.Windows.Input;
@@ -90,12 +90,12 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             #region Commands
             LoginCommand = new RelayCommand<object>(p => true, p =>
             {
-                OnLogin();
+                _ = OnLogin();
             });
 
             RegisterCommand = new RelayCommand<object>(p => true, p =>
             {
-                OnRegister();
+                _ = OnRegister();
             });
 
             ForgotPasswordCommand = new RelayCommand<object>(p => true, p =>
@@ -105,7 +105,7 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             #endregion
         }
 
-        private async void OnLogin()
+        private async Task OnLogin()
         {
             // Logic for login
             await _authService.LoginAsync(Username, Password);

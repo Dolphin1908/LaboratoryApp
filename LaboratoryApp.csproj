@@ -105,6 +105,9 @@
     <Folder Include="src\Core\Models\Physics\" />
     <Folder Include="src\Core\Models\Math\" />
     <Folder Include="resources\Components\JS\" />
+    <Folder Include="src\Data\Providers\Admin\" />
+    <Folder Include="src\Data\Providers\Physics\" />
+    <Folder Include="src\Data\Providers\Maths\" />
     <Folder Include="src\Modules\Admin\Common\Resources\" />
     <Folder Include="src\Modules\Admin\Common\ViewModels\" />
     <Folder Include="src\Modules\Admin\Common\Views\" />

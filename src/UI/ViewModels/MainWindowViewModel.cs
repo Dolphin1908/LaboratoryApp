@@ -62,6 +62,7 @@ namespace LaboratoryApp.src.UI.ViewModels
         #endregion
 
         #region Commands
+        public ICommand LoadedCommand { get; set; }
         public ICommand NavigateToDashboardCommand { get; set; }
         public ICommand OpenPeriodicTableCommand { get; set; }
         public ICommand NavigateToToolkitCommand { get; set; }
@@ -80,12 +81,6 @@ namespace LaboratoryApp.src.UI.ViewModels
 
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
-
-            // Initialize the dashboard page with the dashboard view model
-            var dashboardPage = _serviceProvider.GetRequiredService<Dashboard>();
-
-            // Navigate to the welcome page when the application starts
-            _navigationService.NavigateTo(dashboardPage);
 
             // Navigate to the dashboard page
             NavigateToDashboardCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -141,6 +136,12 @@ namespace LaboratoryApp.src.UI.ViewModels
                 OnPropertyChanged(nameof(CurrentUser));
                 OnPropertyChanged(nameof(IsAuthenticated));
             });
+        }
+
+        public void Initialize()
+        {
+            var dashboardPage = _serviceProvider.GetRequiredService<Dashboard>();
+            _navigationService.NavigateTo(dashboardPage);
         }
     }
 }

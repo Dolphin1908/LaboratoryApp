@@ -1,6 +1,6 @@
 ﻿using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Core.Models.Authorization;
-using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Common;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

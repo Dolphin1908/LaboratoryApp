@@ -24,8 +24,8 @@
         <Grid Grid.Row="0"
               Margin="20,0,20,10">
             <ProgressBar Minimum="0"
-                         Maximum="{Binding Flashcards.Count}"
-                         Value="{Binding CurrentCardIndex, UpdateSourceTrigger=PropertyChanged}"/>
+                         Maximum="{Binding TotalCardCount}"
+                         Value="{Binding CurrentCardIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
         <Grid Grid.Row="1"
@@ -33,16 +33,18 @@
               RenderTransformOrigin="0.5,0.5"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="539*"/>
+                <ColumnDefinition Width="201*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RenderTransform>
                 <ScaleTransform x:Name="FlipTransform" ScaleX="{Binding FlipTransform.ScaleX}" />
             </Grid.RenderTransform>
 
             <!-- Front side -->
             <Border Background="LightBlue" 
-                    CornerRadius="10" 
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Visibility="{Binding IsFrontVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    CornerRadius="10"
+                    Visibility="{Binding IsFrontVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.ColumnSpan="2">
                 <StackPanel HorizontalAlignment="Stretch" 
                             VerticalAlignment="Center">
                     <TextBlock Text="{Binding CurrentFlashcard.Word, UpdateSourceTrigger=PropertyChanged}" 
@@ -56,15 +58,13 @@
                                FontSize="18"
                                Margin="0,10,0,0"/>
                 </StackPanel>
-                
+
             </Border>
 
             <!-- Back side -->
             <Border Background="Orange"
-                    CornerRadius="10" 
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Visibility="{Binding IsFrontVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    CornerRadius="10"
+                    Visibility="{Binding IsFrontVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Grid.ColumnSpan="2">
                 <StackPanel HorizontalAlignment="Stretch" 
                             VerticalAlignment="Center">
                     <TextBlock Text="{Binding CurrentFlashcard.Meaning, UpdateSourceTrigger=PropertyChanged}" 
@@ -72,13 +72,13 @@
                                VerticalAlignment="Center" 
                                FontSize="24"/>
                     <TextBlock Text="{Binding CurrentFlashcard.Example, UpdateSourceTrigger=PropertyChanged}" 
-                               Visibility="{Binding CurrentFlashcard.Example, Converter={StaticResource NullToVisibilityConverter}}"
+                               Visibility="{Binding CurrentFlashcard.Example, Converter={StaticResource BlankToVisibilityConverter}}"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="18"
                                Margin="0,10,0,0"/>
                     <TextBlock Text="{Binding CurrentFlashcard.Note, UpdateSourceTrigger=PropertyChanged}" 
-                               Visibility="{Binding CurrentFlashcard.Note, Converter={StaticResource NullToVisibilityConverter}}"
+                               Visibility="{Binding CurrentFlashcard.Note, Converter={StaticResource BlankToVisibilityConverter}}"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="18"

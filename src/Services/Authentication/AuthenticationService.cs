@@ -17,7 +17,7 @@ using LaboratoryApp.src.Core.Models.Authentication;
 using LaboratoryApp.src.Core.Models.Authentication.DTOs;
 
 using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
-using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Common;
 
 namespace LaboratoryApp.src.Services.Authentication
 {

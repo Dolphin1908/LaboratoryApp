@@ -7,6 +7,7 @@ using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Services.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Shared.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,17 +22,16 @@ using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
 {
-    public class CompoundManagerViewModel : BaseViewModel, IAsyncInitializable
+    public class CompoundManagerViewModel : BaseViewModel, IAsyncInitializable, IDisposable
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IChemistryService _chemistryService;
+        private readonly ICompoundService _compoundService;
 
-        private string _searchText;
+        private string _searchText = string.Empty;
+        private Compound _selectedCompound = null!;
         private bool _isTeacher;
-        private Compound _selectedCompound;
 
         private ObservableCollection<Compound> _compounds;
-        private ObservableCollection<Compound> _allCompounds; // Assuming you have a list of all compounds to search from
 
         #region Commands
         public ICommand AddCompoundCommand { get; set; }
@@ -79,19 +79,18 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompoundManagerViewModel"/> class.
+        /// Construction
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <param name="chemistryService"></param>
         /// <param name="chemistryDataCache"></param>
         public CompoundManagerViewModel(IServiceProvider serviceProvider,
-                                        IChemistryService chemistryService)
+                                        ICompoundService compoundService)
         {
             _serviceProvider = serviceProvider;
-            _chemistryService = chemistryService;
+            _compoundService = compoundService;
 
             _compounds = new ObservableCollection<Compound>();
-            _allCompounds = new ObservableCollection<Compound>();
 
             AuthenticationCache.CurrentUserChanged += OnUserChanged;
 
@@ -99,15 +98,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
             {
                 var window = _serviceProvider.GetRequiredService<AddCompoundWindow>();
 
-                if (window.DataContext is IAsyncInitializable init)
-                {
-                    // Initialize the add compound window asynchronously
-                    _ = init.InitializeAsync();
-                }
-
                 window.ShowDialog(); // Because this is a modal dialog, it will block the current thread until closed
-
-                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
             });
 
             SelectCompoundCommand = new RelayCommand<object>(p => true, p =>
@@ -122,17 +113,15 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         /// </summary>
         public void UpdateSuggestions()
         {
-            Compounds?.Clear();
+            Compounds.Clear();
 
             if (string.IsNullOrWhiteSpace(SearchText)) return;
 
-            var matches = _allCompounds.AsParallel()
-                                       .Where(c => c.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                                   c.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
-                                       .Take(10)
-                                       .ToList();
-
-            Compounds = new ObservableCollection<Compound>(matches);
+            var suggestions = _compoundService.GetSuggestions(SearchText, 10);
+            foreach (var suggestion in suggestions)
+            {
+                Compounds.Add(suggestion);
+            }
         }
 
         /// <summary>
@@ -145,8 +134,6 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _isTeacher = AuthenticationCache.RoleId == 2;
-                _allCompounds = new ObservableCollection<Compound>(ChemistryDataCache.AllCompounds);
                 _isTeacher = AuthenticationCache.RoleId == 2;
             }, cancellationToken);
 
@@ -161,6 +148,11 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         private void OnUserChanged(UserDTO? user)
         {
             IsTeacher = AuthenticationCache.RoleId == 2;
+        }
+
+        public void Dispose()
+        {
+            AuthenticationCache.CurrentUserChanged -= OnUserChanged;
         }
     }
 }

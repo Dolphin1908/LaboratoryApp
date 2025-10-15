@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Core.Models.Assignment;
 
-using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Common;
 using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers.Assignment

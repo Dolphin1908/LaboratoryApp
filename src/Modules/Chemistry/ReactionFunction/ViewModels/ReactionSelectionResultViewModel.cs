@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using LaboratoryApp.src.Core.Caches.Chemistry;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.ViewModels;
 
@@ -11,6 +11,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 {
     public class ReactionSelectionResultViewModel : BaseViewModel
     {
+        private readonly IChemistryDataCache _cache;
         private readonly Reaction _selectedReaction;
 
         #region Properties
@@ -20,9 +21,10 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         }
         #endregion
 
-        public ReactionSelectionResultViewModel(Reaction selectedReaction)
+        public ReactionSelectionResultViewModel(IChemistryDataCache cache, Reaction selectedReaction)
         {
-            _selectedReaction = selectedReaction ?? throw new ArgumentNullException(nameof(selectedReaction), "Selected reaction cannot be null.");
+            _cache = cache;
+            _selectedReaction = selectedReaction;
         }
     }
 }

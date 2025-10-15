@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 
 using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Data.Providers;
+using LaboratoryApp.src.Data.Providers.Common;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Data.Providers.Authentication;
 using LaboratoryApp.src.Core.Models.Authentication.DTOs;

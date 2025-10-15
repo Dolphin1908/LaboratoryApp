@@ -23,21 +23,12 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
         public string Coefficient { get; set; } // Hệ số tỉ lệ
 
         [NotMapped]
-        public string Formula => ChemistryDataCache.AllElements.FirstOrDefault(e => e.Id == ElementId)?.Formula ?? ChemistryDataCache.AllCompounds.FirstOrDefault(e => e.Id == CompoundId)?.Formula ?? string.Empty;
+        public string Formula { get; set; } = string.Empty; // Công thức
 
         [NotMapped]
-        public string DisplayCoefficient
-        {
-            get
-            {
-                if (Coefficient == "1")
-                    return string.Empty; // Do not display coefficient if it is 1
-                else
-                    return Coefficient.ToString(); // Display as integer if it is a whole number
-            }
-        }
+        public string DisplayCoefficient { get; set; } = string.Empty; // Hệ số hiển thị (bỏ 1)
 
         [NotMapped]
-        public string Display => string.IsNullOrEmpty(DisplayCoefficient) ? Formula : $"{DisplayCoefficient} {Formula}";
+        public string Display { get; set; } = string.Empty; // Hiển thị (Hệ số + Công thức)
     }
 }
