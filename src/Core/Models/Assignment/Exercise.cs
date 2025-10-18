@@ -16,13 +16,14 @@ namespace LaboratoryApp.src.Core.Models.Assignment
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Instruction { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         #endregion
 
         #region Settings
         public string? Password { get; set; } // Optional password for access
         public ExerciseType Type { get; set; } // e.g., Quiz, Test, Practice
         public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Easy; // Overall difficulty level. E.g., Easy, Medium, Hard, Insane
-        public List<TagType> Tags { get; set; } = new(); // Tags for categorization and search
 
         public int TimeLimitMinutes { get; set; } // Optional time limit for the exercise
         public bool ShuffleQuestions { get; set; } = true; // True to shuffle questions each time

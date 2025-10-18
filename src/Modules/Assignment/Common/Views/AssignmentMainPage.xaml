@@ -108,7 +108,7 @@
                         Height="Auto"
                         Width="Auto"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        Command="{Binding }">
+                        Command="{Binding InsertExerciseSet}">
                     <Grid VerticalAlignment="Center"
                           HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>

@@ -1,16 +1,4 @@
-﻿using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Services.Chemistry.CompoundFunction;
-using LaboratoryApp.src.Shared.Interface;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -19,6 +7,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using LaboratoryApp.src.Core.Caches;
+
+using LaboratoryApp.src.Core.Helpers;
+
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Authentication.Enums;
+
+using LaboratoryApp.src.Core.Models.Chemistry;
+
+using LaboratoryApp.src.Core.ViewModels;
+
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
+
+using LaboratoryApp.src.Services.Chemistry;
+using LaboratoryApp.src.Services.Chemistry.CompoundFunction;
+
+using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
 {
@@ -134,7 +143,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _isTeacher = AuthenticationCache.RoleId == 2;
+                _isTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
             }, cancellationToken);
 
             if (!string.IsNullOrWhiteSpace(SearchText))
@@ -147,7 +156,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels
         /// <param name="user"></param>
         private void OnUserChanged(UserDTO? user)
         {
-            IsTeacher = AuthenticationCache.RoleId == 2;
+            IsTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
         }
 
         public void Dispose()

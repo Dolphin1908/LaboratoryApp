@@ -7,12 +7,18 @@ using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Core.Models.Authorization.Enums
 {
+    [Flags]
     public enum AccessLevel
     {
-        [Display(Name = "Xem")] View, // Xem
-        [Display(Name = "Làm bài")] Attempt, // Thực hành
-        [Display(Name = "Chấm điểm")] Grade, // Chấm điểm
-        [Display(Name = "Chỉnh sửa")] Edit, // Chỉnh sửa
-        [Display(Name = "Chủ sở hữu")] Owner // Chủ sở hữu
+        [Display(Name = "Xem")] 
+        View = 1, // Xem
+        [Display(Name = "Làm bài")]
+        Attempt = 2, // Thực hành
+        [Display(Name = "Chấm điểm")]
+        Grade = 4, // Chấm điểm
+        [Display(Name = "Chỉnh sửa")]
+        Edit = 8, // Chỉnh sửa
+        [Display(Name = "Chủ sở hữu")]
+        Owner = 16 // Chủ sở hữu
     }
 }

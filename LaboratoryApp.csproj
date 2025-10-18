@@ -117,11 +117,9 @@
     <Folder Include="src\Modules\Chemistry\ReactionFunction\Resources\" />
     <Folder Include="src\Modules\English\DiaryFunction\Resources\" />
     <Folder Include="src\Modules\English\DictionaryFunction\Resources\" />
-    <Folder Include="src\Modules\Assignment\Exercise\Resources\" />
+    <Folder Include="src\Modules\Assignment\ExerciseFunction\Resources\" />
     <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
     <Folder Include="src\Modules\English\LectureFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\Assignment\Exercise\ViewModels\" />
-    <Folder Include="src\Modules\Teacher\Assignment\Exercise\Views\" />
     <Folder Include="src\Modules\Teacher\Chemistry\CompoundFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\Chemistry\ReactionFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\Common\ViewModels\" />

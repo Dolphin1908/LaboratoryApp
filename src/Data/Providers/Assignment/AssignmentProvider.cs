@@ -18,6 +18,11 @@ namespace LaboratoryApp.src.Data.Providers.Assignment
         public AssignmentProvider(IEnumerable<IMongoDBProvider> mongoDb) => _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.AssignmentMongoDB);
 
         #region ExerciseSet
+        /// <summary>
+        /// Lấy bộ bài tập theo Id
+        /// </summary>
+        /// <param name="setId"></param>
+        /// <returns></returns>
         public Task<ExerciseSet?> GetExerciseSetById (long setId)
         {
             var filter = Builders<ExerciseSet>.Filter.Eq(es => es.Id, setId);
@@ -25,49 +30,71 @@ namespace LaboratoryApp.src.Data.Providers.Assignment
             return Task.FromResult(result);
         }
 
+        /// <summary>
+        /// Lấy tất cả bộ bài tập
+        /// </summary>
+        /// <returns></returns>
         public Task<List<ExerciseSet>> GetAllExerciseSets()
         {
             var sets = _mongoDb.GetAll<ExerciseSet>(CollectionName.ExerciseSets);
             return Task.FromResult(sets);
         }
 
+        /// <summary>
+        /// Tạo mới bộ bài tập
+        /// </summary>
+        /// <param name="set"></param>
+        /// <returns></returns>
         public Task CreateNewExerciseSet(ExerciseSet set)
         {
             _mongoDb.Insert(CollectionName.ExerciseSets, set);
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Cập nhật bộ bài tập
+        /// </summary>
+        /// <param name="set"></param>
+        /// <returns></returns>
         public Task UpdateExerciseSet (ExerciseSet set)
         {
             _mongoDb.Update(CollectionName.ExerciseSets, set.Id, set);
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Xóa bộ bài tập
+        /// </summary>
+        /// <param name="set"></param>
+        /// <returns></returns>
         public Task DeleteExerciseSet(ExerciseSet set)
         {
             _mongoDb.Delete<ExerciseSet>(CollectionName.ExerciseSets, set.Id);
             return Task.CompletedTask;
         }
-        
         #endregion
 
-        public List<Exercise> GetAllExercisesBySetId(long setId)
+        #region Exercise
+        /// <summary>
+        /// Lấy tất cả bài tập
+        /// </summary>
+        /// <returns></returns>
+        public Task<List<Exercise>> GetAllExercises()
         {
-            var filter = Builders<ExerciseSet>.Filter.Eq(es => es.Id, setId);
-            var set = _mongoDb.GetOne(CollectionName.ExerciseSets, filter);
-            if (set == null) return new List<Exercise>();
-
-            var exercises = new List<Exercise>();
-            foreach (var exerciseId in set.ExerciseIds)
-            {
-                var exerciseFilter = Builders<Exercise>.Filter.Eq(e => e.Id, exerciseId);
-                var exercise = _mongoDb.GetOne(CollectionName.Exercises, exerciseFilter);
-                if (exercise != null)
-                {
-                    exercises.Add(exercise);
-                }
-            }
-            return exercises;
+            var exercises = _mongoDb.GetAll<Exercise>(CollectionName.Exercises);
+            return Task.FromResult(exercises);
         }
+
+        /// <summary>
+        /// Tạo mới bài tập
+        /// </summary>
+        /// <param name="exercise"></param>
+        /// <returns></returns>
+        public Task CreateNewExercise(Exercise exercise)
+        {
+            _mongoDb.Insert(CollectionName.Exercises, exercise);
+            return Task.CompletedTask;
+        }
+        #endregion
     }
 }

@@ -11,6 +11,7 @@ namespace LaboratoryApp.src.Core.Caches.Assignment
     public interface IAssignmentCache
     {
         List<ExerciseSet> AllExerciseSets { get; set; }
+        List<Exercise> AllExercises { get; set; }
         void LoadAllData(IAssignmentProvider provider);
     }
 }

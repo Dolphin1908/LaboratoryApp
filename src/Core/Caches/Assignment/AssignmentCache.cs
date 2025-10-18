@@ -14,12 +14,14 @@ namespace LaboratoryApp.src.Core.Caches.Assignment
         private readonly object _lock = new();
 
         public List<ExerciseSet> AllExerciseSets { get; set; } = new();
+        public List<Exercise> AllExercises { get; set; } = new();
 
         public void LoadAllData(IAssignmentProvider assignmentProvider)
         {
             lock (_lock)
             {
                 AllExerciseSets = assignmentProvider.GetAllExerciseSets().GetAwaiter().GetResult();
+                AllExercises = assignmentProvider.GetAllExercises().GetAwaiter().GetResult();
             }
         }
     }

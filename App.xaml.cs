@@ -5,7 +5,14 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Constants;
+
+using LaboratoryApp.src.Core.Caches.Chemistry;
+using LaboratoryApp.src.Core.Caches.English;
+using LaboratoryApp.src.Core.Caches.Assignment;
+using LaboratoryApp.src.Core.Caches.Authorization;
+
 using LaboratoryApp.src.Core.Helpers;
+
 using LaboratoryApp.src.Core.Models.Assignment;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.Models.English.DiaryFunction;
@@ -30,8 +37,8 @@ using LaboratoryApp.src.Data.Providers.English.FlashcardFunction;
 
 using LaboratoryApp.src.Modules.Assignment.Common.ViewModels;
 using LaboratoryApp.src.Modules.Assignment.Common.Views;
-using LaboratoryApp.src.Modules.Assignment.Exercise.ViewModels;
-using LaboratoryApp.src.Modules.Assignment.Exercise.Views;
+using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.Views;
 
 using LaboratoryApp.src.Modules.Authentication.ViewModels;
 using LaboratoryApp.src.Modules.Authentication.Views;
@@ -64,6 +71,9 @@ using LaboratoryApp.src.Modules.Physics.Common.Views;
 
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
+using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.Views;
+
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
@@ -76,7 +86,6 @@ using LaboratoryApp.src.Services.Assignment;
 
 using LaboratoryApp.src.Services.Authentication;
 
-using LaboratoryApp.src.Services.Chemistry;
 using LaboratoryApp.src.Services.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Services.Chemistry.PeriodicFunction;
 using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
@@ -94,10 +103,6 @@ using LaboratoryApp.src.Shared.Interface;
 
 using LaboratoryApp.src.UI.ViewModels;
 using LaboratoryApp.src.UI.Views;
-using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Caches.English;
-using LaboratoryApp.src.Core.Caches.Assignment;
-using LaboratoryApp.src.Core.Caches.Authorization;
 
 namespace LaboratoryApp
 {
@@ -150,8 +155,6 @@ namespace LaboratoryApp
 
             // Authentication
             services.AddSingleton<IUserProvider, UserProvider>();
-            services.AddSingleton<IRoleProvider, RoleProvider>();
-            services.AddSingleton<IUserRoleProvider, UserRoleProvider>();
             services.AddSingleton<IRefreshTokenProvider, RefreshTokenProvider>();
 
             // Authorization
@@ -202,8 +205,19 @@ namespace LaboratoryApp
 
             #region Assignment
             services.AddTransient<AssignmentMainPageViewModel>();
-            services.AddTransient<Func<ExerciseSet, ExerciseManagerViewModel>>(sp =>
-            (selectedSet) => ActivatorUtilities.CreateInstance<ExerciseManagerViewModel>(sp, selectedSet));
+            services.AddTransient<InsertExerciseSetViewModel>();
+
+            services.AddTransient<Func<INavigationService, IServiceProvider, IAuthorizationCache, IAssignmentService, IAssignmentCache, ExerciseSet, ExerciseManagerViewModel>>(sp =>
+            (navigationService, serviceProvider, authorizationCache, assignmentService, assignmentCache, selectedSet) =>
+            {
+                var exerciseVmFactory = sp.GetRequiredService<Func<IAssignmentService, ExerciseSet, ExerciseViewModel>>();
+                return new ExerciseManagerViewModel(navigationService, serviceProvider, authorizationCache, assignmentService, assignmentCache, selectedSet, exerciseVmFactory);
+            });
+            services.AddTransient<Func<IAssignmentService, ExerciseSet, ExerciseViewModel>>(sp =>
+            (service, currSet) =>
+            {
+                return new ExerciseViewModel(service, currSet);
+            });
             #endregion
 
             #region Chemistry
@@ -261,6 +275,7 @@ namespace LaboratoryApp
 
             #region Teacher
             services.AddTransient<ExerciseSetViewModel>();
+            services.AddTransient<ExerciseViewModel>();
 
             services.AddTransient<CompoundComponentViewModel>();
             services.AddTransient<CompoundNoteViewModel>();
@@ -306,8 +321,13 @@ namespace LaboratoryApp
                 var vm = sp.GetRequiredService<AssignmentMainPageViewModel>();
                 return new AssignmentMainPage { DataContext = vm };
             });
+            services.AddTransient<InsertExerciseSetWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<InsertExerciseSetViewModel>();
+                return new InsertExerciseSetWindow { DataContext = vm };
+            });
 
-            services.AddTransient<ExerciseManagerWindow>();
+            services.AddTransient<ExerciseManagerPage>();
             #endregion
 
             #region Chemistry
@@ -404,6 +424,7 @@ namespace LaboratoryApp
                 var vm = sp.GetRequiredService<ExerciseSetViewModel>();
                 return new AddExerciseSetWindow { DataContext = vm };
             });
+            services.AddTransient<AddExerciseWindow>();
 
             services.AddTransient<AddCompoundWindow>(sp =>
             {

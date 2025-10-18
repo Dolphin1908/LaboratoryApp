@@ -13,6 +13,8 @@ using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.Chemistry;
 
 using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Authentication.Enums;
+
 using LaboratoryApp.src.Core.Models.Chemistry;
 
 using LaboratoryApp.src.Core.ViewModels;
@@ -173,7 +175,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _isTeacher = AuthenticationCache.RoleId == 2;
+                _isTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
                 _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
             }, cancellationToken);
 
@@ -183,7 +185,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 
         private void OnUserChanged(UserDTO? user)
         {
-            IsTeacher = AuthenticationCache.RoleId == 2;
+            IsTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
         }
 
         public void Dispose()

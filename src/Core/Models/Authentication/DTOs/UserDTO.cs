@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LaboratoryApp.src.Core.Models.Authentication.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,7 @@ namespace LaboratoryApp.src.Core.Models.Authentication.DTOs
         public string Address { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
         public bool IsActive { get; set; } = true;
+
+        public Role Role { get; set; } = Role.Guest;
     }
 }
