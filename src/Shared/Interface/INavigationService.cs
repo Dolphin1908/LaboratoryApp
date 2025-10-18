@@ -9,6 +9,7 @@ namespace LaboratoryApp.src.Shared.Interface
 {
     public interface INavigationService
 	{
+        void Initialize(Frame mainFrame);
         void NavigateTo(Page page);
         void NavigateBack();
     }

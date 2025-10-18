@@ -15,29 +15,24 @@ using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
 using LaboratoryApp.src.Core.Models.Authentication;
 using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Authentication.Enums;
 
 using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
-using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Data.Providers.Common;
 
 namespace LaboratoryApp.src.Services.Authentication
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserProvider _userProvider;
-        private readonly IRoleProvider _roleProvider;
-        private readonly IUserRoleProvider _userRoleProvider;
         private readonly IRefreshTokenProvider _refreshTokenProvider;
         private readonly IMongoDBProvider _mongoDb;
 
         public AuthenticationService(IUserProvider userProvider, 
-                                     IRoleProvider roleProvider, 
-                                     IUserRoleProvider userRoleProvider,
                                      IRefreshTokenProvider refreshTokentProvider,
                                      IEnumerable<IMongoDBProvider> mongoDb)
         {
             _userProvider = userProvider;
-            _roleProvider = roleProvider;
-            _userRoleProvider = userRoleProvider;
             _refreshTokenProvider = refreshTokentProvider;
             _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.AuthenticationMongoDB);
         }
@@ -98,19 +93,10 @@ namespace LaboratoryApp.src.Services.Authentication
                     Email = email,
                     PhoneNumber = phoneNumber,
                     Password = SecureConfigHelper.Encrypt(password),
+                    Role = Role.Student | Role.Guest
                 };
 
                 await _userProvider.CreateNewUser(user);
-
-                var userRole = new UserRole
-                {
-                    Id = _userRoleProvider.GetNextUserRoleId(),
-                    UserId = user.Id,
-                    RoleId = 1,
-                    IsActive = true,
-                };
-
-                await _userRoleProvider.CreateUserRole(userRole);
 
                 return true;
             }
@@ -162,7 +148,6 @@ namespace LaboratoryApp.src.Services.Authentication
                 //var refresh = GenerateRefreshToken(user);
                 //await _refreshTokenProvider.CreateAsync(refresh);
 
-                var userRole = await _userRoleProvider.GetUserRolesAsync(user.Id);
                 var userDTO = new UserDTO
                 {
                     Id = user.Id,
@@ -173,10 +158,11 @@ namespace LaboratoryApp.src.Services.Authentication
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
                     DateOfBirth = user.DateOfBirth,
-                    IsActive = user.IsActive
+                    IsActive = user.IsActive,
+                    Role = user.Role
                 };
 
-                AuthenticationCache.Set(userDTO, access, refresh.Token, userRole.RoleId);
+                AuthenticationCache.Set(userDTO, access, refresh.Token);
 
                 return new AuthenticationResponseDTO
                 {

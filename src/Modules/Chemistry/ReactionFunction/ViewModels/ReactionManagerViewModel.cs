@@ -1,16 +1,4 @@
-﻿using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
-using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Shared.Interface;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,18 +7,40 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Caches.Chemistry;
+
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Authentication.Enums;
+
+using LaboratoryApp.src.Core.Models.Chemistry;
+
+using LaboratoryApp.src.Core.ViewModels;
+
+using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
+
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
+
+using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
+
+using LaboratoryApp.src.Shared.Interface;
+
 namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 {
-    public class ReactionManagerViewModel : BaseViewModel, IAsyncInitializable
+    public class ReactionManagerViewModel : BaseViewModel, IAsyncInitializable, IDisposable
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IChemistryService _chemistryService; // Assuming you have a service for chemistry operations
+        private readonly IReactionService _reactionService;
+        private readonly IChemistryDataCache _chemistryDataCache;
 
         private string _reactants;
         private string _products;
         private bool _isTeacher;
 
-        private Func<Reaction, ReactionSelectionResultViewModel> _selectedReactionVmFactory;
+        private Func<IChemistryDataCache, Reaction, ReactionSelectionResultViewModel> _selectedReactionVmFactory;
 
         private ObservableCollection<Reaction> _allReactions;
         private ObservableCollection<Reaction> _reactions;
@@ -85,11 +95,13 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         /// </summary>
         /// <param name="serviceProvider"></param>
         public ReactionManagerViewModel(IServiceProvider serviceProvider,
-                                        IChemistryService chemistryService,
-                                        Func<Reaction, ReactionSelectionResultViewModel> selectedReactionVmFactory)
+                                        IReactionService reactionService,
+                                        IChemistryDataCache chemistryDataCache,
+                                        Func<IChemistryDataCache, Reaction, ReactionSelectionResultViewModel> selectedReactionVmFactory)
         {
             _serviceProvider = serviceProvider;
-            _chemistryService = chemistryService;
+            _reactionService = reactionService;
+            _chemistryDataCache = chemistryDataCache;
             _selectedReactionVmFactory = selectedReactionVmFactory;
 
             _reactions = new ObservableCollection<Reaction>();
@@ -102,15 +114,9 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
                 // Open the add reaction window
                 var window = _serviceProvider.GetRequiredService<AddReactionWindow>();
 
-                if (window.DataContext is ReactionViewModel vm && vm is IAsyncInitializable init)
-                {
-                    // Initialize the add reaction window asynchronously
-                    _ = init.InitializeAsync();
-                }
-
                 window.ShowDialog();
 
-                _allReactions = new ObservableCollection<Reaction>(ChemistryDataCache.AllReactions);
+                _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
             });
 
             SearchReactionCommand = new RelayCommand<object>((p) => true, (p) => SearchReaction());
@@ -130,35 +136,14 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
                 return;
             }
 
-            // Split the reactants and products strings into lists
-            List<string> reactants = string.IsNullOrWhiteSpace(Reactants) ? new List<string>() : Reactants.Split(' ').ToList();
-            List<string> products = string.IsNullOrWhiteSpace(Products) ? new List<string>() : Products.Split(' ').ToList();
-
-            // Clear the current reactions collection
-            Reactions?.Clear();
-
-            // Search for reactions that match the given reactants and products
-            var matches = _allReactions.AsParallel()
-                                       .Where(r =>
-                                       {
-                                           var rReactants = r.Reactants.Select(x => ChemistryDataCache.AllCompounds.FirstOrDefault(c => c.Id == x.CompoundId)?.Formula ?? ChemistryDataCache.AllElements.FirstOrDefault(c => c.Id == x.ElementId)?.Formula ?? string.Empty)
-                                                                       .Where(x => !string.IsNullOrWhiteSpace(x))
-                                                                       .ToList();
-
-                                           var rProducts = r.Products.Select(x => ChemistryDataCache.AllCompounds.FirstOrDefault(c => c.Id == x.CompoundId)?.Formula ?? ChemistryDataCache.AllElements.FirstOrDefault(c => c.Id == x.ElementId)?.Formula ?? string.Empty)
-                                                                     .Where(x => !string.IsNullOrWhiteSpace(x))
-                                                                     .ToList();
-
-                                           bool reactantsMatch = !reactants.Any() || reactants.All(x => rReactants.Contains(x));
-                                           bool productsMatch = !products.Any() || products.All(x => rProducts.Contains(x));
-
-                                           return reactantsMatch && productsMatch;
-                                       })
-                                       .ToList();
+            Reactions.Clear();
 
             // Populate the Reactions collection with the matches found
-            Reactions = new ObservableCollection<Reaction>(matches);
-
+            var suggestions = _reactionService.GetReactionSuggestions(Reactants, Products);
+            foreach (var reaction in suggestions)
+            {
+                Reactions.Add(reaction);
+            }
             if (!_allReactions.Any())
             {
                 MessageBox.Show("Đang tải dữ liệu, vui lòng chờ, tải xong tự động tìm kiếm", "Search Result", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -176,15 +161,8 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
         private void SelectReaction(Reaction selectedReaction)
         {
             var window = _serviceProvider.GetRequiredService<ReactionSelectionResultWindow>();
-            window.DataContext = _selectedReactionVmFactory(selectedReaction);
+            window.DataContext = _selectedReactionVmFactory(_chemistryDataCache, selectedReaction);
             window.Show();
-
-            //var vm = new ReactionSelectionResultViewModel(selectedReaction);
-            //var window = new ReactionSelectionResultWindow
-            //{
-            //    DataContext = vm
-            //};
-            //window.Show();
         }
 
         /// <summary>
@@ -197,17 +175,22 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _isTeacher = AuthenticationCache.RoleId == 2;
-                _allReactions = new ObservableCollection<Reaction>(ChemistryDataCache.AllReactions);
+                _isTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
+                _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
             }, cancellationToken);
 
-            if (!string.IsNullOrWhiteSpace(Reactants) || !string.IsNullOrWhiteSpace(Products)) 
+            if (!string.IsNullOrWhiteSpace(Reactants) || !string.IsNullOrWhiteSpace(Products))
                 SearchReaction();
         }
 
         private void OnUserChanged(UserDTO? user)
         {
-            IsTeacher = AuthenticationCache.RoleId == 2;
+            IsTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
+        }
+
+        public void Dispose()
+        {
+            AuthenticationCache.CurrentUserChanged -= OnUserChanged;
         }
     }
 }

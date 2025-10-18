@@ -6,78 +6,103 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Constants;
 
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+using LaboratoryApp.src.Core.Caches.Chemistry;
+using LaboratoryApp.src.Core.Caches.English;
+using LaboratoryApp.src.Core.Caches.Assignment;
+using LaboratoryApp.src.Core.Caches.Authorization;
+
 using LaboratoryApp.src.Core.Helpers;
 
-using LaboratoryApp.src.Data.Providers;
-using LaboratoryApp.src.Data.Providers.Interfaces;
+using LaboratoryApp.src.Core.Models.Assignment;
+using LaboratoryApp.src.Core.Models.Chemistry;
+using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+
+using LaboratoryApp.src.Data.Providers.Assignment;
+
 using LaboratoryApp.src.Data.Providers.Authentication;
 using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
 
-using LaboratoryApp.src.Modules.Authentication.Views;
-using LaboratoryApp.src.Modules.Authentication.ViewModels;
+using LaboratoryApp.src.Data.Providers.Authorization;
 
-using LaboratoryApp.src.Modules.Assignment.Common.Views;
+using LaboratoryApp.src.Data.Providers.Chemistry.CompoundFunction;
+using LaboratoryApp.src.Data.Providers.Chemistry.PeriodicFunction;
+using LaboratoryApp.src.Data.Providers.Chemistry.ReactionFunction;
+
+using LaboratoryApp.src.Data.Providers.Common;
+
+using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
+using LaboratoryApp.src.Data.Providers.English.DictionaryFunction;
+using LaboratoryApp.src.Data.Providers.English.FlashcardFunction;
+
 using LaboratoryApp.src.Modules.Assignment.Common.ViewModels;
-using LaboratoryApp.src.Modules.Assignment.Exercise.Views;
-using LaboratoryApp.src.Modules.Assignment.Exercise.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.Common.Views;
+using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.Views;
 
-using LaboratoryApp.src.Modules.Chemistry.Common.Views;
+using LaboratoryApp.src.Modules.Authentication.ViewModels;
+using LaboratoryApp.src.Modules.Authentication.Views;
+
 using LaboratoryApp.src.Modules.Chemistry.Common.ViewModels;
-using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.Views;
+using LaboratoryApp.src.Modules.Chemistry.Common.Views;
 using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels;
-using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
+using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels;
-using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
 using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
 
-using LaboratoryApp.src.Modules.English.Common.Views;
 using LaboratoryApp.src.Modules.English.Common.ViewModels;
-using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
+using LaboratoryApp.src.Modules.English.Common.Views;
 using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
+using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
+using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.LectureFunction.Views;
+using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
+using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 
-using LaboratoryApp.src.Modules.Maths.Common.Views;
 using LaboratoryApp.src.Modules.Maths.Common.ViewModels;
+using LaboratoryApp.src.Modules.Maths.Common.Views;
 
-using LaboratoryApp.src.Modules.Physics.Common.Views;
 using LaboratoryApp.src.Modules.Physics.Common.ViewModels;
+using LaboratoryApp.src.Modules.Physics.Common.Views;
 
-using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
+using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.Views;
 
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
 
-using LaboratoryApp.src.Modules.Toolkits.Common.Views;
 using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
+using LaboratoryApp.src.Modules.Toolkits.Common.Views;
 
-using LaboratoryApp.src.UI.Views;
-using LaboratoryApp.src.UI.ViewModels;
-
-using LaboratoryApp.src.Services.AI;
 using LaboratoryApp.src.Services.Assignment;
+
 using LaboratoryApp.src.Services.Authentication;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Services.Counter;
-using LaboratoryApp.src.Services.English;
+
+using LaboratoryApp.src.Services.Chemistry.CompoundFunction;
+using LaboratoryApp.src.Services.Chemistry.PeriodicFunction;
+using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
+
+using LaboratoryApp.src.Services.English.DictionaryFunction;
+using LaboratoryApp.src.Services.English.DiaryFunction;
 using LaboratoryApp.src.Services.English.FlashcardFunction;
+
+using LaboratoryApp.src.Services.Helper.AI;
+using LaboratoryApp.src.Services.Helper.Counter;
+using LaboratoryApp.src.Services.Helper.Speech;
 
 using LaboratoryApp.src.Shared;
 using LaboratoryApp.src.Shared.Interface;
-using LaboratoryApp.src.Data.Providers.Assignment;
-using LaboratoryApp.src.Data.Providers.Authorization;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Assignment;
+
+using LaboratoryApp.src.UI.ViewModels;
+using LaboratoryApp.src.UI.Views;
 
 namespace LaboratoryApp
 {
@@ -88,154 +113,194 @@ namespace LaboratoryApp
     {
         private IServiceProvider? _serviceProvider;
         private readonly string MongoConnString = SecureConfigHelper.Decrypt(ConfigurationManager.ConnectionStrings["MongoDB"].ConnectionString);
-        private readonly string _chemDbPath = ConfigurationManager.AppSettings["ChemistryDbPath"];
-        private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"];
+        private readonly string _chemDbPath = ConfigurationManager.AppSettings["ChemistryDbPath"]!; // ! để báo cho trình biên dịch biết rằng giá trị này không bao giờ là null
+        private readonly string _englishDbPath = ConfigurationManager.AppSettings["EnglishDbPath"]!; // ! để báo cho trình biên dịch biết rằng giá trị này không bao giờ là null
 
-        protected override void OnStartup(StartupEventArgs e)
+        /// <summary>
+        /// Construction
+        /// </summary>
+        public App()
         {
-            base.OnStartup(e);
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            _serviceProvider = services.BuildServiceProvider();
+        }
 
-            // Khởi tạo MainWindow
-            var mainWindow = new MainWindow();
-            var frame = mainWindow.mainFrame;
-
-            // Tạo instance của NavigateService
-            var navigateService = new NavigateService(frame);
-
-            // Khởi tạo dịch vụ ServiceCollection
-            var service = new ServiceCollection();
-
+        private void ConfigureServices(IServiceCollection services)
+        {
             // Đăng ký các thiết lập cơ sở dữ liệu
             #region DatabaseSettings
-            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AssignmentMongoDB));
-            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AuthenticationMongoDB));
-            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AuthorizationMongoDB));
-            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.ChemistryMongoDB));
-            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.EnglishMongoDB));
-            service.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.HelperMongoDB));
-            service.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(_chemDbPath));
-            service.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(_englishDbPath));
+            services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AssignmentMongoDB));
+            services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AuthenticationMongoDB));
+            services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.AuthorizationMongoDB));
+            services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.ChemistryMongoDB));
+            services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.EnglishMongoDB));
+            services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(MongoConnString, DatabaseName.HelperMongoDB));
+            services.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(_chemDbPath));
+            services.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(_englishDbPath));
+            #endregion
+
+            // Đăng ký các caches
+            #region Caches
+            services.AddSingleton<IAssignmentCache, AssignmentCache>();
+            services.AddSingleton<IAuthorizationCache, AuthorizationCache>();
+            services.AddSingleton<IChemistryDataCache, ChemistryDataCache>();
+            services.AddSingleton<IEnglishDataCache, EnglishDataCache>();
             #endregion
 
             // Đăng ký các providers
             #region Providers
-            service.AddSingleton<IUserProvider, UserProvider>();
-            service.AddSingleton<IRoleProvider, RoleProvider>();
-            service.AddSingleton<IUserRoleProvider, UserRoleProvider>();
-            service.AddSingleton<IRefreshTokenProvider, RefreshTokenProvider>();
+            // Assignment
+            services.AddSingleton<IAssignmentProvider, AssignmentProvider>();
 
-            service.AddSingleton<IExerciseSetAccessProvider, ExerciseSetAccessProvider>();
+            // Authentication
+            services.AddSingleton<IUserProvider, UserProvider>();
+            services.AddSingleton<IRefreshTokenProvider, RefreshTokenProvider>();
 
-            service.AddSingleton<IAssignmentProvider, AssignmentProvider>();
+            // Authorization
+            services.AddSingleton<IExerciseSetAccessProvider, ExerciseSetAccessProvider>();
+
+            // Chemistry
+            services.AddSingleton<ICompoundProvider, CompoundProvider>();
+            services.AddSingleton<IPeriodicProvider, PeriodicProvider>();
+            services.AddSingleton<IReactionProvider, ReactionProvider>();
+
+            // English
+            services.AddSingleton<IDiaryProvider, DiaryProvider>();
+            services.AddSingleton<IDictionaryProvider, DictionaryProvider>();
+            services.AddSingleton<IFlashcardProvider, FlashcardProvider>();
+
             #endregion
 
             // Đăng ký các dịch vụ cần thiết
             #region Services
-            service.AddSingleton<INavigationService>(navigateService);
-            service.AddSingleton<IAIService, AIService>();
-            service.AddSingleton<IAssignmentService, AssignmentService>();
-            service.AddSingleton<IAuthenticationService, AuthenticationService>();
-            service.AddSingleton<IChemistryService, ChemistryService>();
-            service.AddSingleton<IFlashcardService, FlashcardService>();
-            service.AddSingleton<IEnglishService, EnglishService>();
-            service.AddSingleton<ICounterService, CounterService>();
+            services.AddSingleton<INavigationService, NavigateService>();
+
+            services.AddSingleton<IAssignmentService, AssignmentService>();
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
+
+            services.AddSingleton<ICompoundService, CompoundService>();
+            services.AddSingleton<IPeriodicService, PeriodicService>();
+            services.AddSingleton<IReactionService, ReactionService>();
+
+            services.AddSingleton<IDiaryService, DiaryService>();
+            services.AddSingleton<IDictionaryService, DictionaryService>();
+            services.AddSingleton<IFlashcardService, FlashcardService>();
+
+            services.AddSingleton<IAIService, AIService>();
+            services.AddSingleton<ICounterService, CounterService>();
+            SpeechService.Setup();
             #endregion
 
             // Đăng ký các ViewModels theo modules
             #region UI
-            service.AddTransient<MainWindowViewModel>();
-            service.AddTransient<DashboardViewModel>();
-            service.AddTransient<ControlBarViewModel>();
+            services.AddTransient<MainWindowViewModel>();
+            services.AddTransient<DashboardViewModel>();
+            services.AddTransient<ControlBarViewModel>();
             #endregion
 
             #region Authentication
-            service.AddTransient<AuthenticationViewModel>();
+            services.AddTransient<AuthenticationViewModel>();
             #endregion
 
             #region Assignment
-            service.AddTransient<AssignmentMainPageViewModel>();
-            service.AddTransient<Func<ExerciseSet, ExerciseManagerViewModel>>(sp => 
-            (selectedSet) => ActivatorUtilities.CreateInstance<ExerciseManagerViewModel>(sp, selectedSet));
+            services.AddTransient<AssignmentMainPageViewModel>();
+            services.AddTransient<InsertExerciseSetViewModel>();
+
+            services.AddTransient<Func<INavigationService, IServiceProvider, IAuthorizationCache, IAssignmentService, IAssignmentCache, ExerciseSet, ExerciseManagerViewModel>>(sp =>
+            (navigationService, serviceProvider, authorizationCache, assignmentService, assignmentCache, selectedSet) =>
+            {
+                var exerciseVmFactory = sp.GetRequiredService<Func<IAssignmentService, ExerciseSet, ExerciseViewModel>>();
+                return new ExerciseManagerViewModel(navigationService, serviceProvider, authorizationCache, assignmentService, assignmentCache, selectedSet, exerciseVmFactory);
+            });
+            services.AddTransient<Func<IAssignmentService, ExerciseSet, ExerciseViewModel>>(sp =>
+            (service, currSet) =>
+            {
+                return new ExerciseViewModel(service, currSet);
+            });
             #endregion
 
             #region Chemistry
-            service.AddTransient<ChemistryMainPageViewModel>();
+            services.AddTransient<ChemistryMainPageViewModel>();
 
-            service.AddTransient<CompoundManagerViewModel>();
+            services.AddTransient<CompoundManagerViewModel>();
 
-            service.AddTransient<ElementInfoViewModel>();
-            service.AddTransient<PeriodicTableViewModel>();
+            services.AddTransient<ElementInfoViewModel>();
+            services.AddTransient<PeriodicTableViewModel>();
 
-            service.AddTransient<ReactionManagerViewModel>();
-            service.AddTransient<Func<Reaction, ReactionSelectionResultViewModel>>(sp =>
-            (selectedReaction) => ActivatorUtilities.CreateInstance<ReactionSelectionResultViewModel>(sp, selectedReaction));
+            services.AddTransient<ReactionManagerViewModel>();
+            services.AddTransient<Func<IChemistryDataCache, Reaction, ReactionSelectionResultViewModel>>(sp =>
+            (cache, selectedReaction) => ActivatorUtilities.CreateInstance<ReactionSelectionResultViewModel>(sp, cache, selectedReaction));
             #endregion
 
             #region English
-            service.AddTransient<EnglishMainPageViewModel>();
+            services.AddTransient<EnglishMainPageViewModel>();
 
-            service.AddTransient<DiaryViewModel>();
-            service.AddTransient<Func<DiaryContent, DiaryViewModel>>(sp => (diary) => ActivatorUtilities.CreateInstance<DiaryViewModel>(sp, diary));
-            service.AddTransient<DiaryManagerViewModel>();
-            service.AddTransient<Func<IUserProvider, IServiceProvider, IEnglishService, DiaryContent, DiaryDetailViewModel>>(sp => 
-            (userService, service, engService, diary) =>
+            services.AddTransient<DiaryViewModel>();
+            services.AddTransient<Func<IServiceProvider, IAIService, IDiaryService, DiaryContent, DiaryViewModel>>(sp =>
+            (service, aiService, diaryService, diary) =>
             {
-                var diaryVmFactory = sp.GetRequiredService<Func<DiaryContent, DiaryViewModel>>();
-                return new DiaryDetailViewModel(userService, service, engService, diary, diaryVmFactory);
+                return new DiaryViewModel(service, aiService, diaryService, diary);
+            });
+            services.AddTransient<DiaryManagerViewModel>();
+            services.AddTransient<Func<IServiceProvider, IAIService, IDiaryService, IUserProvider, DiaryContent, DiaryDetailViewModel>>(sp =>
+            (service, aiService, diaryService, userService, diary) =>
+            {
+                var diaryVmFactory = sp.GetRequiredService<Func<IServiceProvider, IAIService, IDiaryService, DiaryContent, DiaryViewModel>>();
+                return new DiaryDetailViewModel(service, aiService, diaryService, userService, diary, diaryVmFactory);
             });
 
-            service.AddTransient<DictionaryViewModel>();
+            services.AddTransient<DictionaryViewModel>();
 
             // Đăng ký các hàm tạo cho FlashcardViewModel và FlashcardStudyViewModel
-            service.AddTransient<FlashcardManagerViewModel>();
-            service.AddTransient<FlashcardViewModel>();
-            service.AddTransient<FlashcardStudyViewModel>();
-            service.AddTransient<Func<FlashcardSet, Action<FlashcardSet>, FlashcardViewModel>>(sp => (set, callback) => new FlashcardViewModel(set, callback));
-            service.AddTransient<Func<Flashcard, Action<Flashcard>, Func<DictionaryWindow>, FlashcardViewModel>>(sp =>
-            (flashcard, callback, dictFactory) =>
-            {
-                var serviceProvider = sp;
-                return new FlashcardViewModel(sp, flashcard, callback, dictFactory);
-            });
-            service.AddTransient<Func<FlashcardSet, IFlashcardService, FlashcardStudyViewModel>>(sp => (set, service) => new FlashcardStudyViewModel(set, service));
+            services.AddTransient<FlashcardManagerViewModel>();
+            services.AddTransient<FlashcardViewModel>();
+            services.AddTransient<FlashcardSetViewModel>();
+            services.AddTransient<FlashcardStudyViewModel>();
+            services.AddTransient<Func<IFlashcardService, FlashcardSet, FlashcardSetViewModel>>(sp => (service, set) => new FlashcardSetViewModel(service, set));
+            services.AddTransient<Func<IServiceProvider, IFlashcardService, long, Flashcard, FlashcardViewModel>>(sp => (sp, service, setId, card) => new FlashcardViewModel(sp, service, setId, card));
+            services.AddTransient<Func<FlashcardSet, IFlashcardService, FlashcardStudyViewModel>>(sp => (set, service) => new FlashcardStudyViewModel(set, service));
 
-            service.AddTransient<LectureMainPageViewModel>();
-            service.AddTransient<LectureContentViewModel>();
+            services.AddTransient<LectureMainPageViewModel>();
+            services.AddTransient<LectureContentViewModel>();
             #endregion
 
             #region Maths
-            service.AddTransient<MathsMainPageViewModel>();
+            services.AddTransient<MathsMainPageViewModel>();
             #endregion
 
             #region Physics
-            service.AddTransient<PhysicsMainPageViewModel>();
+            services.AddTransient<PhysicsMainPageViewModel>();
             #endregion
 
             #region Teacher
-            service.AddTransient<ExerciseSetViewModel>();
+            services.AddTransient<ExerciseSetViewModel>();
+            services.AddTransient<ExerciseViewModel>();
 
-            service.AddTransient<CompoundComponentViewModel>();
-            service.AddTransient<CompoundNoteViewModel>();
-            service.AddTransient<CompoundViewModel>();
+            services.AddTransient<CompoundComponentViewModel>();
+            services.AddTransient<CompoundNoteViewModel>();
+            services.AddTransient<CompoundViewModel>();
 
-            service.AddTransient<ReactionComponentViewModel>();
-            service.AddTransient<ReactionNoteViewModel>();
-            service.AddTransient<ReactionViewModel>();
+            services.AddTransient<ReactionComponentViewModel>();
+            services.AddTransient<ReactionNoteViewModel>();
+            services.AddTransient<ReactionViewModel>();
             #endregion
 
             #region Toolkits
-            service.AddTransient<ToolkitsViewModel>();
+            services.AddTransient<ToolkitsViewModel>();
             #endregion
 
             // Đăng ký các Views và ViewModels theo modules
             #region UI
-            service.AddTransient<Dashboard>(sp =>
+            services.AddTransient<MainWindow>();
+
+            services.AddTransient<Dashboard>(sp =>
             {
                 var vm = sp.GetRequiredService<DashboardViewModel>();
                 return new Dashboard { DataContext = vm };
             });
 
-            service.AddTransient<ToolkitsMainPage>(sp =>
+            services.AddTransient<ToolkitsMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<ToolkitsViewModel>();
                 return new ToolkitsMainPage { DataContext = vm };
@@ -243,7 +308,7 @@ namespace LaboratoryApp
             #endregion
 
             #region Authentication
-            service.AddTransient<AuthenticationWindow>(sp =>
+            services.AddTransient<AuthenticationWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<AuthenticationViewModel>();
                 return new AuthenticationWindow { DataContext = vm };
@@ -251,82 +316,86 @@ namespace LaboratoryApp
             #endregion
 
             #region Assignment
-            service.AddTransient<AssignmentMainPage>(sp =>
+            services.AddTransient<AssignmentMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<AssignmentMainPageViewModel>();
                 return new AssignmentMainPage { DataContext = vm };
             });
+            services.AddTransient<InsertExerciseSetWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<InsertExerciseSetViewModel>();
+                return new InsertExerciseSetWindow { DataContext = vm };
+            });
 
-            service.AddTransient<ExerciseManagerWindow>();
+            services.AddTransient<ExerciseManagerPage>();
             #endregion
 
             #region Chemistry
-            service.AddTransient<ChemistryMainPage>(sp =>
+            services.AddTransient<ChemistryMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<ChemistryMainPageViewModel>();
                 return new ChemistryMainPage { DataContext = vm };
             });
 
-            service.AddTransient<PeriodicTableWindow>(sp =>
+            services.AddTransient<PeriodicTableWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<PeriodicTableViewModel>();
                 return new PeriodicTableWindow { DataContext = vm };
             });
 
-            service.AddTransient<CompoundManagerPage>(sp =>
+            services.AddTransient<CompoundManagerPage>(sp =>
             {
                 var vm = sp.GetRequiredService<CompoundManagerViewModel>();
                 return new CompoundManagerPage { DataContext = vm };
             });
 
-            service.AddTransient<ReactionManagerPage>(sp =>
+            services.AddTransient<ReactionManagerPage>(sp =>
             {
                 var vm = sp.GetRequiredService<ReactionManagerViewModel>();
                 return new ReactionManagerPage { DataContext = vm };
             });
-            service.AddTransient<ReactionSelectionResultWindow>();
+            services.AddTransient<ReactionSelectionResultWindow>();
             #endregion
 
             #region English
-            service.AddTransient<EnglishMainPage>(sp =>
+            services.AddTransient<EnglishMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<EnglishMainPageViewModel>();
                 return new EnglishMainPage { DataContext = vm };
             });
 
-            service.AddTransient<DiaryDetailWindow>();
-            service.AddTransient<DiaryManagerPage>(sp =>
+            services.AddTransient<DiaryDetailWindow>();
+            services.AddTransient<DiaryManagerPage>(sp =>
             {
                 var vm = sp.GetRequiredService<DiaryManagerViewModel>();
                 return new DiaryManagerPage { DataContext = vm };
             });
-            service.AddTransient<DiaryWindow>(sp =>
+            services.AddTransient<DiaryWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<DiaryViewModel>();
                 return new DiaryWindow { DataContext = vm };
             });
 
-            service.AddTransient<DictionaryWindow>(sp =>
+            services.AddTransient<DictionaryWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<DictionaryViewModel>();
                 return new DictionaryWindow { DataContext = vm };
             });
-            service.AddTransient<Func<DictionaryWindow>>(sp =>
+            services.AddTransient<Func<DictionaryWindow>>(sp =>
             {
                 return () => sp.GetRequiredService<DictionaryWindow>();
             });
 
-            service.AddTransient<FlashcardManagerPage>(sp =>
+            services.AddTransient<FlashcardManagerPage>(sp =>
             {
                 var vm = sp.GetRequiredService<FlashcardManagerViewModel>();
                 return new FlashcardManagerPage { DataContext = vm };
             });
-            service.AddTransient<FlashcardStudyWindow>();
-            service.AddTransient<AddFlashcardWindow>();
-            service.AddTransient<UpdateFlashcardWindow>();
-            service.AddTransient<UpdateFlashcardSetWindow>();
+            services.AddTransient<FlashcardStudyWindow>();
+            services.AddTransient<FlashcardWindow>();
+            services.AddTransient<UpdateFlashcardSetWindow>();
 
-            service.AddTransient<LectureMainPage>(sp =>
+            services.AddTransient<LectureMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<LectureMainPageViewModel>();
                 return new LectureMainPage { DataContext = vm };
@@ -334,7 +403,7 @@ namespace LaboratoryApp
             #endregion
 
             #region Maths
-            service.AddTransient<MathsMainPage>(sp =>
+            services.AddTransient<MathsMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<MathsMainPageViewModel>();
                 return new MathsMainPage { DataContext = vm };
@@ -342,7 +411,7 @@ namespace LaboratoryApp
             #endregion
 
             #region Physics
-            service.AddTransient<PhysicsMainPage>(sp =>
+            services.AddTransient<PhysicsMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<PhysicsMainPageViewModel>();
                 return new PhysicsMainPage { DataContext = vm };
@@ -350,19 +419,20 @@ namespace LaboratoryApp
             #endregion
 
             #region Teacher
-            service.AddTransient<AddExerciseSetWindow>(sp =>
+            services.AddTransient<AddExerciseSetWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<ExerciseSetViewModel>();
                 return new AddExerciseSetWindow { DataContext = vm };
             });
+            services.AddTransient<AddExerciseWindow>();
 
-            service.AddTransient<AddCompoundWindow>(sp =>
+            services.AddTransient<AddCompoundWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<CompoundViewModel>();
                 return new AddCompoundWindow { DataContext = vm };
-            }); 
-            
-            service.AddTransient<AddReactionWindow>(sp =>
+            });
+
+            services.AddTransient<AddReactionWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<ReactionViewModel>();
                 return new AddReactionWindow { DataContext = vm };
@@ -370,30 +440,53 @@ namespace LaboratoryApp
             #endregion
 
             #region Toolkits
-            service.AddTransient<ToolkitsMainPage>(sp =>
+            services.AddTransient<ToolkitsMainPage>(sp =>
             {
                 var vm = sp.GetRequiredService<ToolkitsViewModel>();
                 return new ToolkitsMainPage { DataContext = vm };
             });
             #endregion
 
-            // Xây dựng ServiceProvider
-            _serviceProvider = service.BuildServiceProvider();
+        }
 
-            // Khởi tạo dữ liệu cần thiết trước khi hiển thị MainWindow
-            #region Caches
-            ChemistryDataCache.LoadAllData(_serviceProvider.GetRequiredService<IChemistryService>());
-            EnglishDataCache.LoadAllData(_serviceProvider.GetRequiredService<IEnglishService>());
-            AssignmentCache.LoadAllData(_serviceProvider.GetRequiredService<IAssignmentProvider>());
-            AuthorizationCache.LoadAllData(_serviceProvider.GetRequiredService<IExerciseSetAccessProvider>());
-            #endregion
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // Gọi providers
+            var assignmentProvider = _serviceProvider.GetRequiredService<IAssignmentProvider>();
+            var exerciseSetAccessProvider = _serviceProvider.GetRequiredService<IExerciseSetAccessProvider>();
+
+            var periodicProvider = _serviceProvider.GetRequiredService<IPeriodicProvider>();
+            var compoundProvider = _serviceProvider.GetRequiredService<ICompoundProvider>();
+            var reactionProvider = _serviceProvider.GetRequiredService<IReactionProvider>();
+
+            var diaryProvider = _serviceProvider.GetRequiredService<IDiaryProvider>();
+            var dictionaryProvider = _serviceProvider.GetRequiredService<IDictionaryProvider>();
+
+            // Gọi caches
+            var assignmentCache = _serviceProvider.GetRequiredService<IAssignmentCache>();
+            var authorizationCache = _serviceProvider.GetRequiredService<IAuthorizationCache>();
+            var chemistryCache = _serviceProvider.GetRequiredService<IChemistryDataCache>();
+            var englishCache = _serviceProvider.GetRequiredService<IEnglishDataCache>();
+
+            // Lấy dữ liệu
+            assignmentCache.LoadAllData(assignmentProvider);
+            authorizationCache.LoadAllData(exerciseSetAccessProvider);
+            chemistryCache.LoadAllData(periodicProvider, compoundProvider, reactionProvider);
+            englishCache.LoadAllData(diaryProvider, dictionaryProvider);
 
             // Lấy MainWindowViewModel từ ServiceProvider
-            var mainVM = _serviceProvider.GetRequiredService<MainWindowViewModel>();
-            mainWindow.DataContext = mainVM;
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            var navigationService = _serviceProvider.GetRequiredService<INavigationService>();
+            var mainWindowVM = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+
+            mainWindow.DataContext = mainWindowVM;
+            navigationService.Initialize(mainWindow.MainFrame);
+
+            mainWindowVM.Initialize();
 
             // Hiển thị MainWindow
             mainWindow.Show();
+            base.OnStartup(e);
         }
     }
 

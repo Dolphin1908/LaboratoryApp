@@ -1,4 +1,5 @@
 ﻿using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Caches.Chemistry;
 using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Shared.Interface;
@@ -11,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels
 {
-    public class CompoundComponentViewModel:BaseViewModel, IAsyncInitializable
+    public class CompoundComponentViewModel : BaseViewModel
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IChemistryDataCache _chemistryDataCache;
 
         private string _quantity;
         private Element _selectedElement;
@@ -41,25 +42,15 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
         }
         #endregion
 
-
-
         private ObservableCollection<Element> _allElements;
 
-        public CompoundComponentViewModel(IServiceProvider serviceProvider)
+        public CompoundComponentViewModel(IChemistryDataCache chemistryDataCache)
         {
-            _serviceProvider = serviceProvider;
+            _chemistryDataCache = chemistryDataCache;
 
-            _allElements = new ObservableCollection<Element>(ChemistryDataCache.AllElements);
+            _allElements = new ObservableCollection<Element>(_chemistryDataCache.AllElements);
 
             SelectedElement = _allElements.First();
-        }
-
-        public async Task InitializeAsync(CancellationToken cancellationToken = default)
-        {
-            await Task.Run(() =>
-            {
-                // Do nothing for now
-            }, cancellationToken);
         }
     }
 }

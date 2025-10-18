@@ -103,9 +103,9 @@
         </StackPanel>
 
         <local:DictionarySelectionResultUC DataContext="{Binding SelectedWordResult}" 
-                              Grid.Row="1"
-                              Margin="10, 5, 10, 5"
-                              Visibility="{Binding DataContext.SelectedWordResult, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                           Grid.Row="1"
+                                           Margin="10, 5, 10, 5"
+                                           Visibility="{Binding DataContext.SelectedWordResult, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"/>
 
         <DockPanel Grid.Row="2"
                    Visibility="{Binding SearchText, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
@@ -153,10 +153,10 @@
                           IsExpanded="True">
                     <Grid>
                         <local:DictionarySelectionResultUC MaxHeight="400" 
-                                              DataContext="{Binding DataContext.AIResult, RelativeSource={RelativeSource AncestorType=Window}, UpdateSourceTrigger=PropertyChanged}"
-                                              Visibility="{Binding DataContext.AIResult, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                                           DataContext="{Binding DataContext.AIResult, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         <TextBlock Text="{Binding AIResultMessage, UpdateSourceTrigger=PropertyChanged}"
-                                   Visibility="{Binding AIResultMessage, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                                   Visibility="{Binding AIResultMessage, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                   IsHitTestVisible="False"/>
                     </Grid>
                 </Expander>
             </StackPanel>

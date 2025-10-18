@@ -16,5 +16,10 @@ namespace LaboratoryApp.src.Data.Providers.Assignment
         Task UpdateExerciseSet(ExerciseSet set);
         Task DeleteExerciseSet(ExerciseSet set);
         #endregion
+
+        #region Exercise
+        Task<List<Exercise>> GetAllExercises();
+        Task CreateNewExercise(Exercise exercise);
+        #endregion
     }
 }

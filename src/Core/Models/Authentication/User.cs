@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LaboratoryApp.src.Core.Models.Authentication.Enums;
+
 namespace LaboratoryApp.src.Core.Models.Authentication
 {
     public class User : BaseAuthentication
@@ -17,6 +19,7 @@ namespace LaboratoryApp.src.Core.Models.Authentication
         public string Address { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
 
+        public Role Role { get; set; } = Role.Student;
         public bool IsEmailVerified { get; set; } = false;
         public bool IsPhoneVerified { get; set; } = false;
         public bool IsActive { get; set; } = true;

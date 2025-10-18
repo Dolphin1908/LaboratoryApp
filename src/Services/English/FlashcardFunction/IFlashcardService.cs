@@ -9,13 +9,20 @@ namespace LaboratoryApp.src.Services.English.FlashcardFunction
 {
     public interface IFlashcardService
     {
-        List<FlashcardSet> GetAllFlashcardSets();
-        void AddFlashcardSet(FlashcardSet flashcardSet);
-        void UpdateFlashcardSet(FlashcardSet updatedSet);
-        void DeleteFlashcardSet(FlashcardSet deletedSet);
+        // Lấy dữ liệu
+        IEnumerable<FlashcardSet> GetAllSets();
 
-        void AddFlashcardToSet(long setId, Flashcard flashcard);
-        void UpdateFlashcard(long setId, Flashcard flashcard);
-        void DeleteFlashcardFromSet(long setId, Flashcard flashcard);
+        // Thao tác với Bộ thẻ (Set)
+        FlashcardSet CreateNewSet(string name, string description);
+        void UpdateSet(FlashcardSet updatedSet);
+        void DeleteSet(long setId);
+
+        // Thao tác với Thẻ (Card)
+        void AddCardToSet(long setId, Flashcard newCard);
+        void UpdateCardInSet(long setId, Flashcard updatedCard);
+        void DeleteCardFromSet(long setId, long cardId);
+
+        // Logic ôn tập
+        void RecordStudyResult(long setId, Flashcard card, bool wasCorrect);
     }
 }

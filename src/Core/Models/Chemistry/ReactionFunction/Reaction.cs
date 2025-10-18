@@ -17,6 +17,8 @@ namespace LaboratoryApp.src.Core.Models.Chemistry
 
         public long OwnerId { get; set; } // User who created or owns the reaction
 
+        public string Author { get; set; } = string.Empty; // Tác giả
+
         public List<ReactionComponent> Reactants { get; set; } = new List<ReactionComponent>();
 
         public List<ReactionComponent> Products { get; set; } = new List<ReactionComponent>();

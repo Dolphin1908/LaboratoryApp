@@ -190,18 +190,32 @@
                                   ItemsSource="{Binding SelectedReaction.ReactionNotes}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="10,0,0,10">
+                                <StackPanel Margin="10,0,0,5">
                                     <TextBlock Text="{Binding NoteType, Converter={StaticResource EnumDisplayNameConverter}}"
                                                FontSize="16"
-                                               FontWeight="Bold"/>
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,5"/>
 
                                     <ItemsControl ItemsSource="{Binding Content}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding}"
-                                                           TextWrapping="WrapWithOverflow"
-                                                           FontSize="16"
-                                                           Margin="10,0,0,0"/>
+                                                <Grid Margin="0,0,0,5">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="•"
+                                                               Grid.Column="0"
+                                                               FontSize="16"
+                                                               FontWeight="Bold"
+                                                               Margin="10,0,0,0"/>
+
+                                                    <TextBlock Text="{Binding}"
+                                                               Grid.Column="1"
+                                                               TextWrapping="WrapWithOverflow"
+                                                               FontSize="16"
+                                                               Margin="10,0,0,0"/>
+                                                </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

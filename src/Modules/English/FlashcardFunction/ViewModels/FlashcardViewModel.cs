@@ -18,23 +18,21 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
 {
     public class FlashcardViewModel : BaseViewModel
     {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IFlashcardService _flashcardService;
+
+        private readonly Flashcard _card;
+        private readonly long _setId;
+        private readonly bool _isNewCard;
+
         private string _word;
         private string _pos;
         private string _meaning;
         private string _example;
         private string _note;
-        private Flashcard _flashcard;
-        private Action<Flashcard> _flashcardCommandCallback;
-        private IServiceProvider _serviceProvider;
-
-        private string _name;
-        private string _description;
-        private FlashcardSet _originalSet;
-        private Action<FlashcardSet> _updateCallback;
 
         #region Commands
-        public ICommand UpdateFlashcardCommand { get; set; } // Command to edit a flashcard
-        public ICommand UpdateFlashcardSetCommand { get; set; } // Command to edit a flashcard set
+        public ICommand SaveCommand { get; set; } // Command to edit a flashcard
         public ICommand OpenDictionaryWindowCommand { get; set; } // Command to open the dictionary window
         #endregion
 
@@ -84,115 +82,66 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
                 OnPropertyChanged(nameof(Note));
             }
         }
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
-        }
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                _description = value;
-                OnPropertyChanged(nameof(Description));
-            }
-        }
+        public string Title => _isNewCard ? "Thêm thẻ mới" : "Chỉnh sửa thẻ";
         #endregion
 
         /// <summary>
-        /// Constructor cho việc cập nhật một bộ thẻ flashcard.
-        /// </summary>
-        /// <param name="flashcardSet"></param>
-        /// <param name="updateSet"></param>
-        public FlashcardViewModel(FlashcardSet flashcardSet, 
-                                  Action<FlashcardSet> updateSet)
-        {
-            _originalSet = flashcardSet;
-            _updateCallback = updateSet;
-
-            Name = flashcardSet.Name;
-            Description = flashcardSet.Description;
-
-            UpdateFlashcardSetCommand = new RelayCommand<object>((p) => true, (p) => UpdateSet(p));
-        }
-
-        /// <summary>
-        /// Constructor cho việc thêm/sửa một thẻ flashcard cụ thể.
+        /// Construction
         /// </summary>
         /// <param name="flashcard"></param>
         /// <param name="flashcardCommand"></param>
         public FlashcardViewModel(IServiceProvider serviceProvider,
-                                  Flashcard flashcard, 
-                                  Action<Flashcard> flashcardCommand, 
-                                  Func<DictionaryWindow> dictionaryWindowFactory)
+                                  IFlashcardService flashcardService,
+                                  long setId,
+                                  Flashcard card)
         {
             _serviceProvider = serviceProvider;
-            _flashcard = flashcard;
-            _flashcardCommandCallback = flashcardCommand;
+            _flashcardService = flashcardService;
 
-            if (_flashcard != null)
-            {
-                LoadUI();
-            }
+            _setId = setId;
+            _card = card; // Đây có thể là card mới (Id=0) hoặc card đã tồn tại
+            _flashcardService = flashcardService;
+            _isNewCard = card.Id == 0;
 
-            UpdateFlashcardCommand = new RelayCommand<object>((p) => true, (p) => UpdateFlashcard(p));
+            Word = _card.Word;
+            Pos = _card.Pos;
+            Meaning = _card.Meaning;
+            Example = _card.Example;
+            Note = _card.Note;
+
+            SaveCommand = new RelayCommand<object>((p) => CanSave(), (p) => SaveChanges(p));
             OpenDictionaryWindowCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var window = _serviceProvider.GetRequiredService<DictionaryWindow>();
-                if (window.DataContext is DictionaryViewModel vm && vm is IAsyncInitializable init)
-                {
-                    // Initialize the dictionary window asynchronously
-                    _ = init.InitializeAsync();
-                }
                 window.Show();
             });
         }
 
-        private void UpdateFlashcard(object window)
+        private bool CanSave() => !string.IsNullOrWhiteSpace(Word) && !string.IsNullOrWhiteSpace(Meaning);
+
+        private void SaveChanges(object parameter)
         {
-            _flashcard.Word = Word;
-            _flashcard.Pos = Pos;
-            _flashcard.Meaning = Meaning;
-            _flashcard.Example = Example;
-            _flashcard.Note = Note;
-            _flashcard.LastReviewed = DateTime.Now;
-            _flashcard.NextReview = DateTime.Now;
-            _flashcard.ReviewCount = 0;
-            _flashcard.CorrectStreak = 0;
-            _flashcard.IsLearned = false;
+            // Cập nhật thông tin từ UI vào đối tượng model
+            _card.Word = this.Word;
+            _card.Meaning = this.Meaning;
+            _card.Example = this.Example;
+            _card.Note = this.Note;
+            _card.Pos = this.Pos;
 
-            _flashcardCommandCallback?.Invoke(_flashcard);
+            // ✅ ViewModel tự quyết định gọi Add hay Update dựa vào trạng thái
+            if (_isNewCard)
+            {
+                _flashcardService.AddCardToSet(_setId, _card);
+            }
+            else
+            {
+                _flashcardService.UpdateCardInSet(_setId, _card);
+            }
 
-            if (window is Window win)
+            if (parameter is Window win)
             {
                 win.Close();
-            }
-        }
-
-        private void UpdateSet(object window)
-        {
-            _originalSet.Name = Name;
-            _originalSet.Description = Description;
-
-            _updateCallback?.Invoke(_originalSet);
-
-            if (window is Window win)
-                win.Close();
-        }
-
-        private void LoadUI()
-        {
-            Word = _flashcard.Word;
-            Pos = _flashcard.Pos;
-            Meaning = _flashcard.Meaning;
-            Example = _flashcard.Example;
-            Note = _flashcard.Note;
+            }    
         }
     }
 }

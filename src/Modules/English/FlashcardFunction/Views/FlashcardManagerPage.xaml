@@ -123,7 +123,7 @@
                 <!-- Row 1 -->
                 <Border BorderThickness="0,0,0,2"
                         BorderBrush="Gray"
-                        Margin="5,0,5,0"
+                        Margin="5,0"
                         Padding="0,0,0,5">
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
@@ -133,10 +133,11 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0"
-                                   Margin="0,4,0,0"
+                                   Margin="0,0,0,5"
                                    Text="{Binding SelectedFlashcardSet.Name, UpdateSourceTrigger=PropertyChanged}"
-                                   FontSize="60"
+                                   FontSize="40"
                                    VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
                                    FontWeight="Bold"/>
 
                         <Grid Grid.Column="1">
@@ -155,10 +156,10 @@
                                         Style="{StaticResource MaterialDesignRaisedButton}"
                                         Background="Cyan"
                                         BorderThickness="0"
-                                        Width="200"
-                                        Height="64"
+                                        Width="120"
+                                        Height="40"
                                         Padding="0,0,5,0"
-                                        Margin="5,0,0,0"
+                                        Margin="10,0,0,0"
                                         Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}"
                                         materialDesign:ButtonAssist.CornerRadius="10"
                                         Command="{Binding OpenUpdateFlashcardSetWindowCommand}">
@@ -183,8 +184,8 @@
                                         Style="{StaticResource MaterialDesignRaisedButton}"
                                         Background="Red"
                                         BorderThickness="0"
-                                        Width="200"
-                                        Height="64"
+                                        Width="120"
+                                        Height="40"
                                         Padding="0,0,5,0"
                                         Margin="10,0,0,0"
                                         Visibility="{Binding SelectedFlashcardSet, Converter={StaticResource NullToVisibilityConverter}}"
@@ -238,10 +239,10 @@
                             BorderBrush="Gray">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="35"/>
                             </Grid.ColumnDefinitions>

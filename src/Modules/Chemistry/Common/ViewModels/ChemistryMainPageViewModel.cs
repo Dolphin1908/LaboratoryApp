@@ -25,7 +25,6 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly IChemistryService _chemistryService;
 
         #region Commands
         public ICommand OpenPeriodicTableCommand { get; set; } // Command to open the periodic table window
@@ -45,12 +44,10 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
         /// <param name="chemistryService"></param>
         /// <param name="chemistryDataCache"></param>
         public ChemistryMainPageViewModel(INavigationService navigationService, 
-                                          IServiceProvider serviceProvider,
-                                          IChemistryService chemistryService)
+                                          IServiceProvider serviceProvider)
         {
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
-            _chemistryService = chemistryService;
 
             #region Commands
             OpenPeriodicTableCommand = new RelayCommand<object>((p) => true, (p) =>

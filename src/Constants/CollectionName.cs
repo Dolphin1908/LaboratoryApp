@@ -10,8 +10,6 @@ namespace LaboratoryApp.src.Constants
     {
         #region Authentication
         public const string Users = "users";
-        public const string Roles = "roles";
-        public const string UserRole = "user_role";
         public const string RefreshTokens = "refresh_tokens";
         #endregion
 

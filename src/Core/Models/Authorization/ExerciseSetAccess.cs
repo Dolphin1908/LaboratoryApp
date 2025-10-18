@@ -10,7 +10,7 @@ namespace LaboratoryApp.src.Core.Models.Authorization
 {
     public class ExerciseSetAccess
     {
-        public ObjectId Id { get; }
+        public ObjectId Id { get; set; }
         public long ExerciseSetId { get; set; }
 
         public long? UserId { get; set; }

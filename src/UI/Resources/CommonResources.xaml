@@ -11,13 +11,15 @@
     <main:ControlBarViewModel x:Key="ControlBarVM"></main:ControlBarViewModel>
 
     <!-- Converter -->
+    <cv:BlankToVisibilityConverter x:Key="BlankToVisibilityConverter"></cv:BlankToVisibilityConverter>
+    <cv:BooleanToAngleConverter x:Key="BooleanToAngleConverter"></cv:BooleanToAngleConverter>
     <cv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></cv:BooleanToVisibilityConverter>
     <cv:ColorToBrushConverter x:Key="ColorToBrushConverter"></cv:ColorToBrushConverter>
-    <cv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"></cv:NullToVisibilityConverter>
-    <cv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"></cv:InverseBooleanToVisibilityConverter>
+    <cv:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter"></cv:EnumDisplayNameConverter>
     <cv:FlipConverter x:Key="FlipConverter"></cv:FlipConverter>
     <cv:HtmlToDataUriConverter x:Key="HtmlToDataUriConverter"></cv:HtmlToDataUriConverter>
-    <cv:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter"></cv:EnumDisplayNameConverter>
+    <cv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"></cv:InverseBooleanToVisibilityConverter>
+    <cv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"></cv:NullToVisibilityConverter>
 
     <!-- Domain -->
     <domain:NotEmptyValidationRule x:Key="NotEmptyValidationRule"></domain:NotEmptyValidationRule>

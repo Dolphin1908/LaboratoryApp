@@ -4,34 +4,41 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+
 using LaboratoryApp.src.Core.Models.Assignment;
+using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+using LaboratoryApp.src.Core.Models.Authentication.Enums;
+
 using LaboratoryApp.src.Core.ViewModels;
 
+using LaboratoryApp.src.Modules.Assignment.Common.Views;
+using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
-using LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels;
+
+using LaboratoryApp.src.Services.Assignment;
 
 using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Core.Caches.Assignment;
 using LaboratoryApp.src.Data.Providers.Assignment;
-using LaboratoryApp.src.Data.Providers.Authorization;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
-using LaboratoryApp.src.Services.Assignment;
-using LaboratoryApp.src.Modules.Assignment.Exercise.Views;
-using LaboratoryApp.src.Modules.Assignment.Exercise.ViewModels;
+using LaboratoryApp.src.Core.Caches.Authorization;
 
 namespace LaboratoryApp.src.Modules.Assignment.Common.ViewModels
 {
     public class AssignmentMainPageViewModel : BaseViewModel, IAsyncInitializable
     {
+        private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IAuthorizationCache _authorizationCache;
         private readonly IAssignmentService _assignmentService;
-        private readonly Func<ExerciseSet, ExerciseManagerViewModel> _exerciseManagerVmFactory;
+        private readonly IAssignmentCache _assignmentCache;
+        private readonly Func<INavigationService, IServiceProvider, IAuthorizationCache, IAssignmentService, IAssignmentCache, ExerciseSet, ExerciseManagerViewModel> _exerciseManagerVmFactory;
 
         private bool _isTeacher;
 
@@ -39,6 +46,7 @@ namespace LaboratoryApp.src.Modules.Assignment.Common.ViewModels
 
         #region Commands
         public ICommand AddNewSetCommand { get; set; }
+        public ICommand InsertExerciseSet { get; set; }
         public ICommand OpenExerciseSetCommand { get; set; }
         #endregion
 
@@ -63,12 +71,18 @@ namespace LaboratoryApp.src.Modules.Assignment.Common.ViewModels
         }
         #endregion
 
-        public AssignmentMainPageViewModel(IServiceProvider serviceProvider,
+        public AssignmentMainPageViewModel(INavigationService navigationService,
+                                           IServiceProvider serviceProvider,
+                                           IAuthorizationCache authorizationCache,
                                            IAssignmentService assignmentService,
-                                           Func<ExerciseSet, ExerciseManagerViewModel> exerciseManagerVmFactory)
+                                           IAssignmentCache assignmentCache,
+                                           Func<INavigationService, IServiceProvider, IAuthorizationCache, IAssignmentService, IAssignmentCache, ExerciseSet, ExerciseManagerViewModel> exerciseManagerVmFactory)
         {
+            _navigationService = navigationService;
             _serviceProvider = serviceProvider;
+            _authorizationCache = authorizationCache;
             _assignmentService = assignmentService;
+            _assignmentCache = assignmentCache;
             _exerciseManagerVmFactory = exerciseManagerVmFactory;
 
             ExerciseSets = new ObservableCollection<ExerciseSet>();
@@ -81,20 +95,31 @@ namespace LaboratoryApp.src.Modules.Assignment.Common.ViewModels
             {
                 // Thêm mới bài tập
                 var window = _serviceProvider.GetRequiredService<AddExerciseSetWindow>();
-                if(window.DataContext is ExerciseSetViewModel vm && vm is IAsyncInitializable init)
-                {
-                    // Khởi tạo dữ liệu bất đồng bộ
-                    _ = init.InitializeAsync();
-                }
                 window.ShowDialog();
+
+                ExerciseSets = new ObservableCollection<ExerciseSet>(_assignmentService.GetAllExerciseSetsByUserId(AuthenticationCache.CurrentUser?.Id ?? 0));
+            });
+
+            InsertExerciseSet = new RelayCommand<object>((p) => true, (p) =>
+            {
+                if (AuthenticationCache.IsAuthenticated == false)
+                {
+                    MessageBox.Show("Vui lòng đăng nhập để có thể nhập bộ bài tập mới", "Yêu cầu đăng nhập", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var window = _serviceProvider.GetRequiredService<InsertExerciseSetWindow>();
+                window.ShowDialog();
+
+                ExerciseSets = new ObservableCollection<ExerciseSet>(_assignmentService.GetAllExerciseSetsByUserId(AuthenticationCache.CurrentUser?.Id ?? 0));
             });
 
             OpenExerciseSetCommand = new RelayCommand<object>(p => true, (p) =>
             {
                 var selectedSet = (ExerciseSet)p;
-                var window = _serviceProvider.GetRequiredService<ExerciseManagerWindow>();
-                window.DataContext = _exerciseManagerVmFactory(selectedSet);
-                window.ShowDialog();
+                var page = _serviceProvider.GetRequiredService<ExerciseManagerPage>();
+                page.DataContext = _exerciseManagerVmFactory(_navigationService, _serviceProvider, _authorizationCache, _assignmentService, _assignmentCache, selectedSet);
+                _navigationService.NavigateTo(page);
             });
             #endregion
         }
@@ -104,15 +129,20 @@ namespace LaboratoryApp.src.Modules.Assignment.Common.ViewModels
             await Task.Run(() =>
             {
                 // Khởi tạo dữ liệu bất đồng bộ ở đây
-                _isTeacher = AuthenticationCache.RoleId == 2;
+                _isTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
                 ExerciseSets = new ObservableCollection<ExerciseSet>(_assignmentService.GetAllExerciseSetsByUserId(AuthenticationCache.CurrentUser?.Id ?? 0));
             }, cancellationToken);
         }
 
         private void OnUserChanged(UserDTO? user)
         {
-            IsTeacher = AuthenticationCache.RoleId == 2;
+            IsTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
             ExerciseSets = new ObservableCollection<ExerciseSet>(_assignmentService.GetAllExerciseSetsByUserId(AuthenticationCache.CurrentUser?.Id ?? 0));
+        }
+
+        private void Dispose()
+        {
+            AuthenticationCache.CurrentUserChanged -= OnUserChanged;
         }
     }
 }

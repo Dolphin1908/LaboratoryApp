@@ -17,13 +17,13 @@ using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
 
 using LaboratoryApp.src.Services.Assignment;
-using LaboratoryApp.src.Services.Counter;
+using LaboratoryApp.src.Services.Helper.Counter;
 
 using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels
 {
-    public class ExerciseSetViewModel : BaseViewModel, IAsyncInitializable
+    public class ExerciseSetViewModel : BaseViewModel
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IAssignmentService _assignmentService;
@@ -82,19 +82,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels
                 }
             });
             #endregion
-        }
-
-        /// <summary>
-        /// Khởi tạo dữ liệu bất đồng bộ
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task InitializeAsync(CancellationToken cancellationToken = default)
-        {
-            await Task.Run(() =>
-            {
-                // Khởi tạo dữ liệu bất đồng bộ ở đây
-            }, cancellationToken);
         }
     }
 }
