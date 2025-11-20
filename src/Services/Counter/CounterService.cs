@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
-using MongoDB.Bson;
-using MongoDB.Driver;
-
+﻿using LaboratoryApp.Domain.Models.Core;
 using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Models.Helper;
 using LaboratoryApp.src.Data.Providers.Common;
+using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Services.Helper.Counter
 {

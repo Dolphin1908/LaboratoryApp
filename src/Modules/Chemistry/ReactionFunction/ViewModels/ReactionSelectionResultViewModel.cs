@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.ViewModels;
 
 namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels

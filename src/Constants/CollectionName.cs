@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LaboratoryApp.src.Constants
+﻿namespace LaboratoryApp.src.Constants
 {
     public static class CollectionName
     {
         #region Authentication
         public const string Users = "users";
+        public const string UserOrganization = "user_organization";
+        public const string Organizations = "organizations";
         public const string RefreshTokens = "refresh_tokens";
         #endregion
 
@@ -34,6 +30,7 @@ namespace LaboratoryApp.src.Constants
         #region Assignment
         public const string ExerciseSets = "exercise_sets";
         public const string Exercises = "exercises";
+        public const string Questions = "questions";
         #endregion
 
         #region Helper

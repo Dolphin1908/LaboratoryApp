@@ -14,7 +14,7 @@ using LaboratoryApp.src.Core.Caches.Chemistry;
 
 using LaboratoryApp.src.Core.ViewModels;
 
-using LaboratoryApp.src.Core.Models.Chemistry;
+using LaboratoryApp.Domain.Models.Chemistry;
 
 using LaboratoryApp.src.Shared.Interface;
 using LaboratoryApp.src.Services.Chemistry.PeriodicFunction;

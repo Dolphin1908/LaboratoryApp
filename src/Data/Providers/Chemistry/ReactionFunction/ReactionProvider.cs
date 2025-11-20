@@ -1,57 +1,55 @@
-﻿using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Models.Chemistry;
+﻿using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
+using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Data.Providers.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers.Chemistry.ReactionFunction
 {
     public class ReactionProvider : IReactionProvider
     {
         private readonly IMongoDBProvider _mongoDb;
-
+        private readonly IMongoCollection<Reaction> _reactionCollection;
         public ReactionProvider(IEnumerable<IMongoDBProvider> mongoDb)
         {
             _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.ChemistryMongoDB);
+            _reactionCollection = _mongoDb.GetCollection<Reaction>(CollectionName.Reactions);
         }
 
         /// <summary>
         /// Get all reactions from the MongoDB database.
         /// </summary>
         /// <returns></returns>
-        public List<Reaction> GetAllReactions()
+        public async Task<List<Reaction>> GetAllReactionsAsync()
         {
-            return _mongoDb.GetAll<Reaction>(CollectionName.Reactions);
+            var reactions = await _reactionCollection.Find(FilterDefinition<Reaction>.Empty).ToListAsync();
+            return reactions;
         }
 
         /// <summary>
         /// Get all reactions from the MongoDB database.
         /// </summary>
         /// <param name="reaction"></param>
-        public void AddReaction(Reaction reaction)
+        public async Task AddReactionAsync(Reaction reaction)
         {
-            _mongoDb.Insert(CollectionName.Reactions, reaction);
+            await _reactionCollection.InsertOneAsync(reaction);
         }
 
         /// <summary>
         /// Update an existing reaction in the MongoDB database.
         /// </summary>
         /// <param name="reaction"></param>
-        public void UpdateReaction(Reaction reaction)
+        public async Task UpdateReactionAsync(Reaction reaction)
         {
-            _mongoDb.Update(CollectionName.Reactions, reaction.Id, reaction);
+            await _reactionCollection.ReplaceOneAsync(r => r.Id == reaction.Id, reaction);
         }
 
         /// <summary>
         /// Delete a reaction from the MongoDB database.
         /// </summary>
         /// <param name="reaction"></param>
-        public void DeleteReaction(Reaction reaction)
+        public async Task DeleteReactionAsync(Reaction reaction)
         {
-            _mongoDb.Delete<Reaction>(CollectionName.Reactions, reaction.Id); // Explicitly specify the type argument
+            await _reactionCollection.DeleteOneAsync(r => r.Id == reaction.Id);
         }
     }
 }

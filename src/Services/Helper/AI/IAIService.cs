@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction.DTOs;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction.DTOs;
+﻿using LaboratoryApp.Domain.DTOs.English.DiaryFunction;
+using LaboratoryApp.Domain.DTOs.English.DictionaryFunction;
 
 namespace LaboratoryApp.src.Services.Helper.AI
 {

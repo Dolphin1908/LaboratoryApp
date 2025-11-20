@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LaboratoryApp.src.Data.Providers.Common;
-using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers.Common
 {
@@ -24,6 +17,20 @@ namespace LaboratoryApp.src.Data.Providers.Common
             _client = new MongoClient(connectionString);
             _database = _client.GetDatabase(databaseName);
             DatabaseName = databaseName;
+        }
+
+        /// <summary>
+        /// Lấy 1 "cổng giao tiếp" để làm việc với Database MongoDB
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public IMongoCollection<T> GetCollection<T>(string collectionName)
+        {
+            if (string.IsNullOrEmpty(collectionName))
+                throw new ArgumentException("Collection name must be provided.", nameof(collectionName));
+            return _database.GetCollection<T>(collectionName);
         }
 
         public List<T> GetAll<T>(string collectionName)
@@ -88,7 +95,7 @@ namespace LaboratoryApp.src.Data.Providers.Common
 
         public void DeleteAll<T>(string collectionName, string field, long id)
         {
-            if(string.IsNullOrEmpty(collectionName))
+            if (string.IsNullOrEmpty(collectionName))
                 throw new ArgumentException("Collection name must be provided.", nameof(collectionName));
 
             var collection = _database.GetCollection<T>(collectionName);

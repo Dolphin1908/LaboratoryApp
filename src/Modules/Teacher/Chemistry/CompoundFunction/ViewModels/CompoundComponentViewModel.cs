@@ -1,14 +1,7 @@
-﻿using LaboratoryApp.src.Core.Caches;
+﻿using LaboratoryApp.Domain.Models.Chemistry.Common;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Shared.Interface;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels
 {

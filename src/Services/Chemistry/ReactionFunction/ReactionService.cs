@@ -1,17 +1,10 @@
-﻿using LaboratoryApp.src.Constants;
+﻿using LaboratoryApp.Domain.Enums.Chemistry.ReactionFunction;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
+using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Data.Providers.Chemistry.ReactionFunction;
 using LaboratoryApp.src.Services.Helper.Counter;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.DirectoryServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Services.Chemistry.ReactionFunction
 {
@@ -66,7 +59,7 @@ namespace LaboratoryApp.src.Services.Chemistry.ReactionFunction
             if (Kind == SubstanceKind.Element)
             {
                 // Tìm kiếm theo tên hoặc công thức
-                return _chemistryDataCache.AllElements.Where(e => e.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) || 
+                return _chemistryDataCache.AllElements.Where(e => e.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                                                                  e.Formula.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                                                      .ToList();
             }
@@ -86,14 +79,14 @@ namespace LaboratoryApp.src.Services.Chemistry.ReactionFunction
         {
             reaction.Id = _counterService.GetNextId(CollectionName.Reactions);
 
-            reaction.OwnerId = AuthenticationCache.CurrentUser?.Id ?? 0;
+            reaction.OwnerId = AuthenticationCache.CurrentAuthentication?.User.Id ?? 0;
 
-            if(string.IsNullOrWhiteSpace(reaction.Author))
+            if (string.IsNullOrWhiteSpace(reaction.Author))
             {
                 reaction.Author = "Unknown";
-            }    
+            }
 
-            _reactionProvider.AddReaction(reaction);
+            _reactionProvider.AddReactionAsync(reaction);
             _chemistryDataCache.AllReactions.Add(reaction);
         }
     }

@@ -1,10 +1,5 @@
-﻿using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.DTOs.English.DictionaryFunction;
+using LaboratoryApp.Domain.Models.English.DictionaryFunction;
 
 namespace LaboratoryApp.src.Services.English.DictionaryFunction
 {

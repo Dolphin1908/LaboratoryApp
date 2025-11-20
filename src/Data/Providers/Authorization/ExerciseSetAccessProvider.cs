@@ -1,5 +1,5 @@
 ﻿using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Models.Authorization;
+using LaboratoryApp.Domain.Models.Authorization;
 using LaboratoryApp.src.Data.Providers.Common;
 using MongoDB.Driver;
 using System;

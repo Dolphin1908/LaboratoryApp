@@ -1,36 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LaboratoryApp.Domain.DTOs.English.DiaryFunction;
+using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.Helpers;
+using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
+using LaboratoryApp.src.Services.English.DiaryFunction;
+using LaboratoryApp.src.Services.Helper.AI;
+using LaboratoryApp.src.Shared.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction.DTOs;
-using LaboratoryApp.src.Core.ViewModels;
-
-using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
-
-using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
-using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
-using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
-
-using LaboratoryApp.src.Services.English.DiaryFunction;
-
-using LaboratoryApp.src.Services.Helper.AI;
-using LaboratoryApp.src.Services.Helper.Counter;
-
-using LaboratoryApp.src.Shared.Views;
-using LaboratoryApp.src.Shared.Interface;
 
 namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 {
@@ -154,7 +134,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         /// </summary>
         /// <param name="englishService"></param>
         /// <param name="englishDataCache"></param>
-        public DiaryViewModel(IServiceProvider serviceProvider, 
+        public DiaryViewModel(IServiceProvider serviceProvider,
                               IAIService aiService,
                               IDiaryService diaryService,
                               DiaryContent? diaryToEdit = null)

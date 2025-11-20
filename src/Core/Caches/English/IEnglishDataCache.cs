@@ -1,5 +1,5 @@
-﻿using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
+﻿using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.Domain.Models.English.DictionaryFunction;
 using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
 using LaboratoryApp.src.Data.Providers.English.DictionaryFunction;
 using System;

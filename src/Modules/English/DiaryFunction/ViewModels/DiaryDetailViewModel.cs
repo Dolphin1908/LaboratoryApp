@@ -1,21 +1,13 @@
-﻿using LaboratoryApp.src.Core.Caches;
+﻿using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.Domain.Models.Users;
+using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
-using LaboratoryApp.src.Data.Providers.English;
-using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
+using LaboratoryApp.src.Data.Providers.Authentication.Interface;
 using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
-using LaboratoryApp.src.Services.English;
 using LaboratoryApp.src.Services.English.DiaryFunction;
 using LaboratoryApp.src.Services.Helper.AI;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -95,12 +87,12 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
             _diaryContent = diaryContent; // Tạo bản sao để tránh thay đổi trực tiếp đối tượng gốc
             _diaryContent.CreatedAt = _diaryContent.CreatedAt.ToLocalTime(); // Chuyển đổi sang giờ địa phương
-            _diaryContent.UpdatedAt = _diaryContent.UpdatedAt.ToLocalTime(); // Chuyển đổi sang giờ địa phương
+            _diaryContent.UpdatedAt = _diaryContent.UpdatedAt.HasValue ? _diaryContent.UpdatedAt.Value.ToLocalTime() : (DateTime?)null; // Chuyển đổi sang giờ địa phương
             _boundDocument = FlowDocumentSerializer.DeserializeFromBytes(diaryContent.ContentBytes) ?? new FlowDocument(); // Chuyển đổi byte[] sang FlowDocument
-            _isAuthor = AuthenticationCache.CurrentUser?.Id == diaryContent.UserId; // Kiểm tra xem người dùng hiện tại có phải là tác giả của nhật ký không
-            _author = _userProvider.GetUserById(diaryContent.UserId) ?? new User(); // Lấy thông tin tác giả từ UserProvider
+            _isAuthor = AuthenticationCache.CurrentAuthentication?.User.Id == diaryContent.UserId; // Kiểm tra xem người dùng hiện tại có phải là tác giả của nhật ký không
+            InitializeAuthorAsync(diaryContent.UserId); // Khởi tạo tác giả
 
-            EditCommand = new RelayCommand<object>((p)=> true, (p) =>
+            EditCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Gán ViewModel cho DiaryViewModel
                 var vm = _diaryEditvmFactory(_serviceProvider, _aiService, _diaryService, _diaryContent);
@@ -135,6 +127,13 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                     }
                 }
             });
+        }
+
+        // Thêm phương thức async void để khởi tạo Author
+        private async void InitializeAuthorAsync(long userId)
+        {
+            var user = await _userProvider.GetUserByIdAsync(userId);
+            Author = user ?? new User();
         }
     }
 }

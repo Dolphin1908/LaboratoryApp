@@ -52,7 +52,8 @@
                             Background="SpringGreen"
                             BorderBrush="SpringGreen"
                             Command="{Binding OpenPeriodicTableCommand}">
-                        <TextBlock Text="Bảng tuần hoàn" />
+                        <TextBlock Text="Bảng tuần hoàn" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="0"
@@ -65,7 +66,8 @@
                             Background="#ffff72"
                             BorderBrush="#ffff72"
                             Command="{Binding NavigateToCompoundCommand}">
-                        <TextBlock Text="Hợp chất" />
+                        <TextBlock Text="Hợp chất" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="0"
@@ -78,7 +80,8 @@
                             Background="#ff9e40"
                             BorderBrush="#ff9e40"
                             Command="{Binding NavigateToReactionCommand}">
-                        <TextBlock Text="Phương trình phản ứng" />
+                        <TextBlock Text="Phương trình phản ứng" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1"
@@ -92,7 +95,8 @@
                             Background="#ff96c8"
                             BorderBrush="#ff96c8"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1"
@@ -106,7 +110,8 @@
                             Background="#d872e8"
                             BorderBrush="#d872e8"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None"
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1"
@@ -120,7 +125,8 @@
                             Background="#ff6c56"
                             BorderBrush="#ff6c56"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="2"
@@ -134,7 +140,8 @@
                             Background="#18ffff"
                             BorderBrush="#18ffff"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="2"
@@ -148,7 +155,8 @@
                             Background="#42a5f5"
                             BorderBrush="#42a5f5"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="2"
@@ -157,11 +165,13 @@
                       VerticalAlignment="Stretch">
                     <Button Height="100"
                             materialDesign:ButtonAssist.CornerRadius="10"
+                            IsEnabled="False"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             Background="#989898"
                             BorderBrush="#989898"
-                            Command="{Binding NavigateBackCommand}">
-                        <TextBlock Text="Trở về" />
+                            Command="{Binding }">
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
             </Grid>

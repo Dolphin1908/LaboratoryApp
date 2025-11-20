@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+﻿using LaboratoryApp.Domain.Models.English.FlashcardFunction;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Data.Providers.English;
 using LaboratoryApp.src.Data.Providers.English.FlashcardFunction;
@@ -136,7 +136,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
                 var dueFlashcards = SelectedFlashcardSet.Flashcards.Where(f => f.NextReview < DateTime.Now).ToList();
                 if (dueFlashcards.Count == 0)
                 {
-                    if(MessageBox.Show($"Bộ thẻ '{SelectedFlashcardSet.Name}' không có thẻ nào cần ôn tập!", "Bạn có muốn tiếp tục học?", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+                    if(MessageBox.Show("Bạn có muốn tiếp tục học?", $"Bộ thẻ '{SelectedFlashcardSet.Name}' không có thẻ nào cần ôn tập!", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
                         return;
                 }
 
@@ -149,6 +149,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
         private void AddNewSet()
         {
             _flashcardService.CreateNewSet("Bộ thẻ mới", "Mô tả...");
+            FlashcardSets = new ObservableCollection<FlashcardSet>(_flashcardService.GetAllSets());
         }
 
         private void DeleteSet(FlashcardSet setToDelete)
@@ -157,6 +158,7 @@ namespace LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels
             {
                 _flashcardService.DeleteSet(setToDelete.Id);
             }
+            FlashcardSets = new ObservableCollection<FlashcardSet>(_flashcardService.GetAllSets());
         }
 
         private void DeleteFlashcard(long cardId)

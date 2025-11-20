@@ -1,20 +1,19 @@
-﻿using LaboratoryApp.src.Core.Caches;
+﻿using LaboratoryApp.Domain.DTOs.Authentication;
+using LaboratoryApp.Domain.Enums.Authorization;
+using LaboratoryApp.Domain.Models.Content;
+using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.Assignment;
 using LaboratoryApp.src.Core.Caches.Authorization;
-using LaboratoryApp.src.Core.Models.Assignment;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
-using LaboratoryApp.src.Core.Models.Authorization.Enums;
 using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.ExerciseSetFunction.Views;
+using LaboratoryApp.src.Modules.Assignment.QuestionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.QuestionFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.Views;
-using LaboratoryApp.src.Services.Assignment;
+using LaboratoryApp.src.Services.Assignment.ExerciseFunction;
 using LaboratoryApp.src.Shared.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels
@@ -23,16 +22,17 @@ namespace LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly IAuthorizationCache _authorizationCache;
-        private readonly IAssignmentService _assignmentService;
         private readonly IAssignmentCache _assignmentCache;
+        private readonly IAuthorizationCache _authorizationCache;
+        private readonly IExerciseService _exerciseService;
 
         private bool _isModifier;
         private bool _isOwner;
         private ExerciseSet _selectedExerciseSet;
-        private List<Exercise> _exercises;
+        private ObservableCollection<Exercise> _exercises;
 
-        private Func<IAssignmentService, ExerciseSet, ExerciseViewModel> _exerciseVmFactory;
+        private Func<IExerciseService, ExerciseSet, ExerciseViewModel> _addExerciseVmFactory;
+        private Func<IServiceProvider, IAuthorizationCache, INavigationService, long, Exercise, QuestionManagerViewModel> _exerciseDetailVmFactory;
 
         #region Commands
         public ICommand AddExerciseCommand { get; set; }
@@ -67,7 +67,7 @@ namespace LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels
                 OnPropertyChanged(nameof(SelectedExerciseSet));
             }
         }
-        public List<Exercise> Exercises
+        public ObservableCollection<Exercise> Exercises
         {
             get => _exercises;
             set
@@ -78,71 +78,76 @@ namespace LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels
         }
         #endregion
 
-        public ExerciseManagerViewModel(INavigationService navigationService, 
+        public ExerciseManagerViewModel(INavigationService navigationService,
                                         IServiceProvider serviceProvider,
-                                        IAuthorizationCache authorizationCache,
-                                        IAssignmentService assignmentService,
                                         IAssignmentCache assignmentCache,
+                                        IAuthorizationCache authorizationCache,
+                                        IExerciseService exerciseService,
                                         ExerciseSet selectedExerciseSet,
-                                        Func<IAssignmentService, ExerciseSet, ExerciseViewModel> exerciseVmFactory)
+                                        Func<IExerciseService, ExerciseSet, ExerciseViewModel> addExerciseVmFactory,
+                                        Func<IServiceProvider, IAuthorizationCache, INavigationService, long, Exercise, QuestionManagerViewModel> exerciseDetailVmFactory)
         {
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
-            _authorizationCache = authorizationCache;
-            _assignmentService = assignmentService;
             _assignmentCache = assignmentCache;
+            _authorizationCache = authorizationCache;
+            _exerciseService = exerciseService;
 
             _selectedExerciseSet = selectedExerciseSet;
-            _exerciseVmFactory = exerciseVmFactory;
+            _exercises = new ObservableCollection<Exercise>();
+            _addExerciseVmFactory = addExerciseVmFactory;
+            _exerciseDetailVmFactory = exerciseDetailVmFactory;
 
-            AuthenticationCache.CurrentUserChanged += OnUserChanged;
+            AuthenticationCache.CurrentAuthenticationChanged += OnUserChanged;
 
-            LoadAllExerciseInSet();
+            LoadData();
             InitializePermissions();
 
             #region Commands 
             AddExerciseCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var window = _serviceProvider.GetRequiredService<AddExerciseWindow>();
-                window.DataContext = _exerciseVmFactory(_assignmentService, selectedExerciseSet);
+                window.DataContext = _addExerciseVmFactory(_exerciseService, selectedExerciseSet);
                 window.ShowDialog();
 
-                LoadAllExerciseInSet();
+                LoadData();
             });
 
             OpenExerciseCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-
+                var selectedExercise = (Exercise)p;
+                var page = _serviceProvider.GetRequiredService<QuestionManagerPage>();
+                page.DataContext = _exerciseDetailVmFactory(_serviceProvider, _authorizationCache, _navigationService, _selectedExerciseSet.Id, selectedExercise);
+                _navigationService.NavigateTo(page);
             });
             #endregion
         }
 
         private void InitializePermissions()
         {
-            var currAccess = _authorizationCache.AllExerciseSetAccess.FirstOrDefault(esa => esa.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0) && esa.ExerciseSetId == _selectedExerciseSet.Id);
+            var currAccess = _authorizationCache.AllExerciseSetAccess.FirstOrDefault(esa => esa.UserId == (AuthenticationCache.CurrentAuthentication?.User.Id ?? 0) && esa.ExerciseSetId == _selectedExerciseSet.Id);
             IsOwner = currAccess != null && currAccess.Level.HasFlag(AccessLevel.Owner);
             IsModifier = currAccess != null && currAccess.Level.HasFlag(AccessLevel.Edit);
         }
 
-        private void LoadAllExerciseInSet()
+        private void LoadData()
         {
-            Exercises = _assignmentService.GetAllExercisesBySetId(_selectedExerciseSet.Id);
+            Exercises = new ObservableCollection<Exercise>(_exerciseService.GetAllExercisesBySetId(_selectedExerciseSet.Id));
         }
 
-        private void OnUserChanged(UserDTO? user)
+        private void OnUserChanged(AuthenticationResponseDTO? user)
         {
-            var currAccess = _authorizationCache.AllExerciseSetAccess.FirstOrDefault(esa => esa.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0) && esa.ExerciseSetId == _selectedExerciseSet.Id);
+            var currAccess = _authorizationCache.AllExerciseSetAccess.FirstOrDefault(esa => esa.UserId == (AuthenticationCache.CurrentAuthentication?.User.Id ?? 0) && esa.ExerciseSetId == _selectedExerciseSet.Id);
             if (currAccess == null)
             {
-                _navigationService.NavigateBack();
+                var backPage = _serviceProvider.GetRequiredService<ExerciseSetManagerPage>();
+                _navigationService.NavigateTo(backPage);
             }
-            IsOwner = currAccess != null && currAccess.Level.HasFlag(AccessLevel.Owner);
-            IsModifier = currAccess != null && currAccess.Level.HasFlag(AccessLevel.Edit);
         }
 
         private void Dispose()
         {
-            AuthenticationCache.CurrentUserChanged -= OnUserChanged;
+            AuthenticationCache.CurrentAuthenticationChanged -= OnUserChanged;
         }
     }
 }

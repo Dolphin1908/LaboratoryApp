@@ -1,59 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Driver;
-
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Data.Providers.Common;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+﻿using LaboratoryApp.Domain.Models.Users;
 using LaboratoryApp.src.Constants;
+using LaboratoryApp.src.Data.Providers.Authentication.Interface;
+using LaboratoryApp.src.Data.Providers.Common;
+using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers.Authentication
 {
     public class RefreshTokenProvider : IRefreshTokenProvider
     {
         private readonly IMongoDBProvider _mongoDb;
+        private readonly IMongoCollection<RefreshToken> _refreshTokenCollection;
 
-        public RefreshTokenProvider(IEnumerable<IMongoDBProvider> mongoDb) => _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.AuthenticationMongoDB);
-
-        public Task CreateAsync(RefreshToken token)
+        public RefreshTokenProvider(IEnumerable<IMongoDBProvider> mongoDb)
         {
-            _mongoDb.Insert(CollectionName.RefreshTokens, token);
-            return Task.CompletedTask;
+            _mongoDb = mongoDb.First(d => d.DatabaseName == DatabaseName.AuthenticationMongoDB);
+            _refreshTokenCollection = _mongoDb.GetCollection<RefreshToken>(CollectionName.RefreshTokens);
         }
 
-        public Task<RefreshToken?> GetByTokenAsync(string token)
+        public async Task CreateAsync(RefreshToken refreshToken)
+        {
+            await _refreshTokenCollection.InsertOneAsync(refreshToken);
+        }
+
+        public async Task<RefreshToken?> GetByTokenAsync(string token)
         {
             var filter = Builders<RefreshToken>.Filter.Eq(t => t.Token, token);
-            var rt = _mongoDb.GetOne(CollectionName.RefreshTokens, filter);
-            return Task.FromResult(rt);
+            return await _refreshTokenCollection.Find(filter).FirstOrDefaultAsync();
         }
 
-        public Task UpdateAsync(RefreshToken token)
+        public async Task UpdateAsync(RefreshToken refreshToken)
         {
-            _mongoDb.Update(CollectionName.RefreshTokens, token.Id, token);
-            return Task.CompletedTask;
+            var filter = Builders<RefreshToken>.Filter.Eq(t => t.Id, refreshToken.Id);
+            await _refreshTokenCollection.ReplaceOneAsync(filter, refreshToken);
         }
 
-        public Task<RefreshToken?> GetLatestByUserIdAsync(long userId)
+        public async Task<RefreshToken?> GetLatestByUserIdAsync(long userId)
         {
             var filter = Builders<RefreshToken>.Filter.Eq(t => t.UserId, userId);
             var sort = Builders<RefreshToken>.Sort.Descending(t => t.CreatedAt);
-            return Task.FromResult(
-                _mongoDb.GetAll<RefreshToken>(CollectionName.RefreshTokens)
-                   .Where(t => t.UserId == userId)
-                   .OrderByDescending(t => t.CreatedAt)
-                   .FirstOrDefault()
-            );
+            return await _refreshTokenCollection.Find(filter).Sort(sort).FirstOrDefaultAsync();
         }
 
-        public long GetNextId()
-        {
-            var tokens = _mongoDb.GetAll<RefreshToken>(CollectionName.RefreshTokens);
-            return tokens.Count == 0 ? 1 : tokens.Max(t => t.Id) + 1;
-        }
+        //public Task CreateAsync(RefreshToken token)
+        //{
+        //    _mongoDb.Insert(CollectionName.RefreshTokens, token);
+        //    return Task.CompletedTask;
+        //}
 
+        //public Task<RefreshToken?> GetByTokenAsync(string token)
+        //{
+        //    var filter = Builders<RefreshToken>.Filter.Eq(t => t.Token, token);
+        //    var rt = _mongoDb.GetOne(CollectionName.RefreshTokens, filter);
+        //    return Task.FromResult(rt);
+        //}
+
+        //public Task UpdateAsync(RefreshToken token)
+        //{
+        //    _mongoDb.Update(CollectionName.RefreshTokens, token.Id, token);
+        //    return Task.CompletedTask;
+        //}
+
+        //public Task<RefreshToken?> GetLatestByUserIdAsync(long userId)
+        //{
+        //    var filter = Builders<RefreshToken>.Filter.Eq(t => t.UserId, userId);
+        //    var sort = Builders<RefreshToken>.Sort.Descending(t => t.CreatedAt);
+        //    return Task.FromResult(
+        //        _mongoDb.GetAll<RefreshToken>(CollectionName.RefreshTokens)
+        //           .Where(t => t.UserId == userId)
+        //           .OrderByDescending(t => t.CreatedAt)
+        //           .FirstOrDefault()
+        //    );
+        //}
+
+        //public long GetNextId()
+        //{
+        //    var tokens = _mongoDb.GetAll<RefreshToken>(CollectionName.RefreshTokens);
+        //    return tokens.Count == 0 ? 1 : tokens.Max(t => t.Id) + 1;
+        //}
     }
 }

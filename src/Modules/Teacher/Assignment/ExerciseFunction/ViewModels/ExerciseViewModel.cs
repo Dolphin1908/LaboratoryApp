@@ -1,22 +1,17 @@
-﻿using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Core.Models.Assignment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using LaboratoryApp.src.Services.Assignment;
-using System.Windows;
+﻿using LaboratoryApp.Domain.Enums.Content;
+using LaboratoryApp.Domain.Helpers;
+using LaboratoryApp.Domain.Models.Content;
+using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Services.Assignment.ExerciseFunction;
 using System.Collections.ObjectModel;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Assignment.Enums;
+using System.Windows;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.ViewModels
 {
     public class ExerciseViewModel : BaseViewModel
     {
-        private readonly IAssignmentService _assignmentService;
+        private readonly IExerciseService _exerciseService;
         private readonly ExerciseSet _currSet;
 
         private Exercise _exercise;
@@ -39,10 +34,10 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.ViewMode
         public ObservableCollection<SelectableEnumDisplay<DifficultyLevel>> DifficultyLevelOptions { get; set; }
         #endregion
 
-        public ExerciseViewModel(IAssignmentService assignmentService,
+        public ExerciseViewModel(IExerciseService exerciseService,
                                  ExerciseSet currSet)
         {
-            _assignmentService = assignmentService;
+            _exerciseService = exerciseService;
             _currSet = currSet;
 
             Exercise = new Exercise
@@ -65,7 +60,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.ViewMode
             SaveCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 // Implement save logic here
-                _assignmentService.SaveNewExercise(_currSet, Exercise);
+                _exerciseService.SaveNewExercise(_currSet, Exercise);
 
                 if (p is Window win)
                 {

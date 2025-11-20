@@ -1,11 +1,6 @@
-﻿using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
+﻿using LaboratoryApp.Domain.Models.English.DictionaryFunction;
+using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Data.Providers.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Data.Providers.English.DictionaryFunction
 {
@@ -22,36 +17,52 @@ namespace LaboratoryApp.src.Data.Providers.English.DictionaryFunction
         /// Get all words from the SQLite database.
         /// </summary>
         /// <returns></returns>
-        public List<Word> GetAllWords()
+        public async Task<List<Word>> GetAllWordsAsync()
         {
-            return _sqliteDb.ExecuteQuery<Word>($"SELECT * FROM {CollectionName.Words}");
+            var query = $"SELECT * FROM {CollectionName.Words}";
+
+            var words = await _sqliteDb.ExecuteQueryAsync<Word>(query);
+
+            return words.ToList();
         }
 
         /// <summary>
         /// Get all parts of speech from the SQLite database.
         /// </summary>
         /// <returns></returns>
-        public List<Pos> GetAllPos()
+        public async Task<List<Pos>> GetAllPosAsync()
         {
-            return _sqliteDb.ExecuteQuery<Pos>($"SELECT * FROM {CollectionName.Pos}");
+            var query = $"SELECT * FROM {CollectionName.Pos}";
+
+            var posList = await _sqliteDb.ExecuteQueryAsync<Pos>(query);
+
+            return posList.ToList();
         }
 
         /// <summary>
         /// Get all examples from the SQLite database.
         /// </summary>
         /// <returns></returns>
-        public List<Example> GetAllExamples()
+        public async Task<List<Example>> GetAllExamplesAsync()
         {
-            return _sqliteDb.ExecuteQuery<Example>($"SELECT * FROM {CollectionName.Examples}");
+            var query = $"SELECT * FROM {CollectionName.Examples}";
+
+            var examples = await _sqliteDb.ExecuteQueryAsync<Example>(query);
+
+            return examples.ToList();
         }
 
         /// <summary>
         /// Get all definitions from the SQLite database.
         /// </summary>
         /// <returns></returns>
-        public List<Definition> GetAllDefinitions()
+        public async Task<List<Definition>> GetAllDefinitionsAsync()
         {
-            return _sqliteDb.ExecuteQuery<Definition>($"SELECT * FROM {CollectionName.Definitions}");
+            var query = $"SELECT * FROM {CollectionName.Definitions}";
+
+            var definitions = await _sqliteDb.ExecuteQueryAsync<Definition>(query);
+
+            return definitions.ToList();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Models.Authorization;
+﻿using LaboratoryApp.Domain.Models.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

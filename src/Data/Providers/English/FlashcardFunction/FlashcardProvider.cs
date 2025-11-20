@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+﻿using LaboratoryApp.Domain.Models.English.FlashcardFunction;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

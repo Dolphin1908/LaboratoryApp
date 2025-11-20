@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Models.English.DiaryFunction;
+﻿using LaboratoryApp.Domain.Models.English.DiaryFunction;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
+﻿using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.Domain.Models.English.DictionaryFunction;
 using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
 using LaboratoryApp.src.Data.Providers.English.DictionaryFunction;
 
@@ -22,18 +16,23 @@ namespace LaboratoryApp.src.Core.Caches.English
         public List<Definition> AllDefinitions { get; set; } = new List<Definition>();
         public List<Example> AllExamples { get; set; } = new List<Example>();
 
-        public void LoadAllData(IDiaryProvider diaryProvider, 
+        public void LoadAllData(IDiaryProvider diaryProvider,
                                 IDictionaryProvider dictionaryProvider)
         {
             lock (_lock)
             {
-                AllDiaries = diaryProvider.GetAllDiaries();
-
-                AllWords = dictionaryProvider.GetAllWords();
-                AllPos = dictionaryProvider.GetAllPos();
-                AllDefinitions = dictionaryProvider.GetAllDefinitions();
-                AllExamples = dictionaryProvider.GetAllExamples();
+                LoadAllDataAsync(diaryProvider, dictionaryProvider);
             }
+        }
+
+        private async void LoadAllDataAsync(IDiaryProvider diaryProvider,
+                                            IDictionaryProvider dictionaryProvider)
+        {
+            AllDiaries = await diaryProvider.GetAllDiariesAsync();
+            AllWords = await dictionaryProvider.GetAllWordsAsync();
+            AllPos = await dictionaryProvider.GetAllPosAsync();
+            AllDefinitions = await dictionaryProvider.GetAllDefinitionsAsync();
+            AllExamples = await dictionaryProvider.GetAllExamplesAsync();
         }
     }
 }

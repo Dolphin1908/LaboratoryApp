@@ -1,27 +1,25 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using LaboratoryApp.Domain.Models.Content;
 
-using Microsoft.Extensions.DependencyInjection;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
+
+using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.Domain.Models.English.FlashcardFunction;
 
 using LaboratoryApp.src.Constants;
 
-using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Caches.English;
 using LaboratoryApp.src.Core.Caches.Assignment;
 using LaboratoryApp.src.Core.Caches.Authorization;
+using LaboratoryApp.src.Core.Caches.Chemistry;
+using LaboratoryApp.src.Core.Caches.English;
 
 using LaboratoryApp.src.Core.Helpers;
 
-using LaboratoryApp.src.Core.Models.Assignment;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
-
-using LaboratoryApp.src.Data.Providers.Assignment;
+using LaboratoryApp.src.Data.Providers.Assignment.ExerciseFunction;
+using LaboratoryApp.src.Data.Providers.Assignment.ExerciseSetFunction;
+using LaboratoryApp.src.Data.Providers.Assignment.QuestionFunction;
 
 using LaboratoryApp.src.Data.Providers.Authentication;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
+using LaboratoryApp.src.Data.Providers.Authentication.Interface;
 
 using LaboratoryApp.src.Data.Providers.Authorization;
 
@@ -35,31 +33,42 @@ using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
 using LaboratoryApp.src.Data.Providers.English.DictionaryFunction;
 using LaboratoryApp.src.Data.Providers.English.FlashcardFunction;
 
-using LaboratoryApp.src.Modules.Assignment.Common.ViewModels;
-using LaboratoryApp.src.Modules.Assignment.Common.Views;
 using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.ViewModels;
 using LaboratoryApp.src.Modules.Assignment.ExerciseFunction.Views;
+
+using LaboratoryApp.src.Modules.Assignment.ExerciseSetFunction.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.ExerciseSetFunction.Views;
+
+using LaboratoryApp.src.Modules.Assignment.QuestionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Assignment.QuestionFunction.Views;
 
 using LaboratoryApp.src.Modules.Authentication.ViewModels;
 using LaboratoryApp.src.Modules.Authentication.Views;
 
 using LaboratoryApp.src.Modules.Chemistry.Common.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.Common.Views;
+
 using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.Views;
+
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
+
 using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
 
 using LaboratoryApp.src.Modules.English.Common.ViewModels;
 using LaboratoryApp.src.Modules.English.Common.Views;
+
 using LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
+
 using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
+
 using LaboratoryApp.src.Modules.English.FlashcardFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.FlashcardFunction.Views;
+
 using LaboratoryApp.src.Modules.English.LectureFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.LectureFunction.Views;
 
@@ -71,27 +80,38 @@ using LaboratoryApp.src.Modules.Physics.Common.Views;
 
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
+
 using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Assignment.ExerciseFunction.Views;
 
+using LaboratoryApp.src.Modules.Teacher.Assignment.QuestionFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Assignment.QuestionFunction.Views;
+
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
+
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
+
+using LaboratoryApp.src.Modules.Teacher.Common.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Common.Views;
 
 using LaboratoryApp.src.Modules.Toolkits.Common.ViewModels;
 using LaboratoryApp.src.Modules.Toolkits.Common.Views;
 
-using LaboratoryApp.src.Services.Assignment;
+using LaboratoryApp.src.Services.Assignment.ExerciseFunction;
+using LaboratoryApp.src.Services.Assignment.ExerciseSetFunction;
+using LaboratoryApp.src.Services.Assignment.QuestionFunction;
 
-using LaboratoryApp.src.Services.Authentication;
-
+using LaboratoryApp.src.Services.Authentication.Common;
+using LaboratoryApp.src.Services.Authentication.OrganizationFunction;
+using LaboratoryApp.src.Services.Authentication.UserOrganizationFunction;
 using LaboratoryApp.src.Services.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Services.Chemistry.PeriodicFunction;
 using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
 
-using LaboratoryApp.src.Services.English.DictionaryFunction;
 using LaboratoryApp.src.Services.English.DiaryFunction;
+using LaboratoryApp.src.Services.English.DictionaryFunction;
 using LaboratoryApp.src.Services.English.FlashcardFunction;
 
 using LaboratoryApp.src.Services.Helper.AI;
@@ -103,6 +123,11 @@ using LaboratoryApp.src.Shared.Interface;
 
 using LaboratoryApp.src.UI.ViewModels;
 using LaboratoryApp.src.UI.Views;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using System.Configuration;
+using System.Windows;
 
 namespace LaboratoryApp
 {
@@ -151,9 +176,13 @@ namespace LaboratoryApp
             // Đăng ký các providers
             #region Providers
             // Assignment
-            services.AddSingleton<IAssignmentProvider, AssignmentProvider>();
+            services.AddSingleton<IExerciseProvider, ExerciseProvider>();
+            services.AddSingleton<IExerciseSetProvider, ExerciseSetProvider>();
+            services.AddSingleton<IQuestionProvider, QuestionProvider>();
 
             // Authentication
+            services.AddSingleton<IOrganizationProvider, OrganizationProvider>();
+            services.AddSingleton<IUserOrganizationProvider, UserOrganizationProvider>();
             services.AddSingleton<IUserProvider, UserProvider>();
             services.AddSingleton<IRefreshTokenProvider, RefreshTokenProvider>();
 
@@ -169,15 +198,19 @@ namespace LaboratoryApp
             services.AddSingleton<IDiaryProvider, DiaryProvider>();
             services.AddSingleton<IDictionaryProvider, DictionaryProvider>();
             services.AddSingleton<IFlashcardProvider, FlashcardProvider>();
-
             #endregion
 
             // Đăng ký các dịch vụ cần thiết
             #region Services
             services.AddSingleton<INavigationService, NavigateService>();
 
-            services.AddSingleton<IAssignmentService, AssignmentService>();
+            services.AddSingleton<IExerciseService, ExerciseService>();
+            services.AddSingleton<IExerciseSetService, ExerciseSetService>();
+            services.AddSingleton<IQuestionService, QuestionService>();
+
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<IOrganizationService, OrganizationService>();
+            services.AddSingleton<IUserOrganizationService, UserOrganizationService>();
 
             services.AddSingleton<ICompoundService, CompoundService>();
             services.AddSingleton<IPeriodicService, PeriodicService>();
@@ -201,22 +234,25 @@ namespace LaboratoryApp
 
             #region Authentication
             services.AddTransient<AuthenticationViewModel>();
+            services.AddTransient<RoleSelectionViewModel>();
             #endregion
 
             #region Assignment
-            services.AddTransient<AssignmentMainPageViewModel>();
+            services.AddTransient<ExerciseSetManagerViewModel>();
             services.AddTransient<InsertExerciseSetViewModel>();
 
-            services.AddTransient<Func<INavigationService, IServiceProvider, IAuthorizationCache, IAssignmentService, IAssignmentCache, ExerciseSet, ExerciseManagerViewModel>>(sp =>
-            (navigationService, serviceProvider, authorizationCache, assignmentService, assignmentCache, selectedSet) =>
+            services.AddTransient<Func<INavigationService, IServiceProvider, IAssignmentCache, IAuthorizationCache, IExerciseService, ExerciseSet, ExerciseManagerViewModel>>(sp =>
+            (navigationService, serviceProvider, assignmentCache, authorizationCache, exerciseService, selectedSet) =>
             {
-                var exerciseVmFactory = sp.GetRequiredService<Func<IAssignmentService, ExerciseSet, ExerciseViewModel>>();
-                return new ExerciseManagerViewModel(navigationService, serviceProvider, authorizationCache, assignmentService, assignmentCache, selectedSet, exerciseVmFactory);
+                var addExerciseVmFactory = sp.GetRequiredService<Func<IExerciseService, ExerciseSet, ExerciseViewModel>>();
+                var exerciseDetailVmFactory = sp.GetRequiredService<Func<IServiceProvider, IAuthorizationCache, INavigationService, long, Exercise, QuestionManagerViewModel>>();
+                return new ExerciseManagerViewModel(navigationService, serviceProvider, assignmentCache, authorizationCache, exerciseService, selectedSet, addExerciseVmFactory, exerciseDetailVmFactory);
             });
-            services.AddTransient<Func<IAssignmentService, ExerciseSet, ExerciseViewModel>>(sp =>
-            (service, currSet) =>
+
+            services.AddTransient<Func<IServiceProvider, IAuthorizationCache, INavigationService, long, Exercise, QuestionManagerViewModel>>(sp =>
+            (serviceProvider, authorizationCache, navigationService, setId, selectedExercise) =>
             {
-                return new ExerciseViewModel(service, currSet);
+                return new QuestionManagerViewModel(serviceProvider, authorizationCache, navigationService, setId, selectedExercise);
             });
             #endregion
 
@@ -274,8 +310,16 @@ namespace LaboratoryApp
             #endregion
 
             #region Teacher
+            services.AddTransient<TeacherMainPageViewModel>();
+
             services.AddTransient<ExerciseSetViewModel>();
-            services.AddTransient<ExerciseViewModel>();
+            services.AddTransient<Func<IExerciseService, ExerciseSet, ExerciseViewModel>>(sp =>
+            (service, currSet) =>
+            {
+                return new ExerciseViewModel(service, currSet);
+            });
+
+            services.AddTransient<QuestionViewModel>();
 
             services.AddTransient<CompoundComponentViewModel>();
             services.AddTransient<CompoundNoteViewModel>();
@@ -313,13 +357,19 @@ namespace LaboratoryApp
                 var vm = sp.GetRequiredService<AuthenticationViewModel>();
                 return new AuthenticationWindow { DataContext = vm };
             });
+
+            services.AddTransient<RoleSelectionWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<RoleSelectionViewModel>();
+                return new RoleSelectionWindow { DataContext = vm };
+            });
             #endregion
 
             #region Assignment
-            services.AddTransient<AssignmentMainPage>(sp =>
+            services.AddTransient<ExerciseSetManagerPage>(sp =>
             {
-                var vm = sp.GetRequiredService<AssignmentMainPageViewModel>();
-                return new AssignmentMainPage { DataContext = vm };
+                var vm = sp.GetRequiredService<ExerciseSetManagerViewModel>();
+                return new ExerciseSetManagerPage { DataContext = vm };
             });
             services.AddTransient<InsertExerciseSetWindow>(sp =>
             {
@@ -328,6 +378,8 @@ namespace LaboratoryApp
             });
 
             services.AddTransient<ExerciseManagerPage>();
+
+            services.AddTransient<QuestionManagerPage>();
             #endregion
 
             #region Chemistry
@@ -419,12 +471,23 @@ namespace LaboratoryApp
             #endregion
 
             #region Teacher
+            services.AddTransient<TeacherMainPage>(sp =>
+            {
+                var vm = sp.GetRequiredService<TeacherMainPageViewModel>();
+                return new TeacherMainPage { DataContext = vm };
+            });
+
             services.AddTransient<AddExerciseSetWindow>(sp =>
             {
                 var vm = sp.GetRequiredService<ExerciseSetViewModel>();
                 return new AddExerciseSetWindow { DataContext = vm };
             });
             services.AddTransient<AddExerciseWindow>();
+            services.AddTransient<AddQuestionWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<QuestionViewModel>();
+                return new AddQuestionWindow { DataContext = vm };
+            });
 
             services.AddTransient<AddCompoundWindow>(sp =>
             {
@@ -452,7 +515,10 @@ namespace LaboratoryApp
         protected override void OnStartup(StartupEventArgs e)
         {
             // Gọi providers
-            var assignmentProvider = _serviceProvider.GetRequiredService<IAssignmentProvider>();
+            var exerciseProvider = _serviceProvider.GetRequiredService<IExerciseProvider>();
+            var exerciseSetProvider = _serviceProvider.GetRequiredService<IExerciseSetProvider>();
+            var questionProvider = _serviceProvider.GetRequiredService<IQuestionProvider>();
+
             var exerciseSetAccessProvider = _serviceProvider.GetRequiredService<IExerciseSetAccessProvider>();
 
             var periodicProvider = _serviceProvider.GetRequiredService<IPeriodicProvider>();
@@ -469,7 +535,7 @@ namespace LaboratoryApp
             var englishCache = _serviceProvider.GetRequiredService<IEnglishDataCache>();
 
             // Lấy dữ liệu
-            assignmentCache.LoadAllData(assignmentProvider);
+            assignmentCache.LoadAllData(exerciseProvider, exerciseSetProvider, questionProvider);
             authorizationCache.LoadAllData(exerciseSetAccessProvider);
             chemistryCache.LoadAllData(periodicProvider, compoundProvider, reactionProvider);
             englishCache.LoadAllData(diaryProvider, dictionaryProvider);

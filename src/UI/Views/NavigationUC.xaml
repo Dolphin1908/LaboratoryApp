@@ -1,112 +1,142 @@
-﻿<UserControl x:Class="LaboratoryApp.src.UI.Views.NavigationUC"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LaboratoryApp.src.UI.Views"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontWeight="Regular"
-             TextElement.FontSize="13"
-             TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="{DynamicResource MaterialDesignFont}"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="LaboratoryApp.src.UI.Views.NavigationUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LaboratoryApp.src.UI.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
 
-    <Grid MaxWidth="150">
-        <wpfui:NavigationView x:Name="RootNavigation"
-                              IsBackButtonVisible="Collapsed"
-                              HorizontalAlignment="Center"
-                              Loaded="RootNavigation_Loaded">
+    <Border
+        MaxWidth="160"
+        Margin="0,5"
+        BorderBrush="LightGray"
+        BorderThickness="0,0,1,0">
+        <wpfui:NavigationView
+            x:Name="RootNavigation"
+            HorizontalAlignment="Center"
+            IsBackButtonVisible="Collapsed"
+            Loaded="RootNavigation_Loaded">
 
             <wpfui:NavigationView.MenuItems>
+                <!--  Dashboard  -->
                 <wpfui:NavigationViewItem Command="{Binding NavigateToDashboardCommand}">
                     <wpfui:NavigationViewItem.Content>
-                        <TextBlock Text="Home"
-                                   FontWeight="DemiBold"
-                                   FontSize="16"/>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Text="Home" />
                     </wpfui:NavigationViewItem.Content>
                     <wpfui:NavigationViewItem.Icon>
-                        <wpfui:SymbolIcon Symbol="Home12"
-                                          FontSize="24"/>
+                        <wpfui:SymbolIcon FontSize="24" Symbol="Home12" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
 
+                <!--  Periodic Table  -->
                 <wpfui:NavigationViewItem Command="{Binding OpenPeriodicTableCommand}">
                     <wpfui:NavigationViewItem.Content>
-                        <TextBlock Text="Periodic Table"
-                                   FontWeight="DemiBold"
-                                   FontSize="16"/>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Text="Periodic Table" />
                     </wpfui:NavigationViewItem.Content>
                     <wpfui:NavigationViewItem.Icon>
-                        <wpfui:SymbolIcon Symbol="Beaker16"
-                                          FontSize="24"/>
+                        <wpfui:SymbolIcon FontSize="24" Symbol="Beaker16" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
 
+                <!--  Toolkit  -->
                 <wpfui:NavigationViewItem Command="{Binding NavigateToToolkitCommand}">
                     <wpfui:NavigationViewItem.Content>
-                        <TextBlock Text="Toolkits"
-                                   FontWeight="DemiBold"
-                                   FontSize="16"/>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Text="Toolkits" />
                     </wpfui:NavigationViewItem.Content>
                     <wpfui:NavigationViewItem.Icon>
-                        <wpfui:SymbolIcon Symbol="Toolbox12"
-                                          FontSize="24"/>
+                        <wpfui:SymbolIcon FontSize="24" Symbol="Toolbox12" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
             </wpfui:NavigationView.MenuItems>
 
             <wpfui:NavigationView.FooterMenuItems>
+                <wpfui:NavigationViewItem Command="{Binding NavigateToTeacherMainPageCommand}" Visibility="{Binding IsTeacher, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                    <wpfui:NavigationViewItem.Content>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Foreground="#F2CB5C"
+                            Text="Teacher Panel" />
+                    </wpfui:NavigationViewItem.Content>
+                    <wpfui:NavigationViewItem.Icon>
+                        <wpfui:SymbolIcon
+                            Filled="True"
+                            FontSize="24"
+                            Foreground="#F2CB5C"
+                            Symbol="Star24" />
+                    </wpfui:NavigationViewItem.Icon>
+                </wpfui:NavigationViewItem>
+
                 <wpfui:NavigationViewItem>
                     <wpfui:NavigationViewItem.Content>
-                        <TextBlock Text="{Binding CurrentUser}"
-                                   FontWeight="Bold"
-                                   FontSize="16"/>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Text="{Binding CurrentUser}" />
                     </wpfui:NavigationViewItem.Content>
                     <wpfui:NavigationViewItem.Icon>
-                        <wpfui:SymbolIcon Symbol="Person12"
-                                          Filled="True"
-                                          FontSize="24"/>
+                        <wpfui:SymbolIcon
+                            Filled="True"
+                            FontSize="24"
+                            Symbol="PersonCircle24" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
 
-                <wpfui:NavigationViewItem Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                          Command="{Binding LogoutCommand}">
+                <wpfui:NavigationViewItem Command="{Binding LogoutCommand}" Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <wpfui:NavigationViewItem.Content>
-                        <TextBlock Text="Logout"
-                                   Foreground="Red"
-                                   FontWeight="DemiBold"
-                                   FontSize="16"/>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Foreground="Red"
+                            Text="Logout" />
                     </wpfui:NavigationViewItem.Content>
                     <wpfui:NavigationViewItem.Icon>
-                        <wpfui:SymbolIcon Symbol="SignOut20"
-                                          Foreground="Red"
-                                          Filled="True"
-                                          FontSize="24"/>
+                        <wpfui:SymbolIcon
+                            Filled="True"
+                            FontSize="24"
+                            Foreground="Red"
+                            Symbol="SignOut20" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
 
-                <wpfui:NavigationViewItem Visibility="{Binding IsAuthenticated, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                                          Command="{Binding OpenAuthenticationCommand}">
+                <wpfui:NavigationViewItem Command="{Binding OpenAuthenticationCommand}" Visibility="{Binding IsAuthenticated, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <wpfui:NavigationViewItem.Content>
-                        <TextBlock Text="Login"
-                                   Foreground="SpringGreen"
-                                   FontWeight="DemiBold"
-                                   FontSize="16"/>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Foreground="SpringGreen"
+                            Text="Login" />
                     </wpfui:NavigationViewItem.Content>
                     <wpfui:NavigationViewItem.Icon>
-                        <wpfui:SymbolIcon Symbol="Key16"
-                                          Foreground="SpringGreen"
-                                          Filled="True"
-                                          FontSize="24"/>
+                        <wpfui:SymbolIcon
+                            Filled="True"
+                            FontSize="24"
+                            Foreground="SpringGreen"
+                            Symbol="Key16" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
             </wpfui:NavigationView.FooterMenuItems>
         </wpfui:NavigationView>
-    </Grid>
+    </Border>
 
     <!--
     <Grid Width="150">
@@ -156,7 +186,7 @@
                     BorderThickness="0"
                     Background="SpringGreen"
                     Foreground="Black"
-                    materialDesign:ButtonAssist.CornerRadius="10"                  
+                    materialDesign:ButtonAssist.CornerRadius="10"
                     Visibility="{Binding IsAuthenticated, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     Command="{Binding OpenAuthenticationCommand}"/>

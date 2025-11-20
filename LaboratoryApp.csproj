@@ -56,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
@@ -63,8 +64,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="MongoDB.Bson" Version="3.4.3" />
-    <PackageReference Include="MongoDB.Driver" Version="3.4.3" />
+    <PackageReference Include="MongoDB.Bson" Version="3.5.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.11" />
     <PackageReference Include="System.Data.SQLite" Version="2.0.1" />
@@ -100,10 +101,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\Core\Models\Chemistry\CompoundFunction\DTOs\" />
-    <Folder Include="src\Core\Models\Chemistry\ReactionFunction\DTOs\" />
-    <Folder Include="src\Core\Models\Physics\" />
-    <Folder Include="src\Core\Models\Math\" />
     <Folder Include="resources\Components\JS\" />
     <Folder Include="src\Data\Providers\Admin\" />
     <Folder Include="src\Data\Providers\Physics\" />
@@ -111,7 +108,8 @@
     <Folder Include="src\Modules\Admin\Common\Resources\" />
     <Folder Include="src\Modules\Admin\Common\ViewModels\" />
     <Folder Include="src\Modules\Admin\Common\Views\" />
-    <Folder Include="src\Modules\Assignment\Common\Resources\" />
+    <Folder Include="src\Modules\Assignment\ExerciseSetFunction\Resources\" />
+    <Folder Include="src\Modules\Assignment\QuestionFunction\Resources\" />
     <Folder Include="src\Modules\Chemistry\CompoundFunction\Resources\" />
     <Folder Include="src\Modules\Chemistry\PeriodicFunction\Resources\" />
     <Folder Include="src\Modules\Chemistry\ReactionFunction\Resources\" />
@@ -120,15 +118,19 @@
     <Folder Include="src\Modules\Assignment\ExerciseFunction\Resources\" />
     <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
     <Folder Include="src\Modules\English\LectureFunction\Resources\" />
+    <Folder Include="src\Modules\Teacher\Assignment\QuestionFunction\ViewModels\QuestionTypeViewModels\" />
+    <Folder Include="src\Modules\Teacher\Assignment\QuestionFunction\Views\QuestionTypeViews\" />
     <Folder Include="src\Modules\Teacher\Chemistry\CompoundFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\Chemistry\ReactionFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\Common\ViewModels\" />
-    <Folder Include="src\Modules\Teacher\Common\Views\" />
     <Folder Include="src\Modules\Teacher\English\" />
     <Folder Include="src\Modules\Toolkits\CalculatorFunction\Resources\" />
     <Folder Include="src\Modules\Toolkits\Common\ViewModels\" />
     <Folder Include="src\Modules\Toolkits\Common\Views\" />
     <Folder Include="src\Shared\ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LaboratoryApp.Domain\LaboratoryApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

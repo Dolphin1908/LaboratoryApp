@@ -1,32 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-using Microsoft.Extensions.DependencyInjection;
-
+﻿using LaboratoryApp.Domain.DTOs.Authentication;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
-using LaboratoryApp.src.Core.Models.Authentication.Enums;
-
-using LaboratoryApp.src.Core.Models.Chemistry;
-
 using LaboratoryApp.src.Core.ViewModels;
-
 using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
-
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
-
 using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
-
 using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
 {
@@ -107,7 +91,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             _reactions = new ObservableCollection<Reaction>();
             _allReactions = new ObservableCollection<Reaction>();
 
-            AuthenticationCache.CurrentUserChanged += OnUserChanged;
+            AuthenticationCache.CurrentAuthenticationChanged += OnUserChanged;
 
             AddReactionCommand = new RelayCommand<object>((p) => true, (p) =>
             {
@@ -175,7 +159,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
             // Load initial data if needed
             await Task.Run(() =>
             {
-                _isTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
+                //_isTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
                 _allReactions = new ObservableCollection<Reaction>(_chemistryDataCache.AllReactions);
             }, cancellationToken);
 
@@ -183,14 +167,14 @@ namespace LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels
                 SearchReaction();
         }
 
-        private void OnUserChanged(UserDTO? user)
+        private void OnUserChanged(AuthenticationResponseDTO? user)
         {
-            IsTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
+            //IsTeacher = AuthenticationCache.CurrentUser?.Role.HasFlag(Role.Instructor) ?? false;
         }
 
         public void Dispose()
         {
-            AuthenticationCache.CurrentUserChanged -= OnUserChanged;
+            AuthenticationCache.CurrentAuthenticationChanged -= OnUserChanged;
         }
     }
 }

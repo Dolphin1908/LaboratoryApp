@@ -51,7 +51,8 @@
                             Background="SpringGreen"
                             BorderBrush="SpringGreen"
                             Command="{Binding OpenDictionaryCommand}">
-                        <TextBlock Text="Từ điển Anh - Việt" />
+                        <TextBlock Text="Từ điển Anh - Việt" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="0"
@@ -64,7 +65,8 @@
                             Background="#ffff72"
                             BorderBrush="#ffff72"
                             Command="{Binding NavigateToFlashcardManagerCommand}">
-                        <TextBlock Text="Flashcard"/>
+                        <TextBlock Text="Flashcard"
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="0"
@@ -77,7 +79,8 @@
                             Background="#ff9e40"
                             BorderBrush="#ff9e40"
                             Command="{Binding NavigateToLectureCommand}">
-                        <TextBlock Text="Bài giảng" />
+                        <TextBlock Text="Bài giảng" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1"
@@ -91,7 +94,8 @@
                             Background="#ff96c8"
                             BorderBrush="#ff96c8"
                             Command="{Binding }">
-                        <TextBlock Text="Luyện nghe" />
+                        <TextBlock Text="Luyện nghe" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1"
@@ -104,7 +108,8 @@
                             Background="#d872e8"
                             BorderBrush="#d872e8"
                             Command="{Binding NavigateToDiaryCommand}">
-                        <TextBlock Text="Luyện viết nhật ký" />
+                        <TextBlock Text="Luyện viết nhật ký" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1"
@@ -118,7 +123,8 @@
                             Background="#ff6c56"
                             BorderBrush="#ff6c56"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="2"
@@ -132,7 +138,8 @@
                             Background="#18ffff"
                             BorderBrush="#18ffff"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="2"
@@ -146,7 +153,8 @@
                             Background="#42a5f5"
                             BorderBrush="#42a5f5"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
                 <Grid Grid.Row="2"
@@ -160,7 +168,8 @@
                             Background="#989898"
                             BorderBrush="#989898"
                             Command="{Binding }">
-                        <TextBlock Text="None" />
+                        <TextBlock Text="None" 
+                                   FontSize="16"/>
                     </Button>
                 </Grid>
             </Grid>

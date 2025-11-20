@@ -1,15 +1,11 @@
-﻿using System;
-using System.Net.Http;
-using System.Text;
-using System.Configuration;
-
+﻿using LaboratoryApp.Domain.DTOs.English.DiaryFunction;
+using LaboratoryApp.Domain.DTOs.English.DictionaryFunction;
+using LaboratoryApp.src.Core.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction.DTOs;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using System.Windows.Documents;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction.DTOs;
+using System.Configuration;
+using System.Net.Http;
+using System.Text;
 using System.Windows;
 
 namespace LaboratoryApp.src.Services.Helper.AI

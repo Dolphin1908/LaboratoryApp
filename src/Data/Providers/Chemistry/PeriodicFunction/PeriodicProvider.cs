@@ -1,11 +1,6 @@
-﻿using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Models.Chemistry;
+﻿using LaboratoryApp.Domain.Models.Chemistry.Common;
+using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Data.Providers.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Data.Providers.Chemistry.PeriodicFunction
 {
@@ -22,9 +17,13 @@ namespace LaboratoryApp.src.Data.Providers.Chemistry.PeriodicFunction
         /// Get all elements from the SQLite database.
         /// </summary>
         /// <returns>All elements</returns>
-        public List<Element> GetAllElements()
+        public async Task<List<Element>> GetAllElementsAsync()
         {
-            return _sqliteDb.ExecuteQuery<Element>($"SELECT * FROM {CollectionName.Elements}");
+            var query = $"SELECT * FROM {CollectionName.Elements}";
+
+            var elements = await _sqliteDb.ExecuteQueryAsync<Element>(query);
+
+            return elements.ToList();
         }
     }
 }

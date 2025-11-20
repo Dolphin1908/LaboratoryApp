@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LaboratoryApp.src.Core.Caches;
+﻿using LaboratoryApp.Domain.DTOs.English.DictionaryFunction;
+using LaboratoryApp.Domain.Models.English.DictionaryFunction;
 using LaboratoryApp.src.Core.Caches.English;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction.DTOs;
 
 namespace LaboratoryApp.src.Services.English.DictionaryFunction
 {
@@ -46,8 +39,8 @@ namespace LaboratoryApp.src.Services.English.DictionaryFunction
                 if (_definitionsByPosId.ContainsKey(def.PosId))
                 {
                     _definitionsByPosId[def.PosId].Add(def);
-                }    
-            }    
+                }
+            }
 
             _examplesByDefId = allDefinitions.ToDictionary(d => d.Id, d => new List<Example>());
             var allExamples = _englishDataCache.AllExamples;

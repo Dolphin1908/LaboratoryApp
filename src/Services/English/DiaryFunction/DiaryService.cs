@@ -1,16 +1,10 @@
-﻿using LaboratoryApp.src.Constants;
+﻿using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.English;
 using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
-using LaboratoryApp.src.Services.Authentication;
 using LaboratoryApp.src.Services.Helper.Counter;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 
 namespace LaboratoryApp.src.Services.English.DiaryFunction
@@ -46,14 +40,14 @@ namespace LaboratoryApp.src.Services.English.DiaryFunction
                 Id = _counterService.GetNextId(CollectionName.Diaries),
                 Title = title ?? "Untitled",
                 IsPublic = isPublic,
-                UserId = AuthenticationCache.CurrentUser?.Id ?? 0,
+                UserId = AuthenticationCache.CurrentAuthentication?.User.Id ?? 0,
                 ContentBytes = data,
                 ContentFormat = "XamlPackage",
             };
 
             await Task.Run(() =>
             {
-                _diaryProvider.AddDiary(entry);
+                _diaryProvider.AddDiaryAsync(entry);
                 _englishDataCache.AllDiaries.Add(entry);
             });
         }
@@ -96,7 +90,7 @@ namespace LaboratoryApp.src.Services.English.DiaryFunction
 
             await Task.Run(() =>
             {
-                _diaryProvider.UpdateDiary(originalDiary);
+                _diaryProvider.UpdateDiaryAsync(originalDiary);
 
                 var index = _englishDataCache.AllDiaries.FindIndex(d => d.Id == originalDiary.Id);
                 if (index >= 0)
@@ -113,7 +107,7 @@ namespace LaboratoryApp.src.Services.English.DiaryFunction
         {
             await Task.Run(() =>
             {
-                _diaryProvider.DeleteDiary(diary.Id);
+                _diaryProvider.DeleteDiaryAsync(diary.Id);
                 var index = _englishDataCache.AllDiaries.FindIndex(d => d.Id == diary.Id);
                 if (index >= 0)
                     _englishDataCache.AllDiaries.RemoveAt(index);

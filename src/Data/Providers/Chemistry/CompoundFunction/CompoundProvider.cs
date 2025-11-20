@@ -1,60 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Constants;
-
-using LaboratoryApp.src.Core.Models.Chemistry;
-
 using LaboratoryApp.src.Data.Providers.Common;
+using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers.Chemistry.CompoundFunction
 {
     public class CompoundProvider : ICompoundProvider
     {
         private readonly IMongoDBProvider _mongoDb;
+        private readonly IMongoCollection<Compound> _compoundCollection;
 
         public CompoundProvider(IEnumerable<IMongoDBProvider> mongoDb)
         {
             _mongoDb = mongoDb.First(db => db.DatabaseName == DatabaseName.ChemistryMongoDB);
+            _compoundCollection = _mongoDb.GetCollection<Compound>(CollectionName.Compounds);
         }
 
         /// <summary>
         /// Get all compounds from the MongoDB database.
         /// </summary>
         /// <returns>All compounds</returns>
-        public List<Compound> GetAllCompounds()
+        public async Task<List<Compound>> GetAllCompoundsAsync()
         {
-            return _mongoDb.GetAll<Compound>(CollectionName.Compounds);
+            var compounds = await _compoundCollection.Find(FilterDefinition<Compound>.Empty).ToListAsync();
+            return compounds;
         }
 
         /// <summary>
         /// Add a new compound to the MongoDB database.
         /// </summary>
         /// <param name="compound"></param>
-        public void AddCompound(Compound compound)
+        public async Task AddCompoundAsync(Compound compound)
         {
-            _mongoDb.Insert(CollectionName.Compounds, compound);
+            await _compoundCollection.InsertOneAsync(compound);
         }
 
         /// <summary>
         /// Update an existing compound in the MongoDB database.
         /// </summary>
         /// <param name="compound"></param>
-        public void UpdateCompound(Compound compound)
+        public async Task UpdateCompoundAsync(Compound compound)
         {
-            _mongoDb.Update(CollectionName.Compounds, compound.Id, compound);
+            await _compoundCollection.ReplaceOneAsync(c => c.Id == compound.Id, compound);
         }
 
         /// <summary>
         /// Delete a compound from the MongoDB database.
         /// </summary>
         /// <param name="compound"></param>
-        public void DeleteCompound(Compound compound)
+        public async Task DeleteCompoundAsync(Compound compound)
         {
-            _mongoDb.Delete<Compound>(CollectionName.Compounds, compound.Id); // Explicitly specify the type argument
+            await _compoundCollection.DeleteOneAsync(c => c.Id == compound.Id);
         }
     }
 }

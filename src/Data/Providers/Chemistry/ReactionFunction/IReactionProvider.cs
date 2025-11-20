@@ -1,17 +1,12 @@
-﻿using LaboratoryApp.src.Core.Models.Chemistry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 
 namespace LaboratoryApp.src.Data.Providers.Chemistry.ReactionFunction
 {
     public interface IReactionProvider
     {
-        public List<Reaction> GetAllReactions(); // Method to get all reactions from the database
-        public void AddReaction(Reaction reaction); // Method to add a new reaction to the database
-        public void UpdateReaction(Reaction reaction); // Method to update an existing reaction in the database
-        public void DeleteReaction(Reaction reaction); // Method to delete a reaction from the database
+        Task<List<Reaction>> GetAllReactionsAsync(); // Method to get all reactions from the database
+        Task AddReactionAsync(Reaction reaction); // Method to add a new reaction to the database
+        Task UpdateReactionAsync(Reaction reaction); // Method to update an existing reaction in the database
+        Task DeleteReactionAsync(Reaction reaction); // Method to delete a reaction from the database
     }
 }

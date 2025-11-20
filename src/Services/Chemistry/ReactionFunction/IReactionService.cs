@@ -1,10 +1,5 @@
-﻿using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.Enums.Chemistry.ReactionFunction;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 
 namespace LaboratoryApp.src.Services.Chemistry.ReactionFunction
 {

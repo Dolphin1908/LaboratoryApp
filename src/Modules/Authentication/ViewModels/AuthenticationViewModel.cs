@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using LaboratoryApp.Domain.DTOs.Users;
+using LaboratoryApp.Domain.Enums.Users;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Data.Providers.Authentication;
-using LaboratoryApp.src.Data.Providers.Common;
-using LaboratoryApp.src.Services.Authentication;
-using LaboratoryApp.src.Core.Helpers;
-using System.Windows.Input;
-using System.Windows;
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.UI.Views;
 using LaboratoryApp.src.Modules.Authentication.Views;
+using LaboratoryApp.src.Services.Authentication.Common;
+using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Authentication.ViewModels
 {
     public class AuthenticationViewModel : BaseViewModel
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IAuthenticationService _authService;
 
         private string _username;
@@ -82,15 +74,19 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
         }
         #endregion
 
-        public AuthenticationViewModel(IAuthenticationService authService)
+        public AuthenticationViewModel(IServiceProvider serviceProvider,
+                                       IAuthenticationService authService)
         {
-
+            _serviceProvider = serviceProvider;
             _authService = authService;
 
             #region Commands
             LoginCommand = new RelayCommand<object>(p => true, p =>
             {
-                _ = OnLogin();
+                if (p is AuthenticationWindow window)
+                {
+                    _ = OnLogin(window);
+                }
             });
 
             RegisterCommand = new RelayCommand<object>(p => true, p =>
@@ -105,26 +101,60 @@ namespace LaboratoryApp.src.Modules.Authentication.ViewModels
             #endregion
         }
 
-        private async Task OnLogin()
+        /// <summary>
+        /// Xử lý logic đăng nhập
+        /// </summary>
+        /// <param name="window"></param>
+        /// <returns></returns>
+        private async Task OnLogin(AuthenticationWindow window)
         {
-            // Logic for login
-            await _authService.LoginAsync(Username, Password);
+            // Xử lý logic đăng nhập
+            var loginResult = await _authService.AuthenticateAsync(Username, Password);
 
-            if (AuthenticationCache.CurrentUser != null)
+            if (loginResult.IsSuccess == false)
             {
-                var currentWindow = Application.Current.Windows.OfType<AuthenticationWindow>().FirstOrDefault();
-                if (currentWindow != null)
-                {
-                    currentWindow.Close();
-                }
+                MessageBox.Show(loginResult.ErrorMessage, "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Xử lý sau khi đăng nhập thành công
+            // Chọn role và organization nếu cần thiết
+            UserOrganizationProfileDTO selectedRole = new UserOrganizationProfileDTO
+            {
+                OrganizationId = 0,
+                OrganizationName = "No Organization",
+                Role = UserRole.Guest
+            };
+
+            if (loginResult.OrganizationProfiles.Count == 0)
+            {
+                MessageBox.Show("Tài khoản của bạn chưa được phân quyền vào tổ chức nào.");
+            }
+            else if (loginResult.OrganizationProfiles.Count == 1)
+            {
+                selectedRole = loginResult.OrganizationProfiles[0];
             }
             else
             {
-                MessageBox.Show("Đăng nhập thất bại, vui lòng kiểm tra lại thông tin", "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                // Hiển thị hộp thoại chọn role và organization
+                var roleSelectionWindow = _serviceProvider.GetRequiredService<RoleSelectionWindow>();
+                var windowVm = roleSelectionWindow.DataContext as RoleSelectionViewModel;
+                windowVm.Roles = loginResult.OrganizationProfiles; // Truyền danh sách role và organization vào ViewModel
+
+                roleSelectionWindow.ShowDialog(); // Hiển thị hộp thoại
+
+                selectedRole = windowVm.SelectedRole; // Lấy role và organization đã chọn
             }
+
+            // Lưu thông tin người dùng đã đăng nhập
+            _authService.SetSession(loginResult, selectedRole!);
+            window.Close(); // Đóng cửa sổ đăng nhập
         }
 
+        /// <summary>
+        /// Xử lý logic đăng ký
+        /// </summary>
+        /// <returns></returns>
         private async Task OnRegister()
         {
             // Logic for registration

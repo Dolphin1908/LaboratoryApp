@@ -14,65 +14,78 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Height="450"
         Width="400"
         Title="{Binding Title}">
-    
-    <StackPanel Margin="10">
-        <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Từ vựng"
-                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                 Margin="0,0,0,20">
-            <TextBox.Text>
-                <Binding Path="Word"
-                         UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                      Grid.Row="0">
+            <StackPanel Margin="10,10,10,0">
+                <TextBox VerticalAlignment="Top"
+                         materialDesign:HintAssist.Hint="Từ vựng"
+                         TextWrapping="Wrap"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Margin="0,0,0,20">
+                    <TextBox.Text>
+                        <Binding Path="Word"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
-        <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Từ loại"
-                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                 Margin="0,0,0,20"
-                 Text="{Binding Pos, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox VerticalAlignment="Top"
+                         materialDesign:HintAssist.Hint="Từ loại"
+                         TextWrapping="Wrap"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Margin="0,0,0,20"
+                         Text="{Binding Pos, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Nghĩa"
-                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                 Margin="0,0,0,20">
-            <TextBox.Text>
-                <Binding Path="Meaning"
-                         UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+                <TextBox VerticalAlignment="Top"
+                         materialDesign:HintAssist.Hint="Nghĩa"
+                         TextWrapping="Wrap"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Margin="0,0,0,20">
+                    <TextBox.Text>
+                        <Binding Path="Meaning"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
-        <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Ví dụ"
-                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                 Margin="0,0,0,20"
-                 Text="{Binding Example, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox VerticalAlignment="Top"
+                         materialDesign:HintAssist.Hint="Ví dụ"
+                         TextWrapping="Wrap"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Margin="0,0,0,20"
+                         Text="{Binding Example, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBox VerticalAlignment="Top"
-                 materialDesign:HintAssist.Hint="Ghi chú"
-                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                 Margin="0,0,0,20"
-                 Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <Grid>
+                <TextBox VerticalAlignment="Top"
+                         materialDesign:HintAssist.Hint="Ghi chú"
+                         TextWrapping="Wrap"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Margin="0,0,0,20"
+                         Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Row="1"
+              Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Button Grid.Column="0"
                     Width="150"
                     Content="Done"
@@ -110,6 +123,5 @@
                 </Grid>
             </Button>
         </Grid>
-        
-    </StackPanel>
+    </Grid>
 </Window>

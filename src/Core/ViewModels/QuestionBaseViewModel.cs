@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Models.Assignment;
+﻿using LaboratoryApp.Domain.Models.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;

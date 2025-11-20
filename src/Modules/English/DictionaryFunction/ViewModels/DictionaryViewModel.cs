@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
-using System.Windows;
-
+﻿using LaboratoryApp.Domain.DTOs.English.DictionaryFunction;
 using LaboratoryApp.src.Core.ViewModels;
-
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction.DTOs;
-
 using LaboratoryApp.src.Services.English.DictionaryFunction;
-
 using LaboratoryApp.src.Services.Helper.AI;
 using LaboratoryApp.src.Services.Helper.Speech;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
 {
@@ -125,7 +119,7 @@ namespace LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels
                 {
                     var wordResult = await _aiService.SearchWordWithAIAsync(searchText);
 
-                    if (wordResult != null)
+                    if (wordResult is not null) // <-- FIX: use 'is not null' for nullable reference types
                     {
                         AIResult = wordResult;
                         AIResultMessage = null;

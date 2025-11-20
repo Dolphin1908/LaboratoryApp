@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-using LaboratoryApp.src.Core.Models.Chemistry;
+﻿using LaboratoryApp.Domain.Models.Chemistry.Common;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
+using System.Windows;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.ViewModels
 {

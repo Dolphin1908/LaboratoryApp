@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Data.Providers.Chemistry.CompoundFunction;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Services.Helper.Counter;
 
 namespace LaboratoryApp.src.Services.Chemistry.CompoundFunction
@@ -46,8 +36,8 @@ namespace LaboratoryApp.src.Services.Chemistry.CompoundFunction
             }
 
             return _chemistryDataCache.AllCompounds.Where(c => c.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-                                                              c.Formula.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-                                                  .Take(limit);
+                                                               c.Formula.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                                                   .Take(limit);
         }
 
         /// <summary>
@@ -64,14 +54,14 @@ namespace LaboratoryApp.src.Services.Chemistry.CompoundFunction
         {
             compound.Id = _counterService.GetNextId(CollectionName.Compounds);
 
-            compound.OwnerId = AuthenticationCache.CurrentUser?.Id ?? 0;
+            compound.OwnerId = AuthenticationCache.CurrentAuthentication?.User.Id ?? 0;
 
-            if(string.IsNullOrWhiteSpace(compound.Author))
+            if (string.IsNullOrWhiteSpace(compound.Author))
             {
                 compound.Author = "Unknown";
             }
 
-            _compoundProvider.AddCompound(compound);
+            _compoundProvider.AddCompoundAsync(compound);
             _chemistryDataCache.AllCompounds.Add(compound);
         }
     }

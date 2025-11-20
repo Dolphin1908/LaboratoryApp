@@ -1,17 +1,12 @@
-﻿using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.Models.English.DictionaryFunction;
 
 namespace LaboratoryApp.src.Data.Providers.English.DictionaryFunction
 {
     public interface IDictionaryProvider
     {
-        public List<Word> GetAllWords();
-        public List<Pos> GetAllPos();
-        public List<Example> GetAllExamples();
-        public List<Definition> GetAllDefinitions();
+        Task<List<Word>> GetAllWordsAsync();
+        Task<List<Pos>> GetAllPosAsync();
+        Task<List<Example>> GetAllExamplesAsync();
+        Task<List<Definition>> GetAllDefinitionsAsync();
     }
 }

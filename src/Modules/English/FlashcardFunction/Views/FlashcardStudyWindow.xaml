@@ -48,6 +48,7 @@
                 <StackPanel HorizontalAlignment="Stretch" 
                             VerticalAlignment="Center">
                     <TextBlock Text="{Binding CurrentFlashcard.Word, UpdateSourceTrigger=PropertyChanged}" 
+                               TextWrapping="Wrap"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="24"/>
@@ -68,17 +69,20 @@
                 <StackPanel HorizontalAlignment="Stretch" 
                             VerticalAlignment="Center">
                     <TextBlock Text="{Binding CurrentFlashcard.Meaning, UpdateSourceTrigger=PropertyChanged}" 
+                               TextWrapping="Wrap"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="24"/>
                     <TextBlock Text="{Binding CurrentFlashcard.Example, UpdateSourceTrigger=PropertyChanged}" 
                                Visibility="{Binding CurrentFlashcard.Example, Converter={StaticResource BlankToVisibilityConverter}}"
+                               TextWrapping="Wrap"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="18"
                                Margin="0,10,0,0"/>
                     <TextBlock Text="{Binding CurrentFlashcard.Note, UpdateSourceTrigger=PropertyChanged}" 
                                Visibility="{Binding CurrentFlashcard.Note, Converter={StaticResource BlankToVisibilityConverter}}"
+                               TextWrapping="Wrap"
                                HorizontalAlignment="Center" 
                                VerticalAlignment="Center" 
                                FontSize="18"

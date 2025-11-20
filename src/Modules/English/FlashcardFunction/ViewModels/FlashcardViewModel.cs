@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+﻿using LaboratoryApp.Domain.Models.English.FlashcardFunction;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;

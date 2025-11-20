@@ -1,11 +1,6 @@
-﻿using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using LaboratoryApp.Domain.Models.Chemistry.Common;
+using LaboratoryApp.src.Core.Caches.Chemistry;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace LaboratoryApp.src.Services.Chemistry.PeriodicFunction
 {

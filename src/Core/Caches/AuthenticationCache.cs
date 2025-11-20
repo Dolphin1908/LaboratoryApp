@@ -1,62 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LaboratoryApp.src.Core.Models.Authentication;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
+﻿using LaboratoryApp.Domain.DTOs.Authentication;
+using LaboratoryApp.Domain.DTOs.Users;
 
 namespace LaboratoryApp.src.Core.Caches
 {
     public static class AuthenticationCache
     {
-        private static UserDTO? _currentUser;
-        private static string? _accessToken;
-        private static string? _refreshToken;
+        private static AuthenticationResponseDTO? _currentAuthentication;
 
-        public static event Action<UserDTO?>? CurrentUserChanged;
+        public static event Action<AuthenticationResponseDTO?>? CurrentAuthenticationChanged;
 
-        public static UserDTO? CurrentUser
+        public static AuthenticationResponseDTO? CurrentAuthentication
         {
-            get => _currentUser;
+            get => _currentAuthentication;
             private set
             {
-                if (_currentUser != value)
+                if (_currentAuthentication != value)
                 {
-                    _currentUser = value;
-                    CurrentUserChanged?.Invoke(_currentUser);
+                    _currentAuthentication = value;
+                    CurrentAuthenticationChanged?.Invoke(_currentAuthentication);
                 }
             }
         }
-        public static string? AccessToken
-        {
-            get => _accessToken;
-            private set => _accessToken = value;
-        }
-        public static string? RefreshToken
-        {
-            get => _refreshToken;
-            private set => _refreshToken = value;
-        }
 
-        public static bool IsAuthenticated =>
-            CurrentUser != null &&
-            !string.IsNullOrEmpty(AccessToken) &&
-            !string.IsNullOrEmpty(RefreshToken);
+        public static bool IsAuthenticated => CurrentAuthentication != null;
 
         public static void Set(UserDTO user, string accessToken, string refreshToken)
         {
-            AccessToken = accessToken;
-            RefreshToken = refreshToken;
-            CurrentUser = user;
+            CurrentAuthentication = new AuthenticationResponseDTO
+            {
+                User = user,
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
+
+        }
+        public static void Set(AuthenticationResponseDTO authenticationResponseDTO)
+        {
+            CurrentAuthentication = authenticationResponseDTO;
         }
 
         public static void Clear()
         {
-            AccessToken = null;
-            RefreshToken = null;
-            CurrentUser = null;
+            CurrentAuthentication = null;
         }
     }
 }

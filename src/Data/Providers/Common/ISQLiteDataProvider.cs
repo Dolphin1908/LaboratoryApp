@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LaboratoryApp.src.Data.Providers.Common
+﻿namespace LaboratoryApp.src.Data.Providers.Common
 {
     public interface ISQLiteDataProvider : IDisposable
     {
         public string DatabaseName { get; }
 
-        int ExecuteNonQuery(string query, List<SQLiteParameter> parameters = null);
-        List<T> ExecuteQuery<T>(string query, List<SQLiteParameter> parameters = null) where T : new();
+        Task<int> ExecuteNonQueryAsync(string query, object parameters = null);
+        Task<IEnumerable<T>> ExecuteQueryAsync<T>(string query, object parameters = null);
     }
 }

@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Assignment;
-using LaboratoryApp.src.Core.Models.Assignment.Enums;
+﻿using LaboratoryApp.Domain.Enums.Content;
+using LaboratoryApp.Domain.Helpers;
+using LaboratoryApp.Domain.Models.Content;
 using LaboratoryApp.src.Core.ViewModels;
-
 using LaboratoryApp.src.Modules.Teacher.Assignment.Common.Views;
-
-using LaboratoryApp.src.Services.Assignment;
-using LaboratoryApp.src.Services.Helper.Counter;
-
-using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Services.Assignment.ExerciseSetFunction;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels
 {
     public class ExerciseSetViewModel : BaseViewModel
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IAssignmentService _assignmentService;
+        private readonly IExerciseSetService _exerciseSetService;
 
         private ExerciseSet _exerciseSet;
 
@@ -51,17 +37,15 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels
         /// Constructor
         /// </summary>
         public ExerciseSetViewModel(IServiceProvider serviceProvider,
-                                    IAssignmentService assignmentService)
+                                    IExerciseSetService exerciseSetService)
         {
             _serviceProvider = serviceProvider;
-            _assignmentService = assignmentService;
+            _exerciseSetService = exerciseSetService;
 
             _exerciseSet = new ExerciseSet
             {
                 Title = string.Empty,
                 Description = string.Empty,
-                Code = string.Empty,
-                Password = null
             };
 
             DifficultyLevelOptions = new ObservableCollection<SelectableEnumDisplay<DifficultyLevel>>(
@@ -74,7 +58,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Assignment.Common.ViewModels
             #region Commands
             SaveCommand = new RelayCommand<object>(p => true, (p) =>
             {
-                _assignmentService.SaveNewExerciseSet(ExerciseSet);
+                _exerciseSetService.SaveNewExerciseSet(ExerciseSet);
 
                 if (p is AddExerciseSetWindow window)
                 {

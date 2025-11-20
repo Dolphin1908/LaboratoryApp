@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.ViewModels;
+﻿using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
-using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Shared.Interface;
-using LaboratoryApp.src.Modules.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.ViewModels;
-using LaboratoryApp.src.Core.Models.Authentication;
+using LaboratoryApp.src.Modules.Chemistry.ReactionFunction.Views;
+using LaboratoryApp.src.Shared.Interface;
+using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
 {
@@ -43,7 +33,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
         /// <param name="serviceProvider"></param>
         /// <param name="chemistryService"></param>
         /// <param name="chemistryDataCache"></param>
-        public ChemistryMainPageViewModel(INavigationService navigationService, 
+        public ChemistryMainPageViewModel(INavigationService navigationService,
                                           IServiceProvider serviceProvider)
         {
             _navigationService = navigationService;
@@ -65,7 +55,7 @@ namespace LaboratoryApp.src.Modules.Chemistry.Common.ViewModels
             {
                 var page = _serviceProvider.GetRequiredService<CompoundManagerPage>();
                 _navigationService.NavigateTo(page);
-                if(page.DataContext is CompoundManagerViewModel vm && vm is IAsyncInitializable initPage)
+                if (page.DataContext is CompoundManagerViewModel vm && vm is IAsyncInitializable initPage)
                 {
                     // Initialize the compound manager page asynchronously
                     _ = initPage.InitializeAsync();

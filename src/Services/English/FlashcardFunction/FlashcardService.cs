@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 using LaboratoryApp.src.Data.Providers.English.FlashcardFunction;
-using LaboratoryApp.src.Core.Models.English.FlashcardFunction;
+using LaboratoryApp.Domain.Models.English.FlashcardFunction;
 
 namespace LaboratoryApp.src.Services.English.FlashcardFunction
 {

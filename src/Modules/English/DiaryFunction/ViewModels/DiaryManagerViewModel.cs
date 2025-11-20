@@ -1,24 +1,16 @@
-﻿using LaboratoryApp.src.Core.Caches;
+﻿using LaboratoryApp.Domain.DTOs.Authentication;
+using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.English;
-using LaboratoryApp.src.Core.Models.Authentication.DTOs;
-using LaboratoryApp.src.Core.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Data.Providers.Authentication.Interfaces;
-using LaboratoryApp.src.Data.Providers.English;
-using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
+using LaboratoryApp.src.Data.Providers.Authentication.Interface;
 using LaboratoryApp.src.Modules.English.DiaryFunction.Views;
 using LaboratoryApp.src.Services.English.DiaryFunction;
 using LaboratoryApp.src.Services.Helper.AI;
 using LaboratoryApp.src.Shared.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
@@ -78,12 +70,12 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
             _diaryDetailvmFactory = diaryDetailvmFactory;
 
-            AuthenticationCache.CurrentUserChanged += OnUserChanged;
+            AuthenticationCache.CurrentAuthenticationChanged += OnUserChanged;
 
             #region Commands
             AddDiaryCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                if (AuthenticationCache.CurrentUser == null)
+                if (AuthenticationCache.CurrentAuthentication == null)
                 {
                     // Show a message box or notification to inform the user to log in
                     MessageBox.Show("Vui lòng đăng nhập để có thể viết nhật ký mới", "Yêu cầu đăng nhập", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -93,7 +85,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 window.ShowDialog();
 
                 PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentAuthentication?.User.Id ?? 0)).ToList());
             });
 
             OpenDiaryDetailCommand = new RelayCommand<object>((p) => p is DiaryContent, (p) =>
@@ -105,7 +97,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
                 window.ShowDialog();
 
                 PublicDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.IsPublic == true).ToList());
-                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentUser?.Id ?? 0)).ToList());
+                PrivateDiaries = new ObservableCollection<DiaryContent>(_englishDataCache.AllDiaries.Where(d => d.UserId == (AuthenticationCache.CurrentAuthentication?.User.Id ?? 0)).ToList());
             });
             #endregion
         }
@@ -125,7 +117,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
 
             if (AuthenticationCache.IsAuthenticated)
             {
-                var privateItems = await _diaryService.GetPrivateDiariesForCurrentUserAsync(AuthenticationCache.CurrentUser!.Id);
+                var privateItems = await _diaryService.GetPrivateDiariesForCurrentUserAsync(AuthenticationCache.CurrentAuthentication!.User.Id);
                 foreach (var item in privateItems) PrivateDiaries.Add(item);
             }
         }
@@ -144,7 +136,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         /// Xử lý khi người dùng đăng nhập hoặc đăng xuất
         /// </summary>
         /// <param name="user"></param>
-        private async void OnUserChanged(UserDTO? user)
+        private async void OnUserChanged(AuthenticationResponseDTO? user)
         {
             await LoadDiariesAsync();
         }
@@ -154,7 +146,7 @@ namespace LaboratoryApp.src.Modules.English.DiaryFunction.ViewModels
         /// </summary>
         public void Dispose()
         {
-            AuthenticationCache.CurrentUserChanged -= OnUserChanged;
+            AuthenticationCache.CurrentAuthenticationChanged -= OnUserChanged;
         }
     }
 }

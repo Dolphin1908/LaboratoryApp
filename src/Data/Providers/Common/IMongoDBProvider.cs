@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace LaboratoryApp.src.Data.Providers.Common
 {
     public interface IMongoDBProvider : IDisposable
     {
-        public string DatabaseName { get; }
+        string DatabaseName { get; }
+        IMongoCollection<T> GetCollection<T>(string collectionName);
 
         List<T> GetAll<T>(string collectionName);
         List<T> GetAll<T>(string collectionName, FilterDefinition<T> filter);
