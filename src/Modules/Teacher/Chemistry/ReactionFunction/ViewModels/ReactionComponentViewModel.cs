@@ -1,8 +1,8 @@
 ﻿using LaboratoryApp.Domain.Enums.Chemistry.ReactionFunction;
+using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
 using LaboratoryApp.Domain.Models.Chemistry.Common;
 using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
 using System.Collections.ObjectModel;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels

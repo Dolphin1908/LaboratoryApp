@@ -1,12 +1,12 @@
 ﻿using LaboratoryApp.Domain.Enums.Chemistry.ReactionFunction;
 using LaboratoryApp.Domain.Helpers;
+using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
 using LaboratoryApp.Domain.Models.Chemistry.Common;
 using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
 using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 using LaboratoryApp.src.Core.Caches.Chemistry;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Windows.Input;

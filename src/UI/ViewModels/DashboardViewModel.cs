@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Navigation;
-
-using Microsoft.Extensions.DependencyInjection;
-
+﻿using LaboratoryApp.src.Core.Interfaces;
 using LaboratoryApp.src.Core.ViewModels;
-
-using LaboratoryApp.src.Modules.Assignment.ExerciseSetFunction.ViewModels;
-using LaboratoryApp.src.Modules.Assignment.ExerciseSetFunction.Views;
-using LaboratoryApp.src.Modules.Chemistry.Common.Views;
-using LaboratoryApp.src.Modules.English.Common.Views;
-using LaboratoryApp.src.Modules.Physics.Common.Views;
-using LaboratoryApp.src.Modules.Maths.Common.Views;
-
-using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Modules.Chemistry.Dashboard.Views;
+using LaboratoryApp.src.Modules.Teacher.Coursework.ExerciseSetFunction.ViewModels;
+using LaboratoryApp.src.Modules.Teacher.Coursework.ExerciseSetFunction.Views;
+using LaboratoryApp.src.Modules.Tools.English.Dashboard.Views;
+using LaboratoryApp.src.Modules.Tools.Maths.Dashboard.Views;
+using LaboratoryApp.src.Modules.Tools.Physics.Dashboard.Views;
+using LaboratoryApp.src.Shared.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.UI.ViewModels
 {

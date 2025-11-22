@@ -4,7 +4,7 @@
     {
         public string DatabaseName { get; }
 
-        Task<int> ExecuteNonQueryAsync(string query, object parameters = null);
-        Task<IEnumerable<T>> ExecuteQueryAsync<T>(string query, object parameters = null);
+        Task<int> ExecuteNonQueryAsync(string query, object? parameters = null);
+        Task<IEnumerable<T>> ExecuteQueryAsync<T>(string query, object? parameters = null);
     }
 }

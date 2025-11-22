@@ -11,13 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <Compile Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
     <Compile Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
-    <EmbeddedResource Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <EmbeddedResource Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
     <EmbeddedResource Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
-    <None Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <None Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
     <None Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
-    <Page Remove="src\Modules\English\ExerciseFunctionExerciseFunction\**" />
+    <Page Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
     <Page Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
   </ItemGroup>
 
@@ -52,25 +52,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="src\Shared\Interface\INavigationService.cs" />
+    <None Include="src\Core\Interfaces\INavigationService.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
-    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
+    <PackageReference Include="MaterialDesignColors" Version="5.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3595.46" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="MongoDB.Bson" Version="3.5.0" />
-    <PackageReference Include="MongoDB.Driver" Version="3.5.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="MongoDB.Bson" Version="3.5.1" />
+    <PackageReference Include="MongoDB.Driver" Version="3.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.11" />
-    <PackageReference Include="System.Data.SQLite" Version="2.0.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
-    <PackageReference Include="System.Speech" Version="9.0.8" />
+    <PackageReference Include="System.Data.SQLite" Version="2.0.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
+    <PackageReference Include="System.Speech" Version="10.0.0" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
     <PackageReference Include="WPF-UI" Version="4.0.3" />
   </ItemGroup>
@@ -105,28 +105,17 @@
     <Folder Include="src\Data\Providers\Admin\" />
     <Folder Include="src\Data\Providers\Physics\" />
     <Folder Include="src\Data\Providers\Maths\" />
-    <Folder Include="src\Modules\Admin\Common\Resources\" />
-    <Folder Include="src\Modules\Admin\Common\ViewModels\" />
-    <Folder Include="src\Modules\Admin\Common\Views\" />
-    <Folder Include="src\Modules\Assignment\ExerciseSetFunction\Resources\" />
-    <Folder Include="src\Modules\Assignment\QuestionFunction\Resources\" />
-    <Folder Include="src\Modules\Chemistry\CompoundFunction\Resources\" />
-    <Folder Include="src\Modules\Chemistry\PeriodicFunction\Resources\" />
-    <Folder Include="src\Modules\Chemistry\ReactionFunction\Resources\" />
-    <Folder Include="src\Modules\English\DiaryFunction\Resources\" />
-    <Folder Include="src\Modules\English\DictionaryFunction\Resources\" />
-    <Folder Include="src\Modules\Assignment\ExerciseFunction\Resources\" />
-    <Folder Include="src\Modules\English\FlashcardFunction\Resources\" />
-    <Folder Include="src\Modules\English\LectureFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\Assignment\QuestionFunction\ViewModels\QuestionTypeViewModels\" />
-    <Folder Include="src\Modules\Teacher\Assignment\QuestionFunction\Views\QuestionTypeViews\" />
+    <Folder Include="src\Modules\Admin\" />
+    <Folder Include="src\Modules\Student\Math\" />
+    <Folder Include="src\Modules\Student\Chemistry\" />
+    <Folder Include="src\Modules\Student\English\DiaryFunction\Resources\" />
+    <Folder Include="src\Modules\Student\English\FlashcardFunction\Resources\" />
+    <Folder Include="src\Modules\Student\English\LectureFunction\Resources\" />
+    <Folder Include="src\Modules\Shared\" />
     <Folder Include="src\Modules\Teacher\Chemistry\CompoundFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\Chemistry\ReactionFunction\Resources\" />
     <Folder Include="src\Modules\Teacher\English\" />
-    <Folder Include="src\Modules\Toolkits\CalculatorFunction\Resources\" />
-    <Folder Include="src\Modules\Toolkits\Common\ViewModels\" />
-    <Folder Include="src\Modules\Toolkits\Common\Views\" />
-    <Folder Include="src\Shared\ViewModels\" />
+    <Folder Include="src\Modules\Tools\Toolkits\CalculatorFunction\Resources\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,5 @@
-﻿using LaboratoryApp.Domain.Models.Content;
-using LaboratoryApp.src.Data.Providers.Assignment.ExerciseFunction;
-using LaboratoryApp.src.Data.Providers.Assignment.ExerciseSetFunction;
-using LaboratoryApp.src.Data.Providers.Assignment.QuestionFunction;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Content;
+using LaboratoryApp.Domain.Models.Content;
 
 namespace LaboratoryApp.src.Core.Caches.Assignment
 {

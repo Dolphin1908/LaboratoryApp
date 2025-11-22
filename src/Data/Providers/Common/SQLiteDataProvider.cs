@@ -26,7 +26,7 @@ namespace LaboratoryApp.src.Data.Providers.Common
             return new SQLiteConnection(_connectionString);
         }
 
-        public async Task<int> ExecuteNonQueryAsync(string query, object parameters = null)
+        public async Task<int> ExecuteNonQueryAsync(string query, object? parameters = null)
         {
             using (var connection = CreateConnection())
             {
@@ -34,7 +34,7 @@ namespace LaboratoryApp.src.Data.Providers.Common
             }
         }
 
-        public async Task<IEnumerable<T>> ExecuteQueryAsync<T>(string query, object parameters = null)
+        public async Task<IEnumerable<T>> ExecuteQueryAsync<T>(string query, object? parameters = null)
         {
             using (var connection = CreateConnection())
             {

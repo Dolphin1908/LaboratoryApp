@@ -1,13 +1,15 @@
 ﻿using LaboratoryApp.Domain.Enums.Users;
 using LaboratoryApp.src.Core.Caches;
+using LaboratoryApp.src.Core.Interfaces;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.Authentication.Views;
+using LaboratoryApp.src.Modules.Auth.Views;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
-using LaboratoryApp.src.Modules.Teacher.Common.Views;
-using LaboratoryApp.src.Modules.Toolkits.Common.Views;
-using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Modules.Teacher.Dashboard.Views;
+using LaboratoryApp.src.Modules.Tools.Toolkits.Dashboard.Views;
+using LaboratoryApp.src.Shared.Interfaces;
 using LaboratoryApp.src.UI.Views;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using System.Windows.Input;
 
 namespace LaboratoryApp.src.UI.ViewModels
@@ -16,6 +18,8 @@ namespace LaboratoryApp.src.UI.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IDialogService _dialogService;
+
         private bool _isNavigationVisible;
 
         #region Properties
@@ -72,12 +76,14 @@ namespace LaboratoryApp.src.UI.ViewModels
         /// </summary>
         /// <param name="navigationService"></param>
         public MainWindowViewModel(INavigationService navigationService,
-                                   IServiceProvider serviceProvider)
+                                   IServiceProvider serviceProvider,
+                                   IDialogService dialogService)
         {
             ControlBarVM = new ControlBarViewModel(this, navigationService);
 
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
+            _dialogService = dialogService;
 
             // Navigate to the dashboard page
             NavigateToDashboardCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -114,22 +120,21 @@ namespace LaboratoryApp.src.UI.ViewModels
             // Logout command
             LogoutCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                // Clear authentication cache
-                AuthenticationCache.Clear();
+                if (MessageBoxResult.OK == _dialogService.ShowMessage("Bạn muốn đăng xuất?", "Đăng xuất", MessageBoxButton.OKCancel, MessageBoxImage.Warning))
+                {
+                    // Clear authentication cache
+                    AuthenticationCache.Clear();
 
-                // Update the current user and authentication status
-                OnPropertyChanged(nameof(CurrentUser));
-                OnPropertyChanged(nameof(IsAuthenticated));
-                OnPropertyChanged(nameof(IsTeacher));
+                    // Update the current user and authentication status
+                    OnAuthenticationChanged();
 
-                // Open the authentication window for re-login
-                var authenticationWindow = _serviceProvider.GetRequiredService<AuthenticationWindow>();
-                authenticationWindow.ShowDialog();
+                    // Open the authentication window for re-login
+                    var authenticationWindow = _serviceProvider.GetRequiredService<AuthenticationWindow>();
+                    authenticationWindow.ShowDialog();
 
-                // After authentication, update the current user
-                OnPropertyChanged(nameof(CurrentUser));
-                OnPropertyChanged(nameof(IsAuthenticated));
-                OnPropertyChanged(nameof(IsTeacher));
+                    // After authentication, update the current user
+                    OnAuthenticationChanged();
+                }
             });
 
             // Open the authentication window
@@ -139,17 +144,25 @@ namespace LaboratoryApp.src.UI.ViewModels
                 authenticationWindow.ShowDialog();
 
                 // After authentication, update the current user
-                OnPropertyChanged(nameof(CurrentUser));
-                OnPropertyChanged(nameof(IsAuthenticated));
-                OnPropertyChanged(nameof(IsTeacher));
+                OnAuthenticationChanged();
             });
         }
 
+        private void OnAuthenticationChanged()
+        {
+            OnPropertyChanged(nameof(CurrentUser));
+            OnPropertyChanged(nameof(IsAuthenticated));
+            OnPropertyChanged(nameof(IsTeacher));
+        }
+
+        /// <summary>
+        /// Khởi tạo trang chính
+        /// </summary>
         public void Initialize()
         {
             var dashboardPage = _serviceProvider.GetRequiredService<Dashboard>();
             _navigationService.NavigateTo(dashboardPage);
-            OnPropertyChanged(nameof(IsTeacher));
+            OnPropertyChanged(nameof(IsTeacher)); // Cập nhật lại thuộc tính IsTeacher khi khởi tạo
         }
     }
 }

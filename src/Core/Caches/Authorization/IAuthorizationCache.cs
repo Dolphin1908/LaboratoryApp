@@ -1,5 +1,5 @@
-﻿using LaboratoryApp.Domain.Models.Authorization;
-using LaboratoryApp.src.Data.Providers.Authorization;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Operations;
+using LaboratoryApp.Domain.Models.Authorization;
 
 namespace LaboratoryApp.src.Core.Caches.Authorization
 {
