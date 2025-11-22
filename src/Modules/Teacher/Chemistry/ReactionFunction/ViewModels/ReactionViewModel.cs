@@ -1,25 +1,14 @@
-﻿using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Caches;
+﻿using LaboratoryApp.Domain.Enums.Chemistry.ReactionFunction;
+using LaboratoryApp.Domain.Helpers;
+using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
+using LaboratoryApp.Domain.Models.Chemistry.Common;
+using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Common.Enums;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
-using LaboratoryApp.src.Services.Helper.Counter;
-using LaboratoryApp.src.Shared.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
@@ -100,11 +89,9 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                 return names.Any() ? string.Join("\n", names) : string.Empty;
             }
         }
-        public ReactionComponent SelectedReactant { get; set; }
         public SubstanceKind SelectedReactantKind { get; set; }
 
         public ObservableCollection<SelectableEnumDisplay<ReactionType>> ReactionTypeOptions { get; }
-        public ObservableCollection<EnumDisplay<ReactionNoteType>> ReactionNoteTypeOptions { get; }
         public ObservableCollection<EnumDisplay<SubstanceKind>> SubstanceKindOptions { get; set; }
 
         public Reaction Reaction
@@ -145,7 +132,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
         }
         #endregion
 
-        public ReactionViewModel(IServiceProvider serviceProvider, 
+        public ReactionViewModel(IServiceProvider serviceProvider,
                                  IReactionService reactionService,
                                  IChemistryDataCache chemistryDataCache)
         {
@@ -303,7 +290,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModel
                                        _ => null
                                    };
                                })
-                               .Where (f=> !string.IsNullOrEmpty(f))
+                               .Where(f => !string.IsNullOrEmpty(f))
                                .ToList();
 
             return !formulas.GroupBy(f => f)

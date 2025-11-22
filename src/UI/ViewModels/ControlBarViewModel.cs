@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Shared.Interface;
+using LaboratoryApp.src.Shared.Interfaces;
 
 namespace LaboratoryApp.src.UI.ViewModels
 {

@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using LaboratoryApp.Domain.Enums.Chemistry.ReactionFunction;
+using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
+using LaboratoryApp.Domain.Models.Chemistry.Common;
+using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
-using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Shared.Interface;
-using LaboratoryApp.src.Services.Chemistry.ReactionFunction;
+using System.Collections.ObjectModel;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
 {

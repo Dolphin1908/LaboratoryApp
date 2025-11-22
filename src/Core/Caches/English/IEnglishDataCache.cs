@@ -1,12 +1,6 @@
-﻿using LaboratoryApp.src.Core.Models.English.DiaryFunction;
-using LaboratoryApp.src.Core.Models.English.DictionaryFunction;
-using LaboratoryApp.src.Data.Providers.English.DiaryFunction;
-using LaboratoryApp.src.Data.Providers.English.DictionaryFunction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.English;
+using LaboratoryApp.Domain.Models.English.DiaryFunction;
+using LaboratoryApp.Domain.Models.English.DictionaryFunction;
 
 namespace LaboratoryApp.src.Core.Caches.English
 {

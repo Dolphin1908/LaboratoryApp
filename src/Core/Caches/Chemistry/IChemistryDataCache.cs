@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LaboratoryApp.src.Core.Models.Chemistry;
-
-using LaboratoryApp.src.Data.Providers.Chemistry.CompoundFunction;
-using LaboratoryApp.src.Data.Providers.Chemistry.PeriodicFunction;
-using LaboratoryApp.src.Data.Providers.Chemistry.ReactionFunction;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Chemistry;
+using LaboratoryApp.Domain.Models.Chemistry.Common;
+using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 
 namespace LaboratoryApp.src.Core.Caches.Chemistry
 {

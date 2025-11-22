@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LaboratoryApp.src.Core.Models.Assignment;
-using LaboratoryApp.src.Data.Providers.Assignment;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Content;
+using LaboratoryApp.Domain.Models.Content;
 
 namespace LaboratoryApp.src.Core.Caches.Assignment
 {
@@ -16,13 +10,22 @@ namespace LaboratoryApp.src.Core.Caches.Assignment
         public List<ExerciseSet> AllExerciseSets { get; set; } = new();
         public List<Exercise> AllExercises { get; set; } = new();
 
-        public void LoadAllData(IAssignmentProvider assignmentProvider)
+        public void LoadAllData(IExerciseProvider exerciseProvider,
+                                IExerciseSetProvider exerciseSetProvider,
+                                IQuestionProvider questionProvider)
         {
             lock (_lock)
             {
-                AllExerciseSets = assignmentProvider.GetAllExerciseSets().GetAwaiter().GetResult();
-                AllExercises = assignmentProvider.GetAllExercises().GetAwaiter().GetResult();
+                LoadAllDataAsync(exerciseProvider, exerciseSetProvider, questionProvider);
             }
+        }
+
+        private async void LoadAllDataAsync(IExerciseProvider exerciseProvider,
+                                            IExerciseSetProvider exerciseSetProvider,
+                                            IQuestionProvider questionProvider)
+        {
+            AllExercises = await exerciseProvider.GetAllExercisesAsync();
+            AllExerciseSets = await exerciseSetProvider.GetAllExerciseSetsAsync();
         }
     }
 }

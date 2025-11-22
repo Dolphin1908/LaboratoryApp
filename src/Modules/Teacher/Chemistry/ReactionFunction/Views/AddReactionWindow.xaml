@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views"
-        xmlns:domain="clr-namespace:LaboratoryApp.src.Core.Domains"
+        xmlns:rules="clr-namespace:LaboratoryApp.src.Core.Rules"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"

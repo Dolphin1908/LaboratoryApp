@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Data.Providers.Chemistry.CompoundFunction;
-using LaboratoryApp.src.Data.Providers.Chemistry.PeriodicFunction;
-using LaboratoryApp.src.Data.Providers.Chemistry.ReactionFunction;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Chemistry;
+using LaboratoryApp.Domain.Models.Chemistry.Common;
+using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 
 namespace LaboratoryApp.src.Core.Caches.Chemistry
 {
@@ -25,25 +19,32 @@ namespace LaboratoryApp.src.Core.Caches.Chemistry
         {
             lock (_lock)
             {
-                AllElements = periodicProvider.GetAllElements();
-                AllCompounds = compoundProvider.GetAllCompounds();
-                AllReactions = reactionProvider.GetAllReactions();
+                LoadAllDataAsync(periodicProvider, compoundProvider, reactionProvider);
+            }
+        }
 
-                foreach(var reaction in AllReactions)
+        private async void LoadAllDataAsync(IPeriodicProvider periodicProvider,
+                                            ICompoundProvider compoundProvider,
+                                            IReactionProvider reactionProvider)
+        {
+            AllElements = await periodicProvider.GetAllElementsAsync();
+            AllCompounds = await compoundProvider.GetAllCompoundsAsync();
+            AllReactions = await reactionProvider.GetAllReactionsAsync();
+
+            foreach (var reaction in AllReactions)
+            {
+                foreach (var reactant in reaction.Reactants)
                 {
-                    foreach (var reactant in reaction.Reactants)
-                    {
-                        reactant.Formula = AllElements.FirstOrDefault(e => e.Id == reactant.ElementId)?.Formula ?? AllCompounds.FirstOrDefault(e => e.Id == reactant.CompoundId)?.Formula ?? string.Empty;
-                        reactant.DisplayCoefficient = reactant.Coefficient == "1" ? string.Empty : reactant.Coefficient.ToString();
-                        reactant.Display = string.IsNullOrEmpty(reactant.DisplayCoefficient) ? reactant.Formula : $"{reactant.DisplayCoefficient} {reactant.Formula}";
-                    }
+                    reactant.Formula = AllElements.FirstOrDefault(e => e.Id == reactant.ElementId)?.Formula ?? AllCompounds.FirstOrDefault(e => e.Id == reactant.CompoundId)?.Formula ?? string.Empty;
+                    reactant.DisplayCoefficient = reactant.Coefficient == "1" ? string.Empty : reactant.Coefficient.ToString();
+                    reactant.Display = string.IsNullOrEmpty(reactant.DisplayCoefficient) ? reactant.Formula : $"{reactant.DisplayCoefficient} {reactant.Formula}";
+                }
 
-                    foreach (var product in reaction.Products)
-                    {
-                        product.Formula = AllElements.FirstOrDefault(e => e.Id == product.ElementId)?.Formula ?? AllCompounds.FirstOrDefault(e => e.Id == product.CompoundId)?.Formula ?? string.Empty;
-                        product.DisplayCoefficient = product.Coefficient == "1" ? string.Empty : product.Coefficient.ToString();
-                        product.Display = string.IsNullOrEmpty(product.DisplayCoefficient) ? product.Formula : $"{product.DisplayCoefficient} {product.Formula}";
-                    }
+                foreach (var product in reaction.Products)
+                {
+                    product.Formula = AllElements.FirstOrDefault(e => e.Id == product.ElementId)?.Formula ?? AllCompounds.FirstOrDefault(e => e.Id == product.CompoundId)?.Formula ?? string.Empty;
+                    product.DisplayCoefficient = product.Coefficient == "1" ? string.Empty : product.Coefficient.ToString();
+                    product.Display = string.IsNullOrEmpty(product.DisplayCoefficient) ? product.Formula : $"{product.DisplayCoefficient} {product.Formula}";
                 }
             }
         }

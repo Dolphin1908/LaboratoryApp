@@ -1,10 +1,5 @@
-﻿using LaboratoryApp.src.Core.Models.Assignment;
-using LaboratoryApp.src.Data.Providers.Assignment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Content;
+using LaboratoryApp.Domain.Models.Content;
 
 namespace LaboratoryApp.src.Core.Caches.Assignment
 {
@@ -12,6 +7,8 @@ namespace LaboratoryApp.src.Core.Caches.Assignment
     {
         List<ExerciseSet> AllExerciseSets { get; set; }
         List<Exercise> AllExercises { get; set; }
-        void LoadAllData(IAssignmentProvider provider);
+        void LoadAllData(IExerciseProvider exerciseProvider,
+                         IExerciseSetProvider exerciseSetProvider,
+                         IQuestionProvider questionProvider);
     }
 }

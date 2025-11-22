@@ -1,24 +1,14 @@
-﻿using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Caches;
+﻿using LaboratoryApp.Domain.Enums.Chemistry.CompoundFunction;
+using LaboratoryApp.Domain.Helpers;
+using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
+using LaboratoryApp.Domain.Models.Chemistry.Common;
+using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Models.Chemistry;
-using LaboratoryApp.src.Core.Models.Chemistry.Enums;
+using LaboratoryApp.src.Core.Interfaces;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
-using LaboratoryApp.src.Services.Chemistry;
-using LaboratoryApp.src.Services.Chemistry.CompoundFunction;
-using LaboratoryApp.src.Services.Helper.Counter;
-using LaboratoryApp.src.Shared.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -27,6 +17,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
     public class CompoundViewModel : BaseViewModel
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly IDialogService _dialogService;
         private readonly ICompoundService _compoundService;
         private readonly IChemistryDataCache _chemistryDataCache;
 
@@ -150,10 +141,12 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
         #endregion
 
         public CompoundViewModel(IServiceProvider serviceProvider,
+                                 IDialogService dialogService,
                                  ICompoundService compoundService,
                                  IChemistryDataCache chemistryDataCache)
         {
             _serviceProvider = serviceProvider;
+            _dialogService = dialogService;
             _compoundService = compoundService;
             _chemistryDataCache = chemistryDataCache;
 
@@ -259,7 +252,7 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
             {
                 if (!CanAddDefaultElement(Composition))
                 {
-                    MessageBox.Show("Có nguyên tố trùng lặp trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    _dialogService.ShowMessage("Có nguyên tố trùng lặp trong công thức hóa học", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
@@ -271,7 +264,6 @@ namespace LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.ViewModel
                     {
                         thisWindow.Close();
                     }
-
                 }
             });
             #endregion

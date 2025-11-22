@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
-using LaboratoryApp.src.Core.Helpers;
+﻿using LaboratoryApp.Domain.Enums.Chemistry.ReactionFunction;
+using LaboratoryApp.Domain.Helpers;
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Core.Models.Chemistry.Common.Enums;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.ViewModels
 {

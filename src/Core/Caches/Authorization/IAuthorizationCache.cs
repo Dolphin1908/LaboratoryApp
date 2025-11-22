@@ -1,10 +1,5 @@
-﻿using LaboratoryApp.src.Core.Models.Authorization;
-using LaboratoryApp.src.Data.Providers.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Operations;
+using LaboratoryApp.Domain.Models.Authorization;
 
 namespace LaboratoryApp.src.Core.Caches.Authorization
 {
