@@ -1,16 +1,16 @@
 ﻿using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Shared.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 
 namespace LaboratoryApp.src.Modules.Tools.Physics.Dashboard.ViewModels
 {
     public class PhysicsMainPageViewModel : BaseViewModel
     {
-        private readonly INavigationService _navigationService;
+        private readonly INavigateService _navigationService;
 
         #region Commands
         #endregion
 
-        public PhysicsMainPageViewModel(INavigationService navigationService)
+        public PhysicsMainPageViewModel(INavigateService navigationService)
         {
             _navigationService = navigationService;
         }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Documents;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LaboratoryApp.src.Core.Helpers
 {
@@ -28,7 +22,7 @@ namespace LaboratoryApp.src.Core.Helpers
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static FlowDocument DeserializeFromString (string str)
+        public static FlowDocument DeserializeFromString(string str)
         {
             var doc = new FlowDocument();
             if (string.IsNullOrEmpty(str)) return doc;
@@ -89,7 +83,7 @@ namespace LaboratoryApp.src.Core.Helpers
         /// <returns></returns>
         public static byte[] SerializeToBytes(FlowDocument document)
         {
-            if(document == null) return Array.Empty<byte>();
+            if (document == null) return Array.Empty<byte>();
             var range = new TextRange(document.ContentStart, document.ContentEnd);
             using var ms = new MemoryStream();
             range.Save(ms, DataFormats.XamlPackage);

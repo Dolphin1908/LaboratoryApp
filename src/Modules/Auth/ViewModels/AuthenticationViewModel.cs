@@ -1,7 +1,7 @@
 ﻿using LaboratoryApp.Domain.DTOs.Users;
 using LaboratoryApp.Domain.Enums.Users;
 using LaboratoryApp.Domain.Interfaces.Services.Auth;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Auth.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -127,7 +127,7 @@ namespace LaboratoryApp.src.Modules.Auth.ViewModels
             {
                 OrganizationId = 0,
                 OrganizationName = "No Organization",
-                Role = UserRole.Student
+                Role = UserRole.Guest
             };
 
             if (loginResult.OrganizationProfiles.Count == 0)
@@ -145,7 +145,7 @@ namespace LaboratoryApp.src.Modules.Auth.ViewModels
                 var windowVm = roleSelectionWindow.DataContext as RoleSelectionViewModel;
                 windowVm!.Roles = loginResult.OrganizationProfiles; // Truyền danh sách role và organization vào ViewModel
 
-                roleSelectionWindow.ShowDialog(); // Hiển thị hộp thoại
+                _dialogService.ShowDialogCenterOwner(roleSelectionWindow);
 
                 selectedRole = windowVm.SelectedRole!; // Lấy role và organization đã chọn
             }

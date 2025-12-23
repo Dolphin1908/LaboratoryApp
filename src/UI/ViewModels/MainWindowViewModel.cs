@@ -1,12 +1,12 @@
 ﻿using LaboratoryApp.Domain.Enums.Users;
 using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
+using LaboratoryApp.src.Modules.Auth.ViewModels;
 using LaboratoryApp.src.Modules.Auth.Views;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
-using LaboratoryApp.src.Modules.Teacher.Dashboard.Views;
+using LaboratoryApp.src.Modules.Teacher.DashboardFunction.Views;
 using LaboratoryApp.src.Modules.Tools.Toolkits.Dashboard.Views;
-using LaboratoryApp.src.Shared.Interfaces;
 using LaboratoryApp.src.UI.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -16,7 +16,7 @@ namespace LaboratoryApp.src.UI.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private readonly INavigationService _navigationService;
+        private readonly INavigateService _navigationService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IDialogService _dialogService;
 
@@ -59,23 +59,37 @@ namespace LaboratoryApp.src.UI.ViewModels
                 OnPropertyChanged(nameof(IsTeacher));
             }
         }
+        public bool IsAdmin
+        {
+            get => AuthenticationCache.CurrentAuthentication?.CurrentOrganizationProfile?.Role.HasFlag(UserRole.OrganizationAdmin) ?? false;
+            set
+            {
+                OnPropertyChanged(nameof(IsAdmin));
+            }
+        }
+        public bool CanSwitchOrganization
+        {
+            get => AuthenticationCache.CurrentAuthentication != null && AuthenticationCache.CurrentAuthentication.OrganizationProfiles.Count > 1;
+        }
         public ControlBarViewModel ControlBarVM { get; set; }
         #endregion
 
         #region Commands
         public ICommand NavigateToDashboardCommand { get; set; }
         public ICommand NavigateToTeacherMainPageCommand { get; set; }
+        public ICommand NavigateToTeacherToolboxCommand { get; set; }
         public ICommand NavigateToToolkitCommand { get; set; }
         public ICommand OpenPeriodicTableCommand { get; set; }
         public ICommand LogoutCommand { get; set; }
         public ICommand OpenAuthenticationCommand { get; set; }
+        public ICommand OpenSwitchOrganizationCommand { get; set; }
         #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="navigationService"></param>
-        public MainWindowViewModel(INavigationService navigationService,
+        public MainWindowViewModel(INavigateService navigationService,
                                    IServiceProvider serviceProvider,
                                    IDialogService dialogService)
         {
@@ -96,6 +110,12 @@ namespace LaboratoryApp.src.UI.ViewModels
             NavigateToTeacherMainPageCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var page = _serviceProvider.GetRequiredService<TeacherMainPage>();
+                _navigationService.NavigateTo(page);
+            });
+
+            NavigateToTeacherToolboxCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                var page = _serviceProvider.GetRequiredService<TeacherToolsMainPage>();
                 _navigationService.NavigateTo(page);
             });
 
@@ -122,6 +142,7 @@ namespace LaboratoryApp.src.UI.ViewModels
             {
                 if (MessageBoxResult.OK == _dialogService.ShowMessage("Bạn muốn đăng xuất?", "Đăng xuất", MessageBoxButton.OKCancel, MessageBoxImage.Warning))
                 {
+                    _navigationService.NavigateToAndClearHistory(_serviceProvider.GetRequiredService<Dashboard>());
                     // Clear authentication cache
                     AuthenticationCache.Clear();
 
@@ -130,7 +151,7 @@ namespace LaboratoryApp.src.UI.ViewModels
 
                     // Open the authentication window for re-login
                     var authenticationWindow = _serviceProvider.GetRequiredService<AuthenticationWindow>();
-                    authenticationWindow.ShowDialog();
+                    _dialogService.ShowDialogCenterOwner(authenticationWindow);
 
                     // After authentication, update the current user
                     OnAuthenticationChanged();
@@ -141,10 +162,26 @@ namespace LaboratoryApp.src.UI.ViewModels
             OpenAuthenticationCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var authenticationWindow = _serviceProvider.GetRequiredService<AuthenticationWindow>();
-                authenticationWindow.ShowDialog();
+                _dialogService.ShowDialogCenterOwner(authenticationWindow);
 
                 // After authentication, update the current user
                 OnAuthenticationChanged();
+            });
+
+            // Open switch organization window
+            OpenSwitchOrganizationCommand = new RelayCommand<object>((p) => CanSwitchOrganization, (p) =>
+            {
+                if (MessageBoxResult.OK == _dialogService.ShowMessage("Bạn muốn đổi vai trò khác?", "Đổi vai trò", MessageBoxButton.OKCancel, MessageBoxImage.Warning))
+                {
+                    _navigationService.NavigateToAndClearHistory(_serviceProvider.GetRequiredService<Dashboard>());
+
+                    var switchOrgWindow = _serviceProvider.GetRequiredService<RoleSelectionWindow>();
+                    var switchOrgVm = switchOrgWindow.DataContext as RoleSelectionViewModel;
+                    switchOrgVm!.Roles = AuthenticationCache.CurrentAuthentication!.OrganizationProfiles;
+                    _dialogService.ShowDialogCenterOwner(switchOrgWindow);
+                    // After switching organization, update the properties
+                    OnAuthenticationChanged();
+                }
             });
         }
 
@@ -153,6 +190,8 @@ namespace LaboratoryApp.src.UI.ViewModels
             OnPropertyChanged(nameof(CurrentUser));
             OnPropertyChanged(nameof(IsAuthenticated));
             OnPropertyChanged(nameof(IsTeacher));
+            OnPropertyChanged(nameof(IsAdmin));
+            OnPropertyChanged(nameof(CanSwitchOrganization));
         }
 
         /// <summary>
@@ -162,7 +201,7 @@ namespace LaboratoryApp.src.UI.ViewModels
         {
             var dashboardPage = _serviceProvider.GetRequiredService<Dashboard>();
             _navigationService.NavigateTo(dashboardPage);
-            OnPropertyChanged(nameof(IsTeacher)); // Cập nhật lại thuộc tính IsTeacher khi khởi tạo
+            OnAuthenticationChanged();
         }
     }
 }

@@ -66,9 +66,7 @@
                         <wpfui:SymbolIcon FontSize="24" Symbol="Toolbox12" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
-            </wpfui:NavigationView.MenuItems>
 
-            <wpfui:NavigationView.FooterMenuItems>
                 <wpfui:NavigationViewItem Command="{Binding NavigateToTeacherMainPageCommand}" Visibility="{Binding IsTeacher, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
                     <wpfui:NavigationViewItem.Content>
                         <TextBlock
@@ -82,7 +80,43 @@
                             Filled="True"
                             FontSize="24"
                             Foreground="#F2CB5C"
-                            Symbol="Star24" />
+                            Symbol="PersonStar24" />
+                    </wpfui:NavigationViewItem.Icon>
+                </wpfui:NavigationViewItem>
+
+                <wpfui:NavigationViewItem Command="{Binding NavigateToTeacherToolboxCommand}" Visibility="{Binding IsTeacher, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                    <wpfui:NavigationViewItem.Content>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Foreground="#F2CB5C"
+                            Text="Teacher Tools" />
+                    </wpfui:NavigationViewItem.Content>
+                    <wpfui:NavigationViewItem.Icon>
+                        <wpfui:SymbolIcon
+                            Filled="True"
+                            FontSize="24"
+                            Foreground="#F2CB5C"
+                            Symbol="Wrench24" />
+                    </wpfui:NavigationViewItem.Icon>
+                </wpfui:NavigationViewItem>
+            </wpfui:NavigationView.MenuItems>
+
+            <wpfui:NavigationView.FooterMenuItems>
+                <wpfui:NavigationViewItem Command="{Binding OpenSwitchOrganizationCommand}" Visibility="{Binding CanSwitchOrganization, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                    <wpfui:NavigationViewItem.Content>
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="DemiBold"
+                            Foreground="MediumPurple"
+                            Text="Change Role" />
+                    </wpfui:NavigationViewItem.Content>
+                    <wpfui:NavigationViewItem.Icon>
+                        <wpfui:SymbolIcon
+                            Filled="True"
+                            FontSize="24"
+                            Foreground="MediumPurple"
+                            Symbol="ArrowSwap24" />
                     </wpfui:NavigationViewItem.Icon>
                 </wpfui:NavigationViewItem>
 

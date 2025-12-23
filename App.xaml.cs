@@ -1,6 +1,5 @@
 ﻿using LaboratoryApp.src.Configuration;
-using LaboratoryApp.src.Core.Interfaces;
-using LaboratoryApp.src.Shared.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.UI.ViewModels;
 using LaboratoryApp.src.UI.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +32,7 @@ namespace LaboratoryApp
 
             // Lấy MainWindowViewModel từ ServiceProvider
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            var navigationService = _serviceProvider.GetRequiredService<INavigationService>();
+            var navigationService = _serviceProvider.GetRequiredService<INavigateService>();
             var mainWindowVM = _serviceProvider.GetRequiredService<MainWindowViewModel>();
 
             mainWindow.DataContext = mainWindowVM;

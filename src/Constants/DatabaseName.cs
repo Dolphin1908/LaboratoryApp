@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LaboratoryApp.src.Constants
+﻿namespace LaboratoryApp.src.Constants
 {
     public static class DatabaseName
     {
@@ -14,6 +8,7 @@ namespace LaboratoryApp.src.Constants
         public const string EnglishMongoDB = "english";
         public const string AssignmentMongoDB = "assignment";
         public const string HelperMongoDB = "helper";
+        public const string InfrastructureMongoDB = "infrastructure";
 
         public static string ChemistrySQLite = "chem";
         public static string EnglishSQLite = "dictionary";

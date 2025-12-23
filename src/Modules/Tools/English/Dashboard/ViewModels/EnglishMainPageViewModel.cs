@@ -1,11 +1,11 @@
-﻿using LaboratoryApp.src.Core.Interfaces;
+﻿using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
-using LaboratoryApp.src.Modules.Student.English.DiaryFunction.ViewModels;
-using LaboratoryApp.src.Modules.Student.English.DiaryFunction.Views;
+using LaboratoryApp.src.Modules.Tools.English.DiaryFunction.ViewModels;
+using LaboratoryApp.src.Modules.Tools.English.DiaryFunction.Views;
 using LaboratoryApp.src.Modules.Student.English.FlashcardFunction.Views;
 using LaboratoryApp.src.Modules.Student.English.LectureFunction.Views;
-using LaboratoryApp.src.Shared.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Input;
 
@@ -13,7 +13,7 @@ namespace LaboratoryApp.src.Modules.Tools.English.Dashboard.ViewModels
 {
     class EnglishMainPageViewModel : BaseViewModel
     {
-        private readonly INavigationService _navigationService;
+        private readonly INavigateService _navigationService;
         private readonly IServiceProvider _serviceProvider;
 
         #region Commands
@@ -23,7 +23,7 @@ namespace LaboratoryApp.src.Modules.Tools.English.Dashboard.ViewModels
         public ICommand NavigateToDiaryCommand { get; set; } // Navigate to Diary UI
         #endregion
 
-        public EnglishMainPageViewModel(INavigationService navigationService,
+        public EnglishMainPageViewModel(INavigateService navigationService,
                                         IServiceProvider serviceProvider)
         {
             _navigationService = navigationService;

@@ -7,14 +7,19 @@ namespace LaboratoryApp.src.Core.Caches.Authorization
     {
         private readonly object _lock = new();
 
-        public List<ExerciseSetAccess> AllExerciseSetAccess { get; set; } = new();
+        public List<ExerciseAccess> AllExerciseAccess { get; set; } = new();
 
-        public void LoadAllData(IExerciseSetAccessProvider provider)
+        public void LoadAllData(IExerciseAccessProvider provider)
         {
             lock (_lock)
             {
-                AllExerciseSetAccess = provider.GetAllAccess().GetAwaiter().GetResult();
+                LoadAllDataAsync(provider);
             }
+        }
+
+        private async void LoadAllDataAsync(IExerciseAccessProvider provider)
+        {
+            AllExerciseAccess = await provider.GetAllExerciseAccessAsync();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using LaboratoryApp.Domain.Interfaces.Services.English;
 using LaboratoryApp.Domain.Interfaces.Services.Infrastructure;
 using LaboratoryApp.Domain.Models.English.FlashcardFunction;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
 using LaboratoryApp.src.Modules.Student.English.FlashcardFunction.Views;
@@ -106,7 +106,7 @@ namespace LaboratoryApp.src.Modules.Student.English.FlashcardFunction.ViewModels
             {
                 var window = _serviceProvider.GetRequiredService<UpdateFlashcardSetWindow>();
                 window.DataContext = _flashcardSetVmFactory(_flashcardService, SelectedFlashcardSet);
-                window.ShowDialog();
+                _dialogService.ShowDialogCenterOwner(window);
             });
 
             DeleteFlashcardSetCommand = new RelayCommand<FlashcardSet>((p) => true, (p) => DeleteSet(p));
@@ -117,7 +117,7 @@ namespace LaboratoryApp.src.Modules.Student.English.FlashcardFunction.ViewModels
 
                 var window = _serviceProvider.GetRequiredService<FlashcardWindow>();
                 window.DataContext = _flashcardVmFactory(_serviceProvider, _flashcardService, SelectedFlashcardSet.Id, flashcard);
-                window.ShowDialog();
+                _dialogService.ShowDialogCenterOwner(window);
             });
 
             OpenUpdateFlashcardWindowCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -131,7 +131,7 @@ namespace LaboratoryApp.src.Modules.Student.English.FlashcardFunction.ViewModels
 
                 var window = _serviceProvider.GetRequiredService<FlashcardWindow>();
                 window.DataContext = _flashcardVmFactory(_serviceProvider, _flashcardService, SelectedFlashcardSet.Id, flashcard);
-                window.ShowDialog();
+                _dialogService.ShowDialogCenterOwner(window);
             });
 
             DeleteFlashcardCommand = new RelayCommand<object>((p) => true, (p) => DeleteFlashcard((long)p));
@@ -147,7 +147,7 @@ namespace LaboratoryApp.src.Modules.Student.English.FlashcardFunction.ViewModels
 
                 var window = _serviceProvider.GetRequiredService<FlashcardStudyWindow>();
                 window.DataContext = _flashcardStudyVmFactory(_dialogService, _speechService, SelectedFlashcardSet, _flashcardService);
-                window.ShowDialog();
+                _dialogService.ShowDialogCenterOwner(window);
             });
         }
 

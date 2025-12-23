@@ -1,5 +1,4 @@
 ﻿using LaboratoryApp.Domain.DTOs.Authentication;
-using LaboratoryApp.Domain.DTOs.Users;
 
 namespace LaboratoryApp.src.Core.Caches
 {
@@ -24,16 +23,6 @@ namespace LaboratoryApp.src.Core.Caches
 
         public static bool IsAuthenticated => CurrentAuthentication != null;
 
-        public static void Set(UserDTO user, string accessToken, string refreshToken)
-        {
-            CurrentAuthentication = new AuthenticationResponseDTO
-            {
-                User = user,
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            };
-
-        }
         public static void Set(AuthenticationResponseDTO authenticationResponseDTO)
         {
             CurrentAuthentication = authenticationResponseDTO;

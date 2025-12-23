@@ -1,4 +1,5 @@
 ﻿using LaboratoryApp.Domain.DTOs.Users;
+using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Auth.Views;
 using System.Windows.Input;
@@ -11,6 +12,7 @@ namespace LaboratoryApp.src.Modules.Auth.ViewModels
         private List<UserOrganizationProfileDTO> _roles;
 
         #region Commands
+        public ICommand CancelCommand { get; set; }
         public ICommand ConfirmRoleCommand { get; set; }
         #endregion
 
@@ -38,13 +40,29 @@ namespace LaboratoryApp.src.Modules.Auth.ViewModels
 
         public RoleSelectionViewModel()
         {
+            CancelCommand = new RelayCommand<object>(p => true, p =>
+            {
+                SelectedRole = null;
+                CloseWindow(p);
+            });
+
             ConfirmRoleCommand = new RelayCommand<object>(p => CanConfirmRole(), p =>
             {
-                if (p is RoleSelectionWindow window)
+                if (AuthenticationCache.CurrentAuthentication != null && SelectedRole != null)
                 {
-                    window.Close();
+                    AuthenticationCache.CurrentAuthentication.CurrentOrganizationProfile = SelectedRole;
                 }
+
+                CloseWindow(p);
             });
+        }
+
+        private void CloseWindow(object p)
+        {
+            if (p is RoleSelectionWindow window)
+            {
+                window.Close();
+            }
         }
 
         private bool CanConfirmRole()

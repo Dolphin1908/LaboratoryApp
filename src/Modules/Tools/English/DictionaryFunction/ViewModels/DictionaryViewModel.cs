@@ -1,7 +1,7 @@
 ﻿using LaboratoryApp.Domain.DTOs.English.DictionaryFunction;
 using LaboratoryApp.Domain.Interfaces.Services.English;
 using LaboratoryApp.Domain.Interfaces.Services.Infrastructure;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

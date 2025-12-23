@@ -1,7 +1,7 @@
 ﻿using LaboratoryApp.Domain.Interfaces.Services.English;
 using LaboratoryApp.Domain.Interfaces.Services.Infrastructure;
 using LaboratoryApp.Domain.Models.English.FlashcardFunction;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using System.Windows;
 using System.Windows.Input;

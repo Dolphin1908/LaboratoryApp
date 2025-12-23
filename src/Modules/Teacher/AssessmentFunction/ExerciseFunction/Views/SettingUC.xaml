@@ -1,0 +1,264 @@
+﻿<UserControl
+    x:Class="LaboratoryApp.src.Modules.Teacher.AssessmentFunction.ExerciseFunction.Views.SettingUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Teacher.AssessmentFunction.ExerciseFunction.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rules="clr-namespace:LaboratoryApp.src.Core.Rules"
+    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="DashboardCardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Height" Value="Auto" />
+            <Setter Property="Margin" Value="0,0,20,0" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+
+        <Style x:Key="CardTitleStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="CardDescriptionStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="0,0,0,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <materialDesign:PackIcon
+                Width="28"
+                Height="28"
+                VerticalAlignment="Center"
+                Foreground="SpringGreen"
+                Kind="Numeric1Circle" />
+            <TextBlock
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Foreground="SpringGreen"
+                Text="Informations" />
+            <materialDesign:PackIcon
+                Width="32"
+                Height="32"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Foreground="SpringGreen"
+                Kind="ArrowRightThin" />
+            <materialDesign:PackIcon
+                Width="28"
+                Height="28"
+                VerticalAlignment="Center"
+                Foreground="SpringGreen"
+                Kind="Numeric2Circle" />
+            <TextBlock
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Foreground="SpringGreen"
+                Text="Questions" />
+            <materialDesign:PackIcon
+                Width="32"
+                Height="32"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Foreground="SpringGreen"
+                Kind="ArrowRightThin" />
+            <materialDesign:PackIcon
+                Width="28"
+                Height="28"
+                Foreground="PaleGoldenrod"
+                Kind="Numeric3Circle" />
+            <TextBlock
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Foreground="PaleGoldenrod"
+                Text="Settings" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <StackPanel>
+                <Border Background="#FFF" Style="{StaticResource DashboardCardStyle}">
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock
+                                Margin="0,0,0,10"
+                                Style="{StaticResource CardTitleStyle}"
+                                Text="Nâng cao" />
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Style="{StaticResource CardDescriptionStyle}"
+                                    Text="Trộn câu hỏi" />
+                                <ToggleButton
+                                    Grid.Column="1"
+                                    IsChecked="{Binding ShuffleQuestions, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MaterialDesignSwitchLightToggleButton}" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Style="{StaticResource CardDescriptionStyle}"
+                                    Text="Trộn câu trả lời" />
+                                <ToggleButton
+                                    Grid.Column="1"
+                                    IsChecked="{Binding ShuffleAnswers, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MaterialDesignSwitchLightToggleButton}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,20">
+                            <TextBlock
+                                Margin="0,0,0,10"
+                                Style="{StaticResource CardTitleStyle}"
+                                Text="Quy tắc nộp bài" />
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Style="{StaticResource CardDescriptionStyle}"
+                                    Text="Hiển thị kết quả" />
+                                <ToggleButton
+                                    Grid.Column="1"
+                                    IsChecked="{Binding ShowResultImmediately, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                    ToolTip="Sau khi hoàn thành người làm bài sẽ thấy được kết quả" />
+                            </Grid>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Style="{StaticResource CardDescriptionStyle}"
+                                    Text="Hiển thị đáp án" />
+                                <ToggleButton
+                                    Grid.Column="1"
+                                    IsChecked="{Binding ShowCorrectAnswers, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                    ToolTip="Sau khi hoàn thành người làm bài sẽ thấy được đáp án" />
+                            </Grid>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Style="{StaticResource CardDescriptionStyle}"
+                                        Text="Cho phép nộp trễ" />
+                                    <ToggleButton
+                                        Name="AllowLateSubmissionToggle"
+                                        Grid.Column="1"
+                                        IsChecked="{Binding AllowLateSubmission, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                        ToolTip="Cho phép người làm nộp trễ" />
+                                </Grid>
+                                <StackPanel
+                                    Grid.Row="1"
+                                    Margin="0,5,0,0"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding Path=IsChecked, ElementName=AllowLateSubmissionToggle, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock
+                                        Margin="0,0,10,0"
+                                        Style="{StaticResource CardDescriptionStyle}"
+                                        Text="Phạt" />
+                                    <TextBox
+                                        Width="50"
+                                        Height="30"
+                                        Margin="0,0,5,0"
+                                        Padding="0"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
+                                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                        Text="{Binding LateSubmissionPenalty, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Style="{StaticResource CardDescriptionStyle}" Text="%" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,10"
+                                Style="{StaticResource CardTitleStyle}"
+                                Text="Số lần nộp bài" />
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Style="{StaticResource CardDescriptionStyle}"
+                                        Text="Nộp bài nhiều lần" />
+                                    <ToggleButton
+                                        Name="AllowAttemptsToggle"
+                                        Grid.Column="1"
+                                        Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                        ToolTip="Được nộp bài nhiều lần" />
+                                </Grid>
+                                <TextBox
+                                    Margin="0,5,0,0"
+                                    materialDesign:HintAssist.HelperText="Nhập 0 nếu là không giới hạn"
+                                    materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding MaxAttempts}"
+                                    Visibility="{Binding Path=IsChecked, ElementName=AllowAttemptsToggle, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

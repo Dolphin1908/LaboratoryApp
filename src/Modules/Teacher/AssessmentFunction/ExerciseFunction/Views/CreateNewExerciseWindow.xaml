@@ -1,0 +1,142 @@
+﻿<Window
+    x:Class="LaboratoryApp.src.Modules.Teacher.AssessmentFunction.ExerciseFunction.Views.CreateNewExerciseWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Teacher.AssessmentFunction.ExerciseFunction.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:LaboratoryApp.src.Modules.Teacher.AssessmentFunction.ExerciseFunction.ViewModels"
+    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Tạo bài tập mới"
+    Width="800"
+    Height="450"
+    MinWidth="600"
+    MinHeight="600"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    Style="{StaticResource MaterialDesignWindow}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding WindowClosingCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:InformationViewModel}">
+            <local:InformationUC />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ContentViewModel}">
+            <local:ContentUC />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
+            <local:SettingUC />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <!--  Content row  -->
+            <RowDefinition Height="Auto" />
+            <!--  Footer row  -->
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <ContentControl Content="{Binding CurrentView}" />
+        </Grid>
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Grid.Column="4"
+                Width="120"
+                Margin="0,0,10,0"
+                materialDesign:ButtonAssist.CornerRadius="10"
+                Background="#989898"
+                BorderBrush="#989898"
+                Command="{Binding NavigateToPreviousPage}"
+                Style="{StaticResource MaterialDesignRaisedButton}">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <wpfui:SymbolIcon
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Symbol="ArrowLeft24" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="Quay lại" />
+                </Grid>
+            </Button>
+
+            <Button
+                Grid.Column="4"
+                Width="120"
+                Margin="10,0"
+                materialDesign:ButtonAssist.CornerRadius="10"
+                Background="SpringGreen"
+                BorderBrush="SpringGreen"
+                Command="{Binding SaveCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                Style="{StaticResource MaterialDesignRaisedButton}">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <wpfui:SymbolIcon
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Symbol="Save24" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="Lưu" />
+                </Grid>
+            </Button>
+
+            <Button
+                Grid.Column="4"
+                Width="120"
+                Margin="10,0,0,0"
+                materialDesign:ButtonAssist.CornerRadius="10"
+                Background="#2e86de"
+                BorderBrush="#2e86de"
+                Command="{Binding NavigateToNextPage}"
+                Style="{StaticResource MaterialDesignRaisedButton}">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Tiếp theo" />
+                    <wpfui:SymbolIcon
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Symbol="ArrowRight24" />
+                </Grid>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

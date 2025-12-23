@@ -1,8 +1,14 @@
-﻿using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
+﻿using LaboratoryApp.Domain.Interfaces.Providers.Users;
+using LaboratoryApp.Domain.Interfaces.Services.English;
+using LaboratoryApp.Domain.Interfaces.Services.Infrastructure;
+using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
+using LaboratoryApp.Domain.Models.English.DiaryFunction;
 using LaboratoryApp.src.Core.Caches.Chemistry;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Modules.Chemistry.Dashboard.Views;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
 using LaboratoryApp.src.Modules.English.DictionaryFunction.Views;
+using LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.Views;
 using LaboratoryApp.src.Modules.Tools.Chemistry.Dashboard.ViewModels;
 using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.CompoundFunction.ViewModels;
 using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.CompoundFunction.Views;
@@ -11,6 +17,8 @@ using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.ReactionFunct
 using LaboratoryApp.src.Modules.Tools.Chemistry.PeriodicFunction.ViewModels;
 using LaboratoryApp.src.Modules.Tools.English.Dashboard.ViewModels;
 using LaboratoryApp.src.Modules.Tools.English.Dashboard.Views;
+using LaboratoryApp.src.Modules.Tools.English.DiaryFunction.ViewModels;
+using LaboratoryApp.src.Modules.Tools.English.DiaryFunction.Views;
 using LaboratoryApp.src.Modules.Tools.English.DictionaryFunction.ViewModels;
 using LaboratoryApp.src.Modules.Tools.Maths.Dashboard.ViewModels;
 using LaboratoryApp.src.Modules.Tools.Maths.Dashboard.Views;
@@ -53,6 +61,10 @@ namespace LaboratoryApp.src.Configuration
             // English
             // Dashboard Function
             services.AddTransient<EnglishMainPageViewModel>();
+
+            // Diary Function
+            services.AddTransient<DiaryViewModel>();
+            services.AddTransient<DiaryManagerViewModel>();
 
             // Dictionary Function
             services.AddTransient<DictionaryViewModel>();
@@ -112,6 +124,19 @@ namespace LaboratoryApp.src.Configuration
                 var vm = sp.GetRequiredService<EnglishMainPageViewModel>();
                 return new EnglishMainPage { DataContext = vm };
             });
+            // Diary Function
+            services.AddTransient<DiaryDetailWindow>();
+            services.AddTransient<DiaryManagerPage>(sp =>
+            {
+                var vm = sp.GetRequiredService<DiaryManagerViewModel>();
+                return new DiaryManagerPage { DataContext = vm };
+            });
+            services.AddTransient<DiaryWindow>(sp =>
+            {
+                var vm = sp.GetRequiredService<DiaryViewModel>();
+                return new DiaryWindow { DataContext = vm };
+            });
+
 
             // Dictionary Function
             services.AddTransient<DictionaryWindow>(sp =>
@@ -138,6 +163,7 @@ namespace LaboratoryApp.src.Configuration
 
             // Toolkits
             // Calculator Function
+            services.AddTransient<CalculatorWindow>();
 
             // Dashboard Function
             services.AddTransient<ToolkitsMainPage>(sp =>
@@ -161,6 +187,19 @@ namespace LaboratoryApp.src.Configuration
 
             // English
             // Dashboard Function
+
+            // Diary Function
+            services.AddTransient<Func<IServiceProvider, IAIService, IDialogService, IDiaryService, IFormatConversionService, IUserProvider, DiaryContent, DiaryDetailViewModel>>(sp =>
+            (service, aiService, dialogService, diaryService, formatService, userService, diary) =>
+            {
+                var diaryVmFactory = sp.GetRequiredService<Func<IServiceProvider, IAIService, IDialogService, IDiaryService, IFormatConversionService, DiaryContent, DiaryViewModel>>();
+                return new DiaryDetailViewModel(service, aiService, dialogService, diaryService, formatService, userService, diary, diaryVmFactory);
+            });
+            services.AddTransient<Func<IServiceProvider, IAIService, IDialogService, IDiaryService, IFormatConversionService, DiaryContent, DiaryViewModel>>(sp =>
+            (service, aiService, dialogService, diaryService, formatService, diary) =>
+            {
+                return new DiaryViewModel(service, aiService, dialogService, diaryService, formatService, diary);
+            });
 
             // Dictionary Function
             services.AddTransient<Func<DictionaryWindow>>(sp =>

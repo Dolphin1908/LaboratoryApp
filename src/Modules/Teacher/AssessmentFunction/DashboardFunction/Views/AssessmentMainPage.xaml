@@ -1,0 +1,458 @@
+﻿<Page
+    x:Class="LaboratoryApp.src.Modules.Teacher.AssessmentFunction.DashboardFunction.Views.AssessmentMainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Teacher.AssessmentFunction.DashboardFunction.Views"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Quản lý bài tập"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--  Style cho các thẻ thống kê (Stats Card)  -->
+        <Style x:Key="DashboardCardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="Margin" Value="0,0,20,0" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+
+        <!--  Style cho Text tiêu đề trong thẻ  -->
+        <Style x:Key="CardTitleStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <!--  Style cho con số trong thẻ  -->
+        <Style x:Key="CardNumberStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Black" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Opacity" Value="0.9" />
+        </Style>
+
+        <Style x:Key="StatsCardButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="80" />
+            <Setter Property="Margin" Value="0,0,20,0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Padding="20"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="12">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Direction="270"
+                                    Opacity="0.2"
+                                    ShadowDepth="2"
+                                    Color="Gray" />
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect
+                                            BlurRadius="15"
+                                            Direction="270"
+                                            Opacity="0.4"
+                                            ShadowDepth="4"
+                                            Color="Gray" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        </Style>
+
+        <DataTemplate x:Key="ExerciseItemTemplate">
+            <materialDesign:Card
+                Margin="0,0,0,10"
+                Padding="15"
+                UniformCornerRadius="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border
+                        Grid.Column="0"
+                        Width="40"
+                        Height="40"
+                        Margin="0,0,15,0"
+                        Background="#E3F2FD"
+                        CornerRadius="20">
+                        <wpfui:SymbolIcon
+                            FontSize="20"
+                            Foreground="#2E86DE"
+                            Symbol="Book24" />
+                    </Border>
+
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Text="{Binding Title}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="12"
+                            Foreground="Gray"
+                            Text="{Binding ClassName}" />
+                    </StackPanel>
+
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="{Binding DueDate, StringFormat='dd/MM/yyyy'}" />
+
+                    <Grid
+                        Grid.Column="3"
+                        Margin="0,0,20,0"
+                        VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontWeight="SemiBold"
+                            Text="{Binding ProgressText}" />
+                        <ProgressBar
+                            Grid.Column="1"
+                            Height="10"
+                            Background="#EEE"
+                            BorderThickness="0"
+                            Foreground="{Binding StatusColor}"
+                            Maximum="{Binding MaxValue}"
+                            Value="{Binding ProgressValue}" />
+                    </Grid>
+
+                    <Button
+                        Grid.Column="4"
+                        Height="32"
+                        Padding="10,0"
+                        Command="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                        CommandParameter="{Binding}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <wpfui:SymbolIcon
+                                Margin="0,0,5,0"
+                                FontSize="16"
+                                Symbol="Eye24" />
+                            <TextBlock Text="Chi tiết" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </materialDesign:Card>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="Transparent">
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <StackPanel Margin="20">
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <wpfui:SymbolIcon
+                            Margin="0,0,15,0"
+                            FontSize="28"
+                            Foreground="#333"
+                            Symbol="Book24" />
+                        <TextBlock
+                            FontSize="28"
+                            FontWeight="Bold"
+                            Foreground="{DynamicResource MaterialDesignBody}"
+                            Text="Quản lý bài tập" />
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="1"
+                        Height="45"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        Background="SpringGreen"
+                        BorderBrush="SpringGreen"
+                        Command="{Binding OpenCreateNewExerciseWindowCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource MaterialDesignRaisedButton}">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <wpfui:SymbolIcon
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                Symbol="BookAdd24" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="Tạo bài tập mới" />
+                        </Grid>
+                    </Button>
+                </Grid>
+
+                <UniformGrid Margin="0,0,-20,20" Columns="3">
+                    <Button Background="#FF9F43" Style="{StaticResource StatsCardButtonStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <wpfui:SymbolIcon
+                                    Margin="0,0,5,-2"
+                                    HorizontalAlignment="Left"
+                                    FontSize="20"
+                                    Foreground="White"
+                                    Symbol="EditSettings24" />
+                                <TextBlock Style="{StaticResource CardTitleStyle}" Text="Cần chấm điểm" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Column="1"
+                                Style="{StaticResource CardNumberStyle}"
+                                Text="15" />
+                        </Grid>
+                    </Button>
+
+                    <Button Background="#2E86DE" Style="{StaticResource StatsCardButtonStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <wpfui:SymbolIcon
+                                    Margin="0,0,5,-2"
+                                    HorizontalAlignment="Left"
+                                    FontSize="20"
+                                    Foreground="White"
+                                    Symbol="Timer24" />
+                                <TextBlock Style="{StaticResource CardTitleStyle}" Text="Đang mở" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Column="1"
+                                Style="{StaticResource CardNumberStyle}"
+                                Text="42" />
+                        </Grid>
+                    </Button>
+
+                    <Button Background="#989898" Style="{StaticResource StatsCardButtonStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <wpfui:SymbolIcon
+                                    Margin="0,0,5,-2"
+                                    HorizontalAlignment="Left"
+                                    FontSize="20"
+                                    Foreground="White"
+                                    Symbol="Drafts24" />
+                                <TextBlock Style="{StaticResource CardTitleStyle}" Text="Bản nháp" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Column="1"
+                                Style="{StaticResource CardNumberStyle}"
+                                Text="3" />
+                        </Grid>
+                    </Button>
+                </UniformGrid>
+
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        Grid.Column="0"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Lớp/Khóa học"
+                        Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                        <ComboBoxItem Content="Tất cả lớp" />
+                        <ComboBoxItem Content="12A" />
+                        <ComboBoxItem Content="11A" />
+                        <ComboBoxItem Content="10A" />
+                    </ComboBox>
+
+                    <TextBox
+                        Grid.Column="1"
+                        Width="250"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Tên bài tập"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+                    <Button
+                        Grid.Column="3"
+                        Command="{Binding FilterListCommand}"
+                        CommandParameter="All"
+                        Content="Xóa bộ lọc"
+                        Style="{StaticResource MaterialDesignFlatButton}" />
+                </Grid>
+
+                <ItemsControl ItemsSource="{Binding AllExercise, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Card
+                                Margin="0,0,0,10"
+                                Padding="15"
+                                UniformCornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--  Symbol  -->
+                                    <Border
+                                        Grid.Column="0"
+                                        Width="40"
+                                        Height="40"
+                                        Margin="0,0,15,0"
+                                        Background="#E3F2FD"
+                                        CornerRadius="20">
+                                        <wpfui:SymbolIcon
+                                            FontSize="20"
+                                            Foreground="#2E86DE"
+                                            Symbol="Book24" />
+                                    </Border>
+
+                                    <!--  Content  -->
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        Margin="0,0,20,0"
+                                        VerticalAlignment="Center">
+                                        <TextBlock
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Text="{Binding Title}"
+                                            TextTrimming="CharacterEllipsis" />
+                                        <TextBlock
+                                            Margin="0,2,0,0"
+                                            FontSize="12"
+                                            Foreground="Gray"
+                                            Text="{Binding ClassName}" />
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        Margin="0,0,20,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        Text="{Binding DueDate}"
+                                        Visibility="{Binding DueDate, Converter={StaticResource NullToVisibilityConverter}}" />
+
+                                    <!--  Progress  -->
+                                    <Grid
+                                        Grid.Column="3"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Margin="0,0,20,0"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Text="{Binding PercentageSubmitted}"
+                                            TextTrimming="CharacterEllipsis" />
+                                        <ProgressBar
+                                            Grid.Column="1"
+                                            Maximum="{Binding TotalStudents}"
+                                            Minimum="0"
+                                            Value="{Binding SubmittedCount}" />
+                                    </Grid>
+
+                                    <Button
+                                        Grid.Column="4"
+                                        Margin="20,0,0,0"
+                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                        Background="#fff991"
+                                        BorderBrush="#fff991"
+                                        Command="{Binding DataContext.OpenExerciseDetailWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource MaterialDesignRaisedButton}">
+                                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <wpfui:SymbolIcon
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                FontSize="20"
+                                                Symbol="Eye24" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Margin="5,0,0,0"
+                                                VerticalAlignment="Center"
+                                                Text="Chi tiết" />
+                                        </Grid>
+                                    </Button>
+                                </Grid>
+                            </materialDesign:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

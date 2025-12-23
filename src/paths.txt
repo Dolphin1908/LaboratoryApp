@@ -66,7 +66,7 @@ C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\Content\QuestionPro
 C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\English\DiaryProvider.cs
 C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\English\DictionaryProvider.cs
 C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\English\FlashcardProvider.cs
-C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\Operations\ExerciseSetAccessProvider.cs
+C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\Operations\ExerciseAccessProvider.cs
 C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\Users\OrganizationProvider.cs
 C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\Users\UserOrganizationProvider.cs
 C:\Users\sonsu\source\repos\LaboratoryApp\src\Data\Providers\Users\UserProvider.cs

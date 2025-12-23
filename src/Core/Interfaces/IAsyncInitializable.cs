@@ -1,4 +1,4 @@
-﻿namespace LaboratoryApp.src.Core.Interfaces
+﻿namespace LaboratoryApp.src.Core.Interfaces.Services
 {
     public interface IAsyncInitializable
     {

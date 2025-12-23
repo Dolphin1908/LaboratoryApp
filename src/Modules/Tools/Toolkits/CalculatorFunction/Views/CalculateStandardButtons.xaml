@@ -1,278 +1,226 @@
-﻿<UserControl x:Class="LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.Views.CalculateStandardButtons"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.Views"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontWeight="Regular"
-             TextElement.FontSize="13"
-             TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             Background="{DynamicResource MaterialDesignPaper}"
-             FontFamily="{DynamicResource MaterialDesignFont}"
-             DataContext="{StaticResource CalculatorVM}"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.Views.CalculateStandardButtons"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Toolkits.CalculatorFunction.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{DynamicResource MaterialDesignPaper}"
+    DataContext="{StaticResource CalculatorVM}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style
+            x:Key="BaseCalcBtnStyle"
+            BasedOn="{StaticResource MaterialDesignRaisedButton}"
+            TargetType="Button">
+            <Setter Property="Width" Value="75" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Margin" Value="3,0" />
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="10" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style
+            x:Key="FuncBtnStyle"
+            BasedOn="{StaticResource BaseCalcBtnStyle}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#F1F1F1" />
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+
+        <Style
+            x:Key="NumberBtnStyle"
+            BasedOn="{StaticResource BaseCalcBtnStyle}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#DDDDDD" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+
+        <Style
+            x:Key="EqualBtnStyle"
+            BasedOn="{StaticResource BaseCalcBtnStyle}"
+            TargetType="Button">
+            <Setter Property="Background" Value="#2AF7FF" />
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    Margin="2">
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Content="%"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding PercentCommand}"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Margin="6,0,3,0"
-                    Content="CE"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding ClearNumberCommand}"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Margin="3,0,6,0"
-                    Content="C"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding ClearFormulaCommand}"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding BackspaceCommand}">
-                <materialDesign:PackIcon Kind="BackspaceOutline"/>
+        <StackPanel
+            Grid.Row="0"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding PercentCommand}"
+                Content="%"
+                Style="{StaticResource FuncBtnStyle}" />
+            <Button
+                Command="{Binding ClearNumberCommand}"
+                Content="CE"
+                Style="{StaticResource FuncBtnStyle}" />
+            <Button
+                Command="{Binding ClearFormulaCommand}"
+                Content="C"
+                Style="{StaticResource FuncBtnStyle}" />
+            <Button Command="{Binding BackspaceCommand}" Style="{StaticResource FuncBtnStyle}">
+                <materialDesign:PackIcon Kind="BackspaceOutline" />
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    Margin="2">
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding OneDivideXCommand}">
-                <materialDesign:PackIcon Kind="FractionOneHalf"/>
+        <StackPanel
+            Grid.Row="1"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button Command="{Binding OneDivideXCommand}" Style="{StaticResource FuncBtnStyle}">
+                <materialDesign:PackIcon Kind="FractionOneHalf" />
             </Button>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Margin="6,0,3,0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding SquareCommand}">
-                <Image Source="/resources/Images/Icons/squared.png" 
-                       Width="12" 
-                       Height="12"/>
+            <Button Command="{Binding SquareCommand}" Style="{StaticResource FuncBtnStyle}">
+                <Image
+                    Width="12"
+                    Height="12"
+                    Source="/resources/Images/Icons/squared.png" />
             </Button>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Margin="3,0,6,0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding SquareRootCommand}">
-                <materialDesign:PackIcon Kind="SquareRoot" 
-                                         Width="20" 
-                                         Height="20"/>
+            <Button Command="{Binding SquareRootCommand}" Style="{StaticResource FuncBtnStyle}">
+                <materialDesign:PackIcon
+                    Width="20"
+                    Height="20"
+                    Kind="SquareRoot" />
             </Button>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddOperatorCommand}"
-                    CommandParameter="/">
-                <Image Source="/resources/Images/Icons/divide.png"
-                       Width="20"
-                       Height="20"/>
+            <Button
+                Command="{Binding AddOperatorCommand}"
+                CommandParameter="/"
+                Style="{StaticResource FuncBtnStyle}">
+                <Image
+                    Width="20"
+                    Height="20"
+                    Source="/resources/Images/Icons/divide.png" />
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    Margin="2">
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Content="7"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="7"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="6,0,3,0"
-                    Content="8"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="8"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="3,0,6,0"
-                    Content="9"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="9"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddOperatorCommand}"
-                    CommandParameter="*">
-                <materialDesign:PackIcon Kind="Close"/>
+        <StackPanel
+            Grid.Row="2"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="7"
+                Content="7"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="8"
+                Content="8"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="9"
+                Content="9"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddOperatorCommand}"
+                CommandParameter="*"
+                Style="{StaticResource FuncBtnStyle}">
+                <materialDesign:PackIcon Kind="Close" />
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="3"
-                    Orientation="Horizontal"
-                    Margin="2">
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Content="4"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="4"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="6,0,3,0"
-                    Content="5"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="5"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="3,0,6,0"
-                    Content="6"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="6"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddOperatorCommand}"
-                    CommandParameter="-">
-                <materialDesign:PackIcon Kind="Minus"/>
+        <StackPanel
+            Grid.Row="3"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="4"
+                Content="4"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="5"
+                Content="5"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="6"
+                Content="6"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddOperatorCommand}"
+                CommandParameter="-"
+                Style="{StaticResource FuncBtnStyle}">
+                <materialDesign:PackIcon Kind="Minus" />
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="4"
-                    Orientation="Horizontal"
-                    Margin="2">
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Content="1"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="1"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="6,0,3,0"
-                    Content="2"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="2"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="3,0,6,0"
-                    Content="3"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="3"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#F1F1F1"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddOperatorCommand}"
-                    CommandParameter="+">
-                <materialDesign:PackIcon Kind="Plus"/>
+        <StackPanel
+            Grid.Row="4"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="1"
+                Content="1"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="2"
+                Content="2"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="3"
+                Content="3"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddOperatorCommand}"
+                CommandParameter="+"
+                Style="{StaticResource FuncBtnStyle}">
+                <materialDesign:PackIcon Kind="Plus" />
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="5"
-                    Orientation="Horizontal"
-                    Margin="2">
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding ChangeSignCommand}">
-                <materialDesign:PackIcon Kind="PlusMinusVariant"/>
+        <StackPanel
+            Grid.Row="5"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button Command="{Binding ChangeSignCommand}" Style="{StaticResource NumberBtnStyle}">
+                <materialDesign:PackIcon Kind="PlusMinusVariant" />
             </Button>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="6,0,3,0"
-                    Content="0"
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="0"/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#DDDDDD"
-                    BorderThickness="0"
-                    Margin="3,0,6,0"
-                    Content="."
-                    FontWeight="Bold"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding AddNumberCommand}"
-                    CommandParameter="."/>
-            <Button Height="50"
-                    Width="75"
-                    Background="#2AF7FF"
-                    BorderThickness="0"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    Command="{Binding CalculateCommand}">
-                <materialDesign:PackIcon Kind="Equal"/>
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="0"
+                Content="0"
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button
+                Command="{Binding AddNumberCommand}"
+                CommandParameter="."
+                Content="."
+                Style="{StaticResource NumberBtnStyle}" />
+            <Button Command="{Binding CalculateCommand}" Style="{StaticResource EqualBtnStyle}">
+                <materialDesign:PackIcon Kind="Equal" />
             </Button>
         </StackPanel>
     </Grid>

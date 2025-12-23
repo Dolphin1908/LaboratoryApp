@@ -3,6 +3,7 @@ using LaboratoryApp.Domain.Interfaces.Providers.Auth;
 using LaboratoryApp.Domain.Interfaces.Providers.Chemistry;
 using LaboratoryApp.Domain.Interfaces.Providers.Content;
 using LaboratoryApp.Domain.Interfaces.Providers.English;
+using LaboratoryApp.Domain.Interfaces.Providers.Infrastructure;
 using LaboratoryApp.Domain.Interfaces.Providers.Operations;
 using LaboratoryApp.Domain.Interfaces.Providers.Users;
 using LaboratoryApp.Domain.Interfaces.Services.Auth;
@@ -11,19 +12,20 @@ using LaboratoryApp.Domain.Interfaces.Services.Common;
 using LaboratoryApp.Domain.Interfaces.Services.Content;
 using LaboratoryApp.Domain.Interfaces.Services.English;
 using LaboratoryApp.Domain.Interfaces.Services.Infrastructure;
+using LaboratoryApp.Domain.Interfaces.Services.Operations;
 using LaboratoryApp.Domain.Interfaces.Services.Users;
 using LaboratoryApp.src.Constants;
-using LaboratoryApp.src.Core.Caches.Assignment;
 using LaboratoryApp.src.Core.Caches.Authorization;
 using LaboratoryApp.src.Core.Caches.Chemistry;
 using LaboratoryApp.src.Core.Caches.English;
 using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Data.Providers.Auth;
 using LaboratoryApp.src.Data.Providers.Chemistry;
 using LaboratoryApp.src.Data.Providers.Common;
 using LaboratoryApp.src.Data.Providers.Content;
 using LaboratoryApp.src.Data.Providers.English;
+using LaboratoryApp.src.Data.Providers.Infrastructure;
 using LaboratoryApp.src.Data.Providers.Operations;
 using LaboratoryApp.src.Data.Providers.Users;
 using LaboratoryApp.src.Services.Auth;
@@ -32,9 +34,9 @@ using LaboratoryApp.src.Services.Common;
 using LaboratoryApp.src.Services.Content;
 using LaboratoryApp.src.Services.English;
 using LaboratoryApp.src.Services.Infrastructure;
+using LaboratoryApp.src.Services.Operations;
 using LaboratoryApp.src.Services.UI;
 using LaboratoryApp.src.Services.Users;
-using LaboratoryApp.src.Shared.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 
@@ -77,6 +79,7 @@ namespace LaboratoryApp.src.Configuration
             services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(mongoConnString, DatabaseName.ChemistryMongoDB));
             services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(mongoConnString, DatabaseName.EnglishMongoDB));
             services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(mongoConnString, DatabaseName.HelperMongoDB));
+            services.AddSingleton<IMongoDBProvider>(sp => new MongoDBProvider(mongoConnString, DatabaseName.InfrastructureMongoDB));
             services.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(chemDbPath));
             services.AddSingleton<ISQLiteDataProvider>(sp => new SQLiteDataProvider(englishDbPath));
 
@@ -91,7 +94,6 @@ namespace LaboratoryApp.src.Configuration
         private static IServiceCollection AddCaches(this IServiceCollection services)
         {
             // Register cache-related services here
-            services.AddSingleton<IAssignmentCache, AssignmentCache>();
             services.AddSingleton<IAuthorizationCache, AuthorizationCache>();
             services.AddSingleton<IChemistryDataCache, ChemistryDataCache>();
             services.AddSingleton<IEnglishDataCache, EnglishDataCache>();
@@ -118,8 +120,9 @@ namespace LaboratoryApp.src.Configuration
             services.AddSingleton<IReactionProvider, ReactionProvider>();
 
             // Content
+            services.AddSingleton<IAnswerOptionProvider, AnswerOptionProvider>();
             services.AddSingleton<IExerciseProvider, ExerciseProvider>();
-            services.AddSingleton<IExerciseSetProvider, ExerciseSetProvider>();
+            services.AddSingleton<IQuestionBlockProvider, QuestionBlockProvider>();
             services.AddSingleton<IQuestionProvider, QuestionProvider>();
 
             // English
@@ -127,10 +130,13 @@ namespace LaboratoryApp.src.Configuration
             services.AddSingleton<IDictionaryProvider, DictionaryProvider>();
             services.AddSingleton<IFlashcardProvider, FlashcardProvider>();
 
+            // Infrastructure
+            services.AddSingleton<IAssetProvider, AssetProvider>();
+
             // Maths
 
             // Operations
-            services.AddSingleton<IExerciseSetAccessProvider, ExerciseSetAccessProvider>();
+            services.AddSingleton<IExerciseAccessProvider, ExerciseAccessProvider>();
 
             // Physics
 
@@ -162,8 +168,9 @@ namespace LaboratoryApp.src.Configuration
             services.AddSingleton<ICounterService, CounterService>();
 
             // Content
+            services.AddSingleton<IAnswerOptionService, AnswerOptionService>();
             services.AddSingleton<IExerciseService, ExerciseService>();
-            services.AddSingleton<IExerciseSetService, ExerciseSetService>();
+            services.AddSingleton<IQuestionBlockService, QuestionBlockService>();
             services.AddSingleton<IQuestionService, QuestionService>();
 
             // English
@@ -173,10 +180,17 @@ namespace LaboratoryApp.src.Configuration
 
             // Infrastructure
             services.AddSingleton<IAIService, AIService>();
+            services.AddSingleton<IAssetService, AssetService>();
+            services.AddSingleton<IFormatConversionService, FormatConversionService>();
             services.AddSingleton<ISpeechService, SpeechService>();
 
+            // Operations
+            services.AddSingleton<IExerciseAccessService, ExerciseAccessService>();
+
             // UI
-            services.AddSingleton<INavigationService, NavigateService>();
+            services.AddTransient<NavigateService>();
+            services.AddTransient<Func<INavigateService>>(sp => () => sp.GetRequiredService<NavigateService>());
+            services.AddSingleton<INavigateService, NavigateService>();
             services.AddSingleton<IDialogService, DialogService>();
 
             // Users

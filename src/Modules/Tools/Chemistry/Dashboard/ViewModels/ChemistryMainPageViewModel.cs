@@ -1,20 +1,19 @@
-﻿using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.CompoundFunction.Views;
+﻿using LaboratoryApp.src.Core.Interfaces.Services;
+using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Chemistry.PeriodicFunction.Views;
-using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.ReactionFunction.Views;
 using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.CompoundFunction.ViewModels;
+using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.ReactionFunction.ViewModels;
-using LaboratoryApp.src.Shared.Interfaces;
+using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.ReactionFunction.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Input;
-using LaboratoryApp.src.Core.Interfaces;
 
 namespace LaboratoryApp.src.Modules.Tools.Chemistry.Dashboard.ViewModels
 {
     public class ChemistryMainPageViewModel : BaseViewModel, IAsyncInitializable
     {
-        private readonly INavigationService _navigationService;
+        private readonly INavigateService _navigationService;
         private readonly IServiceProvider _serviceProvider;
 
         #region Commands
@@ -34,7 +33,7 @@ namespace LaboratoryApp.src.Modules.Tools.Chemistry.Dashboard.ViewModels
         /// <param name="serviceProvider"></param>
         /// <param name="chemistryService"></param>
         /// <param name="chemistryDataCache"></param>
-        public ChemistryMainPageViewModel(INavigationService navigationService,
+        public ChemistryMainPageViewModel(INavigateService navigationService,
                                           IServiceProvider serviceProvider)
         {
             _navigationService = navigationService;

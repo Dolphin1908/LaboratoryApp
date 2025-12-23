@@ -9,7 +9,7 @@ using LaboratoryApp.Domain.Models.Users;
 using LaboratoryApp.src.Constants;
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Data.Providers.Common;
 using MongoDB.Driver;
 using System.Security.Cryptography;

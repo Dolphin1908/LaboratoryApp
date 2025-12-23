@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:LaboratoryApp.src.Shared.Converters"
+    xmlns:converters="clr-namespace:LaboratoryApp.src.Core.Converters"
     xmlns:ctrl="clr-namespace:LaboratoryApp.src.Shared.Controls"
     xmlns:rules="clr-namespace:LaboratoryApp.src.Core.Rules">
 
@@ -16,6 +16,7 @@
     <converters:HtmlToDataUriConverter x:Key="HtmlToDataUriConverter" />
     <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    <converters:IndexToLetterConverter x:Key="IndexToLetterConverter"/>
 
     <!--  Domain  -->
     <rules:NotEmptyValidationRule x:Key="NotEmptyValidationRule" />

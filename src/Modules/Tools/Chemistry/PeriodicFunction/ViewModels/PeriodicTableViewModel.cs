@@ -1,6 +1,6 @@
 ﻿using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using System.Collections.ObjectModel;
 

@@ -11,14 +11,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="src\Modules\Student\English\DiaryFunction\**" />
     <Compile Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
-    <Compile Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+    <Compile Remove="src\Modules\Teacher\EnglishFunction\ExerciseFunctionExerciseFunction\**" />
+    <EmbeddedResource Remove="src\Modules\Student\English\DiaryFunction\**" />
     <EmbeddedResource Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
-    <EmbeddedResource Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+    <EmbeddedResource Remove="src\Modules\Teacher\EnglishFunction\ExerciseFunctionExerciseFunction\**" />
+    <None Remove="src\Modules\Student\English\DiaryFunction\**" />
     <None Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
-    <None Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+    <None Remove="src\Modules\Teacher\EnglishFunction\ExerciseFunctionExerciseFunction\**" />
+    <Page Remove="src\Modules\Student\English\DiaryFunction\**" />
     <Page Remove="src\Modules\Tools\English\ExerciseFunctionExerciseFunction\**" />
-    <Page Remove="src\Modules\Teacher\English\ExerciseFunctionExerciseFunction\**" />
+    <Page Remove="src\Modules\Teacher\EnglishFunction\ExerciseFunctionExerciseFunction\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,12 +56,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="src\Core\Interfaces\INavigationService.cs" />
+    <None Include="src\Core\Interfaces\Services\INavigateService.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
+    <PackageReference Include="LiveCharts" Version="0.9.7" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MaterialDesignColors" Version="5.3.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.0" />
@@ -108,18 +114,31 @@
     <Folder Include="src\Modules\Admin\" />
     <Folder Include="src\Modules\Student\Math\" />
     <Folder Include="src\Modules\Student\Chemistry\" />
-    <Folder Include="src\Modules\Student\English\DiaryFunction\Resources\" />
     <Folder Include="src\Modules\Student\English\FlashcardFunction\Resources\" />
     <Folder Include="src\Modules\Student\English\LectureFunction\Resources\" />
     <Folder Include="src\Modules\Shared\" />
-    <Folder Include="src\Modules\Teacher\Chemistry\CompoundFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\Chemistry\ReactionFunction\Resources\" />
-    <Folder Include="src\Modules\Teacher\English\" />
+    <Folder Include="src\Modules\Teacher\ChemistryFunction\CompoundFunction\Resources\" />
+    <Folder Include="src\Modules\Teacher\ChemistryFunction\ReactionFunction\Resources\" />
+    <Folder Include="src\Modules\Teacher\EnglishFunction\Views\" />
+    <Folder Include="src\Modules\Teacher\EnglishFunction\ViewModels\" />
+    <Folder Include="src\Modules\Tools\English\DiaryFunction\Resources\" />
     <Folder Include="src\Modules\Tools\Toolkits\CalculatorFunction\Resources\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LaboratoryApp.Domain\LaboratoryApp.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="src\Modules\Tools\English\DiaryFunction\Views\DiaryDetailWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="src\Modules\Tools\English\DiaryFunction\Views\DiaryManagerPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="src\Modules\Tools\English\DiaryFunction\Views\DiaryWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

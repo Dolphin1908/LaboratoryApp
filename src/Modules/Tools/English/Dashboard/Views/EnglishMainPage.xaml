@@ -55,8 +55,8 @@
                     <Button
                         Height="100"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        Background="SpringGreen"
-                        BorderBrush="SpringGreen"
+                        Background="#92ff9f"
+                        BorderBrush="#92ff9f"
                         Command="{Binding OpenDictionaryCommand}"
                         Style="{StaticResource MaterialDesignRaisedButton}">
                         <TextBlock FontSize="16" Text="Từ điển Anh - Việt" />
@@ -70,8 +70,8 @@
                     <Button
                         Height="100"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        Background="#ffff72"
-                        BorderBrush="#ffff72"
+                        Background="#fff991"
+                        BorderBrush="#fff991"
                         Command="{Binding NavigateToFlashcardManagerCommand}"
                         Style="{StaticResource MaterialDesignRaisedButton}">
                         <TextBlock FontSize="16" Text="Flashcard" />

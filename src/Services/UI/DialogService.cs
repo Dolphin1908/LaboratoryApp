@@ -1,4 +1,4 @@
-﻿using LaboratoryApp.src.Core.Interfaces;
+﻿using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.CompoundFunction.Views;
 using LaboratoryApp.src.Modules.Teacher.Chemistry.ReactionFunction.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +19,19 @@ namespace LaboratoryApp.src.Services.UI
         public MessageBoxResult ShowMessage(string message, string title = "Thông báo", MessageBoxButton messageBoxButton = MessageBoxButton.OK, MessageBoxImage messageBoxImage = MessageBoxImage.Information)
         {
             return MessageBox.Show(message, title, messageBoxButton, messageBoxImage);
+        }
+        public bool? ShowDialogCenterOwner(Window window)
+        {
+            window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            return window.ShowDialog();
+        }
+
+        public void ShowCenterOwner(Window window)
+        {
+            window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.Show();
         }
         #endregion
 

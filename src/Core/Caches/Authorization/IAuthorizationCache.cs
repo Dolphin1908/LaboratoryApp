@@ -5,8 +5,8 @@ namespace LaboratoryApp.src.Core.Caches.Authorization
 {
     public interface IAuthorizationCache
     {
-        List<ExerciseSetAccess> AllExerciseSetAccess { get; set; }
+        List<ExerciseAccess> AllExerciseAccess { get; set; }
 
-        void LoadAllData(IExerciseSetAccessProvider provider);
+        void LoadAllData(IExerciseAccessProvider provider);
     }
 }

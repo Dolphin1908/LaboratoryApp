@@ -1,0 +1,135 @@
+﻿<UserControl
+    x:Class="LaboratoryApp.src.Modules.Teacher.AssessmentFunction.ExerciseFunction.Views.InformationUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LaboratoryApp.src.Modules.Teacher.AssessmentFunction.ExerciseFunction.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rules="clr-namespace:LaboratoryApp.src.Core.Rules"
+    xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
+    <Grid Margin="0,0,0,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <materialDesign:PackIcon
+                Width="28"
+                Height="28"
+                VerticalAlignment="Center"
+                Foreground="PaleGoldenrod"
+                Kind="Numeric1Circle" />
+            <TextBlock
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Foreground="PaleGoldenrod"
+                Text="Informations" />
+            <materialDesign:PackIcon
+                Width="32"
+                Height="32"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Foreground="PaleGoldenrod"
+                Kind="ArrowRightThin" />
+            <materialDesign:PackIcon
+                Width="28"
+                Height="28"
+                VerticalAlignment="Center"
+                Foreground="#000"
+                Kind="Numeric2Circle" />
+            <TextBlock
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Foreground="#000"
+                Text="Questions" />
+            <materialDesign:PackIcon
+                Width="32"
+                Height="32"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Foreground="#000"
+                Kind="ArrowRightThin" />
+            <materialDesign:PackIcon
+                Width="28"
+                Height="28"
+                Foreground="#000"
+                Kind="Numeric3Circle" />
+            <TextBlock
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Foreground="#000"
+                Text="Settings" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <StackPanel>
+                <TextBox
+                    Margin="0,0,0,25"
+                    materialDesign:HintAssist.HelperText="Helper text longer than error"
+                    materialDesign:HintAssist.Hint="Tên bài tập"
+                    materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
+                    Background="Transparent"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="Title" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <rules:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <TextBox
+                    Margin="0,0,0,25"
+                    materialDesign:HintAssist.Hint="Mô tả"
+                    materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
+                    Foreground="Black"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+
+                <UniformGrid Columns="2">
+                    <TextBox
+                        Margin="0,0,5,0"
+                        materialDesign:HintAssist.HelperText="Nhập 0 nếu là không giới hạn"
+                        materialDesign:HintAssist.Hint="Thời gian làm bài (Tính bằng phút)"
+                        materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
+                        Foreground="Black"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding DurationInMinutes, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox
+                        Margin="5,0,0,0"
+                        materialDesign:HintAssist.HelperText="Số thập phân"
+                        materialDesign:HintAssist.Hint="Điểm đạt"
+                        materialDesign:TextFieldAssist.TextFieldCornerRadius="10"
+                        Foreground="Black"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}">
+                        <TextBox.Text>
+                            <Binding Path="PassScore" UpdateSourceTrigger="PropertyChanged" />
+                        </TextBox.Text>
+                    </TextBox>
+                </UniformGrid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

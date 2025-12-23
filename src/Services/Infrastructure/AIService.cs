@@ -2,7 +2,7 @@
 using LaboratoryApp.Domain.DTOs.English.DictionaryFunction;
 using LaboratoryApp.Domain.Interfaces.Services.Infrastructure;
 using LaboratoryApp.src.Core.Helpers;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Configuration;

@@ -10,7 +10,7 @@
         #endregion
 
         #region Authorization
-        public const string ExerciseSetAccess = "exercise_set_access";
+        public const string ExerciseAccess = "exercise_access";
         #endregion
 
         #region Chemistry
@@ -28,13 +28,18 @@
         #endregion
 
         #region Assignment
-        public const string ExerciseSets = "exercise_sets";
+        public const string AnswerOptions = "answer_options";
         public const string Exercises = "exercises";
         public const string Questions = "questions";
+        public const string QuestionBlocks = "question_blocks";
         #endregion
 
         #region Helper
         public const string Counters = "counters";
+        #endregion
+
+        #region Assets
+        public const string Assets = "assets";
         #endregion
     }
 }

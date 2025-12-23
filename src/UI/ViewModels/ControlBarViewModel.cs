@@ -9,13 +9,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using LaboratoryApp.src.Core.ViewModels;
-using LaboratoryApp.src.Shared.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 
 namespace LaboratoryApp.src.UI.ViewModels
 {
     public class ControlBarViewModel : BaseViewModel
     {
-        private readonly INavigationService _navigationService;
+        private readonly INavigateService _navigationService;
 
         #region Commands
         public ICommand CloseWindowCommand { get; set; }
@@ -33,7 +33,7 @@ namespace LaboratoryApp.src.UI.ViewModels
         /// </summary>
         /// <param name="mainWindowVM"></param>
         public ControlBarViewModel(MainWindowViewModel mainWindowVM,
-                                   INavigationService navigationService)
+                                   INavigateService navigationService)
         {
             _mainWindowVM = mainWindowVM;
             _navigationService = navigationService;

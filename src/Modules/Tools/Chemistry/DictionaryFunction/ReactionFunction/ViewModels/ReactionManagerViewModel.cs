@@ -4,7 +4,7 @@ using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
 using LaboratoryApp.Domain.Models.Chemistry.ReactionFunction;
 using LaboratoryApp.src.Core.Caches;
 using LaboratoryApp.src.Core.Caches.Chemistry;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using LaboratoryApp.src.Modules.Tools.Chemistry.DictionaryFunction.ReactionFunction.Views;
 using Microsoft.Extensions.DependencyInjection;

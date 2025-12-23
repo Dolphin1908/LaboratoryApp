@@ -3,7 +3,7 @@ using LaboratoryApp.Domain.Enums.Users;
 using LaboratoryApp.Domain.Interfaces.Services.Chemistry;
 using LaboratoryApp.Domain.Models.Chemistry.CompoundFunction;
 using LaboratoryApp.src.Core.Caches;
-using LaboratoryApp.src.Core.Interfaces;
+using LaboratoryApp.src.Core.Interfaces.Services;
 using LaboratoryApp.src.Core.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows.Input;

@@ -28,6 +28,29 @@ namespace LaboratoryApp.src.Data.Providers.Content
         }
 
         /// <summary>
+        /// Lấy bài tập theo danh sách Id
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public async Task<List<Exercise>> GetExercisesByIdsAsync(List<long> ids)
+        {
+            var filter = Builders<Exercise>.Filter.In(e => e.Id, ids);
+            var exercises = await _exerciseCollection.Find(filter).ToListAsync();
+            return exercises;
+        }
+
+        /// <summary>
+        /// Lấy bài tập theo Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Exercise?> GetExerciseByIdAsync(long id)
+        {
+            var exercise = await _exerciseCollection.Find(e => e.Id == id).FirstOrDefaultAsync();
+            return exercise;
+        }
+
+        /// <summary>
         /// Tạo mới bài tập
         /// </summary>
         /// <param name="exercise"></param>
@@ -35,6 +58,18 @@ namespace LaboratoryApp.src.Data.Providers.Content
         public async Task CreateNewExerciseAsync(Exercise exercise)
         {
             await _exerciseCollection.InsertOneAsync(exercise);
+        }
+
+        public async Task UpdateExerciseAsync(Exercise exercise)
+        {
+            var filter = Builders<Exercise>.Filter.Eq(e => e.Id, exercise.Id);
+            await _exerciseCollection.ReplaceOneAsync(filter, exercise);
+        }
+
+        public async Task DeleteExerciseAsync(long id)
+        {
+            var filter = Builders<Exercise>.Filter.Eq(e => e.Id, id);
+            await _exerciseCollection.DeleteOneAsync(filter);
         }
     }
 }
